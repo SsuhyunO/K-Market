@@ -1,0 +1,87 @@
+/* =============================================
+   KMarket - index.css
+   메인 페이지 전용 스타일
+   ============================================= */
+
+/* ── 레이아웃 ──
+   footer는 이 wrapper 밖에 있어야 전체 너비를 가짐
+   aside는 sticky로 스크롤 따라 내려옴
+─────────────────────────────────────────── */
+.page-wrapper {
+  max-width: var(--container-w);
+  margin: 24px auto 0;
+  padding: 0 12px 40px;   /* 하단 여백은 padding으로 */
+  display: flex;
+  gap: 20px;
+  align-items: flex-start; /* aside가 stretch되지 않도록 */
+}
+
+.main-content {
+  flex: 1;
+  min-width: 0;
+}
+
+/* ─────────────────────────────────────────────
+   슬라이드 배너
+───────────────────────────────────────────── */
+.slider-section {
+  margin-bottom: 28px;
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-gray-200);
+  background: var(--color-gray-100);
+}
+
+/* ─────────────────────────────────────────────
+   메인 섹션 공통
+───────────────────────────────────────────── */
+.main-section { margin-bottom: 36px; }
+
+/* ─────────────────────────────────────────────
+   히트상품 / 추천상품 / 최신상품 / 인기상품 / 할인상품
+───────────────────────────────────────────── */
+/* hit상품 grid는 4열, 8개 = 2줄 */
+.product-grid-8 {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+}
+
+/* ─────────────────────────────────────────────
+   섹션 탭 (히트/추천/최신/인기/할인)
+───────────────────────────────────────────── */
+.section-tab-bar {
+  display: flex;
+  gap: 0;
+  border-bottom: 2px solid var(--color-primary);
+  margin-bottom: 20px;
+}
+.section-tab-bar .tab {
+  padding: 10px 20px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-gray-600);
+  border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+  transition: background var(--transition), color var(--transition);
+}
+.section-tab-bar .tab.active,
+.section-tab-bar .tab:hover {
+  background: var(--color-primary);
+  color: var(--color-white);
+}
+
+/* ─────────────────────────────────────────────
+   반응형 (간단)
+───────────────────────────────────────────── */
+@media (max-width: 900px) {
+  .page-wrapper { flex-direction: column; }
+  #aside { width: 100%; }
+  .product-grid-8 { grid-template-columns: repeat(2, 1fr); }
+  .product-grid   { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 580px) {
+  .product-grid-8 { grid-template-columns: 1fr 1fr; }
+  .header-main .logo { width: auto; }
+}
