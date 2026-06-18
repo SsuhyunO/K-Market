@@ -1,0 +1,483 @@
+/* =============================================
+   KMarket Admin - admin.css
+   ============================================= */
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --adm-primary:    #2563eb;
+  --adm-primary-dk: #1d4ed8;
+  --adm-red:        #e8380d;
+  --adm-green:      #16a34a;
+  --adm-blue:       #2563eb;
+  --adm-orange:     #ea580c;
+  --adm-purple:     #7c3aed;
+  --adm-dark:       #1e293b;
+  --adm-gray-900:   #1e293b;
+  --adm-gray-700:   #334155;
+  --adm-gray-500:   #64748b;
+  --adm-gray-300:   #cbd5e1;
+  --adm-gray-100:   #f1f5f9;
+  --adm-white:      #ffffff;
+
+  --aside-w:   190px;
+  --header-h:  48px;
+  --footer-h:  40px;
+
+  --radius:    6px;
+  --shadow:    0 1px 4px rgba(0,0,0,.10);
+  --transition: 0.18s ease;
+
+  --font: 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
+}
+
+html, body {
+  font-family: var(--font);
+  font-size: 13px;
+  background: var(--adm-gray-100);
+  color: var(--adm-gray-900);
+  min-height: 100vh;
+}
+
+a { text-decoration: none; color: inherit; }
+ul { list-style: none; }
+button { cursor: pointer; border: none; background: none; font-family: inherit; }
+
+/* =============================================
+   HEADER
+   ============================================= */
+#admin-header {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: var(--header-h);
+  background: var(--adm-dark);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+  z-index: 200;
+  box-shadow: 0 2px 8px rgba(0,0,0,.2);
+}
+
+.header-logo a {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--adm-white);
+}
+.logo-k       { font-size: 20px; font-weight: 900; color: #60a5fa; }
+.logo-market  { font-size: 18px; font-weight: 700; color: var(--adm-white); }
+.logo-badge   {
+  font-size: 10px;
+  font-weight: 700;
+  background: var(--adm-primary);
+  color: white;
+  padding: 2px 7px;
+  border-radius: 10px;
+  letter-spacing: 1px;
+}
+
+.header-util {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.util-link {
+  font-size: 12px;
+  color: #94a3b8;
+  transition: color var(--transition);
+}
+.util-link:hover { color: var(--adm-white); }
+.sep { color: #475569; }
+
+/* =============================================
+   LAYOUT
+   ============================================= */
+.admin-layout {
+  display: flex;
+  min-height: calc(100vh - var(--header-h) - var(--footer-h));
+  margin-top: var(--header-h);
+}
+
+/* =============================================
+   ASIDE — fixed: 스크롤해도 항상 고정
+   ============================================= */
+#admin-aside {
+  width: var(--aside-w);
+  flex-shrink: 0;
+  background: var(--adm-gray-900);
+  position: fixed;
+  top: var(--header-h);
+  left: 0;
+  bottom: 0;
+  overflow-y: auto;
+  scrollbar-width: none;
+  z-index: 100;
+}
+#admin-aside::-webkit-scrollbar { display: none; }
+
+.aside-logo {
+  padding: 20px 16px 16px;
+  border-bottom: 1px solid #2d3f55;
+}
+.aside-logo .logo-text {
+  font-size: 18px;
+  font-weight: 800;
+  color: #60a5fa;
+}
+.aside-logo .logo-text span { color: var(--adm-white); font-weight: 400; }
+.aside-logo .logo-sub {
+  font-size: 11px;
+  color: #64748b;
+  margin-top: 2px;
+}
+
+/* 네비 */
+.aside-nav { padding: 8px 0; }
+
+.nav-item { position: relative; }
+
+.nav-link {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 11px 16px;
+  color: #94a3b8;
+  font-size: 13px;
+  font-weight: 500;
+  transition: background var(--transition), color var(--transition);
+  cursor: pointer;
+}
+.nav-link:hover,
+.nav-item:hover > .nav-link {
+  background: #2d3f55;
+  color: var(--adm-white);
+}
+.nav-icon { font-size: 15px; flex-shrink: 0; }
+.nav-arrow {
+  margin-left: auto;
+  font-size: 16px;
+  transition: transform var(--transition);
+  color: #475569;
+}
+.nav-item:hover > .nav-link .nav-arrow {
+  transform: rotate(90deg);
+  color: #60a5fa;
+}
+
+/* 서브 메뉴 — 아코디언 스타일 (hover로 표시) */
+.sub-menu {
+  display: none;
+  background: #0f172a;
+  padding: 4px 0;
+  border-left: 3px solid var(--adm-primary);
+  margin-left: 16px;
+}
+.nav-item:hover > .sub-menu { display: block; }
+
+.sub-menu a {
+  display: block;
+  padding: 8px 16px 8px 18px;
+  font-size: 12px;
+  color: #64748b;
+  transition: color var(--transition), background var(--transition);
+}
+.sub-menu a:hover {
+  color: #60a5fa;
+  background: #1e293b;
+}
+.sub-menu a::before {
+  content: "─ ";
+  font-size: 10px;
+  opacity: .5;
+}
+
+/* =============================================
+   MAIN — aside가 fixed이므로 좌측 여백 확보
+   ============================================= */
+#admin-main {
+  flex: 1;
+  min-width: 0;
+  padding: 24px;
+  overflow-x: hidden;
+  margin-left: var(--aside-w);   /* fixed aside 너비만큼 밀기 */
+}
+
+/* 페이지 헤더 */
+.page-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  padding-bottom: 12px;
+  border-bottom: 2px solid var(--adm-primary);
+}
+.page-title {
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--adm-gray-900);
+}
+.breadcrumb {
+  font-size: 12px;
+  color: var(--adm-gray-500);
+}
+
+/* 섹션 공통 */
+.dash-section {
+  background: var(--adm-white);
+  border: 1px solid var(--adm-gray-300);
+  border-radius: var(--radius);
+  padding: 18px 20px;
+  margin-bottom: 18px;
+  box-shadow: var(--shadow);
+}
+.section-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--adm-gray-900);
+  margin-bottom: 16px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--adm-gray-300);
+}
+
+/* =============================================
+   집계현황 — 차트
+   ============================================= */
+.summary-wrap {
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+}
+
+/* 막대 차트 — 70% */
+.chart-bar-wrap {
+  flex: 6;
+  min-width: 0;
+}
+.chart-legend {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 10px;
+  font-size: 12px;
+}
+.leg { display: flex; align-items: center; gap: 4px; }
+.leg-order { color: #2563eb; }
+.leg-pay   { color: #16a34a; }
+.leg-cancel{ color: #f97316; }
+
+.chart-bar {
+  display: flex;
+  align-items: flex-end;
+  gap: 12px;
+  height: 160px;
+  padding: 0 4px 0;
+  border-left: none;
+  border-bottom: 2px solid var(--adm-gray-300);
+  background-image: repeating-linear-gradient(
+    to top,
+    transparent,
+    transparent calc(25% - 1px),
+    #e2e8f0 calc(25% - 1px),
+    #e2e8f0 25%
+  );
+}
+.bar-group {
+  display: flex;
+  gap: 3px;
+  align-items: flex-end;
+  flex: 1;
+}
+.bar {
+  flex: 1;
+  border-radius: 3px 3px 0 0;
+  transition: opacity .2s;
+  min-width: 10px;
+}
+.bar:hover { opacity: .75; }
+.bar.order  { background: #2563eb; }
+.bar.pay    { background: #16a34a; }
+.bar.cancel { background: #f97316; }
+
+.chart-bar-labels {
+  display: flex;
+  gap: 12px;
+  padding: 6px 4px 0;
+}
+.bar-label {
+  flex: 1;
+  text-align: center;
+  font-size: 11px;
+  color: var(--adm-gray-500);
+}
+
+/* 파이 차트 — 30%, 내부 캔버스가 공간에 꽉 맞게 */
+.chart-pie-wrap {
+  flex: 4;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+.chart-pie-title {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--adm-gray-700);
+  align-self: flex-start;
+}
+/* 캔버스를 부모 너비에 맞게 꽉 채움 */
+#pieChart {
+  width: 100% !important;
+  height: auto !important;
+  max-width: 180px;
+}
+.pie-legend {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px 12px;
+  font-size: 11px;
+  color: var(--adm-gray-700);
+  align-self: flex-start;
+}
+.pie-leg {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.pie-dot {
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+/* =============================================
+   운영현황
+   ============================================= */
+.op-cards {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+.op-card {
+  flex: 1;
+  border: 1px solid var(--adm-gray-300);
+  border-radius: var(--radius);
+  padding: 12px 10px;
+  text-align: center;
+  border-top: 3px solid;
+}
+.op-card.red    { border-top-color: var(--adm-red); }
+.op-card.blue   { border-top-color: var(--adm-blue); }
+.op-card.orange { border-top-color: var(--adm-orange); }
+.op-card.purple { border-top-color: var(--adm-purple); }
+.op-card.green  { border-top-color: var(--adm-green); }
+
+.op-label { font-size: 12px; color: var(--adm-gray-500); margin-bottom: 6px; }
+.op-value { font-size: 22px; font-weight: 800; color: var(--adm-red); }
+
+/* 통계 테이블 */
+.op-stats {
+  display: flex;
+  border: 1px solid var(--adm-gray-300);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+.stat-item {
+  flex: 1;
+  padding: 12px 10px;
+  text-align: center;
+  border-right: 1px solid var(--adm-gray-300);
+  background: #fafafa;
+}
+.stat-item:last-child { border-right: none; }
+.stat-label { font-size: 12px; color: var(--adm-gray-500); margin-bottom: 4px; }
+.stat-value { font-size: 18px; font-weight: 800; color: var(--adm-red); margin-bottom: 6px; }
+.stat-sub {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  font-size: 11px;
+  color: var(--adm-gray-500);
+}
+.stat-sub b { color: var(--adm-gray-700); }
+
+/* =============================================
+   공지 / 고객문의
+   ============================================= */
+.board-wrap {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+.board-box { }
+.board-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--adm-gray-900);
+  padding-bottom: 8px;
+  margin-bottom: 8px;
+  border-bottom: 1px solid var(--adm-gray-300);
+}
+.board-list li {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 0;
+  border-bottom: 1px dashed var(--adm-gray-300);
+}
+.board-list li:last-child { border-bottom: none; }
+
+.board-link {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex: 1;
+  min-width: 0;
+  transition: color var(--transition);
+}
+.board-link:hover { color: var(--adm-primary); }
+
+.board-badge {
+  flex-shrink: 0;
+  font-size: 10px;
+  font-weight: 700;
+  background: #dbeafe;
+  color: var(--adm-primary);
+  padding: 2px 6px;
+  border-radius: 3px;
+}
+.board-badge.cs {
+  background: #fef3c7;
+  color: #92400e;
+}
+.board-text {
+  font-size: 12px;
+  color: var(--adm-gray-700);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.board-writer {
+  font-size: 11px;
+  color: var(--adm-gray-500);
+  flex-shrink: 0;
+  margin-left: auto;
+}
+.board-date {
+  font-size: 11px;
+  color: var(--adm-gray-500);
+  flex-shrink: 0;
+}
+
+/* =============================================
+   FOOTER
+   ============================================= */
+#admin-footer {
+  height: var(--footer-h);
+  background: var(--adm-dark);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  color: #475569;
+}
