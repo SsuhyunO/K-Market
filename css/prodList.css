@@ -1,0 +1,39 @@
+.page-wrapper {
+    max-width: var(--container-w);
+    margin: 24px auto 0;
+    padding: 0 12px 40px;
+
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+}
+
+.main-content {
+    flex: 1;
+    min-width: 0;
+}
+
+.list-location{
+    display:flex;
+    justify-content:flex-end;
+
+    padding:10px 0;
+
+    font-size:12px;
+    color:#777;
+}
+
+.list-location span{
+    margin-left:4px;
+}
+
+.list-header{
+    margin-top:20px;
+    padding-bottom:10px;
+
+    border-bottom:2px solid #333;
+}
+
+.list-header h2{
+    font-size:18px;
+}
