@@ -307,7 +307,7 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
   flex-shrink: 0;
   /* 헤더 높이(배너90 + 로고영역90 + 탭44) + 여유 = 약 240px */
   position: sticky;
-  top: 170px;          /* sticky 헤더 아래에 붙어서 스크롤 따라 내려옴 */
+  top: 230px;          /* sticky 헤더 아래에 붙어서 스크롤 따라 내려옴 */
   align-self: flex-start;
   max-height: calc(100vh - 180px);
   overflow-y: auto;
