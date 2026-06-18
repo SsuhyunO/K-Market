@@ -35,7 +35,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // 2. 헤더 조립 완료 후 GNB 탭 스크롤 기능 작동
   includeHTML('header', 'fragments/header.html', function() {
-    initNavTabs();
+    // 메인 페이지에만 있는 #section-hit가 존재할 때만 스크롤 기능을 켭니다.
+    if (document.getElementById('section-hit')) {
+      initNavTabs();
+    }
   });
 
   // 3. 사이드바 조립 완료 후 카테고리 마우스 호버 기능 작동
