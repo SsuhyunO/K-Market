@@ -34,20 +34,17 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   // 2. 헤더 조립 완료 후 GNB 탭 스크롤 기능 작동
-  includeHTML('header', 'fragments/header.html', function() {
-    // 메인 페이지에만 있는 #section-hit가 존재할 때만 스크롤 기능을 켭니다.
-    if (document.getElementById('section-hit')) {
-      initNavTabs();
-    }
+  includeHTML('header', '/fragments/header.html', function() {
+    initNavTabs();
   });
 
   // 3. 사이드바 조립 완료 후 카테고리 마우스 호버 기능 작동
-  includeHTML('aside', 'fragments/aside.html', function() {
+  includeHTML('aside', '/fragments/aside.html', function() {
     initCatMenu();
   });
 
   // 4. 푸터 조립
-  includeHTML('footer', 'fragments/footer.html');
+  includeHTML('footer', '/fragments/footer.html');
 
   // 5. 상품 카드 클릭 이벤트 바인딩
   initProductCards();

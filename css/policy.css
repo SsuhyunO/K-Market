@@ -1,0 +1,192 @@
+/* =============================================
+   KMarket - policy.css
+   약관 페이지 전용 스타일 (구매/판매/전자금융/위치정보/개인정보)
+   ============================================= */
+
+/* page-wrapper: aside는 fixed라 공간을 차지하지 않으므로
+   main과 footer 모두 aside 너비만큼 margin-left로 밀어줌 */
+.page-wrapper {
+  max-width: var(--container-w);
+  margin: 24px auto 0;
+  padding: 0 12px 40px;
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+}
+
+.content-row {
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+}
+
+.main-content {
+  flex: 1;
+  min-width: 0;
+}
+
+/* footer도 main과 동일하게 aside 옆 공간만 차지 */
+#footer {
+  margin-top: 60px;
+}
+
+@media (max-width: 900px) {
+  .page-wrapper { flex-direction: column; }
+  #aside { width: 100%; }
+}
+
+/* ─────────────────────────────────────────────
+   약관 영역 전체 박스
+───────────────────────────────────────────── */
+.policy-section {
+  border: 1px solid var(--color-gray-200);
+  border-radius: var(--radius-md);
+  padding: 28px 32px;
+  background: var(--color-white);
+}
+
+.policy-main-title {
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--color-gray-900);
+  margin-bottom: 20px;
+}
+
+/* ─────────────────────────────────────────────
+   약관 종류 아이콘 탭 (1)
+───────────────────────────────────────────── */
+.policy-tabs {
+  display: flex;
+  gap: 28px;
+  padding-bottom: 22px;
+  border-bottom: 1px solid var(--color-gray-200);
+  margin-bottom: 22px;
+}
+
+.policy-tab {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: opacity var(--transition);
+}
+.policy-tab:hover { opacity: .75; }
+
+.policy-tab-icon {
+  width: 56px;
+  height: 56px;
+  border: 2px solid var(--color-gray-200);
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-gray-100);
+  transition: border-color var(--transition), background var(--transition);
+}
+.policy-tab-icon svg {
+  width: 26px;
+  height: 26px;
+  stroke: var(--color-gray-400);
+  transition: stroke var(--transition);
+}
+.policy-tab.active .policy-tab-icon svg {
+  stroke: var(--color-primary);
+}
+
+.policy-tab.active .policy-tab-icon {
+  border-color: var(--color-primary);
+  background: #fff5f2;
+}
+
+.policy-tab-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-gray-600);
+  white-space: nowrap;
+}
+
+.policy-tab.active .policy-tab-label {
+  color: var(--color-primary);
+  font-weight: 700;
+}
+
+/* ─────────────────────────────────────────────
+   약관 제목 + 인쇄 버튼 (2, 4)
+───────────────────────────────────────────── */
+.policy-header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 18px;
+}
+
+.policy-title {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--color-gray-900);
+}
+
+.btn-print {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border: 1px solid var(--color-gray-200);
+  border-radius: var(--radius-sm);
+  background: var(--color-white);
+  font-size: 18px;
+  color: var(--color-gray-600);
+  transition: background var(--transition), border-color var(--transition);
+}
+.btn-print:hover {
+  background: var(--color-gray-100);
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+}
+
+/* ─────────────────────────────────────────────
+   약관 내용 (3)
+───────────────────────────────────────────── */
+.policy-content {
+  font-family: 'Dotum', '돋움', var(--font-main);
+  font-size: 12px;
+  color: #888888;
+  line-height: 1.9;
+}
+
+.policy-article {
+  margin-bottom: 26px;
+}
+
+.policy-article-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--color-gray-900);
+  margin-bottom: 8px;
+}
+
+.policy-article-body {
+  font-size: 12px;
+  color: #888888;
+  line-height: 1.9;
+}
+
+.policy-divider {
+  border: none;
+  border-top: 1px solid var(--color-gray-200);
+  margin: 22px 0;
+}
+
+/* ─────────────────────────────────────────────
+   인쇄 시 (4번 - 인쇄하기)
+───────────────────────────────────────────── */
+@media print {
+  #header, #aside, #footer, .policy-tabs, .btn-print {
+    display: none !important;
+  }
+  .page-wrapper { padding: 0; margin: 0; }
+  .main-content { margin-left: 0 !important; padding-left: 0 !important; }
+  .policy-section { border: none; padding: 0; }
+}
