@@ -2,102 +2,114 @@
 <html lang="ko">
     <head>
         <meta charset="UTF-8">
-        <title>상품목록</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>KMarket - 케이마켓</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;600;700;800&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.min.js"></script>
+        <link rel="stylesheet" href="../css/common.css">
+        <link rel="stylesheet" href="../css/prodList.css">
     </head>
-    <body>
-        <!-- 헤더 -->
-        <header>
+    <body data-root="../">
 
-        </header>
+    <header id="header">
+        HEADER TEST
+    </header>
 
-        <!-- 사이드 -->
-        <aside>
 
+    <div class="page-wrapper">
+
+        <aside id="aside">
+            ASIDE TEST
         </aside>
 
-        <!-- 메인 -->
-        <main>
-            <!-- 메인 내비 -->
-            <nav>
-                <!-- 메인 페이지 제목 -->
-                <h3>상품목록</h3>
 
-                <!-- 카테고리 -->
-                <!-- 'HOME > 1차 카테고리 > 2차 카테고리' -->
-                <span>미정</span>
-            </nav>
-            <!-- 메인 컨텐츠 -->
-            <section>
-                <!-- 상품정렬 -->
-                <article id="prodSortArea">
-                    <!-- 판매많은순 -->
-                    <a href="#"></a>
-                    <!-- 낮은가격순 -->
-                    <a href="#"></a>
-                    <!-- 높은가격순 -->
-                    <a href="#"></a>
-                    <!-- 평점높은순 -->
-                    <a href="#"></a>
-                    <!-- 후기많은순 -->
-                    <a href="#"></a>
-                    <!-- 최근등록순 -->
-                    <a href="#"></a>
-                </article>
+        <main class="main-content">
 
-                <!-- 상품 리스트 -->
-                <!-- 상품 10개만 노출 후 나머지는 다른 페이지 -->
-                <article id="prodListArea">
-                    <table>
-                        <tbody>
-                            <!-- 상품 데이터 불러와서 반복 -->
-                            <tr>
-                                <!-- 상품 썸네일 -->
-                                <td><img src="#"></td> 
-                                <!-- 상품명, 상품 설명 -->
-                                <td>
-                                    <!-- 상품명 -->
-                                    <h2>상품명</h2>
-                                    <!-- 간단한 상품 설명 -->
-                                    <p>간단한 상품 설명</p>
-                                </td>
-                                <!-- 상품 가격, 할인가, 할인율, 배송료(or 무료배송) -->
-                                <td>
-                                    <!-- 할인된 가격 -->
-                                    <span>할인된 가격</span><br>
-                                    <!-- 원 상품 가격, 할인율 -->
-                                    <span>원 상품 가격</span><span>할인율</span><br>
-                                    <!-- 배송료(or 무료 배송) -->
-                                        <!--
-                                            배송료 = 0 이면 무료배송 이미지
-                                            배송료 != 0 이면 배송료 띄우기
-                                         -->
+            <section class="list-header">
 
-                                </td>
-                                <!-- 판매자 정보, 판매자 등급, 상품평 -->
-                                <td>
-                                    <!-- 판매자 정보 -->
-                                    <a href="#"><img src="#">판매자</a><br>
-                                    <!-- 판매자 등급 -->
-                                    <img src="#"><span>고객만족우수</span><br>
-                                    <!-- 상품평, 레이팅 -->
-                                    <span>상품평</span><img src="#">
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+                <h2>상품목록</h2>
 
-                </article>
+                <div class="list-location">
+                    HOME > 패션 > ...
+                </div>
 
-                <!-- 페이지 이동 -->
-                <article id="prodPageArea">
-                
-                </article>
             </section>
+
+            <section class="list-sort">
+                <a href="#">최신순</a>
+                <a href="#">판매많은순</a>
+                <a href="#">낮은가격순</a>
+                <a href="#">높은가격순</a>
+            </section>
+
+            <section class="list-products">
+
+                <article class="product-item">
+
+                    <div class="product-thumb">
+                        <img src="" alt="">
+                    </div>
+
+                    <div class="product-info">
+
+                        <h3 class="product-name">
+                            상품명
+                        </h3>
+
+                        <p class="product-desc">
+                            간단한 상품 설명
+                        </p>
+
+                    </div>
+
+                    <div class="product-price">
+
+                        <p class="sell-price">
+                            27,000원
+                        </p>
+
+                        <p class="origin-price">
+                            30,000원
+                        </p>
+
+                        <p class="discount">
+                            10% ↓
+                        </p>
+
+                        <button>
+                            무료배송
+                        </button>
+
+                    </div>
+
+                    <div class="product-extra">
+
+                        <p>🏠 판매자</p>
+
+                        <p>🏅 고객만족우수</p>
+
+                        <p>상품평 ★★★★☆</p>
+
+                    </div>
+
+                </article>
+
+            </section>
+
+            <nav class="pagination">
+                페이지 번호
+            </nav>
+
+            <!-- <footer id="footer">
+                FOOTER TEST
+            </footer> -->
+
         </main>
-
-        <!-- 푸터 -->
-        <footer>
-
-        </footer>
+    </div>
+    <script src="../js/common.js"></script>
     </body>
 </html>
