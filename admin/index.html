@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KMarket 관리자</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/admin.css">
+</head>
+<body>
+
+<!-- ── HEADER ─────────────────────────────── -->
+<header id="admin-header">
+  <div class="header-logo">
+    <a href="/admin">
+      <span class="logo-k">K</span><span class="logo-market">market</span>
+      <span class="logo-badge">ADMIN</span>
+    </a>
+  </div>
+  <nav class="header-util">
+    <a href="/index" class="util-link">🏠 홈</a>
+    <span class="sep">|</span>
+    <a href="/logout" class="util-link">로그아웃</a>
+    <span class="sep">|</span>
+    <a href="/admin/cs" class="util-link">고객센터</a>
+  </nav>
+</header>
+
+<!-- ── LAYOUT ─────────────────────────────── -->
+<div class="admin-layout">
+
+  <!-- ── ASIDE ──────────────────────────── -->
+  <aside id="admin-aside">
+    <div class="aside-logo">
+      <div class="logo-text">K<span>market</span></div>
+      <div class="logo-sub">㈜케이마켓</div>
+    </div>
+
+    <nav class="aside-nav">
+
+      <div class="nav-item" data-menu="setting">
+        <a class="nav-link" href="#">
+          <span class="nav-icon">⚙️</span>환경설정
+          <span class="nav-arrow">›</span>
+        </a>
+        <ul class="sub-menu">
+          <li><a href="#">기본설정</a></li>
+          <li><a href="#">배너관리</a></li>
+          <li><a href="#">약관관리</a></li>
+          <li><a href="#">카테고리</a></li>
+          <li><a href="#">버전관리</a></li>
+        </ul>
+      </div>
+
+      <div class="nav-item" data-menu="shop">
+        <a class="nav-link" href="#">
+          <span class="nav-icon">🏪</span>상점관리
+          <span class="nav-arrow">›</span>
+        </a>
+        <ul class="sub-menu">
+          <li><a href="#">상점목록</a></li>
+          <li><a href="#">매출현황</a></li>
+        </ul>
+      </div>
+
+      <div class="nav-item" data-menu="member">
+        <a class="nav-link" href="#">
+          <span class="nav-icon">👥</span>회원관리
+          <span class="nav-arrow">›</span>
+        </a>
+        <ul class="sub-menu">
+          <li><a href="#">회원목록</a></li>
+          <li><a href="#">포인트관리</a></li>
+        </ul>
+      </div>
+
+      <div class="nav-item" data-menu="product">
+        <a class="nav-link" href="#">
+          <span class="nav-icon">📦</span>상품관리
+          <span class="nav-arrow">›</span>
+        </a>
+        <ul class="sub-menu">
+          <li><a href="#">상품목록</a></li>
+          <li><a href="#">상품등록</a></li>
+        </ul>
+      </div>
+
+      <div class="nav-item" data-menu="order">
+        <a class="nav-link" href="#">
+          <span class="nav-icon">🛒</span>주문관리
+          <span class="nav-arrow">›</span>
+        </a>
+        <ul class="sub-menu">
+          <li><a href="#">주문현황</a></li>
+          <li><a href="#">배송현황</a></li>
+        </ul>
+      </div>
+
+      <div class="nav-item" data-menu="coupon">
+        <a class="nav-link" href="#">
+          <span class="nav-icon">🎟️</span>쿠폰관리
+          <span class="nav-arrow">›</span>
+        </a>
+        <ul class="sub-menu">
+          <li><a href="#">쿠폰목록</a></li>
+          <li><a href="#">쿠폰발급현황</a></li>
+        </ul>
+      </div>
+
+      <div class="nav-item" data-menu="cs">
+        <a class="nav-link" href="#">
+          <span class="nav-icon">💬</span>고객센터
+          <span class="nav-arrow">›</span>
+        </a>
+        <ul class="sub-menu">
+          <li><a href="#">공지사항</a></li>
+          <li><a href="#">자주묻는질문</a></li>
+          <li><a href="#">문의하기</a></li>
+        </ul>
+      </div>
+
+    </nav>
+  </aside>
+  <!-- /ASIDE -->
+
+  <!-- ── MAIN CONTENT ───────────────────── -->
+  <main id="admin-main">
+
+    <!-- 브레드크럼 + 타이틀 -->
+    <div class="page-header">
+      <h1 class="page-title">관리자메인</h1>
+      <div class="breadcrumb">HOME &rsaquo; 관리자 메인</div>
+    </div>
+
+    <!-- ① 집계현황 -->
+    <section class="dash-section" id="section-summary">
+      <h2 class="section-title">집계현황</h2>
+      <div class="summary-wrap">
+
+        <!-- 막대 차트 (주문/결제/취소) -->
+        <div class="chart-bar-wrap">
+          <div class="chart-legend">
+            <span class="leg leg-order">■ 주문</span>
+            <span class="leg leg-pay">■ 결제</span>
+            <span class="leg leg-cancel">■ 취소</span>
+          </div>
+          <div class="chart-bar" id="barChart">
+            <!-- JS로 렌더링 -->
+          </div>
+          <div class="chart-bar-labels" id="barLabels"></div>
+        </div>
+
+        <!-- 파이 차트 (주요매출) -->
+        <div class="chart-pie-wrap">
+          <div class="chart-pie-title">주요매출</div>
+          <canvas id="pieChart"></canvas>
+          <div class="pie-legend" id="pieLegend"></div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ② 운영현황 -->
+    <section class="dash-section" id="section-operation">
+      <h2 class="section-title">운영현황</h2>
+
+      <!-- 처리현황 카드 -->
+      <div class="op-cards">
+        <div class="op-card red">
+          <div class="op-label">입금대기</div>
+          <div class="op-value">101</div>
+        </div>
+        <div class="op-card blue">
+          <div class="op-label">배송준비</div>
+          <div class="op-value">124</div>
+        </div>
+        <div class="op-card orange">
+          <div class="op-label">취소요청</div>
+          <div class="op-value">14</div>
+        </div>
+        <div class="op-card purple">
+          <div class="op-label">교환요청</div>
+          <div class="op-value">7</div>
+        </div>
+        <div class="op-card green">
+          <div class="op-label">반품요청</div>
+          <div class="op-value">24</div>
+        </div>
+      </div>
+
+      <!-- 통계 테이블 -->
+      <div class="op-stats">
+        <div class="stat-item">
+          <div class="stat-label">주문건수</div>
+          <div class="stat-value red">131</div>
+          <div class="stat-sub">
+            <span>오늘 <b>60</b></span>
+            <span>어제 <b>71</b></span>
+          </div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-label">주문금액</div>
+          <div class="stat-value red">3,700,000</div>
+          <div class="stat-sub">
+            <span>오늘 <b>1,200,000</b></span>
+            <span>어제 <b>2,500,000</b></span>
+          </div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-label">회원가입</div>
+          <div class="stat-value red">232</div>
+          <div class="stat-sub">
+            <span>오늘 <b>102</b></span>
+            <span>어제 <b>130</b></span>
+          </div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-label">방문자 수</div>
+          <div class="stat-value red">2,500</div>
+          <div class="stat-sub">
+            <span>어제 <b>1,200</b></span>
+            <span>오늘 <b>1,300</b></span>
+          </div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-label">문의 게시물</div>
+          <div class="stat-value red">25</div>
+          <div class="stat-sub">
+            <span>어제 <b>12</b></span>
+            <span>오늘 <b>13</b></span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ③ 공지사항 + 고객문의 -->
+    <section class="dash-section" id="section-board">
+      <div class="board-wrap">
+
+        <!-- 공지사항 (최신 5건) -->
+        <div class="board-box">
+          <div class="board-title">공지사항</div>
+          <ul class="board-list">
+            <li>
+              <a href="#" class="board-link">
+                <span class="board-badge">안내</span>
+                <span class="board-text">해외결제사정문자주의</span>
+              </a>
+              <span class="board-date">22.10.31</span>
+            </li>
+            <li>
+              <a href="#" class="board-link">
+                <span class="board-badge">안내</span>
+                <span class="board-text">운영택배비용 / 교환수거지 변경</span>
+              </a>
+              <span class="board-date">22.10.31</span>
+            </li>
+            <li>
+              <a href="#" class="board-link">
+                <span class="board-badge">안내</span>
+                <span class="board-text">위치정보이용약관개정 공지</span>
+              </a>
+              <span class="board-date">22.10.31</span>
+            </li>
+            <li>
+              <a href="#" class="board-link">
+                <span class="board-badge">안내</span>
+                <span class="board-text">구매회원이용약관개정</span>
+              </a>
+              <span class="board-date">22.10.31</span>
+            </li>
+            <li>
+              <a href="#" class="board-link">
+                <span class="board-badge">안내</span>
+                <span class="board-text">씨티은행시스템점검에마...</span>
+              </a>
+              <span class="board-date">22.10.31</span>
+            </li>
+          </ul>
+        </div>
+
+        <!-- 고객문의 (최신 5건) -->
+        <div class="board-box">
+          <div class="board-title">고객문의</div>
+          <ul class="board-list">
+            <li>
+              <a href="#" class="board-link">
+                <span class="board-badge cs">가입</span>
+                <span class="board-text">가입문의내용</span>
+              </a>
+              <span class="board-writer">chh**</span>
+              <span class="board-date">22.10.31</span>
+            </li>
+            <li>
+              <a href="#" class="board-link">
+                <span class="board-badge cs">탈퇴</span>
+                <span class="board-text">탈퇴문의내용</span>
+              </a>
+              <span class="board-writer">chh**</span>
+              <span class="board-date">22.10.31</span>
+            </li>
+            <li>
+              <a href="#" class="board-link">
+                <span class="board-badge cs">회원정보</span>
+                <span class="board-text">회원정보문의내용</span>
+              </a>
+              <span class="board-writer">chh**</span>
+              <span class="board-date">22.10.31</span>
+            </li>
+            <li>
+              <a href="#" class="board-link">
+                <span class="board-badge cs">회원정보</span>
+                <span class="board-text">회원정보문의내용</span>
+              </a>
+              <span class="board-writer">chh**</span>
+              <span class="board-date">22.10.31</span>
+            </li>
+            <li>
+              <a href="#" class="board-link">
+                <span class="board-badge cs">회원정보</span>
+                <span class="board-text">회원정보문의내용</span>
+              </a>
+              <span class="board-writer">chh**</span>
+              <span class="board-date">22.10.31</span>
+            </li>
+          </ul>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+  <!-- /MAIN CONTENT -->
+
+</div>
+<!-- /LAYOUT -->
+
+<!-- ── FOOTER ─────────────────────────────── -->
+<footer id="admin-footer">
+  <p>Copyright ©Kmarket.co.kr All rights reserved. Kmarket ADMINISTRATOR Version 5.4.1.2</p>
+</footer>
+
+<script src="/js/admin.js"></script>
+</body>
+</html>
