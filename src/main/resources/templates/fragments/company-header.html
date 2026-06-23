@@ -1,0 +1,34 @@
+<!-- =============================================
+     회사소개 전용 헤더 fragment
+     사용법: <header th:replace="~{fragments/company-header :: header(active='home')}"></header>
+     active 값: home | culture | news | career | media
+     ============================================= -->
+<header th:fragment="header(active)" class="company-header">
+  <div class="container company-header-inner">
+
+    <!-- ① CI 로고 -->
+    <div class="logo">
+      <a th:href="@{/company/index}">
+        <div>
+          <div class="logo-text">K<span style="color:#222;font-weight:400;">market</span></div>
+          <div class="logo-sub">㈜케이마켓</div>
+        </div>
+      </a>
+    </div>
+
+    <!-- ② 회사소개 메뉴 -->
+    <nav class="company-nav">
+      <a th:href="@{/company/index}"
+         th:class="${active == 'home'} ? 'active' : ''">HOME</a>
+      <a th:href="@{/company/culture}"
+         th:class="${active == 'culture'} ? 'active' : ''">기업문화</a>
+      <a th:href="@{/company/news}"
+         th:class="${active == 'news'} ? 'active' : ''">소식과 이야기</a>
+      <a th:href="@{/company/career}"
+         th:class="${active == 'career'} ? 'active' : ''">채용</a>
+      <a th:href="@{/company/media}"
+         th:class="${active == 'media'} ? 'active' : ''">미디어</a>
+    </nav>
+
+  </div>
+</header>

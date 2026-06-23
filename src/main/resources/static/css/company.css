@@ -1,0 +1,419 @@
+/* =============================================
+   KMarket - company.css
+   회사소개 메인 페이지 전용 스타일
+   ============================================= */
+
+/* ─────────────────────────────────────────────
+   회사소개 전용 헤더 (쇼핑몰 헤더와 다름)
+───────────────────────────────────────────── */
+.company-header {
+    background: var(--color-white);
+    border-bottom: 1px solid var(--color-gray-200);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    height: 88px;
+}
+.company-header-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 100%;
+}
+.company-nav {
+    display: flex;
+    gap: 32px;
+}
+.company-nav a {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--color-gray-600);
+    transition: color var(--transition);
+    position: relative;
+    padding-bottom: 4px;
+}
+.company-nav a:hover { color: var(--color-gray-900); }
+.company-nav a.active {
+    color: var(--color-primary);
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 6px;
+}
+
+/* ─────────────────────────────────────────────
+   회사소개 전용 푸터
+───────────────────────────────────────────── */
+.company-footer {
+    background: var(--color-gray-100);
+    border-top: 1px solid var(--color-gray-200);
+    padding: 20px 0;
+    margin-top: 0;
+}
+.company-footer-inner {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+.company-footer-icon {
+    width: 40px;
+    height: 40px;
+    border: 1px solid var(--color-gray-200);
+    border-radius: var(--radius-sm);
+    background: var(--color-white);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+}
+.company-footer-nav {
+    display: flex;
+    gap: 18px;
+}
+.company-footer-nav a {
+    font-size: 13px;
+    color: var(--color-gray-600);
+}
+.company-footer-nav a:hover { color: var(--color-primary); }
+.company-footer-copy {
+    margin-left: auto;
+    font-size: 12px;
+    color: var(--color-gray-400);
+    white-space: nowrap;
+}
+
+/* =============================================
+   ① 랜딩 히어로 섹션 (이미지 1)
+   ============================================= */
+.hero-section {
+    position: relative;
+    width: 100%;
+    height: 520px;
+    overflow: hidden;
+    background: var(--color-gray-100);
+}
+.hero-image-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #f8f8f8 0%, #ececec 100%);
+    color: var(--color-gray-400);
+    font-size: 64px;
+}
+
+/* 슬로건 텍스트 — 하이라이트 + appear 애니메이션 */
+.hero-content {
+    position: absolute;
+    bottom: 64px;
+    left: 0;
+    width: 100%;
+}
+.hero-content .container { }
+
+.hero-slogan {
+    font-size: 28px;
+    font-weight: 800;
+    line-height: 1.5;
+    margin-bottom: 24px;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: heroAppear 0.8s ease forwards;
+    animation-delay: 0.2s;
+}
+.hero-slogan .highlight {
+    background: var(--color-dark);
+    color: var(--color-white);
+    padding: 2px 8px;
+    border-radius: 3px;
+}
+
+@keyframes heroAppear {
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.hero-desc {
+    font-size: 15px;
+    color: var(--color-gray-700, var(--color-gray-900));
+    line-height: 1.9;
+    max-width: 640px;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: heroAppear 0.8s ease forwards;
+    animation-delay: 0.5s;
+}
+
+.hero-tagline {
+    font-size: 22px;
+    font-weight: 700;
+    margin-top: 28px;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: heroAppear 0.8s ease forwards;
+    animation-delay: 0.8s;
+}
+
+/* =============================================
+   공통 섹션 래퍼
+   ============================================= */
+.company-section {
+    padding: 64px 0;
+}
+.company-section-title {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--color-gray-900);
+    margin-bottom: 36px;
+    line-height: 1.6;
+}
+
+/* =============================================
+   ② 슬라이드 배너 섹션 (이미지 2)
+   ============================================= */
+.slogan-slider {
+    position: relative;
+}
+.slogan-slider-track {
+    display: flex;
+    gap: 32px;
+    overflow: hidden;
+}
+.slogan-slide {
+    flex: 1;
+    min-width: 0;
+}
+.slogan-slide-image {
+    width: 100%;
+    aspect-ratio: 16/10;
+    background: var(--color-gray-100);
+    border: 1px solid var(--color-gray-200);
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-gray-400);
+    font-size: 48px;
+    margin-bottom: 20px;
+}
+.slogan-slide-title {
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--color-gray-900);
+    line-height: 1.5;
+    margin-bottom: 12px;
+}
+.slogan-slide-desc {
+    font-size: 13px;
+    color: var(--color-gray-600);
+    line-height: 1.8;
+}
+
+.slider-arrow {
+    position: absolute;
+    top: 35%;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--color-white);
+    border: 1px solid var(--color-gray-200);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    color: var(--color-gray-600);
+    cursor: pointer;
+    transition: background var(--transition), border-color var(--transition);
+    z-index: 5;
+}
+.slider-arrow:hover {
+    background: var(--color-gray-100);
+    border-color: var(--color-primary);
+}
+.slider-arrow.prev { left: -54px; }
+.slider-arrow.next { right: -54px; }
+
+.slogan-dots {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 28px;
+}
+.slogan-dots .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--color-gray-200);
+    border: none;
+    cursor: pointer;
+    transition: background var(--transition);
+}
+.slogan-dots .dot.active { background: var(--color-primary); }
+
+.scroll-down-icon-inline {
+    position: absolute;
+    right: 0;
+    bottom: -40px;
+    width: 28px;
+    height: 48px;
+    border: 2px solid var(--color-gray-200);
+    border-radius: 14px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding-top: 6px;
+}
+.scroll-down-icon-inline::after {
+    content: "";
+    width: 4px;
+    height: 8px;
+    background: var(--color-gray-400);
+    border-radius: 2px;
+    animation: scrollDot 1.5s infinite;
+}
+
+/* =============================================
+   ③ 소식과 이야기 최신글 (이미지 3)
+   ============================================= */
+.news-list {
+    border-top: 1px solid var(--color-gray-200);
+}
+.news-item {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    padding: 22px 0;
+    border-bottom: 1px solid var(--color-gray-200);
+    cursor: pointer;
+    transition: background var(--transition);
+}
+.news-item:hover { background: var(--color-gray-100); }
+
+.news-date {
+    font-size: 13px;
+    color: var(--color-gray-400);
+    width: 80px;
+    flex-shrink: 0;
+}
+.news-title {
+    flex: 1;
+    font-size: 15px;
+    color: var(--color-primary);
+    font-weight: 600;
+}
+.news-title .news-highlight {
+    color: var(--color-gray-900);
+    font-weight: 700;
+}
+.news-arrow {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: 1px solid var(--color-gray-200);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-gray-400);
+    flex-shrink: 0;
+    transition: border-color var(--transition), color var(--transition);
+}
+.news-item:hover .news-arrow {
+    border-color: var(--color-primary);
+    color: var(--color-primary);
+}
+
+/* =============================================
+   ④ 회사 이력 타임라인 (이미지 4)
+   ============================================= */
+.history-timeline {
+    position: relative;
+    padding-left: 60px;
+}
+.history-timeline::before {
+    content: "";
+    position: absolute;
+    left: 6px;
+    top: 8px;
+    bottom: 8px;
+    width: 2px;
+    background: var(--color-gray-200);
+}
+
+.history-year {
+    font-size: 24px;
+    font-weight: 800;
+    color: var(--color-gray-900);
+    margin: 36px 0 20px;
+    position: relative;
+}
+.history-year::before {
+    content: "";
+    position: absolute;
+    left: -54px;
+    top: 8px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--color-gray-900);
+}
+
+.history-item {
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+    margin-bottom: 28px;
+    position: relative;
+}
+.history-item::before {
+    content: "";
+    position: absolute;
+    left: -48px;
+    top: 22px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--color-gray-400);
+}
+
+.history-thumb {
+    width: 64px;
+    height: 64px;
+    border: 1px solid var(--color-gray-200);
+    border-radius: var(--radius-sm);
+    background: var(--color-gray-100);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-gray-400);
+    font-size: 24px;
+    flex-shrink: 0;
+}
+.history-info .history-date {
+    font-size: 13px;
+    color: var(--color-gray-400);
+    margin-bottom: 4px;
+}
+.history-info .history-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--color-gray-900);
+    margin-bottom: 4px;
+}
+.history-info .history-award {
+    font-size: 13px;
+    color: var(--color-gray-600);
+}
+
+/* =============================================
+   반응형
+   ============================================= */
+@media (max-width: 900px) {
+    .hero-section { height: 380px; }
+    .hero-slogan { font-size: 20px; }
+    .slogan-slider-track { flex-direction: column; }
+    .slider-arrow { display: none; }
+    .company-nav { gap: 18px; }
+    .company-nav a { font-size: 13px; }
+    .news-item { gap: 12px; }
+    .news-date { width: 60px; }
+}

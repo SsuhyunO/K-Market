@@ -1,0 +1,231 @@
+    <!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>회사소개 - KMarket</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/common.css}">
+    <link rel="stylesheet" th:href="@{/css/company.css}">
+</head>
+<body>
+
+<!-- 회사소개 전용 헤더 (쇼핑몰 헤더와 다름, active='home') -->
+<header th:replace="~{fragments/company-header :: header(active='home')}"></header>
+
+
+<!-- =============================================
+     ① 랜딩 히어로 섹션 (이미지 1)
+     - 메인 이미지 출력
+     - 슬로건 하이라이트 텍스트 (appear 효과)
+     - 마우스 스크롤 휠 아래로 이동 아이콘
+     ============================================= -->
+<section class="hero-section">
+    <div class="hero-image-placeholder">🖼️</div>
+
+    <div class="hero-content">
+        <div class="container">
+            <p class="hero-slogan">
+                <span class="highlight">취향을</span>,
+                <span class="highlight">브랜드를</span>,
+                <span class="highlight">혜택을</span> 발견하는 즐거움<br>
+                지금 케이마켓에서 만나요
+            </p>
+            <p class="hero-desc">
+                쇼핑 좀 해본 사람들이 만든 플랫폼,<br>
+                케이마켓은 풍부한 오프라인 쇼핑 인프라, 온라인 쇼핑 노하우,<br>
+                IT 기술로 세상에 없던 새로운 쇼핑 경험을 제공하고<br>
+                꼭 이용하고 싶은 온라인 쇼핑 플랫폼으로 발전하고 있어요.
+            </p>
+            <p class="hero-tagline">쇼핑을 새롭게, 세상을이 롭게 만들어나가요.</p>
+        </div>
+    </div>
+
+</section>
+
+
+<!-- =============================================
+     ② 회사소개 슬로건 영역 (이미지 2)
+     - 다른 회사와 차별화 포인트, 경쟁력을 나타낼 수 있는 텍스트
+     - 적절한 이미지와 함께 버튼 클릭으로 슬라이드 배너 형식
+     ============================================= -->
+<section class="company-section">
+    <div class="container">
+
+        <h2 class="company-section-title">쇼핑을 새롭게, 세상을 이롭게 만들어나가요.</h2>
+
+        <div class="slogan-slider" style="position: relative;">
+
+            <button type="button" class="slider-arrow prev" aria-label="이전">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="15 18 9 12 15 6"/>
+                </svg>
+            </button>
+
+            <div class="slogan-slider-track">
+
+                <div class="slogan-slide">
+                    <div class="slogan-slide-image">🖼️</div>
+                    <div class="slogan-slide-title">고객이 원하고 만족하는<br>서비스를 만들어요</div>
+                    <div class="slogan-slide-desc">
+                        케이마켓은 단순히 상품을 판매하는<br>
+                        플랫폼이 아니라, 상품에 대한 경험을<br>
+                        함께 제공할 수 있는 플랫폼을 목표로 하고<br>
+                        있어요. 해외직구, 뷰티, 그로서리 ...
+                    </div>
+                </div>
+
+                <div class="slogan-slide">
+                    <div class="slogan-slide-image">🖼️</div>
+                    <div class="slogan-slide-title">고객이 원하고 만족하는<br>서비스를 만들어요</div>
+                    <div class="slogan-slide-desc">
+                        케이마켓은 단순히 상품을 판매하는<br>
+                        플랫폼이 아니라, 상품에 대한 경험을<br>
+                        함께 제공할 수 있는 플랫폼을 목표로 하고<br>
+                        있어요. 해외직구, 뷰티, 그로서리 ...
+                    </div>
+                </div>
+
+                <div class="slogan-slide">
+                    <div class="slogan-slide-image">🖼️</div>
+                    <div class="slogan-slide-title">빠르고 안전한<br>배송을 약속해요</div>
+                    <div class="slogan-slide-desc">
+                        케이마켓은 자체 물류 네트워크를 통해<br>
+                        전국 어디서나 빠르고 안전한 배송을<br>
+                        경험할 수 있도록 끊임없이 투자하고<br>
+                        있어요. 풀필먼트, 당일배송 ...
+                    </div>
+                </div>
+
+                <div class="slogan-slide">
+                    <div class="slogan-slide-image">🖼️</div>
+                    <div class="slogan-slide-title">함께 성장하는<br>파트너십을 지향해요</div>
+                    <div class="slogan-slide-desc">
+                        케이마켓은 입점 판매자와 함께 성장하는<br>
+                        상생의 플랫폼을 만들어가고 있어요.<br>
+                        데이터 기반 마케팅 지원, 판매자 교육 ...
+                    </div>
+                </div>
+
+            </div>
+
+            <button type="button" class="slider-arrow next" aria-label="다음">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="9 18 15 12 9 6"/>
+                </svg>
+            </button>
+
+        </div>
+
+        <div class="slogan-dots">
+            <button class="dot active" aria-label="1페이지"></button>
+            <button class="dot" aria-label="2페이지"></button>
+        </div>
+
+    </div>
+</section>
+
+
+<!-- =============================================
+     ③ 소식과 이야기 최신글 (이미지 3)
+     - 소식과 이야기 블로그 페이지 최신글 5개 출력
+     - 클릭 시 해당 블로그 페이지로 이동
+     Controller: model.addAttribute("newsList", List<News>) — 최대 5개
+     ============================================= -->
+<section class="company-section">
+    <div class="container">
+
+        <h2 class="company-section-title">케이마켓은 이렇게 성장하고 있어요.</h2>
+
+        <div class="news-list">
+
+            <!-- newsList가 없을 때 보여줄 placeholder 4개 -->
+            <th:block th:if="${newsList == null or #lists.isEmpty(newsList)}">
+                <a href="#" class="news-item" th:each="i : ${#numbers.sequence(1, 4)}">
+                    <span class="news-date">2025.03</span>
+                    <span class="news-title">
+            '월간 케이마켓 3월호'에서 만나는
+            <span class="news-highlight">5천 원 도넛, 1천 원 양념감자!</span>
+          </span>
+                    <span class="news-arrow">›</span>
+                </a>
+            </th:block>
+
+            <!-- 실제 데이터 -->
+            <a th:each="news : ${newsList}"
+               th:href="@{/company/news/{id}(id=${news.id})}"
+               class="news-item">
+                <span class="news-date" th:text="${news.date}">2025.03</span>
+                <span class="news-title" th:utext="${news.title}">소식 제목</span>
+                <span class="news-arrow">›</span>
+            </a>
+
+        </div>
+
+    </div>
+</section>
+
+
+<!-- =============================================
+     ④ 회사 이력 타임라인 (이미지 4)
+     - 과거 이력을 타임라인 방식으로 표현
+     Controller: model.addAttribute("historyList", List<History>)
+     ============================================= -->
+<section class="company-section">
+    <div class="container">
+
+        <h2 class="company-section-title">
+            국내 최초의 온라인 종합쇼핑몰로 출발해<br>
+            쇼핑 경험의 변화를 이끌어내고 있어요.
+        </h2>
+
+        <div class="history-timeline">
+
+            <!-- historyList가 없을 때 보여줄 placeholder -->
+            <th:block th:if="${historyList == null or #lists.isEmpty(historyList)}">
+
+                <div class="history-year">2025</div>
+
+                <div class="history-item" th:each="i : ${#numbers.sequence(1, 3)}">
+                    <div class="history-thumb">🖼️</div>
+                    <div class="history-info">
+                        <div class="history-date">2025년 03월</div>
+                        <div class="history-title">동반성장주간기념식</div>
+                        <div class="history-award">대통령 표창</div>
+                    </div>
+                </div>
+
+                <div class="history-year">2024</div>
+
+            </th:block>
+
+            <!-- 실제 데이터: 연도별로 그룹핑된 historyList -->
+            <th:block th:each="yearGroup : ${historyList}">
+                <div class="history-year" th:text="${yearGroup.year}">2025</div>
+                <div class="history-item" th:each="item : ${yearGroup.items}">
+                    <div class="history-thumb">
+                        <img th:if="${item.thumbnailUrl}" th:src="${item.thumbnailUrl}" alt="">
+                        <span th:unless="${item.thumbnailUrl}">🖼️</span>
+                    </div>
+                    <div class="history-info">
+                        <div class="history-date" th:text="${item.date}">2025년 03월</div>
+                        <div class="history-title" th:text="${item.title}">동반성장주간기념식</div>
+                        <div class="history-award" th:text="${item.award}">대통령 표창</div>
+                    </div>
+                </div>
+            </th:block>
+
+        </div>
+
+    </div>
+</section>
+
+
+<!-- 회사소개 전용 푸터 (간단 버전) -->
+<footer th:replace="~{fragments/company-footer :: footer}"></footer>
+
+
+<script th:src="@{/js/company.js}"></script>
+</body>
+</html>

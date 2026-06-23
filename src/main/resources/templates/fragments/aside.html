@@ -43,7 +43,7 @@
     </nav>
 
     <!-- 베스트 상품: Controller에서 bestProducts(List<Product>, 최대 3개)를 모델에 담아 전달 -->
-    <div class="aside-best" th:unless="${hideBest}">
+    <div class="aside-best" th:unless="${hideBest == true}">
         <div class="aside-best-title">
             <span>🏷️</span> 베스트 상품
         </div>
