@@ -1,0 +1,581 @@
+/* =============================================
+   KMarket - common.css
+   공통 스타일 (header, footer, aside, base)
+   ============================================= */
+
+/* ── Reset & Base ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+    --color-primary:   #e8380d;
+    --color-primary-light: #ff6b47;
+    --color-dark:      #222222;
+    --color-gray-900:  #333333;
+    --color-gray-600:  #666666;
+    --color-gray-400:  #999999;
+    --color-gray-200:  #dddddd;
+    --color-gray-100:  #f4f4f4;
+    --color-white:     #ffffff;
+    --color-price-del: #999999;
+    --color-sale:      #e8380d;
+    --color-free-ship: #2a7ae2;
+
+    --font-main: 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
+
+    --header-h:    90px;
+    --topbar-h:    36px;
+    --nav-h:       44px;
+    --aside-w:     160px;
+    --container-w: 1080px;
+
+    --radius-sm:   4px;
+    --radius-md:   8px;
+
+    --shadow-card: 0 2px 8px rgba(0,0,0,.08);
+    --transition:  0.2s ease;
+}
+
+html { font-size: 14px; }
+body {
+    font-family: var(--font-main);
+    color: var(--color-gray-900);
+    background: var(--color-white);
+    line-height: 1.5;
+}
+
+a { text-decoration: none; color: inherit; }
+ul, ol { list-style: none; }
+img { display: block; max-width: 100%; }
+button { cursor: pointer; border: none; background: none; font-family: inherit; }
+
+.container {
+    max-width: var(--container-w);
+    margin: 0 auto;
+    padding: 0 12px;
+}
+
+/* =============================================
+   HEADER
+   ============================================= */
+#header {
+    background: var(--color-white);
+    border-bottom: 1px solid var(--color-gray-200);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 6px rgba(0,0,0,.06);
+}
+
+/* 상단 유틸 바 */
+.header-top {
+    height: var(--topbar-h);
+    border-bottom: 1px solid var(--color-gray-200);
+    background: var(--color-gray-100);
+}
+.header-top .container {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    height: 100%;
+    gap: 16px;
+}
+.header-top a {
+    font-size: 12px;
+    color: var(--color-gray-600);
+    transition: color var(--transition);
+}
+.header-top a:hover { color: var(--color-primary); }
+.header-top .sep { color: var(--color-gray-200); }
+
+/* 로고 + 검색 */
+.header-main {
+    height: var(--header-h);
+}
+.header-main .container {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    gap: 24px;
+}
+
+/* 배너 광고 (상단) */
+.header-banner {
+    width: 100%;
+    height: 90px;
+    background: linear-gradient(135deg, #fff9f8 0%, #fff1ee 100%);
+    border-bottom: 1px solid var(--color-gray-200);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+.header-banner img { width: 100%; height: 100%; object-fit: cover; }
+.header-banner .banner-placeholder {
+    font-size: 14px;
+    color: var(--color-gray-400);
+    letter-spacing: 2px;
+}
+
+/* 로고 */
+.logo {
+    flex-shrink: 0;
+    width: 247px;
+}
+.logo a {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    height: 78px;
+    border: 2px solid var(--color-gray-200);
+    border-radius: var(--radius-md);
+    padding: 0 20px;
+    transition: border-color var(--transition);
+}
+.logo a:hover { border-color: var(--color-primary); }
+.logo .logo-text {
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--color-primary);
+    letter-spacing: -0.5px;
+}
+.logo .logo-sub {
+    font-size: 11px;
+    color: var(--color-gray-400);
+    margin-top: 2px;
+}
+
+/* 검색창 */
+.search-box {
+    flex: 1;
+    position: relative;
+}
+.search-box input {
+    width: 100%;
+    height: 44px;
+    border: 2px solid var(--color-primary);
+    border-radius: 22px;
+    padding: 0 52px 0 20px;
+    font-size: 14px;
+    outline: none;
+    transition: box-shadow var(--transition);
+}
+.search-box input:focus {
+    box-shadow: 0 0 0 3px rgba(232,56,13,.15);
+}
+.search-box input::placeholder { color: var(--color-gray-400); }
+.search-box button {
+    position: absolute;
+    right: 4px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--color-primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background var(--transition);
+}
+.search-box button:hover { background: #c42d07; }
+.search-box button svg { color: white; }
+
+/* 카테고리 탭 네비 */
+.header-nav {
+    height: var(--nav-h);
+    border-bottom: 2px solid var(--color-primary);
+    background: var(--color-white);
+}
+.header-nav .container {
+    display: flex;
+    height: 100%;
+    gap: 4px;
+}
+.header-nav a {
+    display: inline-flex;
+    align-items: center;
+    padding: 0 20px;
+    height: 100%;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--color-gray-600);
+    border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+    transition: background var(--transition), color var(--transition);
+}
+.header-nav a:hover,
+.header-nav a.active {
+    background: var(--color-primary);
+    color: var(--color-white);
+}
+
+/* =============================================
+   FOOTER  ← page-wrapper(main) 안, aside 옆 공간만 차지
+   ============================================= */
+#footer {
+    background: var(--color-white);
+    border-top: 1px solid var(--color-gray-200);
+    margin-top: 40px;
+}
+
+.footer-links {
+    background: var(--color-gray-100); /* 상단 링크영역 배경색 구분 */
+    padding: 12px 0;
+    border-bottom: 1px solid var(--color-gray-200);
+}
+.footer-links .container {
+    display: flex;
+    gap: 24px;
+    align-items: center;
+}
+.footer-links a {
+    font-size: 13px;
+    color: var(--color-gray-600);
+    transition: color var(--transition);
+}
+.footer-links .footer-inner {
+    display: flex;
+    justify-content: center; /* 가운데 정렬 */
+    gap: 20px;
+}
+.footer-links a:hover { color: var(--color-primary); }
+.footer-links a.bold { font-weight: 700; color: var(--color-gray-900); }
+
+.footer-info {
+    padding: 10px 0;
+}
+.footer-info .container {
+    display: flex;
+    gap: 32px;
+    align-items: flex-start;
+}
+.footer-info .footer-inner {
+    display: flex;
+    gap: 32px;
+    align-items: center;
+    padding: 20px 30px; /* 내부 여백 확보 */
+}
+.footer-logo-box {
+    width: 100px;
+    height: 80px;
+    border: 1px solid var(--color-gray-200);
+    border-radius: var(--radius-md);
+    background: var(--color-white);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+.footer-logo-box img { width: 60px; }
+.footer-logo-box .logo-placeholder {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--color-primary);
+}
+
+.footer-corp h3 {
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 10px;
+    color: var(--color-gray-900);
+}
+.footer-corp p {
+    font-size: 12px;
+    color: var(--color-gray-600);
+    line-height: 1.8;
+}
+
+.footer-contact h3 {
+    font-size: 13px;
+    font-weight: 700;
+    margin-bottom: 10px;
+    color: var(--color-gray-900);
+}
+.footer-contact p {
+    font-size: 12px;
+    color: var(--color-gray-600);
+    line-height: 1.8;
+}
+
+/* =============================================
+   ASIDE (카테고리 메뉴 + 베스트 상품)
+   ============================================= */
+#aside {
+    width: var(--aside-w);
+    flex-shrink: 0;
+    /* 헤더 높이(배너90 + 로고영역90 + 탭44) + 여유 = 약 240px */
+    position: sticky;
+    top: 230px;          /* sticky 헤더 아래에 붙어서 스크롤 따라 내려옴 */
+    align-self: flex-start;
+    max-height: calc(100vh - 180px);
+    overflow-y: auto;
+    scrollbar-width: none;          /* Firefox */
+}
+
+/* 1차 카테고리 */
+.aside-category {
+    border: 1px solid var(--color-gray-200);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    margin-bottom: 16px;
+}
+.aside-category ul { }
+.aside-category li {
+    border-bottom: 1px solid var(--color-gray-200);
+}
+.aside-category li:last-child { border-bottom: none; }
+
+.cat-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 11px 14px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--color-gray-900);
+    background: var(--color-white);
+    transition: background var(--transition), color var(--transition);
+    position: relative;
+}
+.cat-item:hover { background: var(--color-primary); color: var(--color-white); }
+.cat-item .cat-icon { font-size: 15px; flex-shrink: 0; }
+
+/* 2차 카테고리 (서브메뉴) */
+.cat-sub {
+    background: var(--color-gray-100);
+    padding: 4px 0;
+    display: none;
+}
+.aside-category li:hover .cat-sub { display: block; }
+.cat-sub a {
+    display: block;
+    padding: 6px 14px 6px 34px;
+    font-size: 12px;
+    color: var(--color-gray-600);
+    transition: color var(--transition);
+}
+.cat-sub a:hover { color: var(--color-primary); }
+.cat-sub a::before { content: "·"; margin-right: 6px; }
+
+/* 베스트 상품 */
+.aside-best {
+    border: 1px solid var(--color-gray-200);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+}
+.aside-best-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 14px;
+    background: var(--color-gray-100);
+    border-bottom: 1px solid var(--color-gray-200);
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--color-gray-900);
+}
+.aside-best-title span { font-size: 16px; }
+
+.best-list { padding: 8px 0; }
+.best-item {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start; /* 내용물을 왼쪽으로 밀착 */
+    gap: 10px;
+    padding: 8px 14px;
+    transition: background var(--transition);
+}
+.best-item:hover { background: var(--color-gray-100); }
+.best-item:first-child .best-rank { color: var(--color-primary); font-weight: 900; }
+
+/* 1위 상품 전용 스타일 */
+.best-item.rank-1 {
+    flex-direction: column; /* 세로 배치 */
+    align-items: stretch;
+    position: relative;
+    padding: 14px;
+}
+
+.best-item.rank-1 .best-rank {
+    position: absolute;
+    top: 14px;
+    left: 14px;
+    color: var(--color-primary);
+    font-size: 20px;
+    font-weight: 900;
+    z-index: 5;
+    background: rgba(255, 255, 255, 0.8); /* 글자 가독성을 위해 흰색 배경 추가 */
+    width: 24px;
+    height: 24px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 4px;
+}
+
+.best-item.rank-1 .best-thumb-placeholder {
+    width: 100%; /* 가로 꽉 차게 */
+    height: 155px; /* 이미지에서 확인된 세로 비율 적용 */
+    margin-bottom: 10px;
+}
+
+.best-item.rank-1 .best-info {
+    width: 100%;
+}
+
+.best-rank {
+    font-size: 16px;
+    font-weight: 800;
+    color: var(--color-gray-400);
+    width: 16px;
+    text-align: center;
+    flex-shrink: 0;
+}
+.best-thumb {
+    width: 48px;
+    height: 48px;
+    border: 1px solid var(--color-gray-200);
+    border-radius: var(--radius-sm);
+    object-fit: cover;
+    background: var(--color-gray-100);
+    flex-shrink: 0;
+}
+.best-thumb-placeholder {
+    width: 48px;
+    height: 48px;
+    border: 1px solid var(--color-gray-200);
+    border-radius: var(--radius-sm);
+    background: var(--color-gray-100);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-gray-400);
+    font-size: 18px;
+    flex-shrink: 0;
+}
+.best-info {
+    flex: 1; /* 숫자가 빠진 남은 공간을 텍스트 영역이 모두 차지하게 함 */
+    min-width: 0; /* ★ flex 자식 요소의 텍스트가 찌그러지지 않고 말줄임(...) 처리되게 하는 필수 속성 */
+    text-align: left; /* 명시적으로 텍스트를 왼쪽 정렬 */
+}
+.best-name {
+    font-size: 12px;
+    color: var(--color-gray-900);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-bottom: 2px;
+}
+.best-price-del {
+    font-size: 11px;
+    color: var(--color-price-del);
+    text-decoration: line-through;
+}
+.best-sale {
+    font-size: 11px;
+    color: var(--color-sale);
+    font-weight: 700;
+}
+.best-price {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--color-gray-900);
+}
+
+/* =============================================
+   PRODUCT CARD (공통)
+   ============================================= */
+.product-card {
+    border: 1px solid var(--color-gray-200);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    background: var(--color-white);
+    transition: box-shadow var(--transition), transform var(--transition);
+    cursor: pointer;
+}
+.product-card:hover {
+    box-shadow: var(--shadow-card);
+    transform: translateY(-2px);
+}
+.product-thumb {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    background: var(--color-gray-100);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-gray-400);
+    font-size: 32px;
+    overflow: hidden;
+}
+.product-thumb img { width: 100%; height: 100%; object-fit: cover; }
+.product-info { padding: 10px; }
+.product-name {
+    font-size: 13px;
+    color: var(--color-gray-900);
+    margin-bottom: 6px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.product-price-del {
+    font-size: 12px;
+    color: var(--color-price-del);
+    text-decoration: line-through;
+}
+.product-sale-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 6px;
+}
+.product-sale-rate {
+    font-size: 12px;
+    color: var(--color-sale);
+    font-weight: 700;
+}
+.product-price {
+    font-size: 14px;
+    font-weight: 800;
+    color: var(--color-gray-900);
+    margin-bottom: 8px;
+}
+.btn-free-ship {
+    display: inline-block;
+    font-size: 11px;
+    color: var(--color-free-ship);
+    border: 1px solid var(--color-free-ship);
+    border-radius: var(--radius-sm);
+    padding: 2px 6px;
+}
+
+/* =============================================
+   SECTION TITLE (공통)
+   ============================================= */
+.section-title {
+    font-size: 18px;
+    font-weight: 800;
+    color: var(--color-gray-900);
+    margin-bottom: 16px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--color-primary);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* =============================================
+   PRODUCT GRID (공통)
+   ============================================= */
+.product-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+}
+
+/* =============================================
+   SCROLLBAR (공통)
+   ============================================= */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--color-gray-100); }
+::-webkit-scrollbar-thumb { background: var(--color-gray-400); border-radius: 3px; }

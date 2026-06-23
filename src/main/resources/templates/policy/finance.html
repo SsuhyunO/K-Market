@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>전자금융거래 이용약관 - KMarket</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/common.css}">
+    <link rel="stylesheet" th:href="@{/css/policy.css}">
+</head>
+<body>
+
+<header th:replace="~{fragments/header :: header}"></header>
+
+<div class="page-wrapper">
+
+    <aside th:replace="~{fragments/aside :: aside}"></aside>
+
+    <main class="main-content">
+
+        <section class="policy-section">
+
+            <h1 class="policy-main-title">Kmarket 서비스 이용약관</h1>
+
+            <!-- ① 약관 종류 아이콘 탭: 현재 페이지는 'buyer' 활성화 -->
+            <nav th:replace="~{fragments/policy-tabs :: tabs(active='finance')}"></nav>
+
+            <!-- ② 약관 제목 + ④ 인쇄 버튼 -->
+            <div class="policy-header-row">
+                <h2 class="policy-title">전자금융거래 이용약관</h2>
+                <button type="button" class="btn-print" aria-label="인쇄하기" title="인쇄하기">🖨️</button>
+            </div>
+
+            <!-- ③ 약관 내용 (5개 페이지 공통 본문) -->
+            <div th:replace="~{fragments/policy-content :: content}"></div>
+
+        </section>
+
+        <footer th:replace="~{fragments/footer :: footer}"></footer>
+    </main>
+
+</div>
+
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script th:src="@{/js/common.js}"></script>
+<script th:src="@{/js/policy.js}"></script>
+</body>
+</html>

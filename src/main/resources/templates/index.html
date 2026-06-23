@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KMarket - 케이마켓</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.min.js"></script>
+    <link rel="stylesheet" th:href="@{/css/common.css}">
+    <link rel="stylesheet" th:href="@{/css/index.css}">
+</head>
+<body>
+
+<!-- HEADER: fragments/header.html의 th:fragment="header" 를 그대로 삽입 -->
+<header th:replace="~{fragments/header :: header}"></header>
+
+
+<div class="page-wrapper">
+
+    <!-- ASIDE: fragments/aside.html의 th:fragment="aside" 를 그대로 삽입 -->
+    <aside th:replace="~{fragments/aside :: aside}"></aside>
+
+
+    <main class="main-content">
+
+        <!-- 슬라이드 배너: 추후 배너 데이터(banners)를 모델로 받으면 th:each로 교체 가능 -->
+        <div class="slider-section">
+            <ul class="bxslider">
+                <li>
+                    <div class="slide" style="height: 290px; background: linear-gradient(135deg, #f8f8f8 0%, #ececec 100%);">
+                        <div class="slide-placeholder" style="height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                            <div class="icon" style="font-size: 48px; opacity: .4;">🎁</div>
+                            <p style="font-size: 13px; color: #999;">슬라이드 배너 1 (816 × 289)</p>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="slide" style="height: 290px; background: linear-gradient(135deg, #f8f8f8 0%, #ececec 100%);">
+                        <div class="slide-placeholder" style="height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                            <div class="icon" style="font-size: 48px; opacity: .4;">🛍️</div>
+                            <p style="font-size: 13px; color: #999;">슬라이드 배너 2 (816 × 289)</p>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="slide" style="height: 290px; background: linear-gradient(135deg, #f8f8f8 0%, #ececec 100%);">
+                        <div class="slide-placeholder" style="height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                            <div class="icon" style="font-size: 48px; opacity: .4;">🎀</div>
+                            <p style="font-size: 13px; color: #999;">슬라이드 배너 3 (816 × 289)</p>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="slide" style="height: 290px; background: linear-gradient(135deg, #f8f8f8 0%, #ececec 100%);">
+                        <div class="slide-placeholder" style="height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                            <div class="icon" style="font-size: 48px; opacity: .4;">🏷️</div>
+                            <p style="font-size: 13px; color: #999;">슬라이드 배너 4 (816 × 289)</p>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="slide" style="height: 290px; background: linear-gradient(135deg, #f8f8f8 0%, #ececec 100%);">
+                        <div class="slide-placeholder" style="height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                            <div class="icon" style="font-size: 48px; opacity: .4;">⭐</div>
+                            <p style="font-size: 13px; color: #999;">슬라이드 배너 5 (816 × 289)</p>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+        <!-- ─────────────────────────────────────────
+             히트상품
+             Controller: model.addAttribute("hitProducts", List<Product>)
+        ───────────────────────────────────────────── -->
+        <section class="main-section" id="section-hit">
+            <h2 class="section-title">🔥 히트상품</h2>
+            <div class="product-grid-8">
+
+                <th:block th:if="${hitProducts == null}">
+                    <a class="product-card" href="#" th:each="i : ${#numbers.sequence(1, 8)}">
+                        <div class="product-thumb"><span>🖼️</span></div>
+                        <div class="product-info">
+                            <div class="product-name" th:text='상품명'>상품명</div>
+                            <div class="product-price-del">30,000원</div>
+                            <div class="product-sale-row">
+                                <span class="product-sale-rate">10%↓</span>
+                                <span class="btn-free-ship">무료배송</span>
+                            </div>
+                            <div class="product-price">27,000원</div>
+                        </div>
+                    </a>
+                </th:block>
+
+                <a th:each="product : ${hitProducts}"
+                   th:href="@{/product/{id}(id=${product.id})}"
+                   th:attr="data-id=${product.id}"
+                   class="product-card">
+                    <div class="product-thumb">
+                        <img th:if="${product.thumbnailUrl}" th:src="${product.thumbnailUrl}" alt="">
+                        <span th:unless="${product.thumbnailUrl}">🖼️</span>
+                    </div>
+                    <div class="product-info">
+                        <div class="product-name" th:text="${product.name}">상품명</div>
+                        <div class="product-price-del" th:text="${product.originalPrice} + '원'">30,000원</div>
+                        <div class="product-sale-row">
+                            <span class="product-sale-rate" th:text="${product.discountRate} + '%↓'">10%↓</span>
+                            <span class="btn-free-ship" th:if="${product.freeShipping}">무료배송</span>
+                        </div>
+                        <div class="product-price" th:text="${product.salePrice} + '원'">27,000원</div>
+                    </div>
+                </a>
+            </div>
+        </section>
+
+        <!-- ─────────────────────────────────────────
+             추천상품
+             Controller: model.addAttribute("recommendProducts", List<Product>)
+        ───────────────────────────────────────────── -->
+        <section class="main-section" id="section-recommend">
+            <h2 class="section-title">⭐ 추천상품</h2>
+            <div class="product-grid-8">
+
+                <th:block th:if="${hitProducts == null}">
+                    <a class="product-card" href="#" th:each="i : ${#numbers.sequence(1, 8)}">
+                        <div class="product-thumb"><span>🖼️</span></div>
+                        <div class="product-info">
+                            <div class="product-name" th:text='상품명'>상품명</div>
+                            <div class="product-price-del">30,000원</div>
+                            <div class="product-sale-row">
+                                <span class="product-sale-rate">10%↓</span>
+                                <span class="btn-free-ship">무료배송</span>
+                            </div>
+                            <div class="product-price">27,000원</div>
+                        </div>
+                    </a>
+                </th:block>
+
+                <a th:each="product : ${recommendProducts}"
+                   th:href="@{/product/{id}(id=${product.id})}"
+                   th:attr="data-id=${product.id}"
+                   class="product-card">
+                    <div class="product-thumb">
+                        <img th:if="${product.thumbnailUrl}" th:src="${product.thumbnailUrl}" alt="">
+                        <span th:unless="${product.thumbnailUrl}">🖼️</span>
+                    </div>
+                    <div class="product-info">
+                        <div class="product-name" th:text="${product.name}">상품명</div>
+                        <div class="product-price-del" th:text="${product.originalPrice} + '원'">30,000원</div>
+                        <div class="product-sale-row">
+                            <span class="product-sale-rate" th:text="${product.discountRate} + '%↓'">10%↓</span>
+                            <span class="btn-free-ship" th:if="${product.freeShipping}">무료배송</span>
+                        </div>
+                        <div class="product-price" th:text="${product.salePrice} + '원'">27,000원</div>
+                    </div>
+                </a>
+            </div>
+        </section>
+
+        <!-- ─────────────────────────────────────────
+             최신상품
+             Controller: model.addAttribute("newProducts", List<Product>)
+        ───────────────────────────────────────────── -->
+        <section class="main-section" id="section-new">
+            <h2 class="section-title">🆕 최신상품</h2>
+            <div class="product-grid-8">
+
+                <th:block th:if="${hitProducts == null}">
+                    <a class="product-card" href="#" th:each="i : ${#numbers.sequence(1, 8)}">
+                        <div class="product-thumb"><span>🖼️</span></div>
+                        <div class="product-info">
+                            <div class="product-name" th:text='상품명'>상품명</div>
+                            <div class="product-price-del">30,000원</div>
+                            <div class="product-sale-row">
+                                <span class="product-sale-rate">10%↓</span>
+                                <span class="btn-free-ship">무료배송</span>
+                            </div>
+                            <div class="product-price">27,000원</div>
+                        </div>
+                    </a>
+                </th:block>
+
+                <a th:each="product : ${newProducts}"
+                   th:href="@{/product/{id}(id=${product.id})}"
+                   th:attr="data-id=${product.id}"
+                   class="product-card">
+                    <div class="product-thumb">
+                        <img th:if="${product.thumbnailUrl}" th:src="${product.thumbnailUrl}" alt="">
+                        <span th:unless="${product.thumbnailUrl}">🖼️</span>
+                    </div>
+                    <div class="product-info">
+                        <div class="product-name" th:text="${product.name}">상품명</div>
+                        <div class="product-price-del" th:text="${product.originalPrice} + '원'">30,000원</div>
+                        <div class="product-sale-row">
+                            <span class="product-sale-rate" th:text="${product.discountRate} + '%↓'">10%↓</span>
+                            <span class="btn-free-ship" th:if="${product.freeShipping}">무료배송</span>
+                        </div>
+                        <div class="product-price" th:text="${product.salePrice} + '원'">27,000원</div>
+                    </div>
+                </a>
+            </div>
+        </section>
+
+        <!-- ─────────────────────────────────────────
+             인기상품
+             Controller: model.addAttribute("popularProducts", List<Product>)
+        ───────────────────────────────────────────── -->
+        <section class="main-section" id="section-popular">
+            <h2 class="section-title">📈 인기상품</h2>
+            <div class="product-grid-8">
+
+                <th:block th:if="${hitProducts == null}">
+                    <a class="product-card" href="#" th:each="i : ${#numbers.sequence(1, 8)}">
+                        <div class="product-thumb"><span>🖼️</span></div>
+                        <div class="product-info">
+                            <div class="product-name" th:text='상품명'>상품명</div>
+                            <div class="product-price-del">30,000원</div>
+                            <div class="product-sale-row">
+                                <span class="product-sale-rate">10%↓</span>
+                                <span class="btn-free-ship">무료배송</span>
+                            </div>
+                            <div class="product-price">27,000원</div>
+                        </div>
+                    </a>
+                </th:block>
+
+                <a th:each="product : ${popularProducts}"
+                   th:href="@{/product/{id}(id=${product.id})}"
+                   th:attr="data-id=${product.id}"
+                   class="product-card">
+                    <div class="product-thumb">
+                        <img th:if="${product.thumbnailUrl}" th:src="${product.thumbnailUrl}" alt="">
+                        <span th:unless="${product.thumbnailUrl}">🖼️</span>
+                    </div>
+                    <div class="product-info">
+                        <div class="product-name" th:text="${product.name}">상품명</div>
+                        <div class="product-price-del" th:text="${product.originalPrice} + '원'">30,000원</div>
+                        <div class="product-sale-row">
+                            <span class="product-sale-rate" th:text="${product.discountRate} + '%↓'">10%↓</span>
+                            <span class="btn-free-ship" th:if="${product.freeShipping}">무료배송</span>
+                        </div>
+                        <div class="product-price" th:text="${product.salePrice} + '원'">27,000원</div>
+                    </div>
+                </a>
+            </div>
+        </section>
+
+        <!-- ─────────────────────────────────────────
+             할인상품
+             Controller: model.addAttribute("discountProducts", List<Product>)
+        ───────────────────────────────────────────── -->
+        <section class="main-section" id="section-discount">
+            <h2 class="section-title">💸 할인상품</h2>
+            <div class="product-grid-8">
+
+                <th:block th:if="${hitProducts == null}">
+                    <a class="product-card" href="#" th:each="i : ${#numbers.sequence(1, 8)}">
+                        <div class="product-thumb"><span>🖼️</span></div>
+                        <div class="product-info">
+                            <div class="product-name" th:text='상품명'>상품명</div>
+                            <div class="product-price-del">30,000원</div>
+                            <div class="product-sale-row">
+                                <span class="product-sale-rate">10%↓</span>
+                                <span class="btn-free-ship">무료배송</span>
+                            </div>
+                            <div class="product-price">27,000원</div>
+                        </div>
+                    </a>
+                </th:block>
+
+                <a th:each="product : ${discountProducts}"
+                   th:href="@{/product/{id}(id=${product.id})}"
+                   th:attr="data-id=${product.id}"
+                   class="product-card">
+                    <div class="product-thumb">
+                        <img th:if="${product.thumbnailUrl}" th:src="${product.thumbnailUrl}" alt="">
+                        <span th:unless="${product.thumbnailUrl}">🖼️</span>
+                    </div>
+                    <div class="product-info">
+                        <div class="product-name" th:text="${product.name}">상품명</div>
+                        <div class="product-price-del" th:text="${product.originalPrice} + '원'">30,000원</div>
+                        <div class="product-sale-row">
+                            <span class="product-sale-rate" th:text="${product.discountRate} + '%↓'">10%↓</span>
+                            <span class="btn-free-ship" th:if="${product.freeShipping}">무료배송</span>
+                        </div>
+                        <div class="product-price" th:text="${product.salePrice} + '원'">27,000원</div>
+                    </div>
+                </a>
+            </div>
+        </section>
+
+        <!-- 할인상품이 마지막 본문 섹션 -->
+
+        <!-- FOOTER: main 안, aside 옆 공간만 차지 (전체 너비 아님) -->
+        <footer th:replace="~{fragments/footer :: footer}"></footer>
+
+    </main>
+
+</div>
+<!-- /page-wrapper -->
+
+<script th:src="@{/js/common.js}"></script>
+</body>
+</html>
