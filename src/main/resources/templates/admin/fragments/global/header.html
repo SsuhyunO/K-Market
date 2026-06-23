@@ -1,0 +1,19 @@
+<header id="admin-header" th:fragment="header">
+    <div class="header-logo">
+        <a th:href="@{/admin/main}">
+            <span class="logo-k">K</span><span class="logo-market">market</span>
+            <span class="logo-badge">ADMIN</span>
+        </a>
+    </div>
+    <nav class="header-util">
+        <a href="/index" class="util-link">
+            <span class="home-icon">🏠</span> 홈
+        </a>
+        <span class="sep">|</span>
+        <form th:action="@{/}" method="post">
+            <button type="submit" class="util-link">로그아웃</button>
+        </form>
+        <span class="sep">|</span>
+        <a href="/admin/cs" class="util-link">고객센터</a>
+    </nav>
+</header>

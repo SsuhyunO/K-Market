@@ -1,0 +1,72 @@
+.management-table {
+    min-width: 820px;
+}
+
+.management-table th:nth-child(1),
+.management-table td:nth-child(1) {
+    width: 42px;
+}
+
+.management-table th:nth-child(2),
+.management-table td:nth-child(2) {
+    width: 64px;
+}
+
+.management-table th:nth-child(3),
+.management-table td:nth-child(3) {
+    width: 220px;
+}
+
+.management-table th:nth-child(4),
+.management-table td:nth-child(4) {
+    width: 170px;
+}
+
+.management-table th:nth-child(5),
+.management-table td:nth-child(5) {
+    width: 210px;
+}
+
+.management-table th:nth-child(6),
+.management-table td:nth-child(6) {
+    width: 96px;
+}
+
+.version-detail-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 54px;
+    height: 27px;
+    padding: 0 10px;
+    border: 1px solid var(--adm-gray-300);
+    border-radius: 4px;
+    background: var(--adm-white);
+    color: var(--adm-gray-700);
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.version-detail-button:hover {
+    border-color: var(--adm-primary);
+    color: var(--adm-primary);
+    background: #eff6ff;
+}
+
+.version-modal-table th {
+    width: 120px;
+}
+
+.version-modal-table textarea {
+    min-height: 180px;
+}
+
+.version-change-list {
+    min-height: 150px;
+    padding: 10px 0 10px 18px;
+    line-height: 1.8;
+}
+
+.version-change-list li {
+    list-style: disc;
+}

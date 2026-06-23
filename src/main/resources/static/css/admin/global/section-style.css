@@ -1,0 +1,28 @@
+.dash-section {
+    background: var(--adm-white);
+    border: 1px solid var(--adm-gray-300);
+    border-radius: var(--radius);
+    padding: 18px 20px;
+    margin-bottom: 18px;
+    box-shadow: var(--shadow);
+}
+
+.section-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--adm-gray-900);
+    margin-bottom: 16px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--adm-gray-300);
+}
+
+.section-description {
+    display: block;
+    margin-top: -8px;
+    margin-bottom: 16px;
+    font-size: 13px;
+    line-height: 1.5;
+    color: var(--adm-gray-500);
+}
+
+

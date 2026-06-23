@@ -1,0 +1,93 @@
+/* =============================================
+   ASIDE — fixed: 스크롤해도 항상 고정
+   ============================================= */
+#admin-aside {
+    width: var(--aside-w);
+    flex-shrink: 0;
+    background: var(--adm-gray-900);
+    position: fixed;
+    top: var(--header-h);
+    left: 0;
+    bottom: 0;
+    overflow-y: auto;
+    scrollbar-width: none;
+    z-index: 100;
+}
+#admin-aside::-webkit-scrollbar { display: none; }
+
+.aside-logo {
+    padding: 20px 16px 16px;
+    border-bottom: 1px solid #2d3f55;
+}
+.aside-logo .logo-text {
+    font-size: 18px;
+    font-weight: 800;
+    color: #60a5fa;
+}
+.aside-logo .logo-text span { color: var(--adm-white); font-weight: 400; }
+.aside-logo .logo-sub {
+    font-size: 11px;
+    color: #64748b;
+    margin-top: 2px;
+}
+
+/* 네비 */
+.aside-nav { padding: 8px 0; }
+
+.nav-item { position: relative; }
+
+.nav-link {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 11px 16px;
+    color: #94a3b8;
+    font-size: 13px;
+    font-weight: 500;
+    transition: background var(--transition), color var(--transition);
+    cursor: pointer;
+}
+.nav-link:hover,
+.nav-item:hover > .nav-link {
+    background: #2d3f55;
+    color: var(--adm-white);
+}
+.nav-icon { font-size: 15px; flex-shrink: 0; }
+.nav-arrow {
+    margin-left: auto;
+    font-size: 16px;
+    transition: transform var(--transition);
+    color: #475569;
+}
+.nav-item:hover > .nav-link .nav-arrow {
+    transform: rotate(90deg);
+    color: #60a5fa;
+}
+
+/* 서브 메뉴 — 아코디언 스타일 (hover로 표시) */
+.sub-menu {
+    display: none;
+    background: #0f172a;
+    padding: 4px 0;
+    border-left: 3px solid var(--adm-primary);
+    margin-left: 16px;
+}
+.nav-item:hover > .sub-menu { display: block; }
+
+.sub-menu a {
+    display: flex;
+    align-items: center;
+    padding: 8px 16px 8px 18px;
+    font-size: 12px;
+    color: #64748b;
+    transition: color var(--transition), background var(--transition);
+}
+.sub-menu a:hover {
+    color: #60a5fa;
+    background: #1e293b;
+}
+.sub-menu a::before {
+    content: "─ ";
+    font-size: 10px;
+    opacity: .5;
+}

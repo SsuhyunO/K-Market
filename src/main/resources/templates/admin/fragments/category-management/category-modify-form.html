@@ -1,0 +1,117 @@
+<th:block th:fragment="category_modify_content">
+    <form action="#" method="post">
+        <div class="category-tree">
+            <ul class="category-list">
+                <li class="category-item">
+                    <details open>
+                        <summary class="category-row">
+                            <span class="category-title">여성패션</span>
+                            <button class="category-delete-button" type="button">삭제</button>
+                        </summary>
+                        
+                        <ul class="category-list">
+                            <li class="category-item">
+                                <div class="category-row">
+                                    <span class="category-title">브랜드의류</span>
+                                    <div class="category-actions">
+                                        <button class="category-modify-button" type="button">수정</button>
+                                        <button class="category-delete-button" type="button">삭제</button>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="category-item">
+                                <div class="category-row">
+                                    <span class="category-title">브랜드가방</span>
+                                    <div class="category-actions">
+                                        <button class="category-modify-button" type="button">수정</button>
+                                        <button class="category-delete-button" type="button">삭제</button>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="category-item">
+                                <div class="category-row">
+                                    <span class="category-title">브랜드신발</span>
+                                    <div class="category-actions">
+                                        <button class="category-modify-button" type="button">수정</button>
+                                        <button class="category-delete-button" type="button">삭제</button>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="category-item">
+                                <div class="category-row">
+                                    <span class="category-title">브랜드잡화</span>
+                                    <div class="category-actions">
+                                        <button class="category-modify-button" type="button">수정</button>
+                                        <button class="category-delete-button" type="button">삭제</button>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                        <button class="category-add-button" type="button">+ 2차 카테고리 추가</button>
+                    </details>
+                </li>
+                <li class="category-item">
+                    <details>
+                        <summary class="category-row">
+                            <span class="category-title">남성패션</span>
+                            <div class="category-actions">
+                                <button class="category-modify-button" type="button">수정</button>
+                                <button class="category-delete-button" type="button">삭제</button>
+                            </div>
+                        </summary>
+                    </details>
+                </li>
+                <li class="category-item">
+                    <details>
+                        <summary class="category-row">
+                            <span class="category-title">식품</span>
+                            <div class="category-actions">
+                                <button class="category-modify-button" type="button">수정</button>
+                                <button class="category-delete-button" type="button">삭제</button>
+                            </div>
+                        </summary>
+                    </details>
+                </li>
+                <li class="category-item">
+                    <details>
+                        <summary class="category-row">
+                            <span class="category-title">생활 / 건강</span>
+                            <div class="category-actions">
+                                <button class="category-modify-button" type="button">수정</button>
+                                <button class="category-delete-button" type="button">삭제</button>
+                            </div>
+                        </summary>
+                    </details>
+                </li>
+                <li class="category-item">
+                    <details>
+                        <summary class="category-row">
+                            <span class="category-title">유아동</span>
+                            <div class="category-actions">
+                                <button class="category-modify-button" type="button">수정</button>
+                                <button class="category-delete-button" type="button">삭제</button>
+                            </div>
+                        </summary>
+                    </details>
+                </li>
+                <li class="category-item">
+                    <details>
+                        <summary class="category-row">
+                            <span class="category-title">가전</span>
+                            <div class="category-actions">
+                                <button class="category-modify-button" type="button">수정</button>
+                                <button class="category-delete-button" type="button">삭제</button>
+                            </div>
+                        </summary>
+                    </details>
+                </li>
+            </ul>
+            
+            <button class="category-add-button category-add-root-button" type="button">+ 1차 카테고리 추가</button>
+        </div>
+        
+        <div class="section-form-actions">
+            <button class="section-submit-button" type="submit">수정하기</button>
+        </div>
+    </form>
+</th:block>

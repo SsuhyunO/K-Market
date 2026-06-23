@@ -1,0 +1,54 @@
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+    --adm-primary:    #2563eb;
+    --adm-primary-dk: #1d4ed8;
+    --adm-red:        #e8380d;
+    --adm-green:      #16a34a;
+    --adm-blue:       #2563eb;
+    --adm-orange:     #ea580c;
+    --adm-purple:     #7c3aed;
+    --adm-dark:       #1e293b;
+    --adm-gray-900:   #1e293b;
+    --adm-gray-700:   #334155;
+    --adm-gray-500:   #64748b;
+    --adm-gray-300:   #cbd5e1;
+    --adm-gray-100:   #f1f5f9;
+    --adm-white:      #ffffff;
+
+    --aside-w:   190px;
+    --header-h:  48px;
+    --footer-h:  40px;
+
+    --radius:    6px;
+    --shadow:    0 1px 4px rgba(0,0,0,.10);
+    --transition: 0.18s ease;
+
+    --font: 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
+}
+
+html, body {
+    font-family: var(--font), serif;
+    font-size: 13px;
+    background: var(--adm-gray-100);
+    color: var(--adm-gray-900);
+    min-height: 100vh;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+ul { list-style: none; }
+button {
+    cursor: pointer;
+    border: none;
+    background: none;
+    font-family: inherit;
+}

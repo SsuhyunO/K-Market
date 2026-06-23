@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>KMarket 기본설정</title>
+    <th:block th:replace="~{admin/fragments/global/head::head}"></th:block>
+    <link rel="stylesheet" th:href="@{/css/admin/global/section-table.css}"/>
+    <script th:src="@{/js/global/validation.js}"></script>
+    <script th:src="@{/js/global/korean-postposition.js}"></script>
+    <script th:src="@{/js/admin/global/form-validation.js}"></script>
+    <script th:src="@{/js/admin/site-settings.js}"></script>
+</head>
+<body>
+<header th:replace="~{admin/fragments/global/header::header}"></header>
+<div class="admin-layout">
+    <aside th:replace="~{admin/fragments/global/aside::aside}"></aside>
+
+    <main id="admin-main">
+        <!-- 브레드크럼 + 타이틀 -->
+        <div th:replace="~{admin/fragments/global/page-header::page-header}"></div>
+
+        <!-- 사이트 버전 정보 -->
+        <section th:replace="~{admin/fragments/global/dash-section::dash-section(null, '버전정보', '현재 사이트 버전입니다.', ~{::version_info_content})}">
+            <th:block th:fragment="version_info_content">
+                <th:block th:replace="~{admin/fragments/global/section-table::section-table(~{::version_info_rows})}">
+                    <th:block th:fragment="version_info_rows">
+                        <tr>
+                            <th>사이트 버전</th>
+                            <td>1.0.1-RELEASE</td>
+                        </tr>
+                    </th:block>
+                </th:block>
+            </th:block>
+        </section>
+
+        <!-- 사이트 브라우저 탭, 헤더 및 푸터에 노출될 제목 및 부제 수정 폼 -->
+        <section th:replace="~{admin/fragments/global/dash-section::dash-section(null, '사이트', '브라우저 탭, 헤더 및 푸터 노출 정보 입니다.', ~{::site_info_content})}">
+            <th:block th:fragment="site_info_content">
+                <th:block th:replace="~{admin/fragments/global/section-form::section-form('#', false, ~{::site_info_rows})}">
+                    <th:block th:fragment="site_info_rows">
+                        <tr>
+                            <th><label for="modify-title">제목</label></th>
+                            <td>
+                                <input class="modify-text-input" id="modify-title" type="text" name="title" value="케이마켓">
+                            </td>
+                        </tr>
+                        <tr>
+                            <th><label for="modify-sub-title">부제</label></th>
+                            <td>
+                                <input class="modify-text-input" id="modify-sub-title" type="text" name="sub-title"
+                                       value="더나은쇼핑위한선택">
+                            </td>
+                        </tr>
+                    </th:block>
+                </th:block>
+            </th:block>
+        </section>
+
+        <!-- 헤더 로고, 푸터 로고, 파비콘 수정 폼 -->
+        <section th:replace="~{admin/fragments/global/dash-section::dash-section(null, '로고', '브라우저 탭, 헤더 및 푸터 노출 로고입니다.', ~{::logo_content})}">
+            <th:block th:fragment="logo_content">
+                <th:block th:replace="~{admin/fragments/global/section-form::section-form('#', true, ~{::logo_rows})}">
+                    <th:block th:fragment="logo_rows">
+                        <tr>
+                            <th><label for="modify-header-logo">헤더 로고</label></th>
+                            <td>
+                                <input class="modify-file-input" id="modify-header-logo" name="headerLogo" type="file">
+                                <span>크기 370 x 76 권장</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th><label for="modify-footer-logo">푸터 로고</label></th>
+                            <td>
+                                <input class="modify-file-input" id="modify-footer-logo" name="footerLogo" type="file">
+                                <span>크기 155 x 36 권장</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th><label for="modify-favicon">파비콘</label></th>
+                            <td>
+                                <input class="modify-file-input" id="modify-favicon" name="favicon" type="file">
+                                <span>크기 32 x 32 권장</span>
+                            </td>
+                        </tr>
+                    </th:block>
+                </th:block>
+            </th:block>
+        </section>
+
+        <!-- 기업 정보 수정 폼 -->
+        <section th:replace="~{admin/fragments/global/dash-section::dash-section(null, '기업 정보', '푸터에 노출되는 기업 정보 입니다.', ~{::company_info_content})}">
+            <th:block th:fragment="company_info_content">
+                <th:block th:replace="~{admin/fragments/global/section-form::section-form('#', false, ~{::company_info_rows})}">
+                    <th:block th:fragment="company_info_rows">
+                        <tr>
+                            <th><label for="modify-business-name">상호명</label></th>
+                            <td>
+                                <input class="modify-text-input" id="modify-business-name" type="text"
+                                       name="businessName" value="케이마켓쇼핑주식회사">
+                            </td>
+                        </tr>
+                        <tr>
+                            <th><label for="modify-ceo">대표이사</label></th>
+                            <td>
+                                <input class="modify-text-input" id="modify-ceo" type="text" name="ceo" value="홍길동">
+                            </td>
+                        </tr>
+                        <tr>
+                            <th><label for="modify-business-reg-number">사업자등록번호</label></th>
+                            <td>
+                                <input class="modify-text-input" id="modify-business-reg-number" type="text"
+                                       name="businessRegNumber" value="123-12-12345">
+                            </td>
+                        </tr>
+                        <tr>
+                            <th><label for="modify-mail-order-business-reg">통신판매업신고</label></th>
+                            <td>
+                                <input class="modify-text-input" id="modify-mail-order-business-reg" type="text"
+                                       name="mailOrderBusinessReg" value="2024-서울강남-1234">
+                            </td>
+                        </tr>
+                        <tr>
+                            <th><label for="modify-default-address">기본주소</label></th>
+                            <td>
+                                <input class="modify-text-input" id="modify-default-address" type="text"
+                                       name="defaultAddress" value="부산광역시 부산진구 중앙동" readonly>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th><label for="modify-detail-address">상세주소</label></th>
+                            <td>
+                                <input class="modify-text-input" id="modify-detail-address" type="text"
+                                       name="detailAddress" value="(삼성동, WeWork 빌딩) 7층">
+                            </td>
+                        </tr>
+                    </th:block>
+                </th:block>
+            </th:block>
+        </section>
+
+        <!-- 고객센터 정보 -->
+        <section th:replace="~{admin/fragments/global/dash-section::dash-section(null, '고객센터 정보', '푸터에 노출되는 고객센터 정보 입니다.', ~{::cs_info_content})}">
+            <th:block th:fragment="cs_info_content">
+                <th:block th:replace="~{admin/fragments/global/section-form::section-form('#', false, ~{::cs_info_rows})}">
+                    <th:block th:fragment="cs_info_rows">
+                        <tr>
+                            <th><label for="modify-phone">전화번호</label></th>
+                            <td>
+                                <input class="modify-text-input" id="modify-phone" type="text" name="phone"
+                                       value="02-1234-5878">
+                            </td>
+                        </tr>
+                        <tr>
+                            <th><label for="modify-business-hours">업무시간</label></th>
+                            <td>
+                                <input class="modify-text-input" id="modify-business-hours" type="text"
+                                       name="businessHours" value="평일 09:00 ~ 18:00">
+                            </td>
+                        </tr>
+                        <tr>
+                            <th><label for="modify-email">이메일</label></th>
+                            <td>
+                                <input class="modify-text-input" id="modify-email" type="text" name="email"
+                                       value="admin@kmarket.com">
+                            </td>
+                        </tr>
+                        <tr>
+                            <th><label for="modify-dispute-officer">전자금융거래 분쟁담당</label></th>
+                            <td>
+                                <input class="modify-text-input" id="modify-dispute-officer" type="text"
+                                       name="disputeOfficer" value="1234-1234">
+                            </td>
+                        </tr>
+                    </th:block>
+                </th:block>
+            </th:block>
+        </section>
+
+        <!-- 카피라이트 수정 폼 -->
+        <section th:replace="~{admin/fragments/global/dash-section::dash-section(null, '카피라이트', '푸터에 노출되는 카피라이트 정보 입니다.', ~{::copyright_content})}">
+            <th:block th:fragment="copyright_content">
+                <th:block th:replace="~{admin/fragments/global/section-form::section-form('#', false, ~{::copyright_rows})}">
+                    <th:block th:fragment="copyright_rows">
+                        <tr>
+                            <th><label for="modify-copyright">카피라이트</label></th>
+                            <td>
+                                <input class="modify-text-input" id="modify-copyright" type="text" name="copyright"
+                                       value="Copyright@market. All rights reserved">
+                            </td>
+                        </tr>
+                    </th:block>
+                </th:block>
+            </th:block>
+        </section>
+    </main>
+</div>
+
+<footer th:replace="~{admin/fragments/global/footer::footer}"></footer>
+</body>
+</html>
