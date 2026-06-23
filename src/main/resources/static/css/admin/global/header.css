@@ -1,0 +1,56 @@
+/* =============================================
+   HEADER
+   ============================================= */
+#admin-header {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    height: var(--header-h);
+    background: var(--adm-dark);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+    z-index: 200;
+    box-shadow: 0 2px 8px rgba(0,0,0,.2);
+}
+
+.header-logo a {
+    gap: 8px;
+    color: var(--adm-white);
+}
+.logo-k       { font-size: 20px; font-weight: 900; color: #60a5fa; }
+.logo-market  { font-size: 18px; font-weight: 700; color: var(--adm-white); }
+.logo-badge   {
+    font-size: 10px;
+    font-weight: 700;
+    background: var(--adm-primary);
+    color: white;
+    padding: 2px 7px;
+    border-radius: 10px;
+    letter-spacing: 1px;
+}
+
+.header-util {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.home-icon {
+    display:flex;
+    align-items:center;
+    font-size:11px;
+    margin-right: 5px;
+}
+
+.util-link {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 12px;
+    color: #94a3b8;
+    transition: color var(--transition);
+}
+
+.util-link:hover { color: var(--adm-white); }
+.sep { color: #475569; }

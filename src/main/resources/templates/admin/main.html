@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>KMarket 관리자</title>
+    <th:block th:replace="~{admin/fragments/global/head::head}"></th:block>
+    <link rel="stylesheet" th:href="@{/css/admin/main.css}">
+    <script th:src="@{/js/admin/main-dashboard.js}"></script>
+</head>
+<body>
+<header th:replace="~{admin/fragments/global/header::header}"></header>
+<div class="admin-layout">
+    <aside th:replace="~{admin/fragments/global/aside::aside}"></aside>
+    
+    <main id="admin-main">
+        <!-- 브레드크럼 + 타이틀 -->
+        <div th:replace="~{admin/fragments/global/page-header::page-header}"></div>
+        
+        <!-- ① 집계현황 -->
+        <section th:replace="~{admin/fragments/global/dash-section::dash-section(|section-summary|, |집계현황|, null, ~{::main-section-content-1})}">
+            <th:block th:fragment="main-section-content-1">
+                <div class="summary-wrap">
+                    
+                    <!-- 막대 차트 (주문/결제/취소) -->
+                    <div class="chart-bar-wrap">
+                        <div class="chart-legend">
+                            <span class="leg leg-order">■ 주문</span>
+                            <span class="leg leg-pay">■ 결제</span>
+                            <span class="leg leg-cancel">■ 취소</span>
+                        </div>
+                        <div class="chart-bar" id="barChart">
+                            <!-- JS로 렌더링 -->
+                        </div>
+                        <div class="chart-bar-labels" id="barLabels"></div>
+                    </div>
+                    
+                    <!-- 파이 차트 (주요매출) -->
+                    <div class="chart-pie-wrap">
+                        <div class="chart-pie-title">주요매출</div>
+                        <canvas id="pieChart"></canvas>
+                        <div class="pie-legend" id="pieLegend"></div>
+                    </div>
+                
+                </div>
+            </th:block>
+        </section>
+        
+        <!-- ② 운영현황 -->
+        <section th:replace="~{admin/fragments/global/dash-section::dash-section(|section-operation|, |운영현황|, null, ~{::main-section-content-2})}">
+            <th:block th:fragment="main-section-content-2">
+                <!-- 처리현황 카드 -->
+                <div class="op-cards">
+                    <div class="op-card red">
+                        <div class="op-label">입금대기</div>
+                        <div class="op-value">101</div>
+                    </div>
+                    <div class="op-card blue">
+                        <div class="op-label">배송준비</div>
+                        <div class="op-value">124</div>
+                    </div>
+                    <div class="op-card orange">
+                        <div class="op-label">취소요청</div>
+                        <div class="op-value">14</div>
+                    </div>
+                    <div class="op-card purple">
+                        <div class="op-label">교환요청</div>
+                        <div class="op-value">7</div>
+                    </div>
+                    <div class="op-card green">
+                        <div class="op-label">반품요청</div>
+                        <div class="op-value">24</div>
+                    </div>
+                </div>
+                
+                <!-- 통계 테이블 -->
+                <div class="op-stats">
+                    <div class="stat-item">
+                        <div class="stat-label">주문건수</div>
+                        <div class="stat-value red">131</div>
+                        <div class="stat-sub">
+                            <span>오늘 <b>60</b></span>
+                            <span>어제 <b>71</b></span>
+                        </div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-label">주문금액</div>
+                        <div class="stat-value red">3,700,000</div>
+                        <div class="stat-sub">
+                            <span>오늘 <b>1,200,000</b></span>
+                            <span>어제 <b>2,500,000</b></span>
+                        </div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-label">회원가입</div>
+                        <div class="stat-value red">232</div>
+                        <div class="stat-sub">
+                            <span>오늘 <b>102</b></span>
+                            <span>어제 <b>130</b></span>
+                        </div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-label">방문자 수</div>
+                        <div class="stat-value red">2,500</div>
+                        <div class="stat-sub">
+                            <span>어제 <b>1,200</b></span>
+                            <span>오늘 <b>1,300</b></span>
+                        </div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-label">문의 게시물</div>
+                        <div class="stat-value red">25</div>
+                        <div class="stat-sub">
+                            <span>어제 <b>12</b></span>
+                            <span>오늘 <b>13</b></span>
+                        </div>
+                    </div>
+                </div>
+            </th:block>
+        </section>
+        
+        <!-- ③ 공지사항 + 고객문의 -->
+        <section th:replace="~{admin/fragments/global/dash-section::dash-section(|section-board|, null, null, ~{::main-section-content-3})}">
+            <th:block th:fragment="main-section-content-3">
+                <div class="board-wrap">
+                    
+                    <!-- 공지사항 (최신 5건) -->
+                    <div class="board-box">
+                        <div class="board-title">공지사항</div>
+                        <ul class="board-list">
+                            <li>
+                                <a href="#" class="board-link">
+                                    <span class="board-badge">안내</span>
+                                    <span class="board-text">해외결제사정문자주의</span>
+                                </a>
+                                <span class="board-date">22.10.31</span>
+                            </li>
+                            <li>
+                                <a href="#" class="board-link">
+                                    <span class="board-badge">안내</span>
+                                    <span class="board-text">운영택배비용 / 교환수거지 변경</span>
+                                </a>
+                                <span class="board-date">22.10.31</span>
+                            </li>
+                            <li>
+                                <a href="#" class="board-link">
+                                    <span class="board-badge">안내</span>
+                                    <span class="board-text">위치정보이용약관개정 공지</span>
+                                </a>
+                                <span class="board-date">22.10.31</span>
+                            </li>
+                            <li>
+                                <a href="#" class="board-link">
+                                    <span class="board-badge">안내</span>
+                                    <span class="board-text">구매회원이용약관개정</span>
+                                </a>
+                                <span class="board-date">22.10.31</span>
+                            </li>
+                            <li>
+                                <a href="#" class="board-link">
+                                    <span class="board-badge">안내</span>
+                                    <span class="board-text">씨티은행시스템점검에마...</span>
+                                </a>
+                                <span class="board-date">22.10.31</span>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <!-- 고객문의 (최신 5건) -->
+                    <div class="board-box">
+                        <div class="board-title">고객문의</div>
+                        <ul class="board-list">
+                            <li>
+                                <a href="#" class="board-link">
+                                    <span class="board-badge cs">가입</span>
+                                    <span class="board-text">가입문의내용</span>
+                                </a>
+                                <span class="board-writer">chh**</span>
+                                <span class="board-date">22.10.31</span>
+                            </li>
+                            <li>
+                                <a href="#" class="board-link">
+                                    <span class="board-badge cs">탈퇴</span>
+                                    <span class="board-text">탈퇴문의내용</span>
+                                </a>
+                                <span class="board-writer">chh**</span>
+                                <span class="board-date">22.10.31</span>
+                            </li>
+                            <li>
+                                <a href="#" class="board-link">
+                                    <span class="board-badge cs">회원정보</span>
+                                    <span class="board-text">회원정보문의내용</span>
+                                </a>
+                                <span class="board-writer">chh**</span>
+                                <span class="board-date">22.10.31</span>
+                            </li>
+                            <li>
+                                <a href="#" class="board-link">
+                                    <span class="board-badge cs">회원정보</span>
+                                    <span class="board-text">회원정보문의내용</span>
+                                </a>
+                                <span class="board-writer">chh**</span>
+                                <span class="board-date">22.10.31</span>
+                            </li>
+                            <li>
+                                <a href="#" class="board-link">
+                                    <span class="board-badge cs">회원정보</span>
+                                    <span class="board-text">회원정보문의내용</span>
+                                </a>
+                                <span class="board-writer">chh**</span>
+                                <span class="board-date">22.10.31</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </th:block>
+        </section>
+    </main>
+</div>
+<!-- /MAIN CONTENT -->
+
+<footer th:replace="~{admin/fragments/global/footer::footer}"></footer>
+</body>
+</html>

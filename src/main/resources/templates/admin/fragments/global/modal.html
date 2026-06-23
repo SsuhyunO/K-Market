@@ -1,0 +1,11 @@
+<div class="modal hidden" th:fragment="modal(modalId, title, content)" th:id="${modalId}" data-modal>
+    <div class="modal-box">
+        <div class="modal-header">
+            <h3 th:text="${title}">Modal title</h3>
+            <button class="modal-close-button" type="button" data-modal-close>X</button>
+        </div>
+        <div class="modal-body">
+            <th:block th:replace="${content}"></th:block>
+        </div>
+    </div>
+</div>

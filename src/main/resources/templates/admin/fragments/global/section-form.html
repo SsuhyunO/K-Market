@@ -1,0 +1,11 @@
+<form th:fragment="section-form(action, multipart, rows)"
+      th:action="${action}"
+      method="post"
+      th:attr="enctype=${multipart} ? 'multipart/form-data' : null">
+    <table class="section-table">
+        <th:block th:replace="${rows}"></th:block>
+    </table>
+    <div class="section-form-actions">
+        <button class="section-submit-button" type="submit">수정하기</button>
+    </div>
+</form>

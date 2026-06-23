@@ -1,0 +1,9 @@
+<section class="dash-section" th:fragment="dash-section(sectionId, title, description, content)" th:id="${sectionId}">
+    <h2 class="section-title"
+        th:if="${title != null and !#strings.isEmpty(title)}"
+        th:text="${title}">Section title</h2>
+    <p class="section-description"
+       th:if="${description != null and !#strings.isEmpty(description)}"
+       th:text="${description}">Section description</p>
+    <th:block th:replace="${content}"></th:block>
+</section>

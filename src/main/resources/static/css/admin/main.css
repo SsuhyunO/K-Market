@@ -1,0 +1,292 @@
+/* =============================================
+   KMarket Admin - admin.css
+   ============================================= */
+
+/* =============================================
+   집계현황 — 차트
+   ============================================= */
+.summary-wrap {
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+    min-width: 0;
+}
+
+/* 막대 차트 — 70% */
+.chart-bar-wrap {
+    flex: 6;
+    min-width: 0;
+}
+.chart-legend {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 10px;
+    font-size: 12px;
+}
+.leg { display: flex; align-items: center; gap: 4px; }
+.leg-order { color: #2563eb; }
+.leg-pay   { color: #16a34a; }
+.leg-cancel{ color: #f97316; }
+
+.chart-bar {
+    display: flex;
+    align-items: flex-end;
+    gap: 12px;
+    height: 160px;
+    padding: 0 4px 0;
+    border-left: none;
+    border-bottom: 2px solid var(--adm-gray-300);
+    background-image: repeating-linear-gradient(
+            to top,
+            transparent,
+            transparent calc(25% - 1px),
+            #e2e8f0 calc(25% - 1px),
+            #e2e8f0 25%
+    );
+}
+.bar-group {
+    display: flex;
+    gap: 3px;
+    align-items: flex-end;
+    flex: 1;
+}
+.bar {
+    flex: 1;
+    border-radius: 3px 3px 0 0;
+    transition: opacity .2s;
+    min-width: 10px;
+}
+.bar:hover { opacity: .75; }
+.bar.order  { background: #2563eb; }
+.bar.pay    { background: #16a34a; }
+.bar.cancel { background: #f97316; }
+
+.chart-bar-labels {
+    display: flex;
+    gap: 12px;
+    padding: 6px 4px 0;
+}
+.bar-label {
+    flex: 1;
+    text-align: center;
+    font-size: 11px;
+    color: var(--adm-gray-500);
+}
+
+/* 파이 차트 — 30%, 내부 캔버스가 공간에 꽉 맞게 */
+.chart-pie-wrap {
+    flex: 4;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+}
+.chart-pie-title {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--adm-gray-700);
+    align-self: flex-start;
+}
+/* 캔버스를 부모 너비에 맞게 꽉 채움 */
+#pieChart {
+    width: 100% !important;
+    height: auto !important;
+    max-width: 180px;
+}
+.pie-legend {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4px 12px;
+    font-size: 11px;
+    color: var(--adm-gray-700);
+    align-self: flex-start;
+}
+.pie-leg {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+.pie-dot {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+/* =============================================
+   운영현황
+   ============================================= */
+.op-cards {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 16px;
+}
+.op-card {
+    flex: 1 1 140px;
+    border: 1px solid var(--adm-gray-300);
+    border-radius: var(--radius);
+    padding: 12px 10px;
+    text-align: center;
+    border-top: 3px solid;
+}
+.op-card.red    { border-top-color: var(--adm-red); }
+.op-card.blue   { border-top-color: var(--adm-blue); }
+.op-card.orange { border-top-color: var(--adm-orange); }
+.op-card.purple { border-top-color: var(--adm-purple); }
+.op-card.green  { border-top-color: var(--adm-green); }
+
+.op-label { font-size: 12px; color: var(--adm-gray-500); margin-bottom: 6px; }
+.op-value { font-size: 22px; font-weight: 800; color: var(--adm-red); }
+
+/* 통계 테이블 */
+.op-stats {
+    display: flex;
+    flex-wrap: wrap;
+    border: 1px solid var(--adm-gray-300);
+    border-radius: var(--radius);
+    overflow: hidden;
+}
+.stat-item {
+    flex: 1 1 150px;
+    padding: 12px 10px;
+    text-align: center;
+    border-right: 1px solid var(--adm-gray-300);
+    background: #fafafa;
+}
+.stat-item:last-child { border-right: none; }
+.stat-label { font-size: 12px; color: var(--adm-gray-500); margin-bottom: 4px; }
+.stat-value { font-size: 18px; font-weight: 800; color: var(--adm-red); margin-bottom: 6px; }
+.stat-sub {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    font-size: 11px;
+    color: var(--adm-gray-500);
+}
+.stat-sub b { color: var(--adm-gray-700); }
+
+/* =============================================
+   공지 / 고객문의
+   ============================================= */
+.board-wrap {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px;
+}
+.board-box { }
+.board-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--adm-gray-900);
+    padding-bottom: 8px;
+    margin-bottom: 8px;
+    border-bottom: 1px solid var(--adm-gray-300);
+}
+.board-list li {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 0;
+    border-bottom: 1px dashed var(--adm-gray-300);
+}
+.board-list li:last-child { border-bottom: none; }
+
+.board-link {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex: 1;
+    min-width: 0;
+    transition: color var(--transition);
+}
+.board-link:hover { color: var(--adm-primary); }
+
+.board-badge {
+    flex-shrink: 0;
+    font-size: 10px;
+    font-weight: 700;
+    background: #dbeafe;
+    color: var(--adm-primary);
+    padding: 2px 6px;
+    border-radius: 3px;
+}
+.board-badge.cs {
+    background: #fef3c7;
+    color: #92400e;
+}
+.board-text {
+    font-size: 12px;
+    color: var(--adm-gray-700);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.board-writer {
+    font-size: 11px;
+    color: var(--adm-gray-500);
+    flex-shrink: 0;
+    margin-left: auto;
+}
+.board-date {
+    font-size: 11px;
+    color: var(--adm-gray-500);
+    flex-shrink: 0;
+}
+
+@media (max-width: 1180px) {
+    .summary-wrap {
+        flex-direction: column;
+    }
+
+    .chart-bar-wrap,
+    .chart-pie-wrap {
+        width: 100%;
+    }
+
+    .chart-pie-wrap {
+        align-items: flex-start;
+    }
+
+    #pieChart {
+        align-self: center;
+    }
+
+}
+
+@media (max-width: 900px) {
+    .chart-bar {
+        gap: 8px;
+        min-width: 620px;
+    }
+
+    .chart-bar-labels {
+        min-width: 620px;
+    }
+
+    .chart-bar-wrap {
+        overflow-x: auto;
+    }
+
+    .board-wrap {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 640px) {
+    .op-cards,
+    .op-stats {
+        display: block;
+    }
+
+    .op-card,
+    .stat-item {
+        border-right: 0;
+        border-bottom: 1px solid var(--adm-gray-300);
+    }
+
+    .op-card:last-child,
+    .stat-item:last-child {
+        border-bottom: 0;
+    }
+}
