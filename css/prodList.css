@@ -13,12 +13,21 @@
     min-width: 0;
 }
 
+.list-header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    padding-bottom: 10px;
+
+    border-bottom:2px solid #333;
+}
+
+.list-header h2{
+    font-size:18px;
+}
+
 .list-location{
-    display:flex;
-    justify-content:flex-end;
-
-    padding:10px 0;
-
     font-size:12px;
     color:#777;
 }
@@ -27,13 +36,147 @@
     margin-left:4px;
 }
 
-.list-header{
-    margin-top:20px;
-    padding-bottom:10px;
+/* 상품 목록 정렬 */
+.list-sort {
+    display: flex;
+    justify-content: flex-start;
 
-    border-bottom:2px solid #333;
+    padding: 10px 0;
+    border-bottom: 2px solid #ddd;
 }
 
-.list-header h2{
-    font-size:18px;
+.list-sort a {
+    margin-left: 15px;
+
+    font-size: 13px;
+    color: #666;
 }
+
+/* 상품 목록 */
+.list-products {
+        width: 100%;
+    }
+
+    /* 개별 상품 */
+    .product-item {
+        display: flex;
+        align-items: flex-start;
+
+        padding: 20px 0;
+        border-bottom: 2px solid #ddd;
+    }
+
+        /* 상품 썸네일 */
+        .product-thumb {
+            width: 190px;
+            height: 190px;
+
+            flex-shrink: 0;
+        }
+
+        .product-thumb img {
+            width: 100%;
+            height: 100%;
+
+            object-fit: cover;
+        }
+
+        /* 상품 정보 */
+        .product-info {
+            flex: 1;
+            margin-left: 20px;
+        }
+
+            /* 상품명 */
+            .product-name{
+                font-size: 18px;
+                font-weight: 700;
+
+                margin-bottom: 10px;
+            }
+
+            /* 상품 설명 */
+            .product-desc {
+                font-size: 14px;
+            }
+
+        /* 상품 가격 */
+        .product-price {
+            width: 150px;
+            text-align: right;
+        }
+
+            /* 판매가 */
+            .sell-price {
+                font-size: 22px;
+                font-weight: 700;
+            }
+
+            /* 원가 */
+            .origin-price {
+                text-decoration: line-through;
+
+                color: #999;
+            }
+
+            /* 할인율 */
+            .discount {
+                color: red;
+                font-weight: bold;
+            }
+
+        /* 기타 상품 정보 */
+        .product-extra {
+            width: 180px;
+
+            margin-left: 30px;
+
+            font-size: 13px;
+        }
+
+/* 페이지네이션 */
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    margin-top: 30px;
+}
+    .page-btn {
+        text-decoration: none;
+        color: #666;
+
+        font-size: 14px;
+
+        margin: 0 10px;
+    }
+
+    .page-number {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        width: 30px;
+        height: 30px;
+
+        margin: 0 3px;
+
+        border: 1px solid #ddd;
+
+        text-decoration: none;
+        color: #333;
+
+        font-size: 13px;
+    }
+
+    .page-number.active {
+        background: #333;
+        color: #fff;
+
+        font-weight: bold;
+    }
+
+    .page-number:not(.active):hover {
+        background: #f5f5f5;
+    }
+
