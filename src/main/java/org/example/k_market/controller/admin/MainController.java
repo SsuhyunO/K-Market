@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class MainController {
 
-    @GetMapping({"/admin/main", "/"})
+    @GetMapping({"/admin/main", "/admin"})
     public String main() {
         return "admin/main";
     }
