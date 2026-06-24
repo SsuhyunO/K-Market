@@ -250,28 +250,6 @@
 }
 .slogan-dots .dot.active { background: var(--color-primary); }
 
-.scroll-down-icon-inline {
-    position: absolute;
-    right: 0;
-    bottom: -40px;
-    width: 28px;
-    height: 48px;
-    border: 2px solid var(--color-gray-200);
-    border-radius: 14px;
-    display: flex;
-    align-items: flex-start;
-    justify-content: center;
-    padding-top: 6px;
-}
-.scroll-down-icon-inline::after {
-    content: "";
-    width: 4px;
-    height: 8px;
-    background: var(--color-gray-400);
-    border-radius: 2px;
-    animation: scrollDot 1.5s infinite;
-}
-
 /* =============================================
    ③ 소식과 이야기 최신글 (이미지 3)
    ============================================= */

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>기업문화 - KMarket</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" th:href="@{/css/common.css}">
+  <link rel="stylesheet" th:href="@{/css/company.css}">
+  <link rel="stylesheet" th:href="@{/css/company-culture.css}">
+</head>
+<body>
+
+<!-- ① 메인메뉴: 기업문화 페이지이므로 현재 페이지 메뉴 하이라이트 (active='culture') -->
+<header th:replace="~{fragments/company-header :: header(active='culture')}"></header>
+
+
+<!-- =============================================
+     ② 페이지 랜딩 이미지
+     - 서브 페이지와 어울리는 배경
+     - 서브 페이지명과 적절한 문구
+     - 텍스트 appear 이펙트 (company.css의 heroAppear 애니메이션 재사용)
+     ============================================= -->
+<section class="sub-hero-section">
+  <div class="sub-hero-image-placeholder">🖼️</div>
+
+  <div class="sub-hero-content">
+    <div class="container">
+      <p class="sub-hero-slogan">
+        <span class="highlight">대기업의 안정성</span>과
+        <span class="highlight">스타트업의 혁신성</span>을 함께,<br>
+        케이마켓에서 우리는 성장하고 있어요.
+      </p>
+    </div>
+  </div>
+
+</section>
+
+
+<!-- =============================================
+     ③ 서브 페이지 내용
+     - 적당한 문구와 이미지로 내용 채우기
+     - 힘한(딱딱한) 느낌 들지 않도록 적절한 여백과 구성
+     - 소주제 4개로 나눠 스크롤 가능한 분량으로 구성
+     ============================================= -->
+<section class="sub-page-body">
+  <div class="container">
+
+    <div class="sub-page-intro">
+      <p>케이마켓은 안정성 있게, 혁신성 있게 우리의 문화를 만들어가고 있어요.</p>
+      <p>구성원들은 수평적이고 자율적인 문화 속에서, 익숙함을 넘어서 혁신적인 케이마켓만의 일하는 방식을 만들어가고 있어요.</p>
+    </div>
+
+    <!-- 소주제 1: 수평적 조직문화 -->
+    <article class="culture-block">
+      <div class="culture-block-image">🖼️</div>
+      <div class="culture-block-text">
+        <h3 class="culture-block-title">수평적인 조직문화</h3>
+        <p>케이마켓에는 직급이 아닌 역할로 서로를 부르는 문화가 자리 잡고 있어요. 누구나 자신의 생각을 자유롭게 말할 수 있고, 좋은 의견이라면 직급과 연차에 관계없이 채택됩니다.</p>
+        <p>매주 진행되는 전체 회의에서는 경영진과 구성원이 함께 회사의 방향과 고민을 나누고, 누구나 질문하고 답할 수 있는 자리를 만들어가고 있어요.</p>
+      </div>
+    </article>
+
+    <!-- 소주제 2: 자율과 책임 -->
+    <article class="culture-block reverse">
+      <div class="culture-block-image">🖼️</div>
+      <div class="culture-block-text">
+        <h3 class="culture-block-title">자율과 책임이 함께하는 일</h3>
+        <p>출근 시간과 근무 장소를 스스로 선택할 수 있는 자율근무제를 운영하고 있어요. 정해진 틀보다 일의 결과와 동료와의 신뢰를 더 중요하게 생각해요.</p>
+        <p>그만큼 각자가 자신의 일에 책임을 지는 문화도 함께 자라고 있어요. 자율은 책임이 뒤따를 때 비로소 의미가 있다는 걸, 우리는 함께 배워가고 있어요.</p>
+      </div>
+    </article>
+
+    <!-- 소주제 3: 성장 지원 -->
+    <article class="culture-block">
+      <div class="culture-block-image">🖼️</div>
+      <div class="culture-block-text">
+        <h3 class="culture-block-title">함께 성장하는 케이마켓</h3>
+        <p>구성원 한 명 한 명의 성장이 회사의 성장이라고 믿어요. 그래서 직무와 무관하게 자유롭게 신청할 수 있는 교육 지원 제도와, 분기마다 진행되는 사내 스터디 모임을 운영하고 있어요.</p>
+        <p>실패해도 괜찮은 환경을 만들기 위해 노력해요. 작은 실험과 도전을 응원하고, 그 경험에서 배운 것을 동료들과 나누는 문화를 소중하게 가꿔가고 있어요.</p>
+      </div>
+    </article>
+
+    <!-- 소주제 4: 일하는 방식 -->
+    <article class="culture-block reverse">
+      <div class="culture-block-image">🖼️</div>
+      <div class="culture-block-text">
+        <h3 class="culture-block-title">케이마켓이 일하는 방식</h3>
+        <p>빠르게 변화하는 이커머스 환경에서, 우리는 작은 단위로 자주 실행하고 빠르게 점검하는 방식으로 일해요. 큰 계획보다 지금 할 수 있는 다음 한 걸음에 집중해요.</p>
+        <p>대기업이 가진 안정적인 인프라와 스타트업의 민첩함을 함께 가져가려는 시도가, 지금의 케이마켓을 만들어가고 있어요.</p>
+      </div>
+    </article>
+
+    <div class="sub-page-outro">
+      <p>그렇게 굵은 점을 하나씩 찍어가며, 우리는 케이마켓과 함께 성장하고 있어요.</p>
+      <p>대기업의 안정적인 수익 구조 위에서도, 더 나은 운영 방식을 끊임없이 고민하는 케이마켓이 되려고 해요.</p>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- 회사소개 전용 푸터 -->
+<footer th:replace="~{fragments/company-footer :: footer}"></footer>
+
+
+<script th:src="@{/js/company.js}"></script>
+</body>
+</html>

@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>미디어 - KMarket</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/common.css}">
+    <link rel="stylesheet" th:href="@{/css/company.css}">
+    <link rel="stylesheet" th:href="@{/css/media.css}">
+</head>
+<body>
+
+<!-- ① 메인메뉴: 미디어 페이지 하이라이트 -->
+<header th:replace="~{fragments/company-header :: header(active='media')}"></header>
+
+
+<section class="media-page">
+    <div class="container">
+
+        <h1 class="media-title">미디어 속 케이마켓을 소개합니다 !</h1>
+        <p class="media-desc">더 다양한 Kmarket 영상을 소개합니다.</p>
+
+        <!-- ② 유튜브 영상 목록: 회사를 홍보할 수 있는 영상, 유튜브 플랫폼 활용, 실시간 스트리밍 서비스 제공 -->
+        <div class="media-list">
+
+            <!-- mediaList가 없을 때 placeholder 6개 (스크롤 가능한 분량) -->
+            <th:block th:if="${mediaList == null or #lists.isEmpty(mediaList)}">
+
+                <a href="#" class="media-item" target="_blank" rel="noopener">
+                    <div class="media-thumb">
+                        <span class="play-icon">▶</span>
+                    </div>
+                    <div class="media-info">
+                        <div class="media-item-title"># 영상제목 1</div>
+                        <div class="media-item-sub"># 케이마켓 신제품 언박싱 | EP.201 | 매주 화요일 업로드</div>
+                    </div>
+                </a>
+
+                <a href="#" class="media-item" target="_blank" rel="noopener">
+                    <div class="media-thumb">
+                        <span class="play-icon">▶</span>
+                    </div>
+                    <div class="media-info">
+                        <div class="media-item-title"># 영상제목 2</div>
+                        <div class="media-item-sub"># 케이마켓 물류센터 24시 풀착장 브이로그 | EP.200</div>
+                    </div>
+                </a>
+
+                <a href="#" class="media-item" target="_blank" rel="noopener">
+                    <div class="media-thumb">
+                        <span class="play-icon">▶</span>
+                    </div>
+                    <div class="media-info">
+                        <div class="media-item-title"># 영상제목 3</div>
+                        <div class="media-item-sub"># MD가 직접 고른 이번 주 인기상품 TOP 5 | EP.199</div>
+                    </div>
+                </a>
+
+                <a href="#" class="media-item" target="_blank" rel="noopener">
+                    <div class="media-thumb">
+                        <span class="play-icon">▶</span>
+                    </div>
+                    <div class="media-info">
+                        <div class="media-item-title"># 영상제목 4</div>
+                        <div class="media-item-sub"># 케이마켓 라이브 커머스, 실시간 스트리밍 다시보기 | EP.198</div>
+                    </div>
+                </a>
+
+                <a href="#" class="media-item" target="_blank" rel="noopener">
+                    <div class="media-thumb">
+                        <span class="play-icon">▶</span>
+                    </div>
+                    <div class="media-info">
+                        <div class="media-item-title"># 영상제목 5</div>
+                        <div class="media-item-sub"># 신입사원이 직접 체험하는 케이마켓 하루 일과 | EP.197</div>
+                    </div>
+                </a>
+
+                <a href="#" class="media-item" target="_blank" rel="noopener">
+                    <div class="media-thumb">
+                        <span class="play-icon">▶</span>
+                    </div>
+                    <div class="media-info">
+                        <div class="media-item-title"># 영상제목 6</div>
+                        <div class="media-item-sub"># 케이마켓 사옥 투어, 일하는 공간을 소개합니다 | EP.196</div>
+                    </div>
+                </a>
+
+            </th:block>
+
+            <!-- 실제 데이터: 유튜브 영상 목록 출력 -->
+            <a th:each="video, stat : ${mediaList}"
+               th:href="${video.youtubeUrl}"
+               class="media-item" target="_blank" rel="noopener">
+                <div class="media-thumb">
+                    <img th:if="${video.thumbnailUrl}" th:src="${video.thumbnailUrl}" alt="">
+                    <span class="play-icon">▶</span>
+                </div>
+                <div class="media-info">
+                    <div class="media-item-title" th:text="'# 영상제목 ' + (${stat.index} + 1)"># 영상제목</div>
+                    <div class="media-item-sub" th:text="${video.subtitle}">부제목</div>
+                </div>
+            </a>
+
+        </div>
+
+    </div>
+</section>
+
+
+<!-- 회사소개 전용 푸터 -->
+<footer th:replace="~{fragments/company-footer :: footer}"></footer>
+
+
+<script th:src="@{/js/company.js}"></script>
+</body>
+</html>
