@@ -1,0 +1,147 @@
+/* =============================================
+   KMarket - company-culture.css
+   기업문화 서브페이지 전용 스타일
+   (company.css의 히어로/공통 스타일을 재사용하고
+    서브페이지에 필요한 부분만 추가)
+   ============================================= */
+
+/* ─────────────────────────────────────────────
+   ② 서브페이지 랜딩 이미지
+   메인 히어로보다 낮은 높이로 — 서브페이지 톤에 맞춤
+───────────────────────────────────────────── */
+.sub-hero-section {
+    position: relative;
+    width: 100%;
+    height: 420px;
+    overflow: hidden;
+    background: var(--color-gray-100);
+}
+.sub-hero-image-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #f4f4f4 0%, #e8e8e8 100%);
+    color: var(--color-gray-400);
+    font-size: 56px;
+}
+
+/* 슬로건 텍스트 (③) — 메인과 동일한 하이라이트 + appear 효과 재사용 */
+.sub-hero-content {
+    position: absolute;
+    bottom: 56px;
+    left: 0;
+    width: 100%;
+}
+
+.sub-hero-slogan {
+    font-size: 26px;
+    font-weight: 800;
+    line-height: 1.5;
+    margin-bottom: 20px;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: heroAppear 0.8s ease forwards;
+    animation-delay: 0.2s;
+}
+.sub-hero-slogan .highlight {
+    background: var(--color-dark);
+    color: var(--color-white);
+    padding: 2px 8px;
+    border-radius: 3px;
+}
+
+/* ─────────────────────────────────────────────
+   ③ 서브 페이지 본문 내용
+   적당한 문구와 함께 채워지는 영역, 힘한 느낌 안 들도록 여백 적절히
+───────────────────────────────────────────── */
+.sub-page-body {
+    padding: 56px 0 80px;
+}
+
+/* 인트로 / 아웃트로 텍스트 */
+.sub-page-intro,
+.sub-page-outro {
+    font-size: 15px;
+    color: var(--color-gray-700, var(--color-gray-900));
+    line-height: 2;
+    max-width: 720px;
+}
+.sub-page-intro p,
+.sub-page-outro p {
+    margin-bottom: 8px;
+}
+.sub-page-intro {
+    margin-bottom: 56px;
+}
+.sub-page-outro {
+    margin-top: 64px;
+    padding-top: 40px;
+    border-top: 1px solid var(--color-gray-200);
+}
+
+/* 소주제 블록: 이미지 + 텍스트 좌우 배치, 번갈아 reverse */
+.culture-block {
+    display: flex;
+    align-items: center;
+    gap: 48px;
+    margin-bottom: 72px;
+}
+.culture-block.reverse {
+    flex-direction: row-reverse;
+}
+
+.culture-block-image {
+    flex: 0 0 320px;
+    aspect-ratio: 4 / 3;
+    border: 1px solid var(--color-gray-200);
+    border-radius: var(--radius-md);
+    background: var(--color-gray-100);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-gray-400);
+    font-size: 40px;
+}
+
+.culture-block-text {
+    flex: 1;
+    min-width: 0;
+}
+.culture-block-title {
+    font-size: 19px;
+    font-weight: 700;
+    color: var(--color-gray-900);
+    margin-bottom: 16px;
+}
+.culture-block-text p {
+    font-size: 14px;
+    color: var(--color-gray-600);
+    line-height: 1.9;
+    margin-bottom: 14px;
+}
+.culture-block-text p:last-child {
+    margin-bottom: 0;
+}
+
+/* =============================================
+   반응형
+   ============================================= */
+@media (max-width: 900px) {
+    .sub-hero-section { height: 300px; }
+    .sub-hero-slogan { font-size: 19px; }
+    .sub-page-intro,
+    .sub-page-outro { font-size: 14px; }
+
+    .culture-block,
+    .culture-block.reverse {
+        flex-direction: column;
+        gap: 20px;
+        margin-bottom: 48px;
+    }
+    .culture-block-image {
+        flex: none;
+        width: 100%;
+    }
+}

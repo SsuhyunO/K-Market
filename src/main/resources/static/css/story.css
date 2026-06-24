@@ -1,0 +1,102 @@
+/* =============================================
+   KMarket - story.css
+   소식과 이야기 페이지 전용 스타일
+   ============================================= */
+
+.story-page {
+    padding: 56px 0 80px;
+}
+
+.story-title {
+    font-size: 26px;
+    font-weight: 800;
+    color: var(--color-gray-900);
+    line-height: 1.5;
+    margin-bottom: 36px;
+}
+.story-subtitle {
+    display: block;
+    font-size: 16px;
+    font-weight: 400;
+    color: var(--color-gray-600);
+    margin-top: 8px;
+}
+
+/* ② 카테고리 메뉴 */
+.story-category {
+    display: flex;
+    gap: 24px;
+    padding-bottom: 18px;
+    border-bottom: 1px solid var(--color-gray-200);
+    margin-bottom: 32px;
+}
+.story-category a {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--color-gray-600);
+    transition: color var(--transition);
+}
+.story-category a:hover { color: var(--color-gray-900); }
+.story-category a.active {
+    color: var(--color-primary);
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 6px;
+}
+
+/* ③ 블로그 카드 그리드 */
+.story-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 28px;
+}
+
+.story-card {
+    display: block;
+    cursor: pointer;
+}
+.story-card-thumb {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    border: 1px solid var(--color-gray-200);
+    border-radius: var(--radius-md);
+    background: var(--color-gray-100);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-gray-400);
+    font-size: 40px;
+    overflow: hidden;
+    margin-bottom: 16px;
+    transition: box-shadow var(--transition);
+}
+.story-card-thumb img { width: 100%; height: 100%; object-fit: cover; }
+.story-card:hover .story-card-thumb {
+    box-shadow: var(--shadow-card);
+}
+
+.story-card-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--color-gray-900);
+    line-height: 1.5;
+    margin-bottom: 8px;
+}
+.story-card-desc {
+    font-size: 13px;
+    color: var(--color-gray-400);
+    line-height: 1.6;
+}
+
+/* =============================================
+   반응형
+   ============================================= */
+@media (max-width: 900px) {
+    .story-grid { grid-template-columns: repeat(2, 1fr); gap: 18px; }
+    .story-category { gap: 14px; flex-wrap: wrap; }
+    .story-title { font-size: 21px; }
+}
+
+@media (max-width: 580px) {
+    .story-grid { grid-template-columns: 1fr; }
+}

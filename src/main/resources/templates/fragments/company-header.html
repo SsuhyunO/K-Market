@@ -8,7 +8,7 @@
 
     <!-- ① CI 로고 -->
     <div class="logo">
-      <a th:href="@{/company/index}">
+      <a th:href="@{/}">
         <div>
           <div class="logo-text">K<span style="color:#222;font-weight:400;">market</span></div>
           <div class="logo-sub">㈜케이마켓</div>
@@ -22,10 +22,10 @@
          th:class="${active == 'home'} ? 'active' : ''">HOME</a>
       <a th:href="@{/company/culture}"
          th:class="${active == 'culture'} ? 'active' : ''">기업문화</a>
-      <a th:href="@{/company/news}"
-         th:class="${active == 'news'} ? 'active' : ''">소식과 이야기</a>
-      <a th:href="@{/company/career}"
-         th:class="${active == 'career'} ? 'active' : ''">채용</a>
+      <a th:href="@{/company/story}"
+         th:class="${active == 'story'} ? 'active' : ''">소식과 이야기</a>
+      <a th:href="@{/company/recruit}"
+         th:class="${active == 'recruit'} ? 'active' : ''">채용</a>
       <a th:href="@{/company/media}"
          th:class="${active == 'media'} ? 'active' : ''">미디어</a>
     </nav>

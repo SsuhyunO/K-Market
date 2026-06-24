@@ -28,10 +28,27 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // 4. 상품 카드 클릭 이벤트 바인딩
     initProductCards();
+
+    // 5. 외부 페이지에서 메뉴를 클릭해 넘어왔을 때 스크롤 위치 보정
+    handleHashScroll();
 });
 
 
 /* ── 기능 함수 정의들 ── */
+
+// 외부 페이지에서 해시(#) 링크로 넘어왔을 때 헤더에 가려지지 않게 스크롤 보정
+function handleHashScroll() {
+    if (window.location.hash) {
+        const target = document.querySelector(window.location.hash);
+        if (target) {
+            // 브라우저의 기본 점프가 끝난 직후에 부드럽게 위치를 조정합니다.
+            setTimeout(() => {
+                const offset = target.getBoundingClientRect().top + window.scrollY - 250;
+                window.scrollTo({ top: offset, behavior: 'smooth' });
+            }, 100);
+        }
+    }
+}
 
 // 메인 섹션 GNB 탭 이동 및 스크롤 감지
 function initNavTabs() {
@@ -49,6 +66,12 @@ function initNavTabs() {
     // 메인 페이지가 아니라 섹션 자체가 없는 페이지라면 스크롤 기능은 생략
     const hasSections = Object.values(sections).some(s => s !== null);
     if (!hasSections) return;
+
+    // ✨ 추가된 부분: 처음 메인 화면에 들어왔을 때(해시가 없을 때) 기본으로 '히트상품' 탭 활성화
+    if (!window.location.hash) {
+        const defaultTab = Array.from(tabs).find(t => t.dataset.section === 'hit');
+        if (defaultTab) defaultTab.classList.add('active');
+    }
 
     tabs.forEach(tab => {
         tab.addEventListener('click', (e) => {

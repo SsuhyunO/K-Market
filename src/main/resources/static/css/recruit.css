@@ -1,0 +1,111 @@
+/* =============================================
+   KMarket - recruit.css
+   채용 페이지 전용 스타일
+   ============================================= */
+
+.recruit-page {
+    padding: 56px 0 80px;
+}
+
+.recruit-title {
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--color-gray-900);
+    line-height: 1.6;
+    margin-bottom: 24px;
+}
+
+.recruit-desc {
+    font-size: 14px;
+    color: var(--color-gray-600);
+    line-height: 1.9;
+    margin-bottom: 40px;
+}
+
+/* ② 채용 공고 게시판 테이블 */
+.recruit-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 32px;
+}
+.recruit-table thead {
+    border-top: 2px solid var(--color-gray-900);
+    border-bottom: 1px solid var(--color-gray-200);
+    background: var(--color-gray-100);
+}
+.recruit-table th {
+    padding: 14px 8px;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--color-gray-900);
+    text-align: center;
+}
+.recruit-table tbody tr {
+    border-bottom: 1px solid var(--color-gray-200);
+    transition: background var(--transition);
+}
+.recruit-table tbody tr:hover {
+    background: var(--color-gray-100);
+    cursor: pointer;
+}
+.recruit-table td {
+    padding: 16px 8px;
+    font-size: 13px;
+    color: var(--color-gray-700, var(--color-gray-900));
+    text-align: center;
+}
+
+.status {
+    display: inline-block;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 4px 10px;
+    border-radius: 12px;
+}
+.status.open {
+    background: #fff1ee;
+    color: var(--color-primary);
+}
+.status.closed {
+    background: var(--color-gray-100);
+    color: var(--color-gray-400);
+}
+
+/* 페이지네이션 */
+.recruit-pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 14px;
+}
+.recruit-pagination a {
+    font-size: 14px;
+    color: var(--color-gray-600);
+    transition: color var(--transition);
+}
+.recruit-pagination .page-num.active {
+    color: var(--color-primary);
+    font-weight: 700;
+}
+.recruit-pagination a:hover { color: var(--color-primary); }
+.recruit-pagination .page-nav {
+    font-weight: 600;
+}
+
+/* =============================================
+   반응형
+   ============================================= */
+@media (max-width: 900px) {
+    .recruit-title { font-size: 18px; }
+    .recruit-desc { font-size: 13px; }
+    .recruit-table { font-size: 12px; }
+    .recruit-table th,
+    .recruit-table td { padding: 10px 4px; }
+}
+
+@media (max-width: 580px) {
+    /* 좁은 화면에서는 가로 스크롤로 테이블 유지 */
+    .recruit-table-wrap {
+        overflow-x: auto;
+    }
+}

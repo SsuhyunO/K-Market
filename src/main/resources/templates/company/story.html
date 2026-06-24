@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>소식과 이야기 - KMarket</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/common.css}">
+    <link rel="stylesheet" th:href="@{/css/company.css}">
+    <link rel="stylesheet" th:href="@{/css/story.css}">
+</head>
+<body>
+
+<!-- ① 메인메뉴: 소식과 이야기 페이지 하이라이트 -->
+<header th:replace="~{fragments/company-header :: header(active='story')}"></header>
+
+
+<section class="story-page">
+    <div class="container">
+
+        <!-- 페이지 타이틀 -->
+        <h1 class="story-title">
+            케이마켓을 더 알고 싶다면!<br>
+            <span class="story-subtitle">우리의 다양한 이야기를 소개합니다</span>
+        </h1>
+
+        <!-- ② 카테고리: 블로그 포스팅 주제별 메뉴 -->
+        <nav class="story-category">
+            <a th:href="@{/company/story}"
+               th:class="${category == null or category == 'all'} ? 'active' : ''">전체보기</a>
+            <a th:href="@{/company/story(category='culture')}"
+               th:class="${category == 'culture'} ? 'active' : ''">기업문화</a>
+            <a th:href="@{/company/story(category='interview')}"
+               th:class="${category == 'interview'} ? 'active' : ''">인터뷰</a>
+            <a th:href="@{/company/story(category='career')}"
+               th:class="${category == 'career'} ? 'active' : ''">채용 대</a>
+            <a th:href="@{/company/story(category='press')}"
+               th:class="${category == 'press'} ? 'active' : ''">보도자료</a>
+            <a th:href="@{/company/story(category='esg')}"
+               th:class="${category == 'esg'} ? 'active' : ''">ESG</a>
+        </nav>
+
+        <!-- ③ 블로그 포스팅 카드 (UI 형식) -->
+        <div class="story-grid">
+
+            <!-- storyList가 없거나 비어있을 때 placeholder 9개 (스크롤 가능한 분량) -->
+            <th:block th:if="${storyList == null or #lists.isEmpty(storyList)}">
+
+                <a href="#" class="story-card">
+                    <div class="story-card-thumb">🖼️</div>
+                    <div class="story-card-body">
+                        <div class="story-card-title">봄 스타일링 완성시킬 데님 브랜드 '와르' 75% 할인</div>
+                        <div class="story-card-desc">케이마켓에서 선보이는 인기 브랜드는?</div>
+                    </div>
+                </a>
+
+                <a href="#" class="story-card">
+                    <div class="story-card-thumb">🖼️</div>
+                    <div class="story-card-body">
+                        <div class="story-card-title">신입 MD가 말하는 케이마켓 입사 6개월의 기록</div>
+                        <div class="story-card-desc">현직 MD가 직접 전하는 솔직한 적응기</div>
+                    </div>
+                </a>
+
+                <a href="#" class="story-card">
+                    <div class="story-card-thumb">🖼️</div>
+                    <div class="story-card-body">
+                        <div class="story-card-title">케이마켓, 친환경 포장재 도입으로 탄소배출 30% 감축</div>
+                        <div class="story-card-desc">지속가능한 유통을 위한 케이마켓의 노력</div>
+                    </div>
+                </a>
+
+                <a href="#" class="story-card">
+                    <div class="story-card-thumb">🖼️</div>
+                    <div class="story-card-body">
+                        <div class="story-card-title">개발팀 인터뷰: 추천 알고리즘은 어떻게 만들어질까</div>
+                        <div class="story-card-desc">데이터로 고객을 이해하는 케이마켓의 방법</div>
+                    </div>
+                </a>
+
+                <a href="#" class="story-card">
+                    <div class="story-card-thumb">🖼️</div>
+                    <div class="story-card-body">
+                        <div class="story-card-title">여름 휴가철 대비, 인기 여행용품 모음전 오픈</div>
+                        <div class="story-card-desc">7월 한 달, 휴가 준비 끝내는 특가전</div>
+                    </div>
+                </a>
+
+                <a href="#" class="story-card">
+                    <div class="story-card-thumb">🖼️</div>
+                    <div class="story-card-body">
+                        <div class="story-card-title">케이마켓, 중소상공인 입점 지원 프로그램 확대</div>
+                        <div class="story-card-desc">함께 성장하는 상생 플랫폼을 위한 발걸음</div>
+                    </div>
+                </a>
+
+                <a href="#" class="story-card">
+                    <div class="story-card-thumb">🖼️</div>
+                    <div class="story-card-body">
+                        <div class="story-card-title">물류센터 견학기: 주문부터 배송까지 24시간</div>
+                        <div class="story-card-desc">눈으로 직접 본 케이마켓의 빠른 배송 비밀</div>
+                    </div>
+                </a>
+
+                <a href="#" class="story-card">
+                    <div class="story-card-thumb">🖼️</div>
+                    <div class="story-card-body">
+                        <div class="story-card-title">[보도자료] 케이마켓, 2025년 거래액 전년 대비 32% 증가</div>
+                        <div class="story-card-desc">온라인 종합쇼핑몰 시장 내 성장세 지속</div>
+                    </div>
+                </a>
+
+                <a href="#" class="story-card">
+                    <div class="story-card-thumb">🖼️</div>
+                    <div class="story-card-body">
+                        <div class="story-card-title">디자이너가 직접 소개하는 케이마켓 UI 개편 이야기</div>
+                        <div class="story-card-desc">더 쉽고 빠른 쇼핑 경험을 위한 고민들</div>
+                    </div>
+                </a>
+
+            </th:block>
+
+            <!-- 실제 데이터 -->
+            <a th:each="story : ${storyList}"
+               th:href="@{/company/story/{id}(id=${story.id})}"
+               class="story-card">
+                <div class="story-card-thumb">
+                    <img th:if="${story.thumbnailUrl}" th:src="${story.thumbnailUrl}" alt="">
+                    <span th:unless="${story.thumbnailUrl}">🖼️</span>
+                </div>
+                <div class="story-card-body">
+                    <div class="story-card-title" th:text="${story.title}">포스팅 제목</div>
+                    <div class="story-card-desc" th:text="${story.summary}">포스팅 요약</div>
+                </div>
+            </a>
+
+        </div>
+
+    </div>
+</section>
+
+
+<!-- 회사소개 전용 푸터 -->
+<footer th:replace="~{fragments/company-footer :: footer}"></footer>
+
+
+<script th:src="@{/js/company.js}"></script>
+</body>
+</html>
