@@ -1,10 +1,108 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>케이마켓 고객센터 - 공지사항 보기</title>
+    <link rel="stylesheet" th:href="@{/css/cs/index.css}">
 </head>
 <body>
+<div id="wrapper">
 
+    <header>
+        <div class="header-top">
+            <a href="#">로그인</a>
+            <a href="#">회원가입</a>
+            <a href="#">마이페이지</a>
+            <a href="#">장바구니</a>
+        </div>
+
+        <div class="logo-area">
+            <a href="./index.html" class="logo-box">CI ( 로고 )</a>
+        </div>
+    </header>
+
+    <div class="breadcrumb">
+        홈 &gt; 공지사항
+    </div>
+
+    <main>
+        <div class="cs-flex">
+
+            <aside class="cs-aside">
+                <h2>공지사항</h2>
+                <ul>
+                    <li><a href="#" class="active">전체</a></li>
+                    <li><a href="#">고객서비스</a></li>
+                    <li><a href="#">안전거래</a></li>
+                    <li><a href="#">위해상품</a></li>
+                    <li><a href="#">이벤트당첨</a></li>
+                </ul>
+            </aside>
+
+            <section class="cs-content">
+                <h2>전체</h2>
+                <p class="desc">공지사항 전체 내용입니다.</p>
+
+                <div class="view-box">
+                    <div class="view-title">
+                        [ 안내 ] 해외결제사 청 문자주의
+                    </div>
+
+                    <div class="view-date">
+                        2022.10.31
+                    </div>
+
+                    <div class="view-content">
+                        안녕하세요. 케이마켓입니다.<br><br>
+
+                        케이마켓 해외직구를 이용해주시는 고객님께 안내드립니다.<br>
+                        최근 해외결제사를 사칭한 문자 메시지로 인한 피해가 발생하고 있습니다.<br><br>
+
+                        출처가 불분명한 문자 메시지의 링크는 클릭하지 마시고,
+                        결제 내역은 반드시 케이마켓 마이페이지 또는 고객센터를 통해 확인해주시기 바랍니다.<br><br>
+
+                        감사합니다.
+                    </div>
+                </div>
+
+                <div class="btn-area">
+                    <a href="./notice-list.html" class="btn btn-gray">목록</a>
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-menu">
+            <a href="#">회사소개</a>
+            <a href="#">서비스이용약관</a>
+            <a href="#">개인정보처리방침</a>
+            <a href="#">전자금융거래약관</a>
+        </div>
+
+        <div class="footer-info">
+            <div class="footer-logo">이미지</div>
+
+            <div class="company-info">
+                <strong>(주)케이마켓</strong><br>
+                부산광역시 부산진구 중앙대로 300<br>
+                대표이사 : 홍길동<br>
+                사업자등록번호 : 123-45-12345
+            </div>
+
+            <div class="customer-info">
+                <h3>고객센터</h3>
+                Tel : 1234-5678<br>
+                평일 09:00 ~ 18:00
+            </div>
+        </div>
+    </footer>
+
+    <div class="copyright">
+        Copyright © 2025 김철학 All rights reserved.
+    </div>
+
+</div>
 </body>
 </html>

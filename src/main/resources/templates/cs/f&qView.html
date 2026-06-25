@@ -2,7 +2,7 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>케이마켓 고객센터 - 문의글 작성</title>
+    <title>케이마켓 고객센터 - 자주하는 질문 보기</title>
     <link rel="stylesheet" th:href="@{/css/cs/index.css}">
 </head>
 <body>
@@ -22,14 +22,14 @@
     </header>
 
     <div class="breadcrumb">
-        홈 &gt; 문의하기
+        홈 &gt; 자주하는 질문
     </div>
 
     <main>
         <div class="cs-flex">
 
             <aside class="cs-aside">
-                <h2>문의하기</h2>
+                <h2>자주하는 질문</h2>
                 <ul>
                     <li><a href="#" class="active">회원</a></li>
                     <li><a href="#">쿠폰 / 이벤트</a></li>
@@ -43,47 +43,28 @@
 
             <section class="cs-content">
                 <h2>회원</h2>
-                <p class="desc">회원 관련 문의 내용입니다.</p>
+                <p class="desc">회원 관련 자주하는 질문입니다.</p>
 
-                <form action="#" method="post" class="write-form">
-
-                    <div class="form-row">
-                        <label for="type1">문의유형</label>
-
-                        <select id="type1" name="type1">
-                            <option value="">1차 선택</option>
-                            <option value="member">회원</option>
-                            <option value="coupon">쿠폰 / 이벤트</option>
-                            <option value="order">주문 / 결제</option>
-                            <option value="delivery">배송</option>
-                            <option value="cancel">취소 / 반품 / 환불</option>
-                        </select>
-
-                        <select id="type2" name="type2">
-                            <option value="">2차 선택</option>
-                            <option value="join">가입</option>
-                            <option value="leave">탈퇴</option>
-                            <option value="info">회원정보</option>
-                            <option value="login">로그인</option>
-                        </select>
+                <div class="view-box">
+                    <div class="view-title">
+                        <span class="q-mark">Q.</span>
+                        개인회원과 법인회원에 차이가 있나요?
                     </div>
 
-                    <div class="form-row">
-                        <label for="title">제목</label>
-                        <input type="text" id="title" name="title" placeholder="제목을 입력하세요.">
-                    </div>
+                    <div class="view-content">
+                        개인회원은 일반 구매 고객을 위한 회원 유형입니다.<br>
+                        법인회원은 사업자 또는 법인 명의로 상품을 구매하거나 관리하기 위한 회원 유형입니다.<br><br>
 
-                    <div class="form-row">
-                        <label for="content">내용</label>
-                        <textarea id="content" name="content" placeholder="내용을 입력하세요."></textarea>
-                    </div>
+                        개인회원에서 법인회원으로 직접 전환은 불가능할 수 있으며,
+                        법인회원 이용이 필요한 경우 별도의 법인회원 가입 절차를 진행해야 합니다.<br><br>
 
-                    <div class="btn-area">
-                        <a href="./qna-list.html" class="btn btn-gray">취소하기</a>
-                        <button type="submit" class="btn btn-blue">등록하기</button>
+                        자세한 내용은 고객센터로 문의해주시기 바랍니다.
                     </div>
+                </div>
 
-                </form>
+                <div class="btn-area">
+                    <a href="./faq-list.html" class="btn btn-gray">목록</a>
+                </div>
             </section>
 
         </div>

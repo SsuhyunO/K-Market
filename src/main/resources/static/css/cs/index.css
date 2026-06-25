@@ -1,6 +1,7 @@
-/* ================================
-   K-Market 고객센터 공통 CSS
-================================ */
+/* =========================
+   cs/index.css
+   케이마켓 고객센터 메인
+========================= */
 
 /* 기본 초기화 */
 * {
@@ -10,44 +11,51 @@
 }
 
 body {
-    font-family: "Noto Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
-    font-size: 13px;
+    font-family: "Arial", "맑은 고딕", "Malgun Gothic", sans-serif;
+    font-size: 12px;
     color: #333;
     background-color: #fff;
 }
 
-ul, li {
+ul,
+li {
     list-style: none;
 }
 
 a {
+    color: inherit;
     text-decoration: none;
-    color: #333;
 }
 
 #wrapper {
-    width: 100%;
+    width: 760px;
+    margin: 0 auto;
+    background-color: #fff;
 }
 
-/* ================================
-   Header
-================================ */
+
+/* =========================
+   헤더
+========================= */
 
 header {
-    width: 1000px;
-    margin: 0 auto;
+    width: 100%;
+    border: 1px solid #d9d9d9;
+    border-bottom: none;
+    margin-top: 20px;
 }
 
 .header-top {
-    height: 35px;
-    line-height: 35px;
+    height: 32px;
+    padding: 8px 12px 0 0;
     text-align: right;
-    font-size: 12px;
+    font-size: 11px;
+    color: #2f5597;
 }
 
 .header-top a {
-    color: #1f5fae;
-    margin-left: 10px;
+    margin-left: 8px;
+    color: #2f5597;
 }
 
 .header-top a:hover {
@@ -55,107 +63,127 @@ header {
 }
 
 .logo-area {
-    width: 100%;
-    height: 85px;
-    border: 1px solid #ddd;
-    display: flex;
-    align-items: center;
-    padding-left: 15px;
+    height: 90px;
+    padding: 18px 0 0 14px;
+    border-top: 1px solid #eee;
 }
 
 .logo-box {
-    width: 190px;
-    height: 60px;
-    border: 1px solid #ddd;
     display: flex;
-    align-items: center;
     justify-content: center;
-    color: #18a638;
+    align-items: center;
+    width: 165px;
+    height: 55px;
+    border: 1px solid #dcdcdc;
+    color: #22a33a;
     font-weight: bold;
     background-color: #fff;
 }
 
-/* ================================
-   고객센터 메인
-================================ */
+
+/* =========================
+   메인 공통
+========================= */
 
 .cs-main {
-    width: 1000px;
-    margin: 0 auto;
-    min-height: 600px;
-}
-
-.cs-index {
-    padding: 30px 80px 0;
+    width: 100%;
+    min-height: 620px;
+    padding: 0 78px 30px 78px;
+    border-left: 1px solid #d9d9d9;
+    border-right: 1px solid #d9d9d9;
 }
 
 .cs-index-title {
+    padding-top: 28px;
+    margin-bottom: 26px;
     text-align: center;
-    font-size: 24px;
-    margin-bottom: 35px;
+    font-size: 20px;
     font-weight: bold;
+    color: #111;
 }
 
 .cs-index-title span {
-    color: #18a638;
+    color: #18a13a;
 }
 
-/* ================================
-   공통 섹션
-================================ */
-
 .cs-section {
-    margin-bottom: 45px;
+    width: 100%;
+    margin-bottom: 28px;
 }
 
 .cs-section-title {
+    position: relative;
     display: flex;
     align-items: center;
-    height: 35px;
-    border-bottom: 1px solid #bbb;
-    margin-bottom: 12px;
-}
-
-.num-badge {
-    width: 24px;
-    height: 24px;
-    background-color: red;
-    color: #fff;
-    border-radius: 50%;
-
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-
-    font-size: 12px;
-    font-weight: bold;
-    margin-right: 8px;
+    height: 28px;
+    border-bottom: 1px solid #cfcfcf;
 }
 
 .cs-section-title h3 {
-    font-size: 18px;
+    margin-left: 8px;
+    font-size: 16px;
     font-weight: bold;
+    color: #111;
+}
+
+.num-badge {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: 21px;
+    height: 21px;
+    border-radius: 50%;
+    background-color: #ff0000;
+    color: #fff;
+    font-size: 13px;
+    font-weight: bold;
+    box-shadow: 0 0 5px rgba(255, 0, 0, 0.45);
 }
 
 .more {
-    margin-left: auto;
-    font-size: 12px;
+    position: absolute;
+    right: 0;
+    top: 6px;
+    padding-right: 18px;
+    font-size: 11px;
     color: #333;
 }
 
-.more:hover {
-    text-decoration: underline;
+.more::after {
+    content: "›";
+    position: absolute;
+    right: 0;
+    top: -1px;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: 13px;
+    height: 13px;
+    border-radius: 50%;
+    background-color: #2c7df0;
+    color: #fff;
+    font-size: 12px;
+    font-weight: bold;
 }
 
-/* ================================
-   공지사항 미리보기
-================================ */
+
+/* =========================
+   공지사항
+========================= */
+
+.notice-preview {
+    padding: 12px 0 0 22px;
+}
 
 .notice-preview li {
-    height: 25px;
-    line-height: 25px;
-    padding-left: 35px;
-    font-size: 13px;
+    position: relative;
+    height: 24px;
+    line-height: 24px;
+    font-size: 12px;
+}
+
+.notice-preview li a {
+    color: #222;
 }
 
 .notice-preview li a:hover {
@@ -163,87 +191,293 @@ header {
 }
 
 .notice-preview .date {
-    float: right;
-    color: #777;
-    margin-right: 120px;
+    margin-left: 22px;
+    color: #888;
+    font-size: 11px;
 }
 
-/* ================================
-   자주하는 질문 아이콘
-================================ */
+
+/* =========================
+   자주하는 질문
+========================= */
 
 .faq-icons {
     display: flex;
     justify-content: center;
-    gap: 12px;
-    margin-top: 25px;
+    gap: 10px;
+    padding-top: 28px;
 }
 
 .faq-icon {
-    width: 85px;
+    display: block;
+    width: 62px;
     text-align: center;
-    font-size: 12px;
     color: #333;
 }
 
-.faq-icon:hover p {
-    text-decoration: underline;
-}
-
 .faq-img {
-    width: 65px;
-    height: 65px;
-    border: 1px solid #ddd;
-    margin: 0 auto 8px;
-
     display: flex;
-    align-items: center;
     justify-content: center;
-
-    color: #aaa;
-    font-size: 28px;
+    align-items: center;
+    width: 58px;
+    height: 58px;
+    margin: 0 auto 7px auto;
+    border: 1px solid #d8d8d8;
+    color: #999;
+    font-size: 24px;
     background-color: #fafafa;
 }
 
 .faq-icon p {
-    line-height: 17px;
-    word-break: keep-all;
+    min-height: 28px;
+    line-height: 14px;
+    font-size: 11px;
+    color: #333;
 }
 
-/* ================================
-   문의하기 미리보기
-================================ */
+
+/* =========================
+   문의하기
+========================= */
+
+.qna-preview {
+    padding: 10px 0 0 0;
+}
 
 .qna-preview li {
-    height: 27px;
-    line-height: 27px;
-    padding-left: 35px;
-    font-size: 13px;
+    position: relative;
+    height: 26px;
+    line-height: 26px;
+    border-bottom: 1px solid transparent;
+    font-size: 12px;
+}
+
+.qna-preview li a {
+    display: inline-block;
+    max-width: 395px;
+    color: #222;
 }
 
 .qna-preview li a:hover {
     text-decoration: underline;
 }
 
-.qna-preview .writer {
-    float: right;
-    color: #333;
+.qna-question-mark {
+    display: inline-block;
+    margin-left: 12px;
+    color: #222;
     font-weight: bold;
-    margin-right: 120px;
 }
 
-/* ================================
-   Copyright
-================================ */
+.qna-preview .writer {
+    position: absolute;
+    right: 46px;
+    color: #333;
+    font-size: 11px;
+}
 
-.copyright {
-    width: 1000px;
-    margin: 10px auto 0;
-    height: 30px;
-    line-height: 30px;
+.qna-preview .date {
+    position: absolute;
+    right: 0;
+    color: #888;
+    font-size: 11px;
+}
+
+
+/* 첫 번째 화면 문의하기 미리보기처럼 날짜가 없는 li도 대응 */
+.qna-preview li .writer:only-of-type {
+    right: 0;
+}
+
+
+/* 문의글 작성 */
+.qna-write-area {
+    margin-top: 8px;
+    padding-top: 8px;
+    border-top: 1px solid #d1d1d1;
+}
+
+.qna-write-btn {
+    color: #0066cc;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.qna-write-btn:hover {
+    text-decoration: underline;
+}
+
+
+/* =========================
+   1:1 상담안내
+========================= */
+
+.cs-info-section {
+    margin-top: 20px;
+}
+
+.cs-info-title {
+    margin-bottom: 14px;
+    font-size: 16px;
+    font-weight: bold;
+    color: #111;
+}
+
+.cs-info-box-wrap {
+    display: flex;
+    gap: 28px;
+    justify-content: center;
+}
+
+.cs-info-box {
+    width: 230px;
+    min-height: 138px;
+    padding: 18px 20px;
+    border: 1px solid #e0e0e0;
+    background-color: #fff;
+}
+
+.cs-info-box h4 {
+    margin-bottom: 18px;
+    font-size: 15px;
+    font-weight: bold;
+    color: #222;
+}
+
+.cs-info-content {
+    margin-bottom: 16px;
+}
+
+.cs-info-content p {
+    margin-bottom: 2px;
+    color: #333;
+    font-size: 11px;
+}
+
+.cs-info-content strong {
+    display: inline-block;
+    margin-right: 5px;
+    font-size: 20px;
+    font-weight: 800;
+    color: #111;
+    letter-spacing: -1px;
+}
+
+.cs-info-content span {
+    font-size: 11px;
+    color: #333;
+}
+
+.cs-info-content h5 {
+    margin-top: 10px;
+    font-size: 14px;
+    font-weight: bold;
+    color: #111;
+}
+
+
+/* =========================
+   푸터
+========================= */
+
+footer {
+    width: 100%;
+    border: 1px solid #d9d9d9;
+    border-top: none;
+    background-color: #f4f4f4;
+}
+
+.footer-menu {
+    height: 28px;
+    line-height: 28px;
     text-align: center;
+    border-top: 1px solid #d9d9d9;
+    border-bottom: 1px solid #d9d9d9;
+    background-color: #f7f7f7;
+}
 
+.footer-menu a {
+    margin: 0 18px;
+    font-size: 11px;
+    color: #333;
+}
+
+.footer-menu a:hover {
+    text-decoration: underline;
+}
+
+.footer-content {
+    display: flex;
+    align-items: center;
+    height: 105px;
+    padding: 16px 22px;
+    background-color: #f4f4f4;
+}
+
+.footer-logo {
+    width: 150px;
+}
+
+.footer-img {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 105px;
+    height: 55px;
+    border: 1px solid #ccc;
+    color: #999;
+    background-color: #fff;
+}
+
+.company-info {
+    width: 260px;
+}
+
+.customer-info {
+    flex: 1;
+}
+
+.company-info h4,
+.customer-info h4 {
+    margin-bottom: 6px;
+    font-size: 13px;
+    font-weight: bold;
+    color: #111;
+}
+
+.company-info p,
+.customer-info p {
+    line-height: 17px;
     font-size: 11px;
     color: #555;
-    border-top: 1px solid #eee;
+}
+
+
+/* =========================
+   copyright
+========================= */
+
+.copyright {
+    height: 26px;
+    line-height: 26px;
+    text-align: center;
+    font-size: 11px;
+    color: #555;
+}
+
+
+/* =========================
+   화면 아래로 이어지는 느낌 조정
+========================= */
+
+.cs-index .cs-section:nth-of-type(1) {
+    margin-bottom: 26px;
+}
+
+.cs-index .cs-section:nth-of-type(2) {
+    margin-bottom: 26px;
+}
+
+.cs-index .cs-section:nth-of-type(3) {
+    margin-bottom: 28px;
 }
