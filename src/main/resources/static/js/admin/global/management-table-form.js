@@ -1,8 +1,4 @@
-document.addEventListener("DOMContentLoaded", function () {
-    ManagementTableForm.init();
-});
-
-const ManagementTableForm = (() => {
+export const ManagementTableForm = (() => {
     function init() {
         const form = document.getElementById("management-table-form");
         if (!form) return;
