@@ -4,10 +4,7 @@
     <title>KMarket 기본설정</title>
     <th:block th:replace="~{admin/fragments/global/head::head}"></th:block>
     <link rel="stylesheet" th:href="@{/css/admin/global/section-table.css}"/>
-    <script th:src="@{/js/global/validation.js}"></script>
-    <script th:src="@{/js/global/korean-postposition.js}"></script>
-    <script th:src="@{/js/admin/global/form-validation.js}"></script>
-    <script th:src="@{/js/admin/site-settings.js}"></script>
+    <script type="module" th:src="@{/js/admin/site-settings.js}"></script>
 </head>
 <body>
 <header th:replace="~{admin/fragments/global/header::header}"></header>

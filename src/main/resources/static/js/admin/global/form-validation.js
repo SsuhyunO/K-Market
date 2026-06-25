@@ -1,4 +1,6 @@
-const FormValidation = (() => {
+import { Validation } from '../../global/validation.js';
+
+export const FormValidation = (() => {
     function bind(options) {
         const form = options.form;
         if (!form) return;

@@ -5,7 +5,10 @@
     <th:block th:replace="~{admin/fragments/global/head::head}"></th:block>
     <link rel="stylesheet" th:href="@{/css/admin/global/section-table.css}">
     <link rel="stylesheet" th:href="@{/css/admin/category-management.css}">
-    <script th:src="@{/js/admin/category-management.js}"></script>
+    <script type="module" th:src="@{/js/admin/category-management/category-modifier.js}"></script>
+    <script type="module" th:src="@{/js/admin/category-management/category-observer.js}"></script>
+    <script type="module" th:src="@{/js/admin/category-management/category-listener.js}"></script>
+    <script type="module" th:src="@{/js/admin/category-management/category-management.js}"></script>
 </head>
 <body>
 <header th:replace="~{admin/fragments/global/header::header}"></header>

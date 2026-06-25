@@ -1,3 +1,7 @@
+import { Validation } from '../global/validation.js';
+import { KoreanPostposition } from '../global/korean-postposition.js';
+import { FormValidation } from './global/form-validation.js';
+
 document.addEventListener("DOMContentLoaded", function () {
     initSiteSettingsValidation();
 });

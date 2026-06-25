@@ -1,8 +1,4 @@
-document.addEventListener("DOMContentLoaded", function () {
-    initModals();
-});
-
-function initModals() {
+export function initModals() {
     bindModalOpenButtons();
     bindModalCloseButtons();
     bindModalBackdropClose();
@@ -48,12 +44,12 @@ function bindModalEscapeClose() {
     });
 }
 
-function openModal(modal) {
+export function openModal(modal) {
     modal.classList.remove("hidden");
     modal.dispatchEvent(new CustomEvent("modal:open", { bubbles: true }));
 }
 
-function closeModal(modal) {
+export function closeModal(modal) {
     modal.classList.add("hidden");
     modal.dispatchEvent(new CustomEvent("modal:close", { bubbles: true }));
 }

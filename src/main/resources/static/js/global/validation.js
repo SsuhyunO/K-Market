@@ -1,4 +1,4 @@
-const Validation = (() => {
+export const Validation = (() => {
     function required(value) {
         return {
             valid: normalize(value) !== ""
@@ -50,6 +50,6 @@ const Validation = (() => {
         url,
         greaterThan,
         greaterThanOrEqual,
-        imageMimeType
+        imageMimeType,
     };
 })();
