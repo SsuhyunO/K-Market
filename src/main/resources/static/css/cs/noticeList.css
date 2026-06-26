@@ -1,0 +1,310 @@
+/* =========================
+   noticeList.css
+   공지사항 목록 페이지
+========================= */
+
+/* =========================
+   공통 초기화
+========================= */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: "Malgun Gothic", "맑은 고딕", Arial, sans-serif;
+    font-size: 12px;
+    color: #111;
+    background: #fff;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+ul,
+li {
+    list-style: none;
+}
+
+#wrapper {
+    width: 980px;
+    margin: 0 auto;
+}
+
+
+/* =========================
+   헤더
+========================= */
+header {
+    position: relative;
+    width: 100%;
+    height: 145px;
+    border: 1px solid #ddd;
+    border-bottom: none;
+    background: #fff;
+}
+
+.notice-list-header-top {
+    position: absolute;
+    top: 25px;
+    right: 12px;
+}
+
+.notice-list-header-top a {
+    margin-left: 10px;
+    font-size: 12px;
+    color: #336699;
+}
+
+.notice-list-header-top a:hover {
+    text-decoration: underline;
+}
+
+.notice-list-logo-area {
+    position: absolute;
+    top: 58px;
+    left: 20px;
+}
+
+.notice-list-logo-box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 230px;
+    height: 72px;
+    border: 1px solid #ddd;
+    color: #20a020;
+    font-weight: bold;
+    background: #fff;
+}
+
+
+/* =========================
+   현재 위치
+========================= */
+.notice-list-breadcrumb {
+    width: 980px;
+    height: 36px;
+    line-height: 36px;
+    padding-left: 28px;
+    border: 1px solid #ddd;
+    border-bottom: none;
+    font-weight: bold;
+    color: #111;
+}
+
+
+/* =========================
+   메인 레이아웃
+========================= */
+main {
+    width: 100%;
+    min-height: 500px;
+    padding: 0 45px 35px 45px;
+    border: 1px solid #ddd;
+    border-bottom: none;
+    background: #fff;
+}
+
+.notice-list-flex {
+    display: flex;
+    width: 100%;
+}
+
+
+/* =========================
+   좌측 메뉴
+========================= */
+.notice-list-aside {
+    width: 170px;
+    min-height: 470px;
+    padding-top: 26px;
+    border-right: 1px solid #ddd;
+}
+
+.notice-list-aside h2 {
+    margin-bottom: 20px;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.notice-list-aside ul li {
+    margin-bottom: 16px;
+}
+
+.notice-list-aside ul li a {
+    font-size: 13px;
+    color: #111;
+}
+
+.notice-list-aside ul li a.active {
+    font-weight: bold;
+    text-decoration: underline;
+}
+
+.notice-list-aside ul li a:hover {
+    text-decoration: underline;
+}
+
+
+/* =========================
+   공지사항 목록 영역
+========================= */
+.notice-list-content {
+    flex: 1;
+    padding: 28px 0 0 35px;
+}
+
+.notice-list-content h2 {
+    margin-bottom: 8px;
+    font-size: 17px;
+    font-weight: bold;
+}
+
+.notice-list-desc {
+    margin-bottom: 18px;
+    font-size: 12px;
+    color: #999;
+}
+
+
+/* =========================
+   공지사항 테이블
+========================= */
+.notice-list-table {
+    width: 100%;
+    border-collapse: collapse;
+    border-top: 2px solid #333;
+}
+
+.notice-list-table tr {
+    height: 44px;
+    border-bottom: 1px solid #e5e5e5;
+}
+
+.notice-list-table td {
+    vertical-align: middle;
+}
+
+.notice-list-title {
+    padding-left: 10px;
+}
+
+.notice-list-title a {
+    font-size: 13px;
+    color: #111;
+}
+
+.notice-list-title a:hover {
+    text-decoration: underline;
+}
+
+.notice-list-date {
+    width: 90px;
+    padding-right: 12px;
+    text-align: right;
+    font-size: 12px;
+    color: #333;
+}
+
+
+/* =========================
+   페이지네이션
+========================= */
+.notice-list-pagination {
+    margin-top: 30px;
+    text-align: center;
+}
+
+.notice-list-pagination a {
+    display: inline-block;
+    margin: 0 5px;
+    font-size: 13px;
+    color: #111;
+}
+
+.notice-list-pagination a.active {
+    font-weight: bold;
+}
+
+.notice-list-pagination a:hover {
+    text-decoration: underline;
+}
+
+
+/* =========================
+   푸터
+========================= */
+footer {
+    width: 100%;
+    height: 150px;
+    border: 1px solid #ddd;
+    background: #f7f7f7;
+}
+
+.notice-list-footer-menu {
+    height: 34px;
+    line-height: 34px;
+    text-align: center;
+    border-bottom: 1px solid #ddd;
+}
+
+.notice-list-footer-menu a {
+    margin: 0 25px;
+    font-size: 12px;
+    color: #333;
+}
+
+.notice-list-footer-menu a:hover {
+    text-decoration: underline;
+}
+
+.notice-list-footer-info {
+    display: flex;
+    align-items: center;
+    height: 116px;
+    padding: 0 35px;
+}
+
+.notice-list-footer-logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 140px;
+    height: 75px;
+    margin-right: 35px;
+    border: 1px solid #ccc;
+    background: #fff;
+    color: #777;
+}
+
+.notice-list-company-info {
+    width: 360px;
+    line-height: 18px;
+    color: #333;
+}
+
+.notice-list-customer-info {
+    line-height: 18px;
+    color: #333;
+}
+
+.notice-list-customer-info h3 {
+    margin-bottom: 5px;
+    font-size: 15px;
+}
+
+
+/* =========================
+   카피라이트
+========================= */
+.notice-list-copyright {
+    height: 35px;
+    line-height: 35px;
+    text-align: center;
+    font-size: 11px;
+    color: #777;
+}

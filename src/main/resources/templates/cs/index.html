@@ -13,14 +13,14 @@
     <!-- 헤더 -->
     <header>
         <div class="header-top">
-            <a href="#">로그인</a>
-            <a href="#">회원가입</a>
-            <a href="#">마이페이지</a>
-            <a href="#">장바구니</a>
+            <a th:href="@{/member/login}">로그인</a>
+            <a th:href="@{/member/join}">회원가입</a>
+            <a th:href="@{/my/home}">마이페이지</a>
+            <a th:href="@{/cart/list}">장바구니</a>
         </div>
 
         <div class="logo-area">
-            <a href="./index.html" class="logo-box">CI ( 로고 )</a>
+            <a th:href="@{/}" class="logo-box">CI ( 로고 )</a>
         </div>
     </header>
 
@@ -34,30 +34,29 @@
         <!-- 공지사항 -->
         <section class="cs-section">
             <div class="cs-section-title">
-                <span class="num-badge">1</span>
                 <h3>공지사항</h3>
-                <a href="./noticeList.html" class="more">전체보기 &gt;</a>
+                <a th:href="@{/cs/noticeList}" class="more">전체보기</a>
             </div>
 
             <ul class="notice-preview">
                 <li>
-                    <a href="./noticeView.html">[ 안내 ] 해외결제 사칭 문자주의</a>
+                    <a th:href="@{/cs/noticeView}">[ 안내 ] 해외결제 사칭 문자주의</a>
                     <span class="date">22.10.31</span>
                 </li>
                 <li>
-                    <a href="./noticeView.html">[ 안내 ] 해외결제 사칭 문자주의</a>
+                    <a th:href="@{/cs/noticeView}">[ 안내 ] 해외결제 사칭 문자주의</a>
                     <span class="date">22.10.31</span>
                 </li>
                 <li>
-                    <a href="./noticeView.html">[ 안내 ] 해외결제 사칭 문자주의</a>
+                    <a th:href="@{/cs/noticeView}">[ 안내 ] 해외결제 사칭 문자주의</a>
                     <span class="date">22.10.31</span>
                 </li>
                 <li>
-                    <a href="./noticeView.html">[ 안내 ] 해외결제 사칭 문자주의</a>
+                    <a th:href="@{/cs/noticeView}">[ 안내 ] 해외결제 사칭 문자주의</a>
                     <span class="date">22.10.31</span>
                 </li>
                 <li>
-                    <a href="./noticeView.html">[ 안내 ] 해외결제 사칭 문자주의</a>
+                    <a th:href="@{/cs/noticeView}">[ 안내 ] 해외결제 사칭 문자주의</a>
                     <span class="date">22.10.31</span>
                 </li>
             </ul>
@@ -66,91 +65,84 @@
         <!-- 자주하는 질문 -->
         <section class="cs-section">
             <div class="cs-section-title">
-                <span class="num-badge">2</span>
                 <h3>자주하는 질문</h3>
-                <a href="./faqList.html" class="more">전체보기 &gt;</a>
+                <a th:href="@{/cs/faqList}" class="more">전체보기</a>
             </div>
 
             <div class="faq-icons">
-                <a href="./faqList.html" class="faq-icon">
+                <a th:href="@{/cs/faqList}" class="faq-icon">
                     <div class="faq-img">△</div>
                     <p>회원</p>
                 </a>
 
-                <a href="./faqList.html" class="faq-icon">
+                <a th:href="@{/cs/faqList}" class="faq-icon">
                     <div class="faq-img">△</div>
                     <p>쿠폰 / 이벤트</p>
                 </a>
 
-                <a href="./faqList.html" class="faq-icon">
+                <a th:href="@{/cs/faqList}" class="faq-icon">
                     <div class="faq-img">△</div>
                     <p>주문 / 결제</p>
                 </a>
 
-                <a href="./faqList.html" class="faq-icon">
+                <a th:href="@{/cs/faqList}" class="faq-icon">
                     <div class="faq-img">△</div>
                     <p>배송</p>
                 </a>
 
-                <a href="./faqList.html" class="faq-icon">
+                <a th:href="@{/cs/faqList}" class="faq-icon">
                     <div class="faq-img">△</div>
                     <p>취소 / 반품 / 환불</p>
                 </a>
 
-                <a href="./faqList.html" class="faq-icon">
+                <a th:href="@{/cs/faqList}" class="faq-icon">
                     <div class="faq-img">△</div>
                     <p>안전결제</p>
                 </a>
             </div>
         </section>
 
-        <!-- 문의하기 : 첫 번째 화면에서 시작해서 두 번째 화면으로 이어짐 -->
+        <!-- 문의하기 -->
         <section class="cs-section">
             <div class="cs-section-title">
-                <span class="num-badge">3</span>
                 <h3>문의하기</h3>
-                <a href="./qnaList.html" class="more">전체보기 &gt;</a>
+                <a th:href="@{/cs/qnaList}" class="more">전체보기</a>
             </div>
 
             <ul class="qna-preview">
                 <li>
-                    <a href="./qnaView.html">[ 회원 ] 개인회원과 법인회원에 차이가 있나요 ?</a>
-                    <span class="qna-question-mark">?</span>
+                    <a th:href="@{/cs/qnaView}">[ 회원 ] 개인회원과 법인회원에 차이가 있나요 ?</a>
                     <span class="writer">chh**</span>
                     <span class="date">22.10.31</span>
                 </li>
 
                 <li>
-                    <a href="./qnaView.html">[ 쿠폰 / 이벤트 ] 스마일포인트는 어디서 사용하나요 ?</a>
-                    <span class="qna-question-mark">?</span>
+                    <a th:href="@{/cs/qnaView}">[ 쿠폰 / 이벤트 ] 스마일포인트는 어디서 사용하나요 ?</a>
                     <span class="writer">chh**</span>
                     <span class="date">22.10.31</span>
                 </li>
 
                 <li>
-                    <a href="./qnaView.html">[ 배송 ] 주문한 상품은 언제 배송되나요 ?</a>
-                    <span class="qna-question-mark">?</span>
+                    <a th:href="@{/cs/qnaView}">[ 배송 ] 주문한 상품은 언제 배송되나요 ?</a>
                     <span class="writer">chh**</span>
                     <span class="date">22.10.31</span>
                 </li>
 
                 <li>
-                    <a href="./qnaView.html">[ 주문 / 결제 ] 신용카드결제 중 오류가 난 경우 어떻게 하나요 ?</a>
-                    <span class="qna-question-mark">?</span>
+                    <a th:href="@{/cs/qnaView}">[ 주문 / 결제 ] 신용카드결제 중 오류가 난 경우 어떻게 하나요 ?</a>
                     <span class="writer">chh**</span>
                     <span class="date">22.10.31</span>
                 </li>
 
                 <li>
-                    <a href="./qnaView.html">[ 취소 / 반품 / 교환 ] 주문을 취소하고 싶어요 .</a>
-                    <span class="qna-question-mark">?</span>
+                    <a th:href="@{/cs/qnaView}">[ 취소 / 반품 / 교환 ] 주문을 취소하고 싶어요 .</a>
                     <span class="writer">chh**</span>
                     <span class="date">22.10.31</span>
                 </li>
             </ul>
 
             <div class="qna-write-area">
-                <a href="./qnaWrite.html" class="qna-write-btn">문의글 작성 &gt;</a>
+                <a th:href="@{/cs/qnaWrite}" class="qna-write-btn">문의글 작성 &gt;</a>
             </div>
         </section>
 
@@ -198,10 +190,10 @@
     <!-- 푸터 -->
     <footer>
         <div class="footer-menu">
-            <a href="#">회사소개</a>
-            <a href="#">서비스이용약관</a>
-            <a href="#">개인정보처리방침</a>
-            <a href="#">전자금융거래약관</a>
+            <a th:href="@{/company/index}">회사소개</a>
+            <a th:href="@{/policy/terms}">서비스이용약관</a>
+            <a th:href="@{/policy/privacy}">개인정보처리방침</a>
+            <a th:href="@{/policy/finance}">전자금융거래약관</a>
         </div>
 
         <div class="footer-content">
@@ -223,12 +215,6 @@
             </div>
         </div>
     </footer>
-
-    <!-- 하단 copyright -->
-    <div class="copyright">
-        Copyright © 2025 김철학 All rights reserved.
-    </div>
-
 </div>
 </body>
 </html>

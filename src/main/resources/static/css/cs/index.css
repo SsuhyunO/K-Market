@@ -126,19 +126,6 @@ header {
     color: #111;
 }
 
-.num-badge {
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
-    width: 21px;
-    height: 21px;
-    border-radius: 50%;
-    background-color: #ff0000;
-    color: #fff;
-    font-size: 13px;
-    font-weight: bold;
-    box-shadow: 0 0 5px rgba(255, 0, 0, 0.45);
-}
 
 .more {
     position: absolute;
@@ -147,6 +134,10 @@ header {
     padding-right: 18px;
     font-size: 11px;
     color: #333;
+}
+
+.more:hover {
+    text-decoration: underline;
 }
 
 .more::after {
@@ -248,7 +239,6 @@ header {
     position: relative;
     height: 26px;
     line-height: 26px;
-    border-bottom: 1px solid transparent;
     font-size: 12px;
 }
 
@@ -256,6 +246,10 @@ header {
     display: inline-block;
     max-width: 395px;
     color: #222;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    vertical-align: top;
 }
 
 .qna-preview li a:hover {
@@ -281,12 +275,6 @@ header {
     right: 0;
     color: #888;
     font-size: 11px;
-}
-
-
-/* 첫 번째 화면 문의하기 미리보기처럼 날짜가 없는 li도 대응 */
-.qna-preview li .writer:only-of-type {
-    right: 0;
 }
 
 

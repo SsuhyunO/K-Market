@@ -2,8 +2,8 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>케이마켓 고객센터 - 문의글 보기</title>
-    <link rel="stylesheet" th:href="@{/css/cs/index.css}">
+    <title>케이마켓 고객센터 - 자주하는 질문 보기</title>
+    <link rel="stylesheet" th:href="@{/css/cs/faqView.css}">
 </head>
 <body>
 <div id="wrapper">
@@ -22,14 +22,14 @@
     </header>
 
     <div class="breadcrumb">
-        홈 &gt; 문의하기
+        홈 &gt; 자주하는 질문
     </div>
 
     <main>
         <div class="cs-flex">
 
             <aside class="cs-aside">
-                <h2>문의하기</h2>
+                <h2>자주하는 질문</h2>
                 <ul>
                     <li><a href="#" class="active">회원</a></li>
                     <li><a href="#">쿠폰 / 이벤트</a></li>
@@ -43,34 +43,27 @@
 
             <section class="cs-content">
                 <h2>회원</h2>
-                <p class="desc">회원 관련 문의 내용입니다.</p>
+                <p class="desc">회원 관련 자주하는 질문입니다.</p>
 
                 <div class="view-box">
                     <div class="view-title">
-                        [가입] 가입 문의 내용
-                    </div>
-
-                    <div class="qna-view-info">
-                        chh** &nbsp;&nbsp; 22.10.31
+                        <span class="q-mark">Q.</span>
+                        개인회원과 법인회원에 차이가 있나요?
                     </div>
 
                     <div class="view-content">
-                        회원가입을 하고 싶은데 가입 방법을 잘 모르겠습니다.<br>
-                        어디에서 회원가입을 진행하면 되나요?
-                    </div>
+                        개인회원은 일반 구매 고객을 위한 회원 유형입니다.<br>
+                        법인회원은 사업자 또는 법인 명의로 상품을 구매하거나 관리하기 위한 회원 유형입니다.<br><br>
 
-                    <div class="qna-answer">
-                        <h3>[답변] 가입 문의 내용</h3>
-                        <p>
-                            안녕하세요. 케이마켓 고객센터입니다.<br>
-                            화면 상단의 회원가입 메뉴를 클릭하시면 회원가입을 진행할 수 있습니다.<br>
-                            감사합니다.
-                        </p>
+                        개인회원에서 법인회원으로 직접 전환은 불가능할 수 있으며,
+                        법인회원 이용이 필요한 경우 별도의 법인회원 가입 절차를 진행해야 합니다.<br><br>
+
+                        자세한 내용은 고객센터로 문의해주시기 바랍니다.
                     </div>
                 </div>
 
                 <div class="btn-area">
-                    <a href="./qna-list.html" class="btn btn-gray">목록</a>
+                    <a href="./faq-list.html" class="btn btn-gray">목록</a>
                 </div>
             </section>
 
@@ -102,11 +95,6 @@
             </div>
         </div>
     </footer>
-
-    <div class="copyright">
-        Copyright © 2025 김철학 All rights reserved.
-    </div>
-
 </div>
 </body>
 </html>
