@@ -1,0 +1,123 @@
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>케이마켓 - 로그인</title>
+    <link rel="stylesheet" href="/css/member/login.css">
+</head>
+<body>
+
+    <!-- 헤더 -->
+    <header>
+        <div class="header-inner">
+            <a href="./login.html" class="logo">CI ( 로고 )</a>
+           <nav class="header-nav">
+                <a href="login.html">로그인</a>
+                <a href="join.html">회원가입</a>
+                <a href="/my/home.html">마이페이지</a>
+                <a href="/kmarket/cart">🛒 장바구니</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- 메인 -->
+    <main>
+        <div class="main-wrapper">
+
+            <!-- 로그인 + 배너 가로 영역 -->
+            <div class="login-container">
+
+                <!-- 로그인 폼 -->
+                <div class="login-box">
+                    <h2>로그인</h2>
+
+                    <form action="/kmarket/member/login" method="post">
+                        <div class="login-form-row">
+                            <div class="input-area">
+                                <div class="input-row">
+                                    <label for="userId">아이디</label>
+                                    <input type="text" id="userId" name="userId">
+                                </div>
+                                <div class="input-row">
+                                    <label for="userPw">비밀번호</label>
+                                    <input type="password" id="userPw" name="userPw">
+                                </div>
+                            </div>
+                            <button type="submit" class="btn-login">로그인</button>
+                        </div>
+
+                        <div class="login-options">
+                            <label>
+                                <input type="checkbox" name="autoLogin"> 자동로그인
+                            </label>
+                            <span>|</span>
+                            <a href="./userid.html">아이디찾기</a>
+                            <span>|</span>
+                            <a href="./password.html">비밀번호 찾기</a>
+                            <span>|</span>
+                            <a href="./join.html">회원가입</a>
+                        </div>
+                    </form>
+
+                    <!-- 소셜 로그인 -->
+                    <div class="social-login">
+                        <button class="social-btn naver" title="네이버 로그인">N</button>
+                        <button class="social-btn kakao" title="카카오 로그인">K</button>
+                        <button class="social-btn google" title="구글 로그인">G</button>
+                    </div>
+                </div>
+
+                <!-- 배너 광고 -->
+                <div class="banner-box">
+                    420 × 260 배너 광고
+                </div>
+
+            </div>
+
+            <!-- 인증 어워드 로고 -->
+            <div class="award-logos">
+                <div class="award-item">로고1</div>
+                <div class="award-item">로고2</div>
+                <div class="award-item">로고3</div>
+                <div class="award-item">로고4</div>
+                <div class="award-item">로고5</div>
+                <div class="award-item">로고6</div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- 푸터 -->
+    <footer>
+         <div class="footer-info">
+        <div class="footer-nav">
+            <a href="#">회사소개</a>
+            <a href="#">서비스이용약관</a>
+            <a href="#">개인정보처리방침</a>
+            <a href="#">전자금융거래약관</a>
+        </div>
+       
+            <div class="footer-info-inner">
+                <div class="footer-logo-box">로고</div>
+                <div class="footer-company">
+                    <strong>(주)케이마켓</strong>
+                    부산광역시 부산진구 중앙대로 103<br>
+                    대표이사 : 홍길동<br>
+                    사업자등록번호 : 123-45-12345
+                </div>
+                <div class="footer-cs">
+                    <strong>고객센터</strong>
+                    Tel : 1234-5678 평일 09:00~18:00<br>
+                    전자금융거래 분쟁 담당 : 1234-1234 (36팀) 09:00~18:00
+                </div>
+            </div>
+        </div>
+        <div class="footer-copyright">
+            Copyright © 2025 김철학 All rights reserved.
+        </div>
+    </footer>
+
+</body>
+</html>

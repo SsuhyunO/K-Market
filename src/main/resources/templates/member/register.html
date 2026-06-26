@@ -1,0 +1,132 @@
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>케이마켓 - 일반 회원가입</title>
+    <link rel="stylesheet" href="/css/member/register.css">
+</head>
+<body>
+
+    <!-- 헤더 -->
+    <header>
+        <div class="header-inner">
+            <a href="./login.html" class="logo">CI ( 로고 )</a>
+           <nav class="header-nav">
+                <a href="login.html">로그인</a>
+                <a href="join.html">회원가입</a>
+                <a href="/my/home.html">마이페이지</a>
+                <a href="/kmarket/cart">🛒 장바구니</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- 메인 -->
+    <main>
+        <h2 class="section-title">일반 회원가입</h2>
+
+        <table class="form-table">
+
+            <!-- 계정 정보 -->
+            <tr>
+                <th>아이디</th>
+                <td>
+                    <input type="text" class="input-id" placeholder="" maxlength="12" id="userId">
+                    <span class="hint">영문, 숫자  4~12자 설정</span>
+                </td>
+            </tr>
+            <tr>
+                <th>비밀번호</th>
+                <td>
+                    <input type="password" class="input-pw" id="userPw">
+                    <span class="hint">영문, 숫자, 특수문자  8~12자 설정</span>
+                </td>
+            </tr>
+            <tr>
+                <th>비밀번호확인</th>
+                <td>
+                    <input type="password" class="input-pw" id="userPwConfirm">
+                </td>
+            </tr>
+
+            <!-- 구분선 -->
+            <tr class="divider"><th></th><td></td></tr>
+
+            <!-- 개인 정보 -->
+            <tr>
+                <th>이름</th>
+                <td>
+                    <input type="text" class="input-name" placeholder="이름입력" id="userName">
+                </td>
+            </tr>
+            <tr>
+                <th>생년월일</th>
+                <td>
+                    <input type="date" class="input-date" id="userBirth">
+                </td>
+            </tr>
+            <tr>
+                <th>성별</th>
+                <td>
+                    <div class="gender-group">
+                        <label><input type="radio" name="gender" value="M"> 남</label>
+                        <label><input type="radio" name="gender" value="F"> 여</label>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <th>EMAIL</th>
+                <td>
+                    <input type="email" class="input-email" placeholder="이메일입력" id="userEmail">
+                    <button type="button" class="btn-verify" onclick="sendEmailCode()">이메일 인증</button>
+                </td>
+            </tr>
+            <tr>
+                <th>휴대폰</th>
+                <td>
+                    <input type="tel" class="input-tel" placeholder="휴대폰입력" id="userPhone">
+                    <button type="button" class="btn-verify" onclick="sendPhoneCode()">휴대폰 인증</button>
+                </td>
+            </tr>
+            <tr>
+                <th>주소</th>
+                <td>
+                    <div class="addr-group">
+                        <div class="addr-row">
+                            <input type="text" class="input-addr1" placeholder="우편번호검색글자" id="postcode" readonly>
+                            <button type="button" class="btn-postcode" onclick="openPostcode()">우편번호검색</button>
+                        </div>
+                        <div class="addr-row">
+                            <input type="text" class="input-addr2" placeholder="기본주소검색" id="addrBase" readonly>
+                        </div>
+                        <div class="addr-row">
+                            <input type="text" class="input-addr2" placeholder="상세주소입력" id="addrDetail">
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        </table>
+
+        <!-- ② 회원가입 버튼 -->
+        <div class="btn-area">
+            <button type="button" class="btn-submit" onclick="submitJoin()">회원가입</button>
+        </div>
+    </main>
+
+    <!-- 푸터 -->
+    <footer>
+        
+        <div class="footer-copyright">
+            Copyright © 2025 김철학 All rights reserved.
+        </div>
+    </footer>
+
+    <!-- 카카오 주소 API -->
+    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+    <script src="/js/member/register.js">
+        
+    </script>
+
+</body>
+</html>

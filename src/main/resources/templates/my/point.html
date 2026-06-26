@@ -1,0 +1,216 @@
+
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>포인트내역 | K-Market</title>
+<link rel="stylesheet" href="/css/my/point.css">
+</head>
+<body>
+
+<!-- ===== HEADER ===== -->
+<header>
+    <div class="header-inner">
+        <a href="/" class="logo">CI ( 로고 )</a>
+        <nav class="header-nav">
+            <a href="/member/login.html">로그인</a>
+            <a href="/member/join.html">회원가입</a>
+            <a href="home.html" class="active">마이페이지</a>
+            <a href="/cart">🛒장바구니</a>
+        </nav>
+    </div>
+</header>
+
+<!-- ===== MAIN ===== -->
+<main>
+
+    <!-- 1번 영역: 요약 정보 (가로 풀폭, 회색바탕) -->
+    <section class="my-summary">
+        <span class="my-summary-title">나의쇼핑정보</span>
+        <div class="summary-items">
+            <div class="summary-item">
+                <span class="summary-label">주문</span>
+                <span class="summary-num">2</span>
+            </div>
+            <div class="summary-divider"></div>
+            <div class="summary-item">
+                <span class="summary-label">쿠폰</span>
+                <span class="summary-num">1</span>
+            </div>
+            <div class="summary-divider"></div>
+            <div class="summary-item">
+                <span class="summary-label">포인트</span>
+                <span class="summary-num">1,000</span>
+            </div>
+            <div class="summary-divider"></div>
+            <div class="summary-item">
+                <span class="summary-label">문의</span>
+                <span class="summary-num">1</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- 2번 영역(사이드바) + 콘텐츠 영역을 나란히 배치 -->
+    <div class="my-wrapper">
+
+        <!-- 2번 영역: 사이드바 (전체주문내역 active) -->
+        <aside class="sidebar">
+                        <nav class="sidebar-menu">
+                <ul>
+                    <li><a href="order.html"  data-menu="orders">전체주문내역</a></li>
+                    <li><a href="point.html" class="active" data-menu="points">포인트내역</a></li>
+                    <li><a href="coupon.html" data-menu="coupons">쿠폰</a></li>
+                    <li><a href="review.html" data-menu="reviews">나의리뷰</a></li>
+                    <li><a href="qna.html" data-menu="inquiry">문의하기</a></li>
+                    <li><a href="info.html"  data-menu="settings">나의설정</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- 콘텐츠 영역 -->
+        <div class="my-content">
+
+            <!-- 3번 영역: 배너 광고 -->
+            <div class="my-banner">810 × 86 배너 광고</div>
+
+            <!-- 4번 영역: 포인트내역 -->
+            <section class="my-section">
+                <div class="section-header">
+                    <span class="section-title">포인트내역</span>
+                </div>
+
+                <!-- 기간별조회 -->
+                <div class="period-search">
+                    <span class="period-search-label">기간별조회</span>
+
+                    <div class="period-group">
+                        <label class="period-radio">
+                            <input type="radio" name="periodType" value="week" data-days="7">
+                            1 주일
+                        </label>
+                        <label class="period-radio">
+                            <input type="radio" name="periodType" value="halfmonth" data-days="15">
+                            15 일
+                        </label>
+                        <label class="period-radio">
+                            <input type="radio" name="periodType" value="month" data-days="30" checked>
+                            1 개월
+                        </label>
+                    </div>
+
+                    <div class="period-divider"></div>
+
+                    <div class="period-group">
+                        <select id="periodMonthSelect" class="period-select">
+                            <option value="0">이번 달</option>
+                            <option value="1">1 개월 전</option>
+                            <option value="2">2 개월 전</option>
+                            <option value="3">3 개월 전</option>
+                            <option value="4">4 개월 전</option>
+                        </select>
+                    </div>
+
+                    <div class="period-divider"></div>
+
+                    <div class="period-group period-range">
+                        <input type="date" id="periodStartDate" class="period-date-input">
+                        <span class="period-range-tilde">~</span>
+                        <input type="date" id="periodEndDate" class="period-date-input">
+                    </div>
+
+                    <button type="button" class="btn-period-search" id="periodSearchBtn">조회</button>
+                </div>
+
+                <table class="point-table">
+                    <thead>
+                        <tr>
+                            <th>날짜</th>
+                            <th>구분</th>
+                            <th>주문번호</th>
+                            <th>적립금액</th>
+                            <th>비고</th>
+                            <th>유효기간</th>
+                        </tr>
+                    </thead>
+                    <tbody id="pointListBody">
+                        <!-- JS로 동적 렌더링 -->
+                    </tbody>
+                </table>
+
+                <!-- 페이지네이션 -->
+                <div class="pagination" id="pagination">
+                    <a href="#" class="page-prev" id="pagePrev">이전</a>
+                    <span class="page-numbers" id="pageNumbers"></span>
+                    <a href="#" class="page-next" id="pageNext">다음</a>
+                </div>
+            </section>
+
+        </div>
+    </div>
+</main>
+
+<!-- ===== FOOTER (축약형) ===== -->
+<footer class="footer-simple">
+    <div class="footer-copyright">
+        Copyright &copy; 김철학(개발에반하다.) All rights reserved.
+    </div>
+</footer>
+
+
+<!-- =========================================================
+     모달 영역 (home.html과 동일한 모달 시스템 재사용)
+     ========================================================= -->
+
+<!-- 문의하기 모달 (No 6-1-3) -->
+<div class="modal-overlay" id="inquiryModal">
+    <div class="modal-box modal-box-small">
+        <div class="modal-header modal-header-blue">
+            <span class="modal-title">문의하기</span>
+            <button type="button" class="modal-close" data-close="inquiryModal">&times;</button>
+        </div>
+
+        <div class="modal-body">
+            <table class="modal-inquiry-table">
+                <tbody>
+                    <tr>
+                        <th>문의종류</th>
+                        <td>
+                            <label class="inquiry-radio"><input type="radio" name="inquiryType" value="product"> 상품</label>
+                            <label class="inquiry-radio"><input type="radio" name="inquiryType" value="delivery"> 배송</label>
+                            <label class="inquiry-radio"><input type="radio" name="inquiryType" value="return"> 반품/취소</label>
+                            <label class="inquiry-radio"><input type="radio" name="inquiryType" value="exchange"> 교환</label>
+                            <label class="inquiry-radio"><input type="radio" name="inquiryType" value="etc"> 기타</label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Email</th>
+                        <td><input type="email" class="inquiry-input" id="inquiryEmail" value="chh**@gmail.com"></td>
+                    </tr>
+                    <tr>
+                        <th>제목</th>
+                        <td><input type="text" class="inquiry-input" id="inquiryTitle"></td>
+                    </tr>
+                    <tr>
+                        <th>내용</th>
+                        <td><textarea class="inquiry-textarea" id="inquiryContent"></textarea></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="modal-inquiry-btn-group">
+                <button type="button" class="modal-btn-submit" id="inquirySubmitBtn">등록하기</button>
+                <button type="button" class="modal-btn-cancel" data-close="inquiryModal">취소</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script src="/js/my/point.js"> </script>
+
+</body>
+</html>
+
+</body>
+</html>
