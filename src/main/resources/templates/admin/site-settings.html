@@ -58,25 +58,25 @@
                 <th:block th:replace="~{admin/fragments/global/section-form::section-form('#', true, ~{::logo_rows})}">
                     <th:block th:fragment="logo_rows">
                         <tr>
-                            <th><label for="modify-header-logo">헤더 로고</label></th>
-                            <td>
-                                <input class="modify-file-input" id="modify-header-logo" name="headerLogo" type="file">
-                                <span>크기 370 x 76 권장</span>
-                            </td>
+                            <th>
+	                            <label for="modify-header-logo">헤더 로고</label>
+	                            <span class="row-description">크기 370 x 76 권장</span>
+                            </th>
+                            <td><input class="modify-file-input" id="modify-header-logo" name="headerLogo" type="file"></td>
                         </tr>
                         <tr>
-                            <th><label for="modify-footer-logo">푸터 로고</label></th>
-                            <td>
-                                <input class="modify-file-input" id="modify-footer-logo" name="footerLogo" type="file">
-                                <span>크기 155 x 36 권장</span>
-                            </td>
+                            <th>
+	                            <label for="modify-footer-logo">푸터 로고</label>
+	                            <span class="row-description">크기 155 x 36 권장</span>
+                            </th>
+                            <td><input class="modify-file-input" id="modify-footer-logo" name="footerLogo" type="file"></td>
                         </tr>
                         <tr>
-                            <th><label for="modify-favicon">파비콘</label></th>
-                            <td>
-                                <input class="modify-file-input" id="modify-favicon" name="favicon" type="file">
-                                <span>크기 32 x 32 권장</span>
-                            </td>
+                            <th>
+	                            <label for="modify-favicon">파비콘</label>
+	                            <span class="row-description">크기 32 x 32 권장</span>
+                            </th>
+                            <td><input class="modify-file-input" id="modify-favicon" name="favicon" type="file"></td>
                         </tr>
                     </th:block>
                 </th:block>

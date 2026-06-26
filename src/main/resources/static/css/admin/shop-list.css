@@ -1,0 +1,51 @@
+.shop-register-modal-table tr:nth-child(7) > td {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.management-table th:nth-child(1),
+.management-table td:nth-child(1) {
+    width: 42px;
+}
+
+.management-table th:nth-child(2),
+.management-table td:nth-child(2) {
+    width: 64px;
+}
+
+.management-table th:nth-child(3),
+.management-table td:nth-child(3) {
+    width: 120px;
+}
+
+.management-table th:nth-child(4),
+.management-table td:nth-child(4) {
+    width: 80px;
+}
+
+.management-table th:nth-child(5),
+.management-table td:nth-child(5) {
+    width: 130px;
+}
+
+.management-table th:nth-child(6),
+.management-table td:nth-child(6) {
+    width: 130px;
+}
+
+.management-table th:nth-child(7),
+.management-table td:nth-child(7) {
+    width: 100px;
+}
+
+.management-table th:nth-child(8),
+.management-table td:nth-child(8) {
+    width: 42px;
+}
+
+
+.management-table th:nth-child(9),
+.management-table td:nth-child(9) {
+    width: 60px;
+}

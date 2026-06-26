@@ -5,7 +5,7 @@ const sortableCategories = new WeakSet();
 let pendingDrag = null;
 let draggedCategory = null;
 let dropGuideItem = null;
-let suppressNextClick = false;
+let suppressedClick = null;
 
 document.addEventListener('DOMContentLoaded', function () {
     const categoryTree = document.querySelector('.category-tree');
@@ -17,11 +17,11 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 document.addEventListener('click', event => {
-    if (!suppressNextClick) return;
+    if (!shouldSuppressClick(event)) return;
 
     event.preventDefault();
     event.stopPropagation();
-    suppressNextClick = false;
+    suppressedClick = null;
 }, true);
 
 /**
@@ -54,7 +54,6 @@ function handlePointerDown(event) {
         pointerId: event.pointerId
     };
 
-    item.setPointerCapture?.(event.pointerId);
     document.addEventListener('pointermove', handlePointerMove);
     document.addEventListener('pointerup', handlePointerUp);
     document.addEventListener('pointercancel', handlePointerCancel);
@@ -85,8 +84,8 @@ function handlePointerMove(event) {
 function handlePointerUp(event) {
     if (draggedCategory) {
         event.preventDefault();
+        suppressClickFor(draggedCategory.item);
         finishDrag();
-        suppressNextClick = true;
     }
 
     cleanupPointerEvents();
@@ -120,6 +119,7 @@ function startDrag(event) {
         inlineStyle: item.getAttribute('style') ?? ''
     };
 
+    item.setPointerCapture?.(pendingDrag.pointerId);
     clearTextSelection();
     categoryTree?.classList.add('category-sorting');
     startDirectDrag(item, event);
@@ -147,10 +147,48 @@ async function finishDrag(shouldDispatchSort = true) {
  * 문서에 임시로 연결한 pointer 이벤트와 pointer capture를 해제한다.
  */
 function cleanupPointerEvents() {
-    pendingDrag?.item.releasePointerCapture?.(pendingDrag.pointerId);
+    releasePointerCapture();
     document.removeEventListener('pointermove', handlePointerMove);
     document.removeEventListener('pointerup', handlePointerUp);
     document.removeEventListener('pointercancel', handlePointerCancel);
+}
+
+/**
+ * 드래그 종료 직후 브라우저가 합성하는 click만 제한적으로 차단하도록 예약한다.
+ */
+function suppressClickFor(item) {
+    suppressedClick = {
+        item,
+        expiresAt: Date.now() + 250
+    };
+}
+
+/**
+ * 예약된 드래그 후속 click인지 확인한다.
+ * 시간이 지났거나 다른 요소 클릭이면 일반 클릭으로 통과시킨다.
+ */
+function shouldSuppressClick(event) {
+    if (!suppressedClick) return false;
+
+    const {item, expiresAt} = suppressedClick;
+    const isExpired = Date.now() > expiresAt;
+    const isDragFollowUpClick = item.contains(event.target);
+
+    if (isExpired || !isDragFollowUpClick) {
+        suppressedClick = null;
+        return false;
+    }
+
+    return true;
+}
+
+/**
+ * 실제 드래그가 시작된 뒤 잡은 pointer capture를 안전하게 해제한다.
+ */
+function releasePointerCapture() {
+    if (!pendingDrag?.item.hasPointerCapture?.(pendingDrag.pointerId)) return;
+
+    pendingDrag.item.releasePointerCapture(pendingDrag.pointerId);
 }
 
 /**

@@ -52,7 +52,7 @@
     vertical-align: middle;
 }
 
-.management-pagination {
+.admin-pagination {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -61,8 +61,8 @@
     color: var(--adm-gray-700);
 }
 
-.management-pagination a,
-.management-pagination span {
+.admin-pagination a,
+.admin-pagination span {
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -71,8 +71,8 @@
     color: inherit;
 }
 
-.management-pagination a:hover,
-.management-pagination .current {
+.admin-pagination a:hover,
+.admin-pagination .current {
     color: var(--adm-primary);
     font-weight: 800;
 }
@@ -82,6 +82,16 @@
     justify-content: space-between;
     align-items: center;
     margin-top: 12px;
+}
+
+.btn-area.no-actions {
+    justify-content: center;
+}
+
+.btn-area-spacer {
+    display: block;
+    min-width: 90px;
+    height: 34px;
 }
 
 .btn-area > button {
@@ -138,8 +148,8 @@
         flex-shrink: 0;
     }
 
-    .management-pagination a,
-    .management-pagination span {
+    .admin-pagination a,
+    .admin-pagination span {
         display: inline-flex;
         flex-shrink: 0;
         align-items: center;
@@ -149,8 +159,8 @@
         color: inherit;
     }
 
-    .management-pagination a:hover,
-    .management-pagination .current {
+    .admin-pagination a:hover,
+    .admin-pagination .current {
         color: var(--adm-primary);
         font-weight: 800;
     }

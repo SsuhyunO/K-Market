@@ -29,8 +29,14 @@ function bindModalCloseButtons() {
 
 function bindModalBackdropClose() {
     document.querySelectorAll("[data-modal]").forEach(modal => {
+        let isBackdropPointerDown = false;
+
+        modal.addEventListener("mousedown", function (e) {
+            isBackdropPointerDown = e.target === modal;
+        });
+
         modal.addEventListener("click", function (e) {
-            if (e.target !== modal) return;
+            if (!isBackdropPointerDown || e.target !== modal) return;
             closeModal(modal);
         });
     });

@@ -38,6 +38,14 @@
     cursor: pointer;
 }
 
+.section-table th .row-description {
+    display: block;
+    color: var(--adm-gray-500);
+    font-size: 11px;
+    font-weight: 400;
+    line-height: 1.35;
+}
+
 .section-table input[type="text"],
 .section-table input[type="email"],
 .section-table input[type="tel"],

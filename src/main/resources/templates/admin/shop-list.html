@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>KMarket 버전관리</title>
+    <th:block th:replace="~{admin/fragments/global/head::head}"></th:block>
+    <link rel="stylesheet" th:href="@{/css/admin/global/management-table-form.css}">
+    <link rel="stylesheet" th:href="@{/css/admin/global/modal-form.css}">
+    <link rel="stylesheet" th:href="@{/css/admin/global/section-table.css}">
+    <link rel="stylesheet" th:href="@{/css/admin/global/search-form.css}">
+	<link rel="stylesheet" th:href="@{/css/admin/shop-list.css}">
+    <script type="module" th:src="@{/js/admin/shop-list.js}"></script>
+</head>
+<body>
+<header th:replace="~{admin/fragments/global/header::header}"></header>
+<div class="admin-layout">
+    <aside th:replace="~{admin/fragments/global/aside::aside}"></aside>
+    
+    <main id="admin-main">
+        <div th:replace="~{admin/fragments/global/page-header::page-header}"></div>
+        
+        <section th:replace="~{admin/fragments/global/dash-section::dash-section(null, null, null, ~{::main_content})}">
+            <th:block th:fragment="main_content">
+	            
+	            <th:block th:replace="~{admin/fragments/global/search-form(~{::options})}">
+		            <th:block th:fragment="options">
+			            <option value="상호명">상호명</option>
+			            <option value="대표자">대표자</option>
+			            <option value="사업자등록번호">사업자등록번호</option>
+			            <option value="연락처">연락처</option>
+		            </th:block>
+	            </th:block>
+                <th:block th:replace="~{admin/fragments/global/management-table-form::management-table-form(
+                    null,
+                    ~{::table-content},
+                    '선택삭제',
+                    '상점등록',
+                    'productNo',
+                    '삭제할 상점을 선택해주세요.',
+                    '선택한 상점을 삭제하시겠습니까?',
+                    'shop-register-modal')}">
+                    <th:block th:fragment="table-content">
+                        <tr>
+                            <th><label><input type="checkbox" id="select-all"></label></th>
+                            <th>번호</th>
+                            <th>상호명</th>
+                            <th>대표</th>
+                            <th>사업자등록번호</th>
+                            <th>통신판매업번호</th>
+                            <th>연락처</th>
+                            <th>운영</th>
+                            <th>관리</th>
+                        </tr>
+                    </th:block>
+                </th:block>
+                
+	            <div th:replace="~{admin/fragments/global/modal::modal('shop-register-modal', '상점등록', ~{::shop_register_modal_content})}">
+		            <th:block th:fragment="shop_register_modal_content">
+                        <form id="shop-register-form" action="#" method="post" novalidate>
+				            <table class="section-table shop-register-modal-table">
+					            <tr>
+						            <th>
+							            <label for="shop-register-userid">아이디</label>
+							            <span class="row-description">영문, 숫자 4~12자 설정</span>
+						            </th>
+						            <td><input id="shop-register-userid" name="userId" type="text"></td>
+					            </tr>
+					            <tr>
+						            <th>
+							            <label for="shop-register-pass">비밀번호</label>
+							            <span class="row-description">영문, 숫자, 특수문자 8~12자 설정</span>
+						            </th>
+						            <td><input id="shop-register-pass" name="password" type="password"></td>
+					            </tr>
+				            </table>
+				            
+				            <table class="section-table shop-register-modal-table">
+					            <tr>
+						            <th><label for="shop-register-business-name">상호명</label></th>
+						            <td><input id="shop-register-business-name" name="businessName" type="text" placeholder="상호명 입력 예) ㈜"></td>
+					            </tr>
+					            <tr>
+						            <th><label for="shop-register-ceo">대표</label></th>
+						            <td><input id="shop-register-ceo" name="ceo" type="text" placeholder="이름입력"></td>
+					            </tr>
+					            <tr>
+						            <th>
+							            <label for="shop-register-business-reg-num">사업자등록번호</label>
+							            <span class="row-description">- 포함 12자리 입력</span>
+						            </th>
+						            <td><input id="shop-register-business-reg-num" name="businessRegistrationNumber" type="text" placeholder="사업자등록번호입력"></td>
+					            </tr>
+					            <tr>
+						            <th>
+							            <label for="shop-register-mail-order-business-num">통신판매업번호</label>
+							            <span class="row-description">- 포함 12자리 입력</span>
+						            </th>
+						            <td><input id="shop-register-mail-order-business-num" name="mailOrderBusinessNumber" type="text" placeholder="통신판매업번호입력"></td>
+					            </tr>
+					            <tr>
+						            <th><label for="shop-register-phone">전화번호</label></th>
+						            <td><input id="shop-register-phone" name="phone" type="text" placeholder="전화번호입력"></td>
+					            </tr>
+					            <tr>
+						            <th><label for="shop-register-fax">팩스</label></th>
+						            <td><input id="shop-register-fax" name="fax" type="text" placeholder="팩스번호입력"></td>
+					            </tr>
+					            <tr>
+						            <th><label for="shop-register-zip-code">주소</label></th>
+						            <td>
+							            <input id="shop-register-zip-code" name="zipCode" type="text" placeholder="우편번호검색클릭" readonly>
+							            <input id="shop-register-default-address" name="defaultAddress" type="text" placeholder="기본주소검색" readonly>
+							            <input id="shop-register-detail-address" name="detailAddress" type="text" placeholder="상세주소입력">
+						            </td>
+					            </tr>
+				            </table>
+				            <div class="modal-form-actions">
+                                <button type="submit">등록하기</button>
+				            </div>
+                        </form>
+		            </th:block>
+                </div>
+            </th:block>
+        </section>
+    </main>
+</div>
+
+<footer th:replace="~{admin/fragments/global/footer::footer}"></footer>
+</body>
+</html>
