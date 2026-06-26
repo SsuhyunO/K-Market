@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>케이마켓 고객센터 - 자주하는 질문</title>
+
+    <!-- CSS 연결 -->
+    <link rel="stylesheet" th:href="@{/css/cs/faqList.css}">
+</head>
+<body>
+<div id="wrapper">
+
+    <!-- 헤더 -->
+    <header>
+        <div class="header-top">
+            <a href="#">로그인</a>
+            <a href="#">회원가입</a>
+            <a href="#">마이페이지</a>
+            <a href="#">장바구니</a>
+        </div>
+
+        <div class="logo-area">
+            <a href="./index.html" class="logo-box">CI ( 로고 )</a>
+        </div>
+    </header>
+
+    <!-- 자주하는 질문 -->
+    <div class="breadcrumb">
+        홈 &gt; 자주하는 질문
+    </div>
+
+    <main>
+        <div class="cs-flex">
+
+            <aside class="cs-aside">
+                <h2>자주하는 질문</h2>
+                <ul>
+                    <li><a href="#" class="active">회원</a></li>
+                    <li><a href="#">쿠폰 / 이벤트</a></li>
+                    <li><a href="#">주문 / 결제</a></li>
+                    <li><a href="#">배송</a></li>
+                    <li><a href="#">취소 / 반품 / 환불</a></li>
+                    <li><a href="#">여행 / 숙박 / 항공</a></li>
+                    <li><a href="#">안전거래</a></li>
+                </ul>
+            </aside>
+
+            <section class="cs-content">
+                <h2>회원</h2>
+                <p class="desc">회원 관련 자주하는 질문입니다.</p>
+
+                <div class="faq-group">
+                    <h3>가입</h3>
+
+                    <ul class="faq-list-box">
+                        <li>
+                            <a href="./faq-view.html">
+                                <span class="q-mark">Q.</span>
+                                개인회원과 법인회원에 차이가 있나요?
+                            </a>
+                        </li>
+                        <li>
+                            <a href="./faq-view.html">
+                                <span class="q-mark">Q.</span>
+                                회원가입은 어떻게 하나요?
+                            </a>
+                        </li>
+                        <li>
+                            <a href="./faq-view.html">
+                                <span class="q-mark">Q.</span>
+                                가입 시 본인인증이 필요한가요?
+                            </a>
+                        </li>
+                        <li>
+                            <a href="./faq-view.html">
+                                <span class="q-mark">Q.</span>
+                                아이디를 여러 개 만들 수 있나요?
+                            </a>
+                        </li>
+                        <li>
+                            <a href="./faq-view.html">
+                                <span class="q-mark">Q.</span>
+                                만 14세 미만도 가입 가능한가요?
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="faq-group">
+                    <h3>탈퇴</h3>
+
+                    <ul class="faq-list-box">
+                        <li>
+                            <a href="./faq-view.html">
+                                <span class="q-mark">Q.</span>
+                                회원탈퇴는 어떻게 하나요?
+                            </a>
+                        </li>
+                        <li>
+                            <a href="./faq-view.html">
+                                <span class="q-mark">Q.</span>
+                                탈퇴 후 재가입이 가능한가요?
+                            </a>
+                        </li>
+                        <li>
+                            <a href="./faq-view.html">
+                                <span class="q-mark">Q.</span>
+                                탈퇴하면 주문내역도 삭제되나요?
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+            </section>
+
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-menu">
+            <a href="#">회사소개</a>
+            <a href="#">서비스이용약관</a>
+            <a href="#">개인정보처리방침</a>
+            <a href="#">전자금융거래약관</a>
+        </div>
+
+        <div class="footer-info">
+            <div class="footer-logo">이미지</div>
+
+            <div class="company-info">
+                <strong>(주)케이마켓</strong><br>
+                부산광역시 부산진구 중앙대로 300<br>
+                대표이사 : 홍길동<br>
+                사업자등록번호 : 123-45-12345
+            </div>
+
+            <div class="customer-info">
+                <h3>고객센터</h3>
+                Tel : 1234-5678<br>
+                평일 09:00 ~ 18:00
+            </div>
+        </div>
+    </footer>
+</div>
+</body>
+</html>
