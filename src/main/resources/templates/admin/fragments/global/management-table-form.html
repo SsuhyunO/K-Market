@@ -5,22 +5,30 @@
       th:data-checkbox-name="${checkboxName}"
       th:data-delete-empty-message="${deleteEmptyMessage}"
       th:data-delete-confirm-message="${deleteConfirmMessage}">
+    <th:block th:replace="~{admin/fragments/global/management-table-form::management-table(${content})}"></th:block>
+    <div class="btn-area"
+         th:classappend="${#strings.isEmpty(deleteBtnText) and #strings.isEmpty(registerBtnText)} ? ' no-actions'">
+        <button id="delete-button"
+                type="submit"
+                th:if="${!#strings.isEmpty(deleteBtnText)}"
+                th:text="${deleteBtnText}"></button>
+        <span class="btn-area-spacer"
+              th:if="${#strings.isEmpty(deleteBtnText) and !#strings.isEmpty(registerBtnText)}"></span>
+        <nav th:replace="~{/admin/fragments/global/admin-pagination}"></nav>
+        <button id="register-button"
+                type="button"
+                th:if="${!#strings.isEmpty(registerBtnText)}"
+                th:text="${registerBtnText}"
+                th:attr="data-modal-target=${registerModalTarget}"></button>
+        <span class="btn-area-spacer"
+              th:if="${!#strings.isEmpty(deleteBtnText) and #strings.isEmpty(registerBtnText)}"></span>
+    </div>
+</form>
+
+<th:block th:fragment="management-table(content)">
     <div class="management-table-scroll">
         <table class="management-table">
             <th:block th:replace="${content}"></th:block>
         </table>
     </div>
-    <div class="btn-area">
-        <button id="delete-button" type="submit" th:text="${deleteBtnText}"></button>
-        <nav class="management-pagination" aria-label="목록 페이지">
-            <a href="#">이전</a>
-            <span class="current">1</span>
-            <a href="#">2</a>
-            <a href="#">3</a>
-            <a href="#">4</a>
-            <a href="#">5</a>
-            <a href="#">다음</a>
-        </nav>
-        <button id="register-button" type="button" th:text="${registerBtnText}" th:attr="data-modal-target=${registerModalTarget}"></button>
-    </div>
-</form>
+</th:block>

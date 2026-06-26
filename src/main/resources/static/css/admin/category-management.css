@@ -319,7 +319,7 @@ div.category-row {
 .section-cancel-button:disabled {
     border-color: var(--adm-gray-300);
     background: #f8fafc;
-    color: var(--adm-gray-400);
+    color: var(--adm-gray-500);
     box-shadow: none;
     cursor: not-allowed;
     transform: none;

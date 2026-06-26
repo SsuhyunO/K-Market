@@ -21,23 +21,23 @@
         </div>
         
         <div class="nav-item" data-menu="shop">
-            <a class="nav-link" href="#">
+            <a class="nav-link" th:href="@{/admin/shop-list}">
                 <span class="nav-icon">🏪</span>상점관리
                 <span class="nav-arrow">›</span>
             </a>
             <ul class="sub-menu">
-                <li><a href="#">상점목록</a></li>
-                <li><a href="#">매출현황</a></li>
+                <li><a th:href="@{/admin/shop-list}">상점목록</a></li>
+                <li><a th:href="@{/admin/sales-status}">매출현황</a></li>
             </ul>
         </div>
         
         <div class="nav-item" data-menu="member">
-            <a class="nav-link" href="#">
+            <a class="nav-link" th:href="@{/admin/member-list}">
                 <span class="nav-icon">👥</span>회원관리
                 <span class="nav-arrow">›</span>
             </a>
             <ul class="sub-menu">
-                <li><a href="#">회원목록</a></li>
+                <li><a th:href="@{/admin/member-list}">회원목록</a></li>
                 <li><a href="#">포인트관리</a></li>
             </ul>
         </div>
