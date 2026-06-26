@@ -1,60 +1,62 @@
-<aside th:fragment="aside" id="aside">
-    <nav class="aside-category">
+<div th:fragment="aside" id="aside">
 
+    <!-- 1차/2차 카테고리 클릭 시 /product/list?category=ID 로 이동 → 상품목록 페이지 출력 -->
+    <nav class="aside-category">
         <ul>
             <li>
-                <a class="cat-item" th:href="@{/category/fashion}">
+                <a class="cat-item" th:href="@{/product/list(category=1)}">
                     <span class="cat-icon">👕</span>패션<span style="margin-left:auto;font-size:10px;color:var(--color-gray-400)">▾</span>
                 </a>
                 <div class="cat-sub">
-                    <a href="#">의류</a>
-                    <a href="#">뷰티</a>
+                    <a th:href="@{/product/list(category=11)}">의류</a>
+                    <a th:href="@{/product/list(category=12)}">뷰티</a>
                 </div>
             </li>
             <li>
-                <a class="cat-item" th:href="@{/category/digital}">
+                <a class="cat-item" th:href="@{/product/list(category=2)}">
                     <span class="cat-icon">💻</span>가전<span style="margin-left:auto;font-size:10px;color:var(--color-gray-400)">▾</span>
                 </a>
                 <div class="cat-sub">
-                    <a href="#">가전</a>
-                    <a href="#">디지털</a>
+                    <a th:href="@{/product/list(category=21)}">가전</a>
+                    <a th:href="@{/product/list(category=22)}">디지털</a>
                 </div>
             </li>
             <li>
-                <a class="cat-item" th:href="@{/category/food}">
+                <a class="cat-item" th:href="@{/product/list(category=3)}">
                     <span class="cat-icon">🍽️</span>식품<span style="margin-left:auto;font-size:10px;color:var(--color-gray-400)">▾</span>
                 </a>
                 <div class="cat-sub">
-                    <a href="#">식품</a>
-                    <a href="#">생활용품</a>
+                    <a th:href="@{/product/list(category=31)}">식품</a>
+                    <a th:href="@{/product/list(category=32)}">생활용품</a>
                 </div>
             </li>
             <li>
-                <a class="cat-item" th:href="@{/category/home}">
+                <a class="cat-item" th:href="@{/product/list(category=4)}">
                     <span class="cat-icon">🏠</span>홈<span style="margin-left:auto;font-size:10px;color:var(--color-gray-400)">▾</span>
                 </a>
                 <div class="cat-sub">
-                    <a href="#">홈</a>
-                    <a href="#">문구</a>
-                    <a href="#">취미</a>
+                    <a th:href="@{/product/list(category=41)}">홈</a>
+                    <a th:href="@{/product/list(category=42)}">문구</a>
+                    <a th:href="@{/product/list(category=43)}">취미</a>
                 </div>
             </li>
         </ul>
     </nav>
 
-    <!-- 베스트 상품: Controller에서 bestProducts(List<Product>, 최대 3개)를 모델에 담아 전달 -->
-    <div class="aside-best" th:unless="${hideBest == true}">
+    <!-- 베스트 상품: Controller가 bestProducts를 모델에 안 넣으면 자동으로 숨겨짐
+         (약관 페이지 등은 bestProducts를 넘기지 않으면 됨, fragment 호출부는 항상 동일) -->
+    <div class="aside-best" th:if="${bestProducts != null}">
         <div class="aside-best-title">
             <span>🏷️</span> 베스트 상품
         </div>
         <ul class="best-list" id="bestList">
 
-            <!-- bestProducts가 없을 때를 대비한 정적 예시 (th:remove로 실제 렌더링 시 제거됨) -->
-            <th:block th:if="${bestProducts == null}">
+            <!-- bestProducts가 비어있을 때(0건)를 대비한 placeholder 3개 -->
+            <th:block th:if="${#lists.isEmpty(bestProducts)}">
                 <li class="best-item rank-1">
                     <div class="best-thumb-placeholder">🖼️</div>
                     <div class="best-info">
-                        <div class="best-name">상품명</div>
+                        <div class="best-name">상품명 텍스트</div>
                         <div class="best-price-del">30,000원</div>
                         <div style="display:flex;gap:4px;align-items:center;">
                             <span class="best-sale">10%↓</span>
@@ -62,11 +64,10 @@
                         </div>
                     </div>
                 </li>
-
                 <li class="best-item">
                     <div class="best-thumb-placeholder">🖼️</div>
                     <div class="best-info">
-                        <div class="best-name">상품명</div>
+                        <div class="best-name">상품명 텍스트</div>
                         <div class="best-price-del">30,000원</div>
                         <div style="display:flex;gap:4px;align-items:center;">
                             <span class="best-sale">10%↓</span>
@@ -74,11 +75,10 @@
                         </div>
                     </div>
                 </li>
-
                 <li class="best-item">
                     <div class="best-thumb-placeholder">🖼️</div>
                     <div class="best-info">
-                        <div class="best-name">상품명</div>
+                        <div class="best-name">상품명 텍스트</div>
                         <div class="best-price-del">30,000원</div>
                         <div style="display:flex;gap:4px;align-items:center;">
                             <span class="best-sale">10%↓</span>
@@ -108,4 +108,4 @@
         </ul>
     </div>
 
-</aside>
+</div>

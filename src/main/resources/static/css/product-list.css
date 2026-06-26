@@ -1,0 +1,268 @@
+/* =============================================
+   KMarket - product-list.css
+   상품목록 페이지 전용 스타일
+   ============================================= */
+
+.page-wrapper {
+    max-width: var(--container-w);
+    margin: 24px auto 0;
+    padding: 0 12px 40px;   /* 하단 여백은 padding으로 */
+    display: flex;
+    gap: 20px;
+    align-items: flex-start; /* aside가 stretch되지 않도록 */
+}
+
+.main-content {
+    flex: 1;
+    min-width: 0;
+}
+
+/* ─────────────────────────────────────────────
+   ① 페이지 타이틀 + ② 브레드크럼
+───────────────────────────────────────────── */
+.list-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 14px;
+    border-bottom: 2px solid var(--color-primary);
+    margin-bottom: 16px;
+}
+.list-title {
+    font-size: 20px;
+    font-weight: 800;
+    color: var(--color-gray-900);
+}
+.breadcrumb {
+    font-size: 13px;
+    color: var(--color-gray-600);
+}
+.breadcrumb .sep {
+    margin: 0 4px;
+    color: var(--color-gray-400);
+}
+.breadcrumb .current {
+    color: var(--color-gray-900);
+    font-weight: 600;
+}
+
+/* ─────────────────────────────────────────────
+   ③ 상품 정렬 탭
+───────────────────────────────────────────── */
+.sort-tabs {
+    display: flex;
+    gap: 4px;
+    padding-bottom: 16px;
+    margin-bottom: 16px;
+    border-bottom: 1px solid var(--color-gray-200);
+}
+.sort-tabs a {
+    font-size: 13px;
+    color: var(--color-gray-600);
+    padding: 6px 12px;
+    border-radius: var(--radius-sm);
+    transition: background var(--transition), color var(--transition);
+}
+.sort-tabs a:hover {
+    background: var(--color-gray-100);
+}
+.sort-tabs a.active {
+    color: var(--color-primary);
+    font-weight: 700;
+    background: #fff5f2;
+}
+.sort-tabs .sep {
+    color: var(--color-gray-200);
+    align-self: center;
+}
+
+/* ─────────────────────────────────────────────
+   ④ 상품 리스트 (가로형 카드)
+───────────────────────────────────────────── */
+.product-list-row {
+    display: flex;
+    flex-direction: column;
+}
+
+.product-row-item {
+    display: flex;
+    gap: 24px;
+    padding: 24px 0;
+    border-bottom: 1px solid var(--color-gray-200);
+    cursor: pointer;
+    transition: background var(--transition);
+}
+.product-row-item:hover {
+    background: var(--color-gray-100);
+}
+.product-row-item:first-child {
+    padding-top: 0;
+}
+
+/* 썸네일 */
+.row-thumb {
+    width: 140px;
+    height: 140px;
+    flex-shrink: 0;
+    border: 1px solid var(--color-gray-200);
+    border-radius: var(--radius-md);
+    background: var(--color-gray-100);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-gray-400);
+    font-size: 36px;
+    overflow: hidden;
+}
+.row-thumb img { width: 100%; height: 100%; object-fit: cover; }
+
+/* 상품 정보 영역 */
+.row-info {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 6px;
+}
+.row-product-name {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--color-gray-900);
+}
+.row-product-desc {
+    font-size: 13px;
+    color: var(--color-gray-600);
+}
+
+/* 가격 영역 */
+.row-price-area {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    margin-top: 4px;
+}
+.row-price {
+    font-size: 18px;
+    font-weight: 800;
+    color: var(--color-gray-900);
+}
+.row-price-del {
+    font-size: 13px;
+    color: var(--color-price-del);
+    text-decoration: line-through;
+}
+.row-sale-rate {
+    font-size: 13px;
+    color: var(--color-sale);
+    font-weight: 700;
+}
+
+/* 배송비 표시 */
+.row-shipping {
+    margin-top: 2px;
+}
+.row-shipping .free {
+    display: inline-block;
+    font-size: 12px;
+    color: var(--color-free-ship);
+    border: 1px solid var(--color-free-ship);
+    border-radius: var(--radius-sm);
+    padding: 2px 8px;
+}
+.row-shipping .paid {
+    font-size: 12px;
+    color: var(--color-gray-600);
+}
+
+/* 우측: 판매자 등급 + 상품평 */
+.row-meta {
+    flex: 0 0 140px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: center;
+    gap: 10px;
+    text-align: right;
+}
+.row-seller {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 12px;
+    color: var(--color-gray-600);
+}
+.row-seller .seller-badge {
+    font-size: 14px;
+}
+.row-seller-grade {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 12px;
+}
+.row-seller-grade .grade-icon { font-size: 13px; }
+.grade-excellent { color: #f5a623; }
+.grade-good      { color: #2a7ae2; }
+.grade-normal    { color: var(--color-gray-400); }
+
+.row-rating {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+.row-rating .rating-label {
+    font-size: 12px;
+    color: var(--color-gray-600);
+}
+.row-rating .stars {
+    color: #f5a623;
+    font-size: 13px;
+    letter-spacing: -1px;
+}
+
+/* ─────────────────────────────────────────────
+   페이지네이션
+───────────────────────────────────────────── */
+.list-pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    padding: 32px 0;
+}
+.list-pagination a {
+    font-size: 14px;
+    color: var(--color-gray-600);
+    padding: 4px 8px;
+    border-radius: var(--radius-sm);
+    transition: color var(--transition), background var(--transition);
+}
+.list-pagination a:hover { background: var(--color-gray-100); }
+.list-pagination a.active {
+    color: var(--color-primary);
+    font-weight: 700;
+}
+.list-pagination .page-nav {
+    font-weight: 600;
+    color: var(--color-gray-400);
+}
+.list-pagination .page-nav:hover { color: var(--color-primary); }
+
+/* ─────────────────────────────────────────────
+   반응형
+───────────────────────────────────────────── */
+@media (max-width: 900px) {
+    .row-thumb { width: 100px; height: 100px; font-size: 28px; }
+    .row-meta { flex: 0 0 100px; }
+    .sort-tabs { flex-wrap: wrap; }
+    .list-header { flex-direction: column; align-items: flex-start; gap: 6px; }
+}
+
+@media (max-width: 580px) {
+    .product-row-item { gap: 14px; }
+    .row-thumb { width: 80px; height: 80px; font-size: 22px; }
+    .row-product-name { font-size: 14px; }
+    .row-price { font-size: 16px; }
+    .row-meta { display: none; } /* 좁은 화면에서는 메타 정보 숨김 */
+}
