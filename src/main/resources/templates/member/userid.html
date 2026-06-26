@@ -1,0 +1,115 @@
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>케이마켓 - 아이디 찾기</title>
+    <link rel="stylesheet" href="../css/member/userid.css">
+</head>
+<body>
+
+    <!-- 헤더 -->
+    <header>
+        <div class="header-inner">
+            <a href="./login.html" class="logo">CI ( 로고 )</a>
+            <nav class="header-nav">
+                <a href="login.html">로그인</a>
+                <a href="join.html">회원가입</a>
+                <a href="/my/home.html">마이페이지</a>
+                <a href="/kmarket/cart">🛒 장바구니</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- 메인 -->
+    <main>
+        <h2 class="section-title">아이디 찾기</h2>
+
+        <div class="tab-group">
+            <div class="tab-btn active" onclick="switchTab(event, 'email')">이메일 인증</div>
+            <div class="tab-btn" onclick="switchTab(event, 'phone')">휴대폰 인증</div>
+        </div>
+
+        <div class="tab-content">
+
+            <!-- 이메일 인증 탭 -->
+            <div class="tab-panel active" id="panel-email">
+                <table class="form-table">
+                    <tr>
+                        <th>이름</th>
+                        <td>
+                            <input type="text" placeholder="이름 입력" id="email-name">
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>이메일</th>
+                        <td>
+                            <div class="input-row">
+                                <input type="email" placeholder="이메일 입력" id="email-addr">
+                                <button type="button" class="btn-send" onclick="sendEmailCode()">인증번호 발급</button>
+                            </div>
+                            <div class="input-row" style="margin-top:6px;">
+                                <input type="text" placeholder="인증번호 입력" id="email-code">
+                                <button type="button" class="btn-confirm" onclick="confirmEmailCode()">확인</button>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+            <!-- 휴대폰 인증 탭 -->
+            <div class="tab-panel" id="panel-phone">
+                <table class="form-table">
+                    <tr>
+                        <th>이름</th>
+                        <td>
+                            <input type="text" placeholder="이름 입력" id="phone-name">
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>휴대폰</th>
+                        <td>
+                            <div class="input-row">
+                                <input type="tel" placeholder="휴대폰 번호 입력" id="phone-num">
+                                <button type="button" class="btn-send" onclick="sendPhoneCode()">인증번호 발급</button>
+                            </div>
+                            <div class="input-row" style="margin-top:6px;">
+                                <input type="text" placeholder="인증번호 입력" id="phone-code">
+                                <button type="button" class="btn-confirm" onclick="confirmPhoneCode()">확인</button>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+        </div>
+
+        <p class="guide-text" id="guide-email">
+            회원가입시 이메일 주소와 입력한 이메일 주소가 같아야, 인증번호를 받을 수 있습니다.<br>
+            인증번호를 입력 후 확인 버튼을 누르세요.
+        </p>
+        <p class="guide-text" id="guide-phone" style="display:none;">
+            가입 시 등록한 휴대폰 번호를 입력해야, 인증번호를 받을 수 있습니다.<br>
+            인증번호를 입력 후 확인 버튼을 누르세요.
+        </p>
+
+        <div class="btn-area">
+            <button type="button" class="btn-cancel" onclick="location.href='./login.html'">취소</button>
+            <button type="button" class="btn-next" onclick="goNext()">다음</button>
+        </div>
+    </main>
+
+    <!-- 푸터 -->
+    <footer>
+        <div class="footer-copyright">
+            Copyright © 2025 김철학 All rights reserved.
+        </div>
+    </footer>
+
+    <script src="/js/member/userid.js">
+        
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,1161 @@
+/* ===== 공통 초기화 ===== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Malgun Gothic', '맑은 고딕', sans-serif;
+    font-size: 14px;
+    color: #333;
+    background-color: #fff;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+    cursor: pointer;
+}
+
+ul {
+    list-style: none;
+}
+
+/* ===== HEADER ===== */
+header {
+    border-bottom: 1px solid #ddd;
+    padding: 0 40px;
+}
+
+.header-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 80px;
+}
+
+.logo {
+    width: 160px;
+    height: 50px;
+    border: 2px solid #4CAF50;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #4CAF50;
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.header-nav {
+    display: flex;
+    gap: 20px;
+    font-size: 13px;
+}
+
+.header-nav a {
+    color: #555;
+}
+.header-nav a:hover,
+.header-nav a.active {
+    color: #4CAF50;
+    font-weight: bold;
+}
+
+/* ===== MAIN ===== */
+main {
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 0 40px;
+}
+
+/* 사이드바 + 콘텐츠 영역을 나란히 배치 */
+.my-wrapper {
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+}
+
+/* ===== 2번 영역: SIDEBAR ===== */
+.sidebar {
+    width: 160px;
+    flex-shrink: 0;
+    border: 1px solid #ddd;
+}
+
+.sidebar-menu li a {
+    display: block;
+    padding: 11px 16px;
+    font-size: 13px;
+    color: #555;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.sidebar-menu li a:hover,
+.sidebar-menu li a.active {
+    color: #4CAF50;
+    font-weight: bold;
+    background-color: #f9fff9;
+}
+
+/* ===== 1번 영역: 요약 정보 (가로 풀폭, 회색바탕) ===== */
+.my-summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border: 1px solid #ddd;
+    padding: 15px 24px;
+    background-color: #f7f7f7;
+    margin-bottom: 20px;
+}
+
+.my-summary-title {
+    font-size: 15px;
+    font-weight: bold;
+    color: #333;
+}
+
+.summary-items {
+    display: flex;
+    align-items: center;
+}
+
+.summary-item {
+    width: 100px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+}
+
+.summary-label {
+    font-size: 13px;
+    color: #555;
+    font-weight: normal;
+}
+
+.summary-num {
+    font-size: 14px;
+    color: #555;
+}
+
+.summary-divider {
+    width: 1px;
+    height: 30px;
+    background-color: #ddd;
+}
+
+/* ===== CONTENT AREA ===== */
+.my-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+/* ===== 3번 영역: 배너 광고 ===== */
+.my-banner {
+    width: 100%;
+    height: 86px;
+    border: 1px solid #ddd;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #aaa;
+    font-size: 14px;
+    background-color: #f9f9f9;
+}
+
+/* ===== 공통 섹션 스타일 ===== */
+.my-section {
+    border: 1px solid #ddd;
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 16px;
+    border-bottom: 1px solid #eee;
+    background-color: #fafafa;
+}
+
+.section-title {
+    font-size: 15px;
+    font-weight: bold;
+}
+
+.btn-more {
+    font-size: 12px;
+    color: #333;
+}
+.btn-more:hover {
+    text-decoration: underline;
+}
+
+/* ===== 4~7번 영역: 최근주문내역 테이블 ===== */
+.order-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.order-table th {
+    padding: 10px 12px;
+    font-size: 13px;
+    font-weight: bold;
+    background-color: #838383;
+    color: #fff;
+    text-align: center;
+    border-right: 1px solid #ccc;
+}
+
+.order-table th:last-child {
+    border-right: none;
+}
+
+.order-table td {
+    padding: 15px 12px;
+    font-size: 13px;
+    border-bottom: 1px solid #ddd;
+    border-right: 1px solid #eee;
+}
+
+.order-table td:last-child {
+    border-right: none;
+}
+
+.order-table tr:last-child td {
+    border-bottom: none;
+}
+
+.order-date {
+    color: #333;
+    text-align: center;
+    vertical-align: middle !important;
+}
+
+/* 6번 영역: 상품 정보 */
+.order-product {
+    text-align: left !important;
+}
+
+.product-inner {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+}
+
+.product-img {
+    width: 70px;
+    height: 70px;
+    border: 1px solid #ddd;
+    background-color: #f5f5f5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    color: #aaa;
+    font-size: 11px;
+    text-align: center;
+}
+
+.product-info {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.product-info .order-no a {
+    color: #0066cc;
+    font-weight: bold;
+    text-decoration: underline;
+}
+
+.product-info .company-name {
+    color: #333;
+    text-decoration: underline;
+}
+
+.product-info .product-name {
+    color: #333;
+    text-decoration: underline;
+}
+
+.product-qty {
+    font-size: 12px;
+    color: #888;
+}
+
+.product-price {
+    font-size: 14px;
+    font-weight: bold;
+    color: #333;
+    margin-top: 2px;
+}
+
+/* 배송 상태 */
+.order-status {
+    text-align: center;
+    vertical-align: middle !important;
+    color: #333;
+}
+
+/* 7번 영역: 확인/신청 버튼 그룹 */
+.order-action {
+    text-align: center;
+    vertical-align: middle !important;
+}
+
+.action-btn-group {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    width: 90px;
+    margin: 0 auto;
+}
+
+.action-btn-group a {
+    display: block;
+    padding: 4px 0;
+    font-size: 11px;
+    text-align: center;
+    border-radius: 2px;
+}
+
+.action-btn-group .btn-blue {
+    background-color: #4a7ac5;
+    color: #fff;
+    border: 1px solid #3b629b;
+}
+.action-btn-group .btn-blue:hover {
+    background-color: #3b629b;
+}
+
+.action-btn-group .btn-white {
+    background-color: #fff;
+    color: #333;
+    border: 1px solid #999;
+}
+.action-btn-group .btn-white:hover {
+    background-color: #f5f5f5;
+}
+
+/* ===== 포인트적립내역 테이블 ===== */
+.point-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.point-table th {
+    padding: 10px 8px;
+    font-size: 13px;
+    font-weight: bold;
+    color: #555;
+    background-color: #f7f7f7;
+    border-bottom: 1px solid #ddd;
+    text-align: center;
+}
+
+.point-table td {
+    padding: 12px 8px;
+    font-size: 13px;
+    text-align: center;
+    border-bottom: 1px solid #f0f0f0;
+    color: #555;
+}
+
+.point-table tr:last-child td {
+    border-bottom: none;
+}
+
+.point-plus {
+    color: #4CAF50;
+    font-weight: bold;
+}
+
+.point-minus {
+    color: #e53935;
+    font-weight: bold;
+}
+
+/* ===== 쿠폰내역 테이블 ===== */
+.coupon-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.coupon-table th {
+    padding: 10px 12px;
+    font-size: 13px;
+    font-weight: bold;
+    background-color: #838383;
+    color: #fff;
+    text-align: center;
+    border-right: 1px solid #ccc;
+}
+
+.coupon-table th:last-child {
+    border-right: none;
+}
+
+.coupon-table td {
+    padding: 14px 12px;
+    font-size: 13px;
+    text-align: center;
+    border-bottom: 1px solid #eee;
+    color: #555;
+}
+
+.coupon-table tr:last-child td {
+    border-bottom: none;
+}
+
+.coupon-name {
+    font-weight: bold;
+    color: #333;
+    text-align: left !important;
+}
+
+.coupon-amount {
+    font-weight: bold;
+    color: #4CAF50;
+}
+
+.coupon-status-active {
+    color: #4CAF50 !important;
+    font-weight: bold;
+}
+
+.coupon-status-expired {
+    color: #999 !important;
+}
+
+/* ===== 쿠폰사용제한 안내 ===== */
+.coupon-notice {
+    margin-top: 24px;
+    padding: 16px 18px;
+}
+
+.coupon-notice ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.coupon-notice li {
+    position: relative;
+    padding-left: 12px;
+    font-size: 12px;
+    color: #999;
+    line-height: 1.8;
+}
+
+.coupon-notice li::before {
+    content: '·';
+    position: absolute;
+    left: 0;
+}
+
+/* ===== 상품평 리스트 테이블 (home 메인 화면) ===== */
+.review-list-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.review-list-table th {
+    padding: 10px 8px;
+    font-size: 13px;
+    font-weight: bold;
+    color: #555;
+    background-color: #f7f7f7;
+    border-bottom: 1px solid #ddd;
+    text-align: center;
+}
+
+.review-list-table td {
+    padding: 12px 8px;
+    font-size: 13px;
+    text-align: center;
+    border-bottom: 1px solid #f0f0f0;
+    color: #555;
+}
+
+.review-list-table tr:last-child td {
+    border-bottom: none;
+}
+
+.review-list-star {
+    letter-spacing: 1px;
+}
+
+.star-filled {
+    color: #f5b301;
+}
+
+.star-empty {
+    color: #ddd;
+}
+
+/* ===== 문의내역 리스트 테이블 (home 메인 화면) ===== */
+.inquiry-list-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.inquiry-list-table th {
+    padding: 10px 8px;
+    font-size: 13px;
+    font-weight: bold;
+    color: #555;
+    background-color: #f7f7f7;
+    border-bottom: 1px solid #ddd;
+    text-align: center;
+}
+
+.inquiry-list-table td {
+    padding: 12px 8px;
+    font-size: 13px;
+    text-align: center;
+    border-bottom: 1px solid #f0f0f0;
+    color: #555;
+}
+
+.inquiry-list-table tr:last-child td {
+    border-bottom: none;
+}
+
+.inquiry-status-checking {
+    color: #888;
+}
+
+.inquiry-status-done {
+    color: #4CAF50;
+    font-weight: bold;
+}
+
+/* ===== 나의설정 (home 메인 화면) ===== */
+.my-settings-grid {
+    display: flex;
+    gap: 1px;
+    background-color: #eee;
+}
+
+.my-settings-item {
+    flex: 1;
+    background-color: #fff;
+    padding: 16px 18px;
+}
+
+.my-settings-label {
+    font-size: 14px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.my-settings-edit {
+    font-size: 12px;
+    font-weight: normal;
+    color: #4a90d9;
+    text-decoration: underline;
+    margin-left: 6px;
+}
+
+.my-settings-value {
+    font-size: 13px;
+    color: #555;
+    line-height: 1.7;
+}
+
+.my-settings-meta {
+    font-size: 12px;
+    color: #999;
+}
+
+/* =========================================================
+   전체주문내역 페이지 전용 (orders.html)
+   ========================================================= */
+
+/* ===== 기간별조회 ===== */
+.period-search {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
+    padding: 14px 16px;
+    border-bottom: 1px solid #eee;
+    background-color: #fafafa;
+}
+
+.period-search-label {
+    font-size: 13px;
+    font-weight: bold;
+    color: #333;
+    flex-shrink: 0;
+}
+
+.period-group {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-shrink: 0;
+}
+
+.period-radio {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 13px;
+    color: #333;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.period-divider {
+    width: 1px;
+    height: 18px;
+    background-color: #ddd;
+    flex-shrink: 0;
+}
+
+.period-select {
+    padding: 6px 8px;
+    font-size: 13px;
+    border: 1px solid #ccc;
+    border-radius: 2px;
+    font-family: inherit;
+    color: #333;
+    background-color: #fff;
+}
+
+.period-range {
+    gap: 6px;
+}
+
+.period-date-input {
+    padding: 5px 8px;
+    font-size: 13px;
+    border: 1px solid #ccc;
+    border-radius: 2px;
+    font-family: inherit;
+    color: #333;
+}
+
+.period-range-tilde {
+    color: #999;
+    font-size: 13px;
+}
+
+.btn-period-search {
+    margin-left: auto;
+    padding: 7px 20px;
+    background-color: #4CAF50;
+    color: #fff;
+    border: none;
+    border-radius: 2px;
+    font-size: 13px;
+    font-weight: bold;
+    cursor: pointer;
+    flex-shrink: 0;
+}
+
+.btn-period-search:hover {
+    background-color: #3d9140;
+}
+
+/* 조회 결과 없을 때 */
+.order-empty {
+    text-align: center;
+    padding: 40px 0;
+    color: #999;
+    font-size: 13px;
+}
+
+/* ===== 페이지네이션 ===== */
+.pagination {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    padding: 18px 0;
+}
+
+.page-prev,
+.page-next {
+    font-size: 13px;
+    color: #555;
+}
+
+.page-prev:hover,
+.page-next:hover {
+    color: #4CAF50;
+    text-decoration: underline;
+}
+
+.page-prev.disabled,
+.page-next.disabled {
+    color: #ccc;
+    pointer-events: none;
+}
+
+.page-numbers {
+    display: flex;
+    gap: 10px;
+}
+
+.page-numbers .page-num {
+    font-size: 13px;
+    color: #555;
+}
+
+.page-numbers .page-num:hover {
+    color: #4CAF50;
+}
+
+.page-numbers .page-num.active {
+    color: #4CAF50;
+    font-weight: bold;
+    text-decoration: underline;
+}
+
+/* ===== FOOTER (축약형) ===== */
+.footer-simple {
+    border-top: 1px solid #ddd;
+    margin-top: 60px;
+}
+
+.footer-simple .footer-copyright {
+    text-align: center;
+    padding: 20px;
+    font-size: 12px;
+    color: #aaa;
+}
+
+/* =========================================================
+   모달 공통 베이스
+   (각 모달 사진을 받을 때마다 이 아래에 모달별 스타일 추가 예정)
+   ========================================================= */
+
+.modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.modal-overlay.active {
+    display: flex;
+}
+
+.modal-box {
+    width: 720px;
+    max-width: 90%;
+    max-height: 85vh;
+    overflow-y: auto;
+    background-color: #fff;
+    border: 1px solid #ddd;
+}
+
+.modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 20px;
+    background-color: #4CAF50;
+    color: #fff;
+    position: sticky;
+    top: 0;
+}
+
+.modal-title {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.modal-close {
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 20px;
+    line-height: 1;
+    cursor: pointer;
+}
+
+.modal-body {
+    padding: 20px;
+}
+
+/* 헤더 색상 변형 - 주문상세는 파란색 */
+.modal-header-blue {
+    background-color: #4a90d9;
+}
+
+.modal-date {
+    font-weight: normal;
+    font-size: 14px;
+    margin-left: 8px;
+}
+
+.modal-section-title {
+    font-size: 15px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid #333;
+}
+
+.modal-body .modal-section-title {
+    margin-top: 20px;
+}
+
+.modal-body .modal-section-title:first-child {
+    margin-top: 0;
+}
+
+/* 주문정보 테이블 (주문상세 모달) */
+.modal-order-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 10px;
+}
+
+.modal-order-table th {
+    padding: 10px 12px;
+    font-size: 13px;
+    font-weight: bold;
+    background-color: #838383;
+    color: #fff;
+    text-align: center;
+    border-right: 1px solid #ccc;
+}
+
+.modal-order-table th:last-child {
+    border-right: none;
+}
+
+.modal-order-table td {
+    padding: 14px 12px;
+    font-size: 13px;
+    border-bottom: 1px solid #ddd;
+    vertical-align: top;
+}
+
+.modal-order-date {
+    text-align: center;
+    vertical-align: middle !important;
+}
+
+.modal-order-product {
+    text-align: left;
+}
+
+.modal-pay-info {
+    font-size: 12px;
+    color: #555;
+    vertical-align: middle !important;
+}
+
+.modal-pay-info p {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 4px;
+}
+
+.modal-pay-info .modal-pay-total {
+    font-weight: bold;
+    color: #333;
+    font-size: 13px;
+    margin-top: 6px;
+}
+
+.modal-order-status {
+    text-align: center;
+    vertical-align: middle !important;
+}
+
+/* 배송정보 테이블 (주문상세 모달) */
+.modal-delivery-table {
+    width: 100%;
+    border-collapse: collapse;
+    border-top: 1px solid #ddd;
+}
+
+.modal-delivery-table th {
+    width: 110px;
+    padding: 12px;
+    font-size: 13px;
+    font-weight: bold;
+    text-align: left;
+    background-color: #f7f7f7;
+    border-bottom: 1px solid #eee;
+}
+
+.modal-delivery-table td {
+    padding: 12px;
+    font-size: 13px;
+    color: #333;
+    border-bottom: 1px solid #eee;
+}
+
+/* ===== 판매자정보 모달 ===== */
+.modal-seller-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.modal-seller-table th {
+    width: 130px;
+    padding: 12px;
+    font-size: 13px;
+    font-weight: bold;
+    text-align: left;
+    color: #333;
+    background-color: #f7f7f7;
+    border-bottom: 1px solid #eee;
+}
+
+.modal-seller-table td {
+    padding: 12px;
+    font-size: 13px;
+    color: #333;
+    border-bottom: 1px solid #eee;
+}
+
+.modal-seller-notice {
+    font-size: 12px;
+    color: #888;
+    margin-top: 14px;
+    line-height: 1.6;
+}
+
+.modal-btn-inquiry {
+    display: block;
+    width: 100%;
+    margin-top: 16px;
+    padding: 12px 0;
+    background-color: #4a90d9;
+    color: #fff;
+    border: none;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.modal-btn-inquiry:hover {
+    background-color: #3b75b3;
+}
+
+/* ===== 문의하기 모달 ===== */
+.modal-box-small {
+    width: 560px;
+}
+
+.modal-inquiry-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.modal-inquiry-table th {
+    width: 90px;
+    padding: 12px 8px;
+    font-size: 13px;
+    font-weight: bold;
+    text-align: left;
+    color: #333;
+    vertical-align: top;
+}
+
+.modal-inquiry-table td {
+    padding: 10px 8px;
+}
+
+.inquiry-radio {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 13px;
+    color: #333;
+    margin-right: 14px;
+    cursor: pointer;
+}
+
+.inquiry-input {
+    width: 100%;
+    padding: 8px 10px;
+    font-size: 13px;
+    border: 1px solid #ccc;
+    border-radius: 2px;
+    font-family: inherit;
+}
+
+.inquiry-textarea {
+    width: 100%;
+    height: 140px;
+    padding: 10px;
+    font-size: 13px;
+    border: 1px solid #ccc;
+    border-radius: 2px;
+    resize: vertical;
+    font-family: inherit;
+}
+
+.modal-inquiry-btn-group {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 20px;
+}
+
+.modal-btn-submit {
+    padding: 10px 28px;
+    background-color: #4a90d9;
+    color: #fff;
+    border: none;
+    font-size: 13px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.modal-btn-submit:hover {
+    background-color: #3b75b3;
+}
+
+.modal-btn-cancel {
+    padding: 10px 28px;
+    background-color: #e0e0e0;
+    color: #888;
+    border: none;
+    font-size: 13px;
+    cursor: pointer;
+}
+
+.modal-btn-cancel:hover {
+    background-color: #d5d5d5;
+}
+
+/* ===== 구매확정 모달 ===== */
+.modal-box-confirm {
+    width: 600px;
+}
+
+.modal-confirm-text {
+    width: 100%;
+    font-size: 15px;
+    color: #333;
+    line-height: 2;
+    text-align: center !important;
+    padding: 40px 0 36px;
+    margin: 0;
+}
+
+.modal-confirm-btn-group {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    padding-bottom: 20px;
+}
+
+/* ===== 상품평쓰기 모달 ===== */
+.modal-review-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.modal-review-table th {
+    width: 90px;
+    padding: 14px 8px;
+    font-size: 13px;
+    font-weight: bold;
+    text-align: left;
+    color: #333;
+    vertical-align: top;
+    border-bottom: 1px solid #eee;
+}
+
+.modal-review-table td {
+    padding: 14px 8px;
+    font-size: 13px;
+    color: #333;
+    border-bottom: 1px solid #eee;
+    vertical-align: middle;
+}
+
+/* 별점 레이팅 */
+.star-rating {
+    display: inline-flex;
+    gap: 4px;
+}
+
+.star {
+    font-size: 22px;
+    color: #ddd;
+    cursor: pointer;
+    user-select: none;
+    transition: color 0.1s;
+}
+
+.star:hover {
+    color: #f5b301;
+}
+
+.star.star-filled {
+    color: #f5b301;
+}
+
+/* 내용 입력 */
+.review-textarea {
+    width: 100%;
+    height: 110px;
+    padding: 10px;
+    font-size: 13px;
+    border: 1px solid #ccc;
+    border-radius: 2px;
+    resize: vertical;
+    font-family: inherit;
+}
+
+/* 사진 첨부 */
+.review-file-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 8px;
+}
+
+.review-file-row:last-child {
+    margin-bottom: 0;
+}
+
+.review-file-btn {
+    flex-shrink: 0;
+    padding: 6px 14px;
+    font-size: 12px;
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    border-radius: 2px;
+    color: #333;
+    cursor: pointer;
+}
+
+.review-file-btn:hover {
+    background-color: #e6e6e6;
+}
+
+.review-file-input {
+    display: none;
+}
+
+.review-file-name {
+    font-size: 12px;
+    color: #888;
+}
+

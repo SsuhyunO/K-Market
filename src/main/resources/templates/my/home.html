@@ -1,0 +1,792 @@
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>마이페이지 | K-Market</title>
+<link rel="stylesheet" href="/css/my/home.css">
+</head>
+<body>
+
+<!-- ===== HEADER ===== -->
+<header>
+    <div class="header-inner">
+        <a href="/" class="logo">CI ( 로고 )</a>
+        <nav class="header-nav">
+            <a href="/member/login.html">로그인</a>
+            <a href="/member/join.html">회원가입</a>
+            <a href="home.html" class="active">마이페이지</a>
+            <a href="/cart">🛒장바구니</a>
+        </nav>
+    </div>
+</header>
+
+<!-- ===== MAIN ===== -->
+<main>
+
+    <!-- 1번 영역: 요약 정보 (가로 풀폭, 회색바탕) -->
+    <section class="my-summary">
+        <span class="my-summary-title">나의쇼핑정보</span>
+        <div class="summary-items">
+            <div class="summary-item">
+                <span class="summary-label">주문</span>
+                <span class="summary-num">2</span>
+            </div>
+            <div class="summary-divider"></div>
+            <div class="summary-item">
+                <span class="summary-label">쿠폰</span>
+                <span class="summary-num">1</span>
+            </div>
+            <div class="summary-divider"></div>
+            <div class="summary-item">
+                <span class="summary-label">포인트</span>
+                <span class="summary-num">1,000</span>
+            </div>
+            <div class="summary-divider"></div>
+            <div class="summary-item">
+                <span class="summary-label">문의</span>
+                <span class="summary-num">1</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- 2번 영역(사이드바) + 콘텐츠 영역을 나란히 배치 -->
+    <div class="my-wrapper">
+
+        <!-- 2번 영역: 사이드바 (제목 없이 메뉴만) -->
+        <aside class="sidebar">
+            <nav class="sidebar-menu">
+                <ul>
+                    <li><a href="order.html" data-menu="orders">전체주문내역</a></li>
+                    <li><a href="point.html" data-menu="points">포인트내역</a></li>
+                    <li><a href="coupon.html" data-menu="coupons">쿠폰</a></li>
+                    <li><a href="review.html" data-menu="reviews">나의리뷰</a></li>
+                    <li><a href="qna.html" data-menu="inquiry">문의하기</a></li>
+                    <li><a href="info.html"  data-menu="settings">나의설정</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- 콘텐츠 영역 (배너 + 최근주문내역 + 포인트적립내역) -->
+        <div class="my-content">
+
+            <!-- 3번 영역: 배너 광고 -->
+            <div class="my-banner">810 × 86 배너 광고</div>
+
+            <!-- 4~7번 영역: 최근주문내역 -->
+            <section class="my-section">
+                <div class="section-header">
+                    <span class="section-title">최근주문내역</span>
+                    <a href="#" class="btn-more" id="moreOrdersBtn">더보기 &gt;</a>
+                </div>
+
+                <table class="order-table">
+                    <thead>
+                        <tr>
+                            <th style="width:120px;">날짜</th>
+                            <th>상품정보</th>
+                            <th style="width:100px;">상태</th>
+                            <th style="width:110px;">확인 / 신청</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="js-order-row" data-date="2022-12-13" data-order-no="1012211341" data-company="(주) 상호명" data-product="상품명" data-qty="1" data-price="34,000원">
+                            <td class="order-date">2022-12-13</td>
+                            <td class="order-product">
+                                <div class="product-inner">
+                                    <div class="product-img">상품이미지</div>
+                                    <div class="product-info">
+                                        <p class="order-no"><a href="#" class="js-order-detail" data-order="1012211341">주문번호 : 1012211341</a></p>
+                                        <p class="company-name">(주) 상호명</p>
+                                        <p class="product-name">상품명</p>
+                                        <p class="product-qty">수량 : 1 개</p>
+                                        <p class="product-price">34,000원</p>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="order-status">배송완료</td>
+                            <td class="order-action">
+                                <div class="action-btn-group">
+                                    <a href="#" class="btn-blue js-confirm-purchase">구매확정</a>
+                                    <a href="#" class="btn-blue js-write-review">상품평쓰기</a>
+                                    <a href="#" class="btn-white js-return-request">반품신청</a>
+                                    <a href="#" class="btn-white js-exchange-request">교환신청</a>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="js-order-row" data-date="2022-12-13" data-order-no="1012211341" data-company="(주) 상호명" data-product="상품명" data-qty="1" data-price="34,000원">
+                            <td class="order-date">2022-12-13</td>
+                            <td class="order-product">
+                                <div class="product-inner">
+                                    <div class="product-img">상품이미지</div>
+                                    <div class="product-info">
+                                        <p class="order-no"><a href="#" class="js-order-detail" data-order="1012211341">주문번호 : 1012211341</a></p>
+                                        <p class="company-name">(주) 상호명</p>
+                                        <p class="product-name">상품명</p>
+                                        <p class="product-qty">수량 : 1 개</p>
+                                        <p class="product-price">34,000원</p>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="order-status">배송완료</td>
+                            <td class="order-action">
+                                <div class="action-btn-group">
+                                    <a href="#" class="btn-blue js-confirm-purchase">구매확정</a>
+                                    <a href="#" class="btn-blue js-write-review">상품평쓰기</a>
+                                    <a href="#" class="btn-white js-return-request">반품신청</a>
+                                    <a href="#" class="btn-white js-exchange-request">교환신청</a>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <!-- 포인트적립내역 -->
+            <section class="my-section">
+                <div class="section-header">
+                    <span class="section-title">포인트적립내역</span>
+                    <a href="/my/points" class="btn-more">더보기 &gt;</a>
+                </div>
+                <table class="point-table">
+                    <thead>
+                        <tr>
+                            <th>날짜</th>
+                            <th>구분</th>
+                            <th>주문번호</th>
+                            <th>적립금액</th>
+                            <th>비고</th>
+                            <th>유효기간</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>2022-12-13</td>
+                            <td>적립</td>
+                            <td>2022121001</td>
+                            <td class="point-plus">340</td>
+                            <td>상품 구매확정</td>
+                            <td>2024-12-10</td>
+                        </tr>
+                        <tr>
+                            <td>2022-12-13</td>
+                            <td>적립</td>
+                            <td>2022120601</td>
+                            <td class="point-plus">120</td>
+                            <td>상품 구매확정</td>
+                            <td>2024-12-06</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <!-- 상품평 -->
+            <section class="my-section">
+                <div class="section-header">
+                    <span class="section-title">상품평</span>
+                    <a href="/my/reviews" class="btn-more">더보기 &gt;</a>
+                </div>
+                <table class="review-list-table">
+                    <thead>
+                        <tr>
+                            <th style="width:60px;">번호</th>
+                            <th>상품명</th>
+                            <th>내용</th>
+                            <th style="width:120px;">평점</th>
+                            <th style="width:110px;">작성일</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>상품번호 / 상품명</td>
+                            <td>배송이 빠릅니다. 잘 사용하 겠습니다 .</td>
+                            <td class="review-list-star"><span class="star-filled">★★★★</span><span class="star-empty">☆</span></td>
+                            <td>2022-12-10</td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>상품번호 / 상품명</td>
+                            <td>배송이 빠릅니다. 잘 사용하 겠습니다 .</td>
+                            <td class="review-list-star"><span class="star-filled">★★★★</span><span class="star-empty">☆</span></td>
+                            <td>2022-12-06</td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td>상품번호 / 상품명</td>
+                            <td>배송이 빠릅니다. 잘 사용하 겠습니다 .</td>
+                            <td class="review-list-star"><span class="star-filled">★★★★</span><span class="star-empty">☆</span></td>
+                            <td>2022-12-06</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <!-- 문의내역 (최대 5건) -->
+            <section class="my-section">
+                <div class="section-header">
+                    <span class="section-title">문의내역</span>
+                    <a href="#" class="btn-more" id="moreInquiryBtn">더보기 &gt;</a>
+                </div>
+                <table class="inquiry-list-table">
+                    <thead>
+                        <tr>
+                            <th style="width:60px;">번호</th>
+                            <th style="width:100px;">문의채널</th>
+                            <th style="width:100px;">문의유형</th>
+                            <th>제목</th>
+                            <th style="width:110px;">작성일</th>
+                            <th style="width:80px;">상태</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>고객센터</td>
+                            <td>주문 / 결제</td>
+                            <td>신용카드 결제 중 오류가 난 경우 어떻게 하나요 ?</td>
+                            <td>2022-12-12</td>
+                            <td class="inquiry-status-checking">검토중</td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>고객센터</td>
+                            <td>주문 / 결제</td>
+                            <td>신용카드 결제 중 오류가 난 경우 어떻게 하나요 ?</td>
+                            <td>2022-12-12</td>
+                            <td class="inquiry-status-done">답변완료</td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td>판매자 게시판</td>
+                            <td>배송</td>
+                            <td>배송기간이 보통 얼마나 걸리나요 ?</td>
+                            <td>2022-12-12</td>
+                            <td class="inquiry-status-done">답변완료</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <!-- 나의설정 -->
+            <section class="my-section">
+                <div class="section-header">
+                    <span class="section-title">나의설정</span>
+                </div>
+                <div class="my-settings-grid">
+                    <div class="my-settings-item">
+                        <p class="my-settings-label">기본배송지설정 <a href="#" class="my-settings-edit">변경</a></p>
+                        <p class="my-settings-value">
+                            부산광역시 부산진구 연동 120<br>
+                            한빛빌딩 10층<br>
+                            <span class="my-settings-meta">(최종수정일 2021-12-10)</span>
+                        </p>
+                    </div>
+                    <div class="my-settings-item">
+                        <p class="my-settings-label">Email 설정 <a href="#" class="my-settings-edit">변경</a></p>
+                        <p class="my-settings-value">
+                            abc123@naver.com<br>
+                            <span class="my-settings-meta">(최종수정일 2021-12-10)</span>
+                        </p>
+                    </div>
+                    <div class="my-settings-item">
+                        <p class="my-settings-label">휴대폰 설정 <a href="#" class="my-settings-edit">변경</a></p>
+                        <p class="my-settings-value">
+                            010-1234-1001<br>
+                            <span class="my-settings-meta">(최종수정일 2021-12-10)</span>
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+    </div>
+</main>
+
+<!-- ===== FOOTER ===== -->
+<footer>
+    <div class="footer-info">
+        <div class="footer-nav">
+            <a href="#">회사소개</a>
+            <a href="#">서비스이용약관</a>
+            <a href="#">개인정보처리방침</a>
+            <a href="#">전자금융거래약관</a>
+        </div>
+        <div class="footer-info-inner">
+            <div class="footer-logo-box">로고</div>
+            <div class="footer-company">
+                <strong>(주)케이마켓</strong>
+                부산광역시 부산진구 중앙대로 103<br>
+                대표이사 : 홍길동<br>
+                사업자등록번호 : 123-45-12345
+            </div>
+            <div class="footer-cs">
+                <strong>고객센터</strong>
+                Tel : 1234-5678 평일 09:00~18:00<br>
+                전자금융거래 분쟁 담당 : 1234-1234 (36팀) 09:00~18:00
+            </div>
+        </div>
+    </div>
+    <div class="footer-copyright">
+        Copyright &copy; 2025 김철학 All rights reserved.
+    </div>
+</footer>
+
+
+<!-- =========================================================
+     모달 영역 (전부 home.html 안에서 팝업으로만 동작)
+     ========================================================= -->
+
+<!-- 주문상세 모달 (No 6-1) -->
+<div class="modal-overlay" id="orderDetailModal">
+    <div class="modal-box">
+        <!-- 1번: 주문상세 모 달창(팝업) / 2번: 닫기버튼 -->
+        <div class="modal-header modal-header-blue">
+            <span class="modal-title">주문상세 <span class="modal-date">20xx-12-13</span></span>
+            <button type="button" class="modal-close" data-close="orderDetailModal">&times;</button>
+        </div>
+
+        <div class="modal-body">
+            <!-- 3번: 주문정보 -->
+            <div class="modal-section-title">주문정보</div>
+            <table class="modal-order-table">
+                <thead>
+                    <tr>
+                        <th style="width:100px;">날짜</th>
+                        <th>상품정보</th>
+                        <th style="width:130px;">결제금액</th>
+                        <th style="width:80px;">상태</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="modal-order-date">20xx-01-01</td>
+                        <td class="modal-order-product">
+                            <div class="product-inner">
+                                <div class="product-img">상품이미지</div>
+                                <div class="product-info">
+                                    <p class="order-no">주문번호 : 1012211341</p>
+                                    <p class="company-name"><a href="#" class="js-seller-info">(주) 상호명</a></p>
+                                    <p class="product-name">상품명</p>
+                                    <p class="product-qty">수량 : 1 개</p>
+                                    <p class="product-price">34,000원</p>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="modal-pay-info">
+                            <p>판매가 <span>34,000원</span></p>
+                            <p>할인 <span>-3,000원</span></p>
+                            <p class="modal-pay-total">결제금액 <span>34,000원</span></p>
+                        </td>
+                        <td class="modal-order-status">배송완료</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <!-- 4번: 배송정보 -->
+            <div class="modal-section-title">배송정보</div>
+            <table class="modal-delivery-table">
+                <tbody>
+                    <tr>
+                        <th>이름</th>
+                        <td>홍길동</td>
+                    </tr>
+                    <tr>
+                        <th>연락처</th>
+                        <td>010-1234-1001</td>
+                    </tr>
+                    <tr>
+                        <th>주소</th>
+                        <td>[210**] 부산광역시 부산진구 대연동 121 10층 1004호</td>
+                    </tr>
+                    <tr>
+                        <th>배송요청사항</th>
+                        <td>없음</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- 판매자정보 모달 (No 6-1-2) -->
+<div class="modal-overlay" id="sellerInfoModal">
+    <div class="modal-box">
+        <!-- 1번: 판매자 정보 모 달창(팝업) / 2번: 닫기버튼 -->
+        <div class="modal-header modal-header-blue">
+            <span class="modal-title">판매자정보</span>
+            <button type="button" class="modal-close" data-close="sellerInfoModal">&times;</button>
+        </div>
+
+        <div class="modal-body">
+            <!-- 3번: 판매자 정보 -->
+            <table class="modal-seller-table">
+                <tbody>
+                    <tr>
+                        <th>판매자 등급</th>
+                        <td>파워딜러</td>
+                    </tr>
+                    <tr>
+                        <th>상호</th>
+                        <td>(주) 상호명</td>
+                    </tr>
+                    <tr>
+                        <th>대표자</th>
+                        <td>홍길동</td>
+                    </tr>
+                    <tr>
+                        <th>전화번호</th>
+                        <td>051-123-1000</td>
+                    </tr>
+                    <tr>
+                        <th>FAX</th>
+                        <td>051-123-1001</td>
+                    </tr>
+                    <tr>
+                        <th>Email</th>
+                        <td>company@abc.com</td>
+                    </tr>
+                    <tr>
+                        <th>사업자번호</th>
+                        <td>123-12-123457</td>
+                    </tr>
+                    <tr>
+                        <th>영업소 재지</th>
+                        <td>[210**] 부산광역시 부산진구 대연동 121 10층 1004호</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <p class="modal-seller-notice">
+                ※ 위 정보는 전자상거래 법 제 20조 제 2항 및 동법 시행령 제 25조 제 2항에 의거하여 소비자보호에 의거 공개합니다
+            </p>
+
+            <!-- 4번: 문의하기 클릭 시 문의하기 팝업 출력 (No 6-1-3) -->
+            <button type="button" class="modal-btn-inquiry js-inquiry-from-order">문의하기</button>
+        </div>
+    </div>
+</div>
+
+<!-- 문의하기 모달 (No 6-1-3) -->
+<div class="modal-overlay" id="inquiryModal">
+    <div class="modal-box modal-box-small">
+        <!-- 1번: 문의하기 모달창(팝업) / 2번: 닫기버튼 -->
+        <div class="modal-header modal-header-blue">
+            <span class="modal-title">문의하기</span>
+            <button type="button" class="modal-close" data-close="inquiryModal">&times;</button>
+        </div>
+
+        <div class="modal-body">
+            <!-- 3번: 문의 입력 필드 -->
+            <table class="modal-inquiry-table">
+                <tbody>
+                    <tr>
+                        <th>문의종류</th>
+                        <td>
+                            <label class="inquiry-radio"><input type="radio" name="inquiryType" value="product"> 상품</label>
+                            <label class="inquiry-radio"><input type="radio" name="inquiryType" value="delivery"> 배송</label>
+                            <label class="inquiry-radio"><input type="radio" name="inquiryType" value="return"> 반품/취소</label>
+                            <label class="inquiry-radio"><input type="radio" name="inquiryType" value="exchange"> 교환</label>
+                            <label class="inquiry-radio"><input type="radio" name="inquiryType" value="etc"> 기타</label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Email</th>
+                        <td><input type="email" class="inquiry-input" id="inquiryEmail" value="chh**@gmail.com"></td>
+                    </tr>
+                    <tr>
+                        <th>제목</th>
+                        <td><input type="text" class="inquiry-input" id="inquiryTitle"></td>
+                    </tr>
+                    <tr>
+                        <th>내용</th>
+                        <td><textarea class="inquiry-textarea" id="inquiryContent"></textarea></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <!-- 4번: 등록하기 / 취소 버튼 -->
+            <div class="modal-inquiry-btn-group">
+                <button type="button" class="modal-btn-submit" id="inquirySubmitBtn">등록하기</button>
+                <button type="button" class="modal-btn-cancel" data-close="inquiryModal">취소</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 구매확정 모달 (No 6-1-4) -->
+<div class="modal-overlay" id="confirmPurchaseModal">
+    <div class="modal-box modal-box-confirm">
+        <!-- 1번: 구매확정 모달창(팝업) / 2번: 닫기버튼 -->
+        <div class="modal-header modal-header-blue">
+            <span class="modal-title">구매확정</span>
+            <button type="button" class="modal-close" data-close="confirmPurchaseModal">&times;</button>
+        </div>
+
+        <div class="modal-body">
+            <!-- 3번: 안내문구 -->
+            <p class="modal-confirm-text">
+                상품을 받으셨나요 ?<br>
+                상품을 받으신 분만 구매확정을 해주세요 .
+            </p>
+
+            <div class="modal-confirm-btn-group">
+                <button type="button" class="modal-btn-submit js-confirm-ok" data-result="confirmPurchase">확인</button>
+                <button type="button" class="modal-btn-cancel js-confirm-cancel" data-result="confirmPurchase" data-close="confirmPurchaseModal">취소</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 상품평쓰기 모달 (No 6-1-5) -->
+<div class="modal-overlay" id="writeReviewModal">
+    <div class="modal-box">
+        <!-- 1번: 상품평작성하기 모달창 / 2번: 닫기버튼 -->
+        <div class="modal-header modal-header-blue">
+            <span class="modal-title">상품평작성하기</span>
+            <button type="button" class="modal-close" data-close="writeReviewModal">&times;</button>
+        </div>
+
+        <div class="modal-body">
+            <!-- 3번: 입력폼 -->
+            <table class="modal-review-table">
+                <tbody>
+                    <tr>
+                        <th>상품명</th>
+                        <td>상품명 출력</td>
+                    </tr>
+                    <tr>
+                        <th>만족도</th>
+                        <td>
+                            <div class="star-rating" id="reviewStarRating">
+                                <span class="star" data-value="1">★</span>
+                                <span class="star" data-value="2">★</span>
+                                <span class="star" data-value="3">★</span>
+                                <span class="star" data-value="4">★</span>
+                                <span class="star" data-value="5">★</span>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>내용</th>
+                        <td>
+                            <textarea class="review-textarea" id="reviewContent" placeholder="최소 10자이상 200자내 외로작성하세요 ."></textarea>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>사진</th>
+                        <td>
+                            <div class="review-file-row">
+                                <label class="review-file-btn">
+                                    파일선택
+                                    <input type="file" class="review-file-input" accept="image/*" data-target="reviewFileName1">
+                                </label>
+                                <span class="review-file-name" id="reviewFileName1">선택된파일없음</span>
+                            </div>
+                            <div class="review-file-row">
+                                <label class="review-file-btn">
+                                    파일선택
+                                    <input type="file" class="review-file-input" accept="image/*" data-target="reviewFileName2">
+                                </label>
+                                <span class="review-file-name" id="reviewFileName2">선택된파일없음</span>
+                            </div>
+                            <div class="review-file-row">
+                                <label class="review-file-btn">
+                                    파일선택
+                                    <input type="file" class="review-file-input" accept="image/*" data-target="reviewFileName3">
+                                </label>
+                                <span class="review-file-name" id="reviewFileName3">선택된파일없음</span>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <!-- 4번: 작성완료 / 취소 -->
+            <div class="modal-confirm-btn-group">
+                <button type="button" class="modal-btn-submit" id="reviewSubmitBtn">작성완료</button>
+                <button type="button" class="modal-btn-cancel" data-close="writeReviewModal">취소</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 반품신청 모달 (No 6-1-6) -->
+<div class="modal-overlay" id="returnRequestModal">
+    <div class="modal-box">
+        <!-- 1번: 반품신청 모달창 -->
+        <div class="modal-header modal-header-blue">
+            <span class="modal-title">반품신청</span>
+            <button type="button" class="modal-close" data-close="returnRequestModal">&times;</button>
+        </div>
+
+        <div class="modal-body">
+            <!-- 2번: 상품정보 -->
+            <div class="modal-section-title">상품정보</div>
+            <table class="modal-order-table">
+                <thead>
+                    <tr>
+                        <th style="width:100px;">날짜</th>
+                        <th>상품정보</th>
+                        <th style="width:130px;">결제금액</th>
+                        <th style="width:80px;">상태</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="modal-order-date" id="returnDate">0000-00-00</td>
+                        <td class="modal-order-product">
+                            <div class="product-inner">
+                                <div class="product-img">상품이미지</div>
+                                <div class="product-info">
+                                    <p class="order-no" id="returnOrderNo">주문번호 : 1012211341</p>
+                                    <p class="company-name" id="returnCompany">(주) 상호명</p>
+                                    <p class="product-name" id="returnProduct">상품명</p>
+                                    <p class="product-qty" id="returnQty">수량 : 1 개</p>
+                                    <p class="product-price" id="returnPrice">34,000원</p>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="modal-pay-info">
+                            <p>판매가 <span>34,000원</span></p>
+                            <p>할인 <span>-3,000원</span></p>
+                            <p class="modal-pay-total">결제금액 <span>34,000원</span></p>
+                        </td>
+                        <td class="modal-order-status">배송완료</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <!-- 3번: 반품정보 입력 -->
+            <div class="modal-section-title">반품정보 입력</div>
+            <table class="modal-review-table">
+                <tbody>
+                    <tr>
+                        <th>반품유형</th>
+                        <td>
+                            <label class="inquiry-radio"><input type="radio" name="returnType" value="simple"> 단순 변심</label>
+                            <label class="inquiry-radio"><input type="radio" name="returnType" value="defect"> 파손 및 불량</label>
+                            <label class="inquiry-radio"><input type="radio" name="returnType" value="mistake"> 주문 실수</label>
+                            <label class="inquiry-radio"><input type="radio" name="returnType" value="etc"> 기타</label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>사유입력</th>
+                        <td><input type="text" class="inquiry-input" id="returnReason"></td>
+                    </tr>
+                    <tr>
+                        <th>사진첨부(선택)</th>
+                        <td>
+                            <div class="review-file-row">
+                                <label class="review-file-btn">
+                                    파일선택
+                                    <input type="file" class="review-file-input" accept="image/*" data-target="returnFileName">
+                                </label>
+                                <span class="review-file-name" id="returnFileName">선택된 파일없음</span>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <!-- 4번: 반품신청 / 취소 -->
+            <div class="modal-confirm-btn-group">
+                <button type="button" class="modal-btn-submit" id="returnSubmitBtn">반품신청</button>
+                <button type="button" class="modal-btn-cancel" data-close="returnRequestModal">취소</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 교환신청 모달 (No 6-1-7) -->
+<div class="modal-overlay" id="exchangeRequestModal">
+    <div class="modal-box">
+        <!-- 1번: 교환신청 모달창 -->
+        <div class="modal-header modal-header-blue">
+            <span class="modal-title">교환신청</span>
+            <button type="button" class="modal-close" data-close="exchangeRequestModal">&times;</button>
+        </div>
+
+        <div class="modal-body">
+            <!-- 2번: 상품정보 -->
+            <div class="modal-section-title">상품정보</div>
+            <table class="modal-order-table">
+                <thead>
+                    <tr>
+                        <th style="width:100px;">날짜</th>
+                        <th>상품정보</th>
+                        <th style="width:130px;">결제금액</th>
+                        <th style="width:80px;">상태</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="modal-order-date" id="exchangeDate">0000-00-00</td>
+                        <td class="modal-order-product">
+                            <div class="product-inner">
+                                <div class="product-img">상품이미지</div>
+                                <div class="product-info">
+                                    <p class="order-no" id="exchangeOrderNo">주문번호 : 1012211341</p>
+                                    <p class="company-name" id="exchangeCompany">(주) 상호명</p>
+                                    <p class="product-name" id="exchangeProduct">상품명</p>
+                                    <p class="product-qty" id="exchangeQty">수량 : 1 개</p>
+                                    <p class="product-price" id="exchangePrice">34,000원</p>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="modal-pay-info">
+                            <p>판매가 <span>34,000원</span></p>
+                            <p>할인 <span>-3,000원</span></p>
+                            <p class="modal-pay-total">결제금액 <span>34,000원</span></p>
+                        </td>
+                        <td class="modal-order-status">배송완료</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <!-- 3번: 교환정보 입력 -->
+            <div class="modal-section-title">교환정보 입력</div>
+            <table class="modal-review-table">
+                <tbody>
+                    <tr>
+                        <th>교환유형</th>
+                        <td>
+                            <label class="inquiry-radio"><input type="radio" name="exchangeType" value="simple"> 단순 교환</label>
+                            <label class="inquiry-radio"><input type="radio" name="exchangeType" value="defect"> 파손 및 불량</label>
+                            <label class="inquiry-radio"><input type="radio" name="exchangeType" value="mistake"> 주문 실수</label>
+                            <label class="inquiry-radio"><input type="radio" name="exchangeType" value="etc"> 기타</label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>사유입력</th>
+                        <td><input type="text" class="inquiry-input" id="exchangeReason"></td>
+                    </tr>
+                    <tr>
+                        <th>사진첨부(선택)</th>
+                        <td>
+                            <div class="review-file-row">
+                                <label class="review-file-btn">
+                                    파일선택
+                                    <input type="file" class="review-file-input" accept="image/*" data-target="exchangeFileName">
+                                </label>
+                                <span class="review-file-name" id="exchangeFileName">선택된 파일없음</span>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <!-- 4번: 교환신청 / 취소 -->
+            <div class="modal-confirm-btn-group">
+                <button type="button" class="modal-btn-submit" id="exchangeSubmitBtn">교환신청</button>
+                <button type="button" class="modal-btn-cancel" data-close="exchangeRequestModal">취소</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script src="/js/my/home.js"> </script>
+
+</body>
+</html>
