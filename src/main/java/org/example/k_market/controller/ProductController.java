@@ -57,4 +57,14 @@ public class ProductController {
 
         return "product/list";
     }
+
+    @GetMapping("/product/view")
+    public String view() {
+
+        // 💡 나중에는 여기서 파라미터(id 등)를 받아서 DB에서 상품 정보를 조회한 뒤
+        // model.addAttribute("product", productInfo); 처럼 넘겨주는 로직이 추가됩니다.
+        // 하지만 지금은 화면만 띄우면 되므로 아주 심플합니다!
+
+        return "product/view"; // templates/product 폴더 안의 view.html을 화면에 띄워라!
+    }
 }

@@ -29,19 +29,24 @@
              th:with="
                 cateId=${param.category != null ? param.category[0] : '12'},
                 parentName=${
-                    (cateId == '11' or cateId == '12') ? '패션·의류·뷰티' :
-                    ((cateId == '21' or cateId == '22') ? '가전·디지털' :
-                    ((cateId == '31' or cateId == '32') ? '식품·생필품' :
-                    ((cateId == '41' or cateId == '42' or cateId == '43') ? '홈·데코·문구' : null)))
+                    (cateId == '11' or cateId == '12' or cateId == '13') ? '패션·뷰티' :
+                    ((cateId == '21' or cateId == '22' or cateId == '23') ? '가전·디지털' :
+                    ((cateId == '31' or cateId == '32' or cateId == '33') ? '식품·생필품' :
+                    ((cateId == '41' or cateId == '42' or cateId == '43') ? '홈·데코·취미' : null)))
                 },
                 currentName=${
-                    cateId == '11' ? '브랜드패션' :
-                    (cateId == '12' ? '남성의류' :
-                    (cateId == '13' ? '여성의류' :
-                    (cateId == '21' ? '노트북/PC' :
-                    (cateId == '22' ? '가전제품' :
+                    cateId == '11' ? '남성의류' :
+                    (cateId == '12' ? '여성의류' :
+                    (cateId == '13' ? '화장품·뷰티' :
+                    (cateId == '21' ? '컴퓨터·PC' :
+                    (cateId == '22' ? '생활가전' :
+                    (cateId == '23' ? '모바일' :
                     (cateId == '31' ? '신선식품' :
-                    (cateId == '41' ? '가구/DIY' : '전체상품'))))))
+                    (cateId == '32' ? '가공식품' :
+                    (cateId == '33' ? '생활용품' :
+                    (cateId == '41' ? '가구·인테리어' :
+                    (cateId == '42' ? '데코문구·오피스' :
+                    (cateId == '43' ? '문구반려·취미' : '전체상품')))))))))))
                 }
              ">
 
@@ -90,7 +95,7 @@
             <!-- productList가 없거나 비어있을 때 placeholder 4개 -->
             <th:block th:if="${productList == null or #lists.isEmpty(productList)}">
 
-                <a href="#" class="product-row-item" th:each="i : ${#numbers.sequence(1, 4)}">
+                <a th:href="@{/product/view(category=${param.category != null ? param.category[0] : 11})}" class="product-row-item" th:each="i : ${#numbers.sequence(1, 4)}">
                     <div class="row-thumb">🖼️</div>
                     <div class="row-info">
                         <div class="row-product-name">상품명</div>
