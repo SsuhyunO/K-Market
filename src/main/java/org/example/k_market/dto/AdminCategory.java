@@ -19,7 +19,8 @@ public enum AdminCategory {
     CATEGORY("/admin/category-management", "카테고리", "HOME &rsaquo; 환경설정 &rsaquo; 카테고리"),
     SHOP_LIST("/admin/shop-list", "상점목록", "HOME &rsaquo; 상점관리 &rsaquo; 상점목록"),
     SALES_STATUS("/admin/sales-status", "매출현황", "HOME &rsaquo; 상점관리 &rsaquo; 매출현황"),
-    MEMBER_LIST("/admin/member-list", "회원목록", "HOME &rsaquo; 회원관리 &rsaquo; 회원목록");
+    MEMBER_LIST("/admin/member-list", "회원목록", "HOME &rsaquo; 회원관리 &rsaquo; 회원목록"),
+    MANAGEMENT_POINT("/admin/management-point", "포인트관리", "HOME &rsaquo; 회원관리 &rsaquo; 포인트관리");
 
     private final String path;
     private final String title;

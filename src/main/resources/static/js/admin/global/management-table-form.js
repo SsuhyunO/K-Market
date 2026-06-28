@@ -1,4 +1,4 @@
-export const ManagementTableForm = (() => {
+﻿export const ManagementTableForm = (() => {
     function init() {
         const form = document.getElementById("management-table-form");
         if (!form) return;
@@ -6,16 +6,13 @@ export const ManagementTableForm = (() => {
         bindListForm({
             form,
             selectAll: document.getElementById("select-all"),
-            deleteButton: document.getElementById("delete-button"),
-            itemSelector: getCheckboxSelector(form),
-            deleteEmptyMessage: form.dataset.deleteEmptyMessage,
-            deleteConfirmMessage: form.dataset.deleteConfirmMessage
+            itemSelector: getCheckboxSelector(form)
         });
     }
 
     function bindListForm(options) {
         bindCheckboxGroup(options.form, options.selectAll, options.itemSelector);
-        bindDeleteValidation(options);
+        bindBulkSubmitValidation(options.form, options.itemSelector);
     }
 
     function bindCheckboxGroup(form, selectAll, itemSelector) {
@@ -37,23 +34,24 @@ export const ManagementTableForm = (() => {
         syncSelectAllState(form, selectAll, itemSelector);
     }
 
-    function bindDeleteValidation(options) {
-        const form = options.form;
-        const deleteButton = options.deleteButton;
-        const itemSelector = options.itemSelector;
+    function bindBulkSubmitValidation(form, itemSelector) {
+        if (!form || !itemSelector) return;
 
-        if (!form || !deleteButton || !itemSelector) return;
+        const submitButtons = Array.from(form.querySelectorAll('button[data-management-action="bulk-submit"]'));
+        if (submitButtons.length === 0) return;
 
-        deleteButton.addEventListener("click", function (e) {
-            if (!hasChecked(form, itemSelector)) {
-                alert(options.deleteEmptyMessage || "삭제할 항목을 선택해주세요.");
-                e.preventDefault();
-                return;
-            }
+        submitButtons.forEach(button => {
+            button.addEventListener("click", function (e) {
+                if (!hasChecked(form, itemSelector)) {
+                    alert(button.dataset.emptyMessage || "선택한 항목을 선택해주세요.");
+                    e.preventDefault();
+                    return;
+                }
 
-            if (!confirm(options.deleteConfirmMessage || "선택한 항목을 삭제하시겠습니까?")) {
-                e.preventDefault();
-            }
+                if (!confirm(button.dataset.confirmMessage || "선택한 항목을 삭제하시겠습니까?")) {
+                    e.preventDefault();
+                }
+            });
         });
     }
 

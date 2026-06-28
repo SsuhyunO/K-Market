@@ -68,3 +68,8 @@
 .management-table td:nth-child(9) {
     width: 100px;
 }
+
+.management-table th:nth-child(10),
+.management-table td:nth-child(10) {
+    width: 100px;
+}

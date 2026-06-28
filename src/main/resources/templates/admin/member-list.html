@@ -1,9 +1,10 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <title>KMarket 회원목록</title>
-    <th:block th:replace="~{admin/fragments/global/head::head}"></th:block>
+    <th:block th:replace="~{admin/fragments/head::head}"></th:block>
     <link rel="stylesheet" th:href="@{/css/admin/global/management-table-form.css}">
+    <link rel="stylesheet" th:href="@{/css/admin/global/action-bar.css}">
     <link rel="stylesheet" th:href="@{/css/admin/global/modal-form.css}">
     <link rel="stylesheet" th:href="@{/css/admin/global/section-table.css}">
     <link rel="stylesheet" th:href="@{/css/admin/global/search-form.css}">
@@ -11,16 +12,16 @@
     <script type="module" th:src="@{/js/admin/member-list.js}"></script>
 </head>
 <body>
-<header th:replace="~{admin/fragments/global/header::header}"></header>
+<header th:replace="~{admin/fragments/header::header}"></header>
 <div class="admin-layout">
-    <aside th:replace="~{admin/fragments/global/aside::aside}"></aside>
+    <aside th:replace="~{admin/fragments/aside::aside}"></aside>
 
     <main id="admin-main">
-        <div th:replace="~{admin/fragments/global/page-header::page-header}"></div>
+        <div th:replace="~{admin/fragments/page-header::page-header}"></div>
 
-        <section th:replace="~{admin/fragments/global/dash-section::dash-section(null, null, null, ~{::main_content})}">
+        <section th:replace="~{admin/fragments/dash-section::dash-section(null, null, null, ~{::main_content})}">
             <th:block th:fragment="main_content">
-                <th:block th:replace="~{admin/fragments/global/search-form(~{::options})}">
+                <th:block th:replace="~{admin/fragments/search-form(~{::options})}">
                     <th:block th:fragment="options">
                         <option value="아이디">아이디</option>
                         <option value="이름">이름</option>
@@ -29,15 +30,11 @@
                     </th:block>
                 </th:block>
 
-                <th:block th:replace="~{admin/fragments/global/management-table-form::management-table-form(
+                <th:block th:replace="~{admin/fragments/management-table-form::management-table-form(
                     null,
                     ~{::table-content},
-                    '선택수정',
-                    null,
-                    'memberNo',
-                    '수정할 회원을 선택해주세요.',
-                    null,
-                    null)}">
+                    ~{::member-table-footer},
+                    'memberNo')}">
                     <th:block th:fragment="table-content">
                         <tr>
                             <th><label><input type="checkbox" id="select-all"></label></th>
@@ -95,9 +92,20 @@
                             <td><button class="member-action-button" type="button">[ 수정 ]</button></td>
                         </tr>
                     </th:block>
+	                
+	                <th:block th:fragment="member-table-footer">
+		                <span class="btn-area-spacer"></span>
+		                <nav th:replace="~{/admin/fragments/admin-pagination}"></nav>
+		                <button type="button"
+		                        data-management-action="bulk-edit"
+		                        data-empty-message="수정할 회원을 선택해주세요."
+		                        data-action-variant="primary">
+			                선택수정
+		                </button>
+	                </th:block>
                 </th:block>
 
-                <div th:replace="~{admin/fragments/global/modal::modal('member-edit-modal', '회원수정', ~{::member_edit_modal_content})}">
+                <div th:replace="~{admin/fragments/modal::modal('member-edit-modal', '회원수정', ~{::member_edit_modal_content})}">
                     <th:block th:fragment="member_edit_modal_content">
                         <form id="member-edit-form" action="#" method="post">
                             <div class="member-edit-target">
@@ -123,6 +131,7 @@
                                         <label class="member-radio-label">
                                             <input id="member-edit-gender-f" type="radio" name="gender" value="F"> 여
                                         </label>
+                                        <p class="field-error" data-error-for="member-edit-gender"></p>
                                     </td>
                                 </tr>
                                 <tr>
@@ -188,6 +197,8 @@
     </main>
 </div>
 
-<footer th:replace="~{admin/fragments/global/footer::footer}"></footer>
+<footer th:replace="~{admin/fragments/footer::footer}"></footer>
 </body>
 </html>
+
+

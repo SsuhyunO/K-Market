@@ -116,6 +116,8 @@ function startDrag(event) {
         initialIndex: getCategoryIndex(item),
         dragOffsetY: pendingDrag.startY - getDragRect(item).top,
         dragBounds: getDragBounds(item),
+        lastPointerY: pendingDrag.startY,
+        dragDirection: 0,
         inlineStyle: item.getAttribute('style') ?? ''
     };
 
@@ -195,14 +197,34 @@ function releasePointerCapture() {
  * 현재 pointer Y 좌표 아래의 같은 depth 형제 카테고리를 찾고 재정렬을 시도한다.
  */
 function reorderByPointer(event) {
-    const targetItem = getTargetItem(event.clientY);
+    const collisionY = getDragCollisionY(event.clientY);
+    const targetItem = getTargetItem(collisionY);
     if (!targetItem) {
         clearDropGuide();
         return;
     }
 
     showDropGuide(targetItem);
-    reorderCategory(targetItem, event.clientY);
+    reorderCategory(targetItem, collisionY);
+}
+
+/**
+ * 이동 방향에 따라 펼쳐진 category-item 전체 박스의 선행 edge를 충돌 좌표로 사용한다.
+ * 하단/상단 bound에 도달한 뒤에는 마우스가 영역 밖으로 이동해도 고정된 item 경계를 유지한다.
+ */
+function getDragCollisionY(clientY) {
+    const pointerDelta = clientY - draggedCategory.lastPointerY;
+    draggedCategory.lastPointerY = clientY;
+
+    if (pointerDelta !== 0) {
+        draggedCategory.dragDirection = Math.sign(pointerDelta);
+    }
+
+    const rect = getDragRect(draggedCategory.item);
+    if (draggedCategory.dragDirection > 0) return rect.bottom;
+    if (draggedCategory.dragDirection < 0) return rect.top;
+
+    return rect.top + rect.height / 2;
 }
 
 /**
@@ -338,11 +360,10 @@ function getDragBounds(item) {
 }
 
 /**
- * 카테고리 item의 드래그 기준 row 영역을 반환한다.
+ * 펼쳐진 하위 카테고리를 포함한 category-item 전체 드래그 영역을 반환한다.
  */
 function getDragRect(item) {
-    return item.querySelector(':scope > .category-row')?.getBoundingClientRect() ??
-        item.getBoundingClientRect();
+    return item.getBoundingClientRect();
 }
 
 /**

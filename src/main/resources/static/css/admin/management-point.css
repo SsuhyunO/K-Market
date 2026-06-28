@@ -1,20 +1,5 @@
-.shop-register-modal-table tr:nth-child(7) > td {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-
-.shop-address-field {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 10px;
-}
-
-.shop-address-search {
-    color: #7ca047;
-    font-size: 12px;
-    white-space: nowrap;
+.management-table {
+    min-width: 820px;
 }
 
 .management-table th:nth-child(1),
@@ -34,31 +19,34 @@
 
 .management-table th:nth-child(4),
 .management-table td:nth-child(4) {
-    width: 80px;
+    width: 90px;
 }
 
 .management-table th:nth-child(5),
-.management-table td:nth-child(5) {
-    width: 130px;
-}
-
+.management-table td:nth-child(5),
 .management-table th:nth-child(6),
 .management-table td:nth-child(6) {
-    width: 130px;
+    width: 110px;
 }
 
 .management-table th:nth-child(7),
 .management-table td:nth-child(7) {
-    width: 100px;
+    width: 190px;
 }
 
 .management-table th:nth-child(8),
 .management-table td:nth-child(8) {
-    width: 42px;
+    width: 130px;
 }
 
+.point-amount {
+    font-weight: 700;
+}
 
-.management-table th:nth-child(9),
-.management-table td:nth-child(9) {
-    width: 60px;
+.point-amount.positive {
+    color: var(--adm-primary);
+}
+
+.point-amount.negative {
+    color: var(--adm-red);
 }

@@ -1,14 +1,40 @@
+﻿import { Validation } from '../global/validation.js';
 import { initModals, openModal } from '../global/modal-form.js';
+import { FormValidation } from './global/form-validation.js';
+import { openDaumPostcode } from '../global/daumpostcode.js';
 
 document.addEventListener("DOMContentLoaded", function () {
     initModals();
     initMemberEditModal();
+    initMemberEditValidation();
+    initMemberPostcode();
 });
+
+function initMemberPostcode() {
+    const searchButton = document.querySelector(".member-address-search");
+    const zipCodeField = document.getElementById("member-edit-zip-code");
+    const addressField = document.getElementById("member-edit-address");
+    const detailAddressField = document.getElementById("member-edit-detail-address");
+
+    if (!searchButton || !zipCodeField || !addressField) return;
+
+    searchButton.addEventListener("click", async function () {
+        try {
+            const { zipCode, address } = await openDaumPostcode();
+            zipCodeField.value = zipCode;
+            addressField.value = address;
+            detailAddressField?.focus();
+        } catch (error) {
+            console.error(error);
+            alert("우편번호 서비스를 불러오지 못했습니다.");
+        }
+    });
+}
 
 function initMemberEditModal() {
     const form = document.getElementById("management-table-form");
     const selectAll = document.getElementById("select-all");
-    const editButton = document.getElementById("delete-button");
+    const editButton = document.querySelector('button[data-management-action="bulk-edit"]');
     const modal = document.getElementById("member-edit-modal");
     const targetSelect = document.getElementById("member-edit-target-select");
 
@@ -21,13 +47,13 @@ function initMemberEditModal() {
 
         const selectedMembers = getSelectedMembers(form);
         if (selectedMembers.length === 0) {
-            alert(form.dataset.deleteEmptyMessage || "수정할 회원을 선택해주세요.");
+            alert(editButton.dataset.emptyMessage || "수정할 회원을 선택해주세요.");
             return;
         }
 
+        openModal(modal);
         renderTargetOptions(targetSelect, selectedMembers);
         fillEditForm(selectedMembers[0]);
-        openModal(modal);
     });
 
     form.addEventListener("click", function (e) {
@@ -43,9 +69,9 @@ function initMemberEditModal() {
         syncSelectAllState(form, selectAll);
 
         const member = getMemberFromCheckbox(checkbox);
+        openModal(modal);
         renderTargetOptions(targetSelect, [member]);
         fillEditForm(member);
-        openModal(modal);
     });
 
     targetSelect.addEventListener("change", function () {
@@ -55,6 +81,91 @@ function initMemberEditModal() {
 
         fillEditForm(member);
     });
+}
+
+function initMemberEditValidation() {
+    const registerForm = document.getElementById("member-edit-form");
+    if (!registerForm) return;
+
+    FormValidation.bind({
+        form: registerForm,
+        validate: validateMemberEditForm,
+        isField: isMemberEditField,
+        getRelatedFieldIds: getMemberEditRelatedFieldIds,
+        ensureErrors: ensureMemberEditErrors
+    });
+}
+
+function ensureMemberEditErrors(form) {
+    FormValidation.ensureFieldErrors(
+        form,
+        "#member-edit-target-select, #member-edit-name, #member-edit-email, #member-edit-phone, #member-edit-detail-address"
+    );
+}
+
+function getMemberEditRelatedFieldIds(fieldId) {
+    if (fieldId === "member-edit-gender-m" || fieldId === "member-edit-gender-f") {
+        return ["member-edit-gender"];
+    }
+
+    return [fieldId];
+}
+
+function validateMemberEditForm(form) {
+    const errors = [];
+
+    FormValidation.addRequiredError(form, "member-edit-target-select", "수정 대상을 선택해주세요.", errors);
+    FormValidation.addRequiredError(form, "member-edit-name", "이름을 입력해주세요.", errors);
+    validateGender(form, errors);
+    validateEmail(form, errors);
+    validatePhone(form, errors);
+    FormValidation.addRequiredError(form, "member-edit-detail-address", "상세주소를 입력해주세요.", errors);
+
+    return errors;
+}
+
+function validateGender(form, errors) {
+    const checkedGender = form.querySelector('input[name="gender"]:checked');
+    if (checkedGender) return;
+
+    errors.push({
+        fieldId: "member-edit-gender",
+        message: "성별을 선택해주세요."
+    });
+}
+
+function validateEmail(form, errors) {
+    const field = form.querySelector("#member-edit-email");
+    if (!field) return;
+
+    const value = field.value;
+    if (!Validation.required(value).valid) {
+        errors.push({ fieldId: field.id, message: "이메일을 입력해주세요." });
+        return;
+    }
+
+    if (!Validation.pattern(value, /^[^\s@]+@[^\s@]+\.[^\s@]+$/).valid) {
+        errors.push({ fieldId: field.id, message: "이메일 형식이 올바르지 않습니다." });
+    }
+}
+
+function validatePhone(form, errors) {
+    const field = form.querySelector("#member-edit-phone");
+    if (!field) return;
+
+    const value = field.value;
+    if (!Validation.required(value).valid) {
+        errors.push({ fieldId: field.id, message: "휴대폰 번호를 입력해주세요." });
+        return;
+    }
+
+    if (!Validation.pattern(value, /^01[016789]-?\d{3,4}-?\d{4}$/).valid) {
+        errors.push({ fieldId: field.id, message: "휴대폰 번호 형식이 올바르지 않습니다." });
+    }
+}
+
+function isMemberEditField(form, target) {
+    return target.matches("input, select, textarea") && form.contains(target);
 }
 
 function bindCheckboxGroup(form, selectAll) {
@@ -148,3 +259,4 @@ function syncSelectAllState(form, selectAll) {
     selectAll.checked = checkboxes.length > 0 && checkedCount === checkboxes.length;
     selectAll.indeterminate = checkedCount > 0 && checkedCount < checkboxes.length;
 }
+
