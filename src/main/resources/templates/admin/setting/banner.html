@@ -1,0 +1,215 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>KMarket 배너관리</title>
+    <th:block th:replace="~{admin/fragments/head::head}"></th:block>
+    <link rel="stylesheet" th:href="@{/css/admin/global/management-table-form.css}">
+    <link rel="stylesheet" th:href="@{/css/admin/global/action-bar.css}">
+    <link rel="stylesheet" th:href="@{/css/admin/global/modal-form.css}">
+    <link rel="stylesheet" th:href="@{/css/admin/setting/banner.css}">
+    <link rel="stylesheet" th:href="@{/css/admin/global/section-table.css}">
+    <script type="module" th:src="@{/js/admin/setting/banner.js}"></script>
+</head>
+<body>
+<header th:replace="~{admin/fragments/header::header}"></header>
+<div class="admin-layout">
+    <aside th:replace="~{admin/fragments/aside::aside}"></aside>
+    
+    <main id="admin-main">
+        <!-- 브레드크럼 + 타이틀 -->
+        <div th:replace="~{admin/fragments/page-header::page-header}"></div>
+        
+        <nav class="banner-nav">
+            <ul>
+                <li th:classappend="${bannerCategory == 'mainTop'} ? 'current'">
+                    <a th:href="@{/admin/banner-management(bannerCategory='mainTop')}">메인상단 배너</a>
+                </li>
+                <li th:classappend="${bannerCategory == 'mainSlider'} ? 'current'">
+                    <a th:href="@{/admin/banner-management(bannerCategory='mainSlider')}">메인슬라이더 배너</a>
+                </li>
+                <li th:classappend="${bannerCategory == 'productDetailView'} ? 'current'">
+                    <a th:href="@{/admin/banner-management(bannerCategory='productDetailView')}">상품 상세보기 배너</a>
+                </li>
+                <li th:classappend="${bannerCategory == 'userLogin'} ? 'current'">
+                    <a th:href="@{/admin/banner-management(bannerCategory='userLogin')}">회원로그인 배너</a>
+                </li>
+                <li th:classappend="${bannerCategory == 'myPage'} ? 'current'">
+                    <a th:href="@{/admin/banner-management(bannerCategory='myPage')}">마이페이지 배너</a>
+                </li>
+            </ul>
+        </nav>
+        
+        <section th:replace="~{admin/fragments/dash-section::dash-section(null, ${tableHeader}, null, ~{::content})}">
+            <th:block th:fragment="content">
+                <th:block th:replace="~{admin/fragments/management-table-form::management-table-form(
+                    null,
+                    ~{::management-content},
+                    ~{::banner-table-footer},
+                    'bannerNo')}">
+                    
+                    <th:block th:fragment="management-content">
+                        <tr>
+                            <th><label><input type="checkbox" id="select-all"/></label></th>
+                            <th>번호</th>
+                            <th>이미지</th>
+                            <th>배너정보</th>
+                            <th>배너위치</th>
+                            <th>시작일</th>
+                            <th>종료일</th>
+                            <th>시작시간</th>
+                            <th>종료시간</th>
+                            <th>관리</th>
+                        </tr>
+                        <tr th:each="banner : ${dtoList}">
+                            <td><label><input class="checkboxes" type="checkbox" name="bannerNo"
+                                              th:value="${banner.no}"/></label></td>
+                            <td th:text="${banner.no}"></td>
+                            <td><img th:src="@{${banner.imagePath}}" alt="배너 이미지"/></td>
+                            <td>
+                                배너명 : ${banner.name}<br>
+                                크기 : ${banner.size}<br>
+                                배경색 : ${banner.color}<br>
+                                배너링크 : ${banner.url}
+                            </td>
+                            <td th:text="${banner.location}"></td>
+                            <td th:text="${banner.createAt.replace(0, 10)}"></td>
+                            <td th:text="${banner.leaveAt.replace(0, 10)}"></td>
+                            <td th:text="${banner.createAt.replace(11, 16)}"></td>
+                            <td th:text="${banner.leaveAt.replace(11, 16)}"></td>
+                            <td>
+                                <button class="banner-state-button" type="submit"
+                                        th:text="${banner.active == 'ACTIVE' ? '[비활성]' : '[활성]'}"></button>
+                            </td>
+                        </tr>
+                    </th:block>
+	                <th:block th:fragment="banner-table-footer">
+		                <button type="submit"
+		                        data-management-action="bulk-submit"
+		                        data-empty-message="삭제할 배너를 선택해주세요."
+		                        data-confirm-message="선택한 배너를 삭제하시겠습니까?"
+		                        data-action-variant="secondary">선택삭제</button>
+		                <nav th:replace="~{/admin/fragments/admin-pagination}"></nav>
+		                <button type="button"
+		                        data-modal-target="banner-modal"
+		                        data-action-variant="primary">배너등록</button>
+	                </th:block>
+                </th:block>
+
+
+
+                <div th:replace="~{admin/fragments/modal::modal('banner-modal', '배너등록', ~{::banner_register_modal_content})}">
+                    <th:block th:fragment="banner_register_modal_content">
+                        <form id="banner-register-form"
+                              th:action="@{/admin/banner/register}"
+                              method="post"
+                              novalidate
+                              enctype="multipart/form-data">
+                            <table class="section-table banner-modal-table">
+                                <tr>
+                                    <th>
+                                        <label for="banner-name">배너명</label>
+                                        <span class="row-description">배너명을 입력하세요.</span>
+                                    </th>
+                                    <td>
+                                        <input id="banner-name" type="text" name="name" placeholder="배너명">
+                                        <p class="field-error" data-error-for="banner-name"></p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>
+                                        <label for="banner-size">배너크기</label>
+                                        <span class="row-description">권장 이미지 크기를 입력하세요.</span>
+                                    </th>
+                                    <td>
+                                        <input id="banner-size" type="text" name="size" placeholder="예: 1200x80">
+                                        <p class="field-error" data-error-for="banner-size"></p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>
+                                        <label for="banner-background-color">배경색</label>
+                                    </th>
+                                    <td>
+                                        <input id="banner-background-color" type="text" name="backgroundColor"
+                                               placeholder="예: #ffffff">
+                                        <p class="field-error" data-error-for="banner-background-color"></p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>
+                                        <label for="banner-link">배너링크</label>
+                                        <span class="row-description">배너 클릭 시 이동할 주소를 입력하세요.</span>
+                                    </th>
+                                    <td>
+                                        <input id="banner-link" type="url" name="link" placeholder="https://">
+                                        <p class="field-error" data-error-for="banner-link"></p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>
+                                        <label for="banner-position">배너위치</label>
+                                        <span class="row-description">배너가 노출될 위치를 선택하세요.</span>
+                                    </th>
+                                    <td>
+                                        <select id="banner-position" name="position">
+                                            <option value="">선택</option>
+                                            <option value="MAIN1">MAIN1</option>
+                                        </select>
+                                        <p class="field-error" data-error-for="banner-position"></p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>
+                                        <label for="banner-start-date">노출기간</label>
+                                        <span class="row-description">배너 시작일과 종료일을 선택하세요.</span>
+                                    </th>
+                                    <td>
+                                        <div class="banner-modal-field-group">
+                                            <input id="banner-start-date" type="date" name="startDate">
+                                            <span>~</span>
+                                            <input id="banner-end-date" type="date" name="endDate">
+                                        </div>
+                                        <p class="field-error" data-error-for="banner-start-date"></p>
+                                        <p class="field-error" data-error-for="banner-end-date"></p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>
+                                        <label for="banner-start-time">노출시간</label>
+                                        <span class="row-description">배너 시작시간과 종료시간을 선택하세요.</span>
+                                    </th>
+                                    <td>
+                                        <div class="banner-modal-field-group">
+                                            <input id="banner-start-time" type="time" name="startTime">
+                                            <span>~</span>
+                                            <input id="banner-end-time" type="time" name="endTime">
+                                        </div>
+                                        <p class="field-error" data-error-for="banner-start-time"></p>
+                                        <p class="field-error" data-error-for="banner-end-time"></p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>
+                                        <label for="banner-file">배너이미지</label>
+                                        <span class="row-description">노출 위치에 맞는 크기 권장</span>
+                                    </th>
+                                    <td>
+                                        <input id="banner-file" type="file" name="bannerFile">
+                                        <p class="field-error" data-error-for="banner-file"></p>
+                                    </td>
+                                </tr>
+                            </table>
+                            <div class="modal-form-actions">
+                                <button type="submit">등록하기</button>
+                            </div>
+                        </form>
+                    </th:block>
+                </div>
+            </th:block>
+        </section>
+    </main>
+</div>
+
+<footer th:replace="~{admin/fragments/footer::footer}"></footer>
+</body>
+</html>

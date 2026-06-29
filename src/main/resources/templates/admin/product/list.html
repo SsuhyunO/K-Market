@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>KMarket 상품목록</title>
+    <th:block th:replace="~{admin/fragments/head::head}"></th:block>
+    <link rel="stylesheet" th:href="@{/css/admin/global/management-table-form.css}">
+    <link rel="stylesheet" th:href="@{/css/admin/global/action-bar.css}">
+    <link rel="stylesheet" th:href="@{/css/admin/global/modal-form.css}">
+    <link rel="stylesheet" th:href="@{/css/admin/global/search-form.css}">
+    <link rel="stylesheet" th:href="@{/css/admin/product/list.css}">
+    <script type="module" th:src="@{/js/admin/product/list.js}"></script>
+</head>
+<body>
+<header th:replace="~{admin/fragments/header::header}"></header>
+<div class="admin-layout">
+    <aside th:replace="~{admin/fragments/aside::aside}"></aside>
+
+    <main id="admin-main">
+        <div th:replace="~{admin/fragments/page-header::page-header}"></div>
+
+        <section th:replace="~{admin/fragments/dash-section::dash-section(null, null, null, ~{::main_content})}">
+            <th:block th:fragment="main_content">
+                <th:block th:replace="~{admin/fragments/search-form(~{::search_options})}">
+                    <th:block th:fragment="search_options">
+                        <option value="상품명">상품명</option>
+                        <option value="상품코드">상품코드</option>
+                        <option value="판매자">판매자</option>
+                    </th:block>
+                </th:block>
+
+                <th:block th:replace="~{admin/fragments/management-table-form::management-table-form(
+                    '#',
+                    ~{::table_content},
+                    ~{::product_table_footer},
+                    'productNo')}">
+                    <th:block th:fragment="table_content">
+                        <tr>
+                            <th><label><input type="checkbox" id="select-all"></label></th>
+                            <th>사진</th>
+                            <th>상품코드</th>
+                            <th>상품명</th>
+                            <th>판매가격</th>
+                            <th>할인율</th>
+                            <th>포인트</th>
+                            <th>재고</th>
+                            <th>판매자</th>
+                            <th>조회</th>
+                            <th>관리</th>
+                        </tr>
+                        <tr data-product-code="201603292"
+                            data-product-name="상품명 #1"
+                            data-root-category="의류"
+                            data-sub-category="남성의류"
+                            data-description="편안한 착용감의 기본 상품입니다."
+                            data-maker="케이마켓"
+                            data-price="32,000"
+                            data-discount="10%"
+                            data-point="320"
+                            data-stock="1,000"
+                            data-delivery-fee="3,000"
+                            data-list-image="list-image-201603292.jpg"
+                            data-main-image="main-image-201603292.jpg"
+                            data-detail-image="detail-image-201603292.jpg"
+                            data-detail-info-file="detail-info-201603292.jpg"
+                            data-option1="사이즈"
+                            data-option1-value="XXL, XL, L, M, S"
+                            data-product-condition="새상품"
+                            data-tax-exempt="과세상품"
+                            data-receipt-issued="발행가능"
+                            data-business-type="사업자 판매"
+                            data-origin="국내산"
+                            data-seller="(주) 다팔자"
+                            data-view-count="120">
+                            <td><label><input type="checkbox" name="productNo" value="201603292"></label></td>
+                            <td><span class="product-thumb" aria-hidden="true"></span></td>
+                            <td>201603292</td>
+                            <td>상품명 #1</td>
+                            <td>32,000</td>
+                            <td>10%</td>
+                            <td>320</td>
+                            <td>1,000</td>
+                            <td>(주)<br>다팔자</td>
+                            <td>120</td>
+                            <td>
+                                <button class="product-control-button" type="button" data-product-detail-button>[ 상세 ]</button>
+                                <button class="product-control-button" type="button" th:onclick="|location.href='@{/admin/product/edit}'|">[ 수정 ]</button>
+                            </td>
+                        </tr>
+                        <tr data-product-code="201603293"
+                            data-product-name="상품명 #2"
+                            data-root-category="디지털"
+                            data-sub-category="주변기기"
+                            data-description="일상 사용에 적합한 실속형 상품입니다."
+                            data-maker="케이마켓 파트너스"
+                            data-price="32,000"
+                            data-discount="5%"
+                            data-point="200"
+                            data-stock="1,000"
+                            data-delivery-fee="2,500"
+                            data-list-image="list-image-201603293.jpg"
+                            data-main-image="main-image-201603293.jpg"
+                            data-detail-image="detail-image-201603293.jpg"
+                            data-detail-info-file="detail-info-201603293.jpg"
+                            data-option1="색상"
+                            data-option1-value="블랙, 화이트, 그레이"
+                            data-product-condition="새상품"
+                            data-tax-exempt="과세상품"
+                            data-receipt-issued="발행가능"
+                            data-business-type="사업자 판매"
+                            data-origin="중국산"
+                            data-seller="(주) 다팔자"
+                            data-view-count="120">
+                            <td><label><input type="checkbox" name="productNo" value="201603293"></label></td>
+                            <td><span class="product-thumb" aria-hidden="true"></span></td>
+                            <td>201603293</td>
+                            <td>상품명 #2</td>
+                            <td>32,000</td>
+                            <td>5%</td>
+                            <td>200</td>
+                            <td>1,000</td>
+                            <td>(주)<br>다팔자</td>
+                            <td>120</td>
+                            <td>
+                                <button class="product-control-button" type="button" data-product-detail-button>[ 상세 ]</button>
+                                <button class="product-control-button" type="button" th:onclick="|location.href='@{/admin/product/edit}'|">[ 수정 ]</button>
+                            </td>
+                        </tr>
+                        <tr data-product-code="201603294"
+                            data-product-name="상품명 #3"
+                            data-root-category="생활"
+                            data-sub-category="주방용품"
+                            data-description="상품 상세 설명이 등록될 영역입니다."
+                            data-maker="케이마켓 공급사"
+                            data-price="32,000"
+                            data-discount="-"
+                            data-point="100"
+                            data-stock="1,000"
+                            data-delivery-fee="무료배송"
+                            data-list-image="list-image-201603294.jpg"
+                            data-main-image="main-image-201603294.jpg"
+                            data-detail-image="detail-image-201603294.jpg"
+                            data-detail-info-file="detail-info-201603294.jpg"
+                            data-option1="구성"
+                            data-option1-value="단품, 2개 세트, 4개 세트"
+                            data-product-condition="새상품"
+                            data-tax-exempt="과세상품"
+                            data-receipt-issued="발행가능"
+                            data-business-type="사업자 판매"
+                            data-origin="국내산"
+                            data-seller="(주) 다팔자"
+                            data-view-count="120">
+                            <td><label><input type="checkbox" name="productNo" value="201603294"></label></td>
+                            <td><span class="product-thumb" aria-hidden="true"></span></td>
+                            <td>201603294</td>
+                            <td>상품명 #3</td>
+                            <td>32,000</td>
+                            <td>-</td>
+                            <td>100</td>
+                            <td>1,000</td>
+                            <td>(주)<br>다팔자</td>
+                            <td>120</td>
+                            <td>
+                                <button class="product-control-button" type="button" data-product-detail-button>[ 상세 ]</button>
+                                <button class="product-control-button" type="button" th:onclick="|location.href='@{/admin/product/edit}'|">[ 수정 ]</button>
+                            </td>
+                        </tr>
+                    </th:block>
+
+                    <th:block th:fragment="product_table_footer">
+                        <button type="submit"
+                                data-management-action="bulk-submit"
+                                data-empty-message="삭제할 상품을 선택해주세요."
+                                data-confirm-message="선택한 상품을 삭제하시겠습니까?"
+                                data-action-variant="secondary">선택삭제</button>
+                        <nav th:replace="~{/admin/fragments/admin-pagination}"></nav>
+                        <button type="button"
+                                th:onclick="|location.href='@{/admin/product/register}'|"
+                                data-action-variant="primary">상품등록</button>
+                    </th:block>
+                </th:block>
+
+                <div th:replace="~{admin/fragments/modal::modal('product-detail-modal', '상품상세', ~{::product_detail_modal_content})}">
+                    <th:block th:fragment="product_detail_modal_content">
+                        <div class="product-detail-modal">
+                            <div class="product-detail-summary">
+                                <div class="product-detail-media">
+                                    <span class="product-detail-thumb" aria-hidden="true"></span>
+                                </div>
+                                <dl class="product-detail-list">
+                                    <div>
+                                        <dt>상품코드</dt>
+                                        <dd id="product-detail-product-code"></dd>
+                                    </div>
+                                    <div>
+                                        <dt>상품명</dt>
+                                        <dd id="product-detail-product-name"></dd>
+                                    </div>
+                                    <div>
+                                        <dt>판매자</dt>
+                                        <dd id="product-detail-seller"></dd>
+                                    </div>
+                                    <div>
+                                        <dt>조회</dt>
+                                        <dd id="product-detail-view-count"></dd>
+                                    </div>
+                                </dl>
+                            </div>
+
+                            <section class="product-detail-section">
+                                <h4>상품분류</h4>
+                                <dl class="product-detail-list">
+                                    <div>
+                                        <dt>1차 분류</dt>
+                                        <dd id="product-detail-root-category"></dd>
+                                    </div>
+                                    <div>
+                                        <dt>2차 분류</dt>
+                                        <dd id="product-detail-sub-category"></dd>
+                                    </div>
+                                </dl>
+                            </section>
+
+                            <section class="product-detail-section">
+                                <h4>기본정보</h4>
+                                <dl class="product-detail-list">
+                                    <div>
+                                        <dt>기본설명</dt>
+                                        <dd id="product-detail-description"></dd>
+                                    </div>
+                                    <div>
+                                        <dt>제조사</dt>
+                                        <dd id="product-detail-maker"></dd>
+                                    </div>
+                                    <div>
+                                        <dt>상품금액</dt>
+                                        <dd id="product-detail-price"></dd>
+                                    </div>
+                                    <div>
+                                        <dt>할인율</dt>
+                                        <dd id="product-detail-discount"></dd>
+                                    </div>
+                                    <div>
+                                        <dt>포인트</dt>
+                                        <dd id="product-detail-point"></dd>
+                                    </div>
+                                    <div>
+                                        <dt>재고수량</dt>
+                                        <dd id="product-detail-stock"></dd>
+                                    </div>
+                                    <div>
+                                        <dt>배송비</dt>
+                                        <dd id="product-detail-delivery-fee"></dd>
+                                    </div>
+                                </dl>
+                            </section>
+
+                            <section class="product-detail-section">
+                                <h4>상품 이미지</h4>
+                                <dl class="product-detail-list">
+                                    <div>
+                                        <dt>목록 이미지</dt>
+                                        <dd id="product-detail-list-image"></dd>
+                                    </div>
+                                    <div>
+                                        <dt>메인 이미지</dt>
+                                        <dd id="product-detail-main-image"></dd>
+                                    </div>
+                                    <div>
+                                        <dt>상세 이미지</dt>
+                                        <dd id="product-detail-detail-image"></dd>
+                                    </div>
+                                    <div>
+                                        <dt>상세정보 파일</dt>
+                                        <dd id="product-detail-detail-info-file"></dd>
+                                    </div>
+                                </dl>
+                            </section>
+
+                            <section class="product-detail-section">
+                                <h4>상품 선택정보</h4>
+                                <dl class="product-detail-list">
+                                    <div>
+                                        <dt>옵션1</dt>
+                                        <dd id="product-detail-option1"></dd>
+                                    </div>
+                                    <div>
+                                        <dt>옵션1 항목</dt>
+                                        <dd id="product-detail-option1-value"></dd>
+                                    </div>
+                                </dl>
+                            </section>
+
+                            <section class="product-detail-section">
+                                <h4>상품정보 제공고시</h4>
+                                <dl class="product-detail-list">
+                                    <div>
+                                        <dt>상품상태</dt>
+                                        <dd id="product-detail-product-condition"></dd>
+                                    </div>
+                                    <div>
+                                        <dt>부가세 면세여부</dt>
+                                        <dd id="product-detail-tax-exempt"></dd>
+                                    </div>
+                                    <div>
+                                        <dt>영수증 발행</dt>
+                                        <dd id="product-detail-receipt-issued"></dd>
+                                    </div>
+                                    <div>
+                                        <dt>사업자구분</dt>
+                                        <dd id="product-detail-business-type"></dd>
+                                    </div>
+                                    <div>
+                                        <dt>원산지</dt>
+                                        <dd id="product-detail-origin"></dd>
+                                    </div>
+                                </dl>
+                            </section>
+                        </div>
+                        <div class="modal-form-actions">
+                            <button type="button" data-modal-close>닫기</button>
+                        </div>
+                    </th:block>
+                </div>
+            </th:block>
+        </section>
+    </main>
+</div>
+
+<footer th:replace="~{admin/fragments/footer::footer}"></footer>
+</body>
+</html>

@@ -23,6 +23,6 @@
     font-size: 13px;
     line-height: 1.5;
     color: var(--adm-gray-500);
+    white-space: pre-line;
 }
-
 
