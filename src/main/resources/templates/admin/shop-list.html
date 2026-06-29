@@ -1,9 +1,10 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <title>KMarket 버전관리</title>
-    <th:block th:replace="~{admin/fragments/global/head::head}"></th:block>
+    <th:block th:replace="~{admin/fragments/head::head}"></th:block>
     <link rel="stylesheet" th:href="@{/css/admin/global/management-table-form.css}">
+    <link rel="stylesheet" th:href="@{/css/admin/global/action-bar.css}">
     <link rel="stylesheet" th:href="@{/css/admin/global/modal-form.css}">
     <link rel="stylesheet" th:href="@{/css/admin/global/section-table.css}">
     <link rel="stylesheet" th:href="@{/css/admin/global/search-form.css}">
@@ -11,33 +12,29 @@
     <script type="module" th:src="@{/js/admin/shop-list.js}"></script>
 </head>
 <body>
-<header th:replace="~{admin/fragments/global/header::header}"></header>
+<header th:replace="~{admin/fragments/header::header}"></header>
 <div class="admin-layout">
-    <aside th:replace="~{admin/fragments/global/aside::aside}"></aside>
+    <aside th:replace="~{admin/fragments/aside::aside}"></aside>
     
     <main id="admin-main">
-        <div th:replace="~{admin/fragments/global/page-header::page-header}"></div>
+        <div th:replace="~{admin/fragments/page-header::page-header}"></div>
         
-        <section th:replace="~{admin/fragments/global/dash-section::dash-section(null, null, null, ~{::main_content})}">
+        <section th:replace="~{admin/fragments/dash-section::dash-section(null, null, null, ~{::main_content})}">
             <th:block th:fragment="main_content">
 	            
-	            <th:block th:replace="~{admin/fragments/global/search-form(~{::options})}">
+	            <th:block th:replace="~{admin/fragments/search-form(~{::options})}">
 		            <th:block th:fragment="options">
 			            <option value="상호명">상호명</option>
 			            <option value="대표자">대표자</option>
 			            <option value="사업자등록번호">사업자등록번호</option>
 			            <option value="연락처">연락처</option>
 		            </th:block>
-	            </th:block>
-                <th:block th:replace="~{admin/fragments/global/management-table-form::management-table-form(
+                </th:block>
+                <th:block th:replace="~{admin/fragments/management-table-form::management-table-form(
                     null,
                     ~{::table-content},
-                    '선택삭제',
-                    '상점등록',
-                    'productNo',
-                    '삭제할 상점을 선택해주세요.',
-                    '선택한 상점을 삭제하시겠습니까?',
-                    'shop-register-modal')}">
+                    ~{::shop-table-footer},
+                    'productNo')}">
                     <th:block th:fragment="table-content">
                         <tr>
                             <th><label><input type="checkbox" id="select-all"></label></th>
@@ -52,8 +49,20 @@
                         </tr>
                     </th:block>
                 </th:block>
+
+                <th:block th:fragment="shop-table-footer" th:remove="all">
+                    <button type="submit"
+                            data-management-action="bulk-submit"
+                            data-empty-message="삭제할 상점을 선택해주세요."
+                            data-confirm-message="선택한 상점을 삭제하시겠습니까?"
+                            data-action-variant="secondary">선택삭제</button>
+                    <nav th:replace="~{/admin/fragments/admin-pagination}"></nav>
+                    <button type="button"
+                            data-modal-target="shop-register-modal"
+                            data-action-variant="primary">상점등록</button>
+                </th:block>
                 
-	            <div th:replace="~{admin/fragments/global/modal::modal('shop-register-modal', '상점등록', ~{::shop_register_modal_content})}">
+	            <div th:replace="~{admin/fragments/modal::modal('shop-register-modal', '상점등록', ~{::shop_register_modal_content})}">
 		            <th:block th:fragment="shop_register_modal_content">
                         <form id="shop-register-form" action="#" method="post" novalidate>
 				            <table class="section-table shop-register-modal-table">
@@ -105,12 +114,15 @@
 						            <td><input id="shop-register-fax" name="fax" type="text" placeholder="팩스번호입력"></td>
 					            </tr>
 					            <tr>
-						            <th><label for="shop-register-zip-code">주소</label></th>
-						            <td>
-							            <input id="shop-register-zip-code" name="zipCode" type="text" placeholder="우편번호검색클릭" readonly>
-							            <input id="shop-register-default-address" name="defaultAddress" type="text" placeholder="기본주소검색" readonly>
-							            <input id="shop-register-detail-address" name="detailAddress" type="text" placeholder="상세주소입력">
-						            </td>
+					            <th><label for="shop-register-zip-code">주소</label></th>
+					            <td>
+						            <div class="shop-address-field">
+						                <input id="shop-register-zip-code" name="zipCode" type="text" placeholder="우편번호검색클릭" readonly>
+						                <button class="shop-address-search" type="button">우편번호 찾기</button>
+						            </div>
+						            <input id="shop-register-default-address" name="defaultAddress" type="text" placeholder="기본주소검색" readonly>
+						            <input id="shop-register-detail-address" name="detailAddress" type="text" placeholder="상세주소입력">
+					            </td>
 					            </tr>
 				            </table>
 				            <div class="modal-form-actions">
@@ -124,6 +136,8 @@
     </main>
 </div>
 
-<footer th:replace="~{admin/fragments/global/footer::footer}"></footer>
+<footer th:replace="~{admin/fragments/footer::footer}"></footer>
 </body>
 </html>
+
+

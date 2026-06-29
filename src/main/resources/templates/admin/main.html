@@ -2,21 +2,21 @@
 <html lang="en">
 <head>
     <title>KMarket 관리자</title>
-    <th:block th:replace="~{admin/fragments/global/head::head}"></th:block>
+    <th:block th:replace="~{admin/fragments/head::head}"></th:block>
     <link rel="stylesheet" th:href="@{/css/admin/main.css}">
     <script type="module" th:src="@{/js/admin/main-dashboard.js}"></script>
 </head>
 <body>
-<header th:replace="~{admin/fragments/global/header::header}"></header>
+<header th:replace="~{admin/fragments/header::header}"></header>
 <div class="admin-layout">
-    <aside th:replace="~{admin/fragments/global/aside::aside}"></aside>
+    <aside th:replace="~{admin/fragments/aside::aside}"></aside>
     
     <main id="admin-main">
         <!-- 브레드크럼 + 타이틀 -->
-        <div th:replace="~{admin/fragments/global/page-header::page-header}"></div>
+        <div th:replace="~{admin/fragments/page-header::page-header}"></div>
         
         <!-- ① 집계현황 -->
-        <section th:replace="~{admin/fragments/global/dash-section::dash-section(|section-summary|, |집계현황|, null, ~{::main-section-content-1})}">
+        <section th:replace="~{admin/fragments/dash-section::dash-section(|section-summary|, |집계현황|, null, ~{::main-section-content-1})}">
             <th:block th:fragment="main-section-content-1">
                 <div class="summary-wrap">
                     
@@ -45,7 +45,7 @@
         </section>
         
         <!-- ② 운영현황 -->
-        <section th:replace="~{admin/fragments/global/dash-section::dash-section(|section-operation|, |운영현황|, null, ~{::main-section-content-2})}">
+        <section th:replace="~{admin/fragments/dash-section::dash-section(|section-operation|, |운영현황|, null, ~{::main-section-content-2})}">
             <th:block th:fragment="main-section-content-2">
                 <!-- 처리현황 카드 -->
                 <div class="op-cards">
@@ -118,7 +118,7 @@
         </section>
         
         <!-- ③ 공지사항 + 고객문의 -->
-        <section th:replace="~{admin/fragments/global/dash-section::dash-section(|section-board|, null, null, ~{::main-section-content-3})}">
+        <section th:replace="~{admin/fragments/dash-section::dash-section(|section-board|, null, null, ~{::main-section-content-3})}">
             <th:block th:fragment="main-section-content-3">
                 <div class="board-wrap">
                     
@@ -217,6 +217,6 @@
 </div>
 <!-- /MAIN CONTENT -->
 
-<footer th:replace="~{admin/fragments/global/footer::footer}"></footer>
+<footer th:replace="~{admin/fragments/footer::footer}"></footer>
 </body>
 </html>

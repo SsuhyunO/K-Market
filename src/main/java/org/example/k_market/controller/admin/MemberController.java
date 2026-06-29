@@ -12,4 +12,9 @@ public class MemberController {
     public String list() {
         return "/admin/member-list";
     }
+
+    @GetMapping("/management-point")
+    public String pointManagement() {
+        return "/admin/management-point";
+    }
 }

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <title>KMarket 카테고리관리</title>
-    <th:block th:replace="~{admin/fragments/global/head::head}"></th:block>
+    <th:block th:replace="~{admin/fragments/head::head}"></th:block>
     <link rel="stylesheet" th:href="@{/css/admin/global/section-table.css}">
     <link rel="stylesheet" th:href="@{/css/admin/category-management.css}">
     <script type="module" th:src="@{/js/admin/category-management/category-modifier.js}"></script>
@@ -11,17 +11,155 @@
     <script type="module" th:src="@{/js/admin/category-management/category-management.js}"></script>
 </head>
 <body>
-<header th:replace="~{admin/fragments/global/header::header}"></header>
+<header th:replace="~{admin/fragments/header::header}"></header>
 <div class="admin-layout">
-    <aside th:replace="~{admin/fragments/global/aside::aside}"></aside>
-    
+    <aside th:replace="~{admin/fragments/aside::aside}"></aside>
+
     <main id="admin-main">
-        <div th:replace="~{admin/fragments/global/page-header::page-header}"></div>
-        
-        <section th:replace="~{admin/fragments/global/dash-section::dash-section(null, '카테고리', '쇼핑몰 메인, 상품 페이지 사이드 카테고리 메뉴 입니다.', ~{admin/fragments/category-management/category-modify-form::category_modify_content})}"></section>
+        <div th:replace="~{admin/fragments/page-header::page-header}"></div>
+
+        <section class="dash-section">
+            <h2 class="section-title">카테고리</h2>
+            <p class="section-description">쇼핑몰 메인, 상품 페이지 사이드 카테고리 메뉴 입니다.</p>
+            <form action="#" method="post">
+                <div class="category-tree">
+                    <ul class="category-list">
+                        <li class="category-item">
+                            <div class="category-row">
+                                <button class="category-toggle" type="button" aria-label="하위 카테고리 열기/닫기"></button>
+                                <span class="category-title">여성패션</span>
+                                <div class="category-actions">
+                                    <button class="category-modify-button" type="button">수정</button>
+                                    <button class="category-delete-button" type="button">삭제</button>
+                                </div>
+                            </div>
+                            <details open>
+                                <summary class="category-hidden-summary">여성패션 하위 카테고리</summary>
+
+                                <ul class="category-list">
+                                    <li class="category-item">
+                                        <div class="category-row">
+                                            <span class="category-title">브랜드의류</span>
+                                            <div class="category-actions">
+                                                <button class="category-modify-button" type="button">수정</button>
+                                                <button class="category-delete-button" type="button">삭제</button>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="category-item">
+                                        <div class="category-row">
+                                            <span class="category-title">브랜드가방</span>
+                                            <div class="category-actions">
+                                                <button class="category-modify-button" type="button">수정</button>
+                                                <button class="category-delete-button" type="button">삭제</button>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="category-item">
+                                        <div class="category-row">
+                                            <span class="category-title">브랜드신발</span>
+                                            <div class="category-actions">
+                                                <button class="category-modify-button" type="button">수정</button>
+                                                <button class="category-delete-button" type="button">삭제</button>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="category-item">
+                                        <div class="category-row">
+                                            <span class="category-title">브랜드잡화</span>
+                                            <div class="category-actions">
+                                                <button class="category-modify-button" type="button">수정</button>
+                                                <button class="category-delete-button" type="button">삭제</button>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
+                                <button class="category-add-button" type="button">+ 2차 카테고리 추가</button>
+                            </details>
+                        </li>
+                        <li class="category-item">
+                            <div class="category-row">
+                                <button class="category-toggle" type="button" aria-label="하위 카테고리 열기/닫기"></button>
+                                <span class="category-title">남성패션</span>
+                                <div class="category-actions">
+                                    <button class="category-modify-button" type="button">수정</button>
+                                    <button class="category-delete-button" type="button">삭제</button>
+                                </div>
+                            </div>
+                            <details>
+                                <summary class="category-hidden-summary">남성패션 하위 카테고리</summary>
+                                <button class="category-add-button" type="button">+ 2차 카테고리 추가</button>
+                            </details>
+                        </li>
+                        <li class="category-item">
+                            <div class="category-row">
+                                <button class="category-toggle" type="button" aria-label="하위 카테고리 열기/닫기"></button>
+                                <span class="category-title">식품</span>
+                                <div class="category-actions">
+                                    <button class="category-modify-button" type="button">수정</button>
+                                    <button class="category-delete-button" type="button">삭제</button>
+                                </div>
+                            </div>
+                            <details>
+                                <summary class="category-hidden-summary">식품 하위 카테고리</summary>
+                                <button class="category-add-button" type="button">+ 2차 카테고리 추가</button>
+                            </details>
+                        </li>
+                        <li class="category-item">
+                            <div class="category-row">
+                                <button class="category-toggle" type="button" aria-label="하위 카테고리 열기/닫기"></button>
+                                <span class="category-title">생활 / 건강</span>
+                                <div class="category-actions">
+                                    <button class="category-modify-button" type="button">수정</button>
+                                    <button class="category-delete-button" type="button">삭제</button>
+                                </div>
+                            </div>
+                            <details>
+                                <summary class="category-hidden-summary">생활 / 건강 하위 카테고리</summary>
+                                <button class="category-add-button" type="button">+ 2차 카테고리 추가</button>
+                            </details>
+                        </li>
+                        <li class="category-item">
+                            <div class="category-row">
+                                <button class="category-toggle" type="button" aria-label="하위 카테고리 열기/닫기"></button>
+                                <span class="category-title">유아동</span>
+                                <div class="category-actions">
+                                    <button class="category-modify-button" type="button">수정</button>
+                                    <button class="category-delete-button" type="button">삭제</button>
+                                </div>
+                            </div>
+                            <details>
+                                <summary class="category-hidden-summary">유아동 하위 카테고리</summary>
+                                <button class="category-add-button" type="button">+ 2차 카테고리 추가</button>
+                            </details>
+                        </li>
+                        <li class="category-item">
+                            <div class="category-row">
+                                <button class="category-toggle" type="button" aria-label="하위 카테고리 열기/닫기"></button>
+                                <span class="category-title">가전</span>
+                                <div class="category-actions">
+                                    <button class="category-modify-button" type="button">수정</button>
+                                    <button class="category-delete-button" type="button">삭제</button>
+                                </div>
+                            </div>
+                            <details>
+                                <summary class="category-hidden-summary">가전 하위 카테고리</summary>
+                                <button class="category-add-button" type="button">+ 2차 카테고리 추가</button>
+                            </details>
+                        </li>
+                    </ul>
+
+                    <button class="category-add-button category-add-root-button" type="button">+ 1차 카테고리 추가</button>
+                </div>
+
+                <div class="section-form-actions">
+                    <button class="section-submit-button" type="submit">수정하기</button>
+                </div>
+            </form>
+        </section>
     </main>
 </div>
 
-<footer th:replace="~{admin/fragments/global/footer::footer}"></footer>
+<footer th:replace="~{admin/fragments/footer::footer}"></footer>
 </body>
 </html>
