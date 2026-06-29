@@ -1,10 +1,275 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>주문하기 - KMarket</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/common.css}">
+    <link rel="stylesheet" th:href="@{/css/product-order.css}">
 </head>
 <body>
+
+<header th:replace="~{fragments/header :: header}"></header>
+
+<div class="page-wrapper">
+
+    <aside th:replace="~{fragments/aside :: aside}"></aside>
+
+    <main class="main-content">
+
+        <!-- 페이지 타이틀 + 브레드크럼 (HOME > 장바구니 > 주문하기) -->
+        <div class="order-header">
+            <h1 class="order-title">주문하기</h1>
+            <nav class="breadcrumb">
+                <a th:href="@{/}">HOME</a>
+                <span class="sep">&gt;</span>
+                <a th:href="@{/product/cart}">장바구니</a>
+                <span class="sep">&gt;</span>
+                <a th:href="@{/product/order}">주문하기</a>
+            </nav>
+        </div>
+
+        <!-- ① 주문상품: 상품 썸네일, 상품명, 옵션, 수량, 판매가, 할인, 포인트, 배송비, 총액 출력 -->
+        <section class="order-section">
+            <h2 class="order-section-title">주문상품</h2>
+            <table class="order-product-table">
+                <thead>
+                <tr>
+                    <th class="col-check"><input type="checkbox" checked disabled></th>
+                    <th class="col-product">상품명</th>
+                    <th>수량</th>
+                    <th>판매가</th>
+                    <th>할인</th>
+                    <th>포인트</th>
+                    <th>배송비</th>
+                    <th>총액</th>
+                </tr>
+                </thead>
+                <tbody>
+
+                <!-- orderItems가 없을 때 placeholder 2개 -->
+                <th:block th:if="${orderItems == null or #lists.isEmpty(orderItems)}">
+                    <tr>
+                        <td><input type="checkbox" checked disabled></td>
+                        <td>
+                            <div class="product-cell">
+                                <div class="product-thumb">🖼️</div>
+                                <div class="product-name-wrap">
+                                    <span class="product-name">나이키 스포츠웨어 클럽 플리스 후디</span>
+                                    <span class="product-option">옵션: 블랙 / L</span>
+                                </div>
+                            </div>
+                        </td>
+                        <td>1</td>
+                        <td>27,000원</td>
+                        <td>5%</td>
+                        <td>270</td>
+                        <td>무료배송</td>
+                        <td class="total-cell">25,650원</td>
+                    </tr>
+                    <tr>
+                        <td><input type="checkbox" checked disabled></td>
+                        <td>
+                            <div class="product-cell">
+                                <div class="product-thumb">🖼️</div>
+                                <div class="product-name-wrap">
+                                    <span class="product-name">무지 양말 5팩 세트</span>
+                                    <span class="product-option">옵션: 혼합색상 / FREE</span>
+                                </div>
+                            </div>
+                        </td>
+                        <td>2</td>
+                        <td>9,900원</td>
+                        <td>10%</td>
+                        <td>89</td>
+                        <td>3,000원</td>
+                        <td class="total-cell">21,810원</td>
+                    </tr>
+                </th:block>
+
+                <!-- 실제 데이터 -->
+                <tr th:each="item : ${orderItems}">
+                    <td><input type="checkbox" checked disabled></td>
+                    <td>
+                        <div class="product-cell">
+                            <div class="product-thumb">
+                                <img th:if="${item.thumbnailUrl}" th:src="${item.thumbnailUrl}" alt="">
+                                <span th:unless="${item.thumbnailUrl}">🖼️</span>
+                            </div>
+                            <div class="product-name-wrap">
+                                <span class="product-name" th:text="${item.productName}">상품명</span>
+                                <span class="product-option" th:if="${item.optionText}" th:text="'옵션: ' + ${item.optionText}">옵션</span>
+                            </div>
+                        </div>
+                    </td>
+                    <td th:text="${item.quantity}">1</td>
+                    <td th:text="${item.price} + '원'">27,000원</td>
+                    <td th:text="${item.discountRate} + '%'">5%</td>
+                    <td th:text="${item.point}">270</td>
+                    <td th:text="${item.freeShipping} ? '무료배송' : ${item.shippingFee} + '원'">무료배송</td>
+                    <td class="total-cell" th:text="${item.lineTotal} + '원'">25,650원</td>
+                </tr>
+
+                </tbody>
+            </table>
+        </section>
+
+        <div class="order-layout">
+
+            <!-- 좌측: 주문 정보 입력 영역 -->
+            <div class="order-left">
+
+                <!-- ② 배송정보: 기본적으로 로그인된 사용자 정보 출력, 수정자 표시 다름, 우편번호/기본주소/상세주소/기타 입력 -->
+                <section class="order-section">
+                    <h2 class="order-section-title">배송정보</h2>
+                    <div class="form-grid">
+                        <label for="recvName">수령인</label>
+                        <input type="text" id="recvName" name="recvName" th:value="${recvName}" placeholder="수령인 이름">
+
+                        <label for="recvPhone">휴대폰</label>
+                        <input type="tel" id="recvPhone" name="recvPhone" th:value="${recvPhone}" placeholder="010-0000-0000">
+
+                        <label for="recvZip">우편번호</label>
+                        <div class="addr-row">
+                            <input type="text" id="recvZip" name="recvZip" th:value="${recvZip}" placeholder="우편번호" readonly>
+                            <button type="button" class="btn-search-addr" id="btnSearchAddr">검색</button>
+                        </div>
+
+                        <label for="recvAddr1">기본주소</label>
+                        <input type="text" id="recvAddr1" name="recvAddr1" th:value="${recvAddr1}" placeholder="기본주소" readonly>
+
+                        <label for="recvAddr2">상세주소</label>
+                        <input type="text" id="recvAddr2" name="recvAddr2" th:value="${recvAddr2}" placeholder="상세주소를 입력하세요">
+
+                        <label for="recvMemo">기타</label>
+                        <input type="text" id="recvMemo" name="recvMemo" placeholder="배송 시 요청사항을 입력하세요">
+                    </div>
+                </section>
+
+                <!-- ③ 할인정보: 현재 회원의 가용 포인트 출력, 5,000원 이상 포인트 사용 가능, 사용 포인트로 할인금액 적용 -->
+                <section class="order-section">
+                    <h2 class="order-section-title">할인정보</h2>
+
+                    <div class="discount-row">
+                        <label for="usePoint">포인트</label>
+                        <input type="text" id="usePoint" name="usePoint" placeholder="0"
+                               th:attr="data-available-point=${availablePoint != null ? availablePoint : 7200}">
+                        <button type="button" class="btn-apply" id="btnApplyPoint">사용하기</button>
+                    </div>
+                    <p class="point-hint">
+                        보유포인트: <span th:text="${availablePoint != null ? availablePoint : 7200}">7200</span>점
+                        (5,000원 이상시 포인트 사용 가능)
+                    </p>
+
+                    <div class="discount-row" style="margin-top: 16px;">
+                        <label for="couponSelect">쿠폰적용</label>
+                        <select id="couponSelect" name="couponSelect">
+                            <option value="">쿠폰 선택</option>
+                            <option th:each="coupon : ${availableCoupons}"
+                                    th:value="${coupon.id}"
+                                    th:text="${coupon.name}">쿠폰명</option>
+                            <!-- availableCoupons가 없을 때 placeholder -->
+                            <option th:if="${availableCoupons == null or #lists.isEmpty(availableCoupons)}" value="dummy1">신규가입 1,000원 할인 쿠폰</option>
+                            <option th:if="${availableCoupons == null or #lists.isEmpty(availableCoupons)}" value="dummy2">전상품 5% 할인 쿠폰</option>
+                        </select>
+                        <button type="button" class="btn-apply" id="btnApplyCoupon">사용하기</button>
+                    </div>
+                </section>
+
+                <!-- ④ 결제방법: 6가지 결제방식 중 1가지 선택 (실제 결제 테스트는 해당사항 없음) -->
+                <section class="order-section">
+                    <h2 class="order-section-title">결제방법</h2>
+                    <div class="pay-method-grid">
+                        <div class="pay-method-item">
+                            <input type="radio" name="payMethod" id="payCard" value="CARD" checked>
+                            <label for="payCard">신용카드</label>
+                        </div>
+                        <div class="pay-method-item">
+                            <input type="radio" name="payMethod" id="payCheckCard" value="CHECK_CARD">
+                            <label for="payCheckCard">체크카드</label>
+                        </div>
+                        <div class="pay-method-item">
+                            <input type="radio" name="payMethod" id="payBank" value="BANK">
+                            <label for="payBank">계좌이체</label>
+                        </div>
+                        <div class="pay-method-item">
+                            <input type="radio" name="payMethod" id="payVbank" value="VBANK">
+                            <label for="payVbank">무통장입금</label>
+                        </div>
+                        <div class="pay-method-item">
+                            <input type="radio" name="payMethod" id="payPhone" value="PHONE">
+                            <label for="payPhone">휴대폰결제</label>
+                        </div>
+                        <div class="pay-method-item">
+                            <input type="radio" name="payMethod" id="payKakao" value="KAKAO">
+                            <label for="payKakao">카카오페이 <span class="pay-badge">pay</span></label>
+                        </div>
+                    </div>
+                </section>
+
+            </div>
+
+            <!-- 우측: ⑤ 최종결제정보 — 최종적으로 상품수, 상품금액, 할인금액, 배송비, 전체 주문금액, 적립 포인트, 직접 포인트 입력 후 결제하기 클릭 시 결제완료 페이지로 이동 -->
+            <div class="order-right">
+                <div class="summary-box">
+                    <h2 class="summary-title">최종결제정보</h2>
+
+                    <div class="summary-row">
+                        <span class="label">상품수</span>
+                        <span class="value" id="summaryItemCount" th:text="${orderItems != null ? #lists.size(orderItems) : 2}">2</span>
+                    </div>
+                    <div class="summary-row">
+                        <span class="label">상품금액</span>
+                        <span class="value" id="summaryProductPrice" th:text="(${productTotal} != null ? ${productTotal} : 36900) + '원'">36,900원</span>
+                    </div>
+                    <div class="summary-row">
+                        <span class="label">할인금액</span>
+                        <span class="value minus" id="summaryDiscount" th:text="'-' + (${discountTotal} != null ? ${discountTotal} : 1350) + '원'">-1,350원</span>
+                    </div>
+                    <div class="summary-row">
+                        <span class="label">배송비</span>
+                        <span class="value" id="summaryShipping" th:text="(${shippingTotal} != null ? ${shippingTotal} : 0) + '원'">0원</span>
+                    </div>
+
+                    <hr class="summary-divider">
+
+                    <div class="summary-row">
+                        <span class="label">합인</span>
+                        <span class="value minus" id="summaryUsedPoint" th:text="'-' + (${usedPoint != null ? usedPoint : 1000}) + '원'">-1,000원</span>
+                    </div>
+                    <div class="summary-row">
+                        <span class="label">전체주문금액</span>
+                        <span class="value" id="summaryOrderTotal" th:text="(${orderTotal} != null ? orderTotal : 24650) + '원'">24,650원</span>
+                    </div>
+                    <div class="summary-row">
+                        <span class="label">적립포인트</span>
+                        <span class="value" id="summaryEarnPoint" th:text="(${earnPoint != null ? earnPoint : 270})">270</span>
+                    </div>
+
+                    <hr class="summary-divider">
+
+                    <div class="summary-final">
+                        <span class="label">최종결제금액</span>
+                        <span class="value" id="summaryFinalPrice" th:text="(${finalPrice} != null ? finalPrice : 24650) + '원'">24,650원</span>
+                    </div>
+
+                    <!-- 결제하기 클릭 시 결제완료 페이지로 이동 (실제 PG 연동/결제 테스트는 해당사항 없음) -->
+                    <button type="button" class="btn-pay" id="btnPay">결제하기</button>
+                </div>
+            </div>
+
+        </div>
+
+        <footer th:replace="~{fragments/footer :: footer}"></footer>
+
+    </main>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script th:src="@{/js/common.js}"></script>
+<script th:src="@{/js/product-order.js}"></script>
 
 </body>
 </html>

@@ -67,4 +67,28 @@ public class ProductController {
 
         return "product/view"; // templates/product 폴더 안의 view.html을 화면에 띄워라!
     }
+
+    @GetMapping("/product/cart")
+    public String cart() {
+
+        return "product/cart"; // templates/product 폴더 안의 view.html을 화면에 띄워라!
+    }
+
+    @GetMapping("/product/order")
+    public String order() {
+
+        return "product/order"; // templates/product 폴더 안의 view.html을 화면에 띄워라!
+    }
+
+    @GetMapping("/product/complete")
+    public String complete() {
+
+        return "product/complete"; // templates/product 폴더 안의 view.html을 화면에 띄워라!
+    }
+
+    @GetMapping("/product/search")
+    public String search() {
+
+        return "product/search"; // templates/product 폴더 안의 view.html을 화면에 띄워라!
+    }
 }

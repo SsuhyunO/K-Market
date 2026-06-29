@@ -1,10 +1,182 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>장바구니 - KMarket</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/common.css}">
+    <link rel="stylesheet" th:href="@{/css/product-cart.css}">
 </head>
 <body>
+
+<header th:replace="~{fragments/header :: header}"></header>
+
+<div class="page-wrapper">
+
+    <!-- aside 호출 -->
+    <aside th:replace="~{fragments/aside :: aside(hideBest=false)}"></aside>
+
+    <main class="main-content"
+          th:with="
+                cateId=${param.category != null ? param.category[0] : '11'},
+                parentName=${
+                    (cateId == '11' or cateId == '12' or cateId == '13') ? '패션·뷰티' :
+                    ((cateId == '21' or cateId == '22' or cateId == '23') ? '가전·디지털' :
+                    ((cateId == '31' or cateId == '32' or cateId == '33') ? '식품·생필품' :
+                    ((cateId == '41' or cateId == '42' or cateId == '43') ? '홈·데코·취미' : null)))
+                }
+             ">>
+
+        <!-- ① 페이지 타이틀 + 브레드크럼 -->
+        <div class="list-header">
+            <h1 class="list-title">장바구니</h1>
+            <nav class="breadcrumb">
+                <a th:href="@{/}">HOME</a>
+                <th:block th:if="${parentName != null}">
+                    <span class="sep">&gt;</span>
+                    <a th:href="@{/product/list(category=${cateId})}" th:text="${parentName}">1차 카테고리</a>
+                </th:block>
+                <span class="sep">&gt;</span>
+                <span class="current">장바구니</span>
+            </nav>
+        </div>
+
+        <!-- ② 장바구니 컨텐츠 (테이블 위, 버튼/요약 아래) -->
+        <div class="cart-content">
+
+            <!-- 위쪽: 장바구니 목록 (전체 너비 차지) -->
+            <section class="cart-list-section">
+                <table class="cart-table">
+                    <colgroup>
+                        <col style="width: 5%;">
+                        <col style="width: 45%;">
+                        <col style="width: 10%;">
+                        <col style="width: 10%;">
+                        <col style="width: 10%;">
+                        <col style="width: 10%;">
+                        <col style="width: 10%;">
+                    </colgroup>
+                    <thead>
+                    <tr>
+                        <th><input type="checkbox" id="chk-all" checked></th>
+                        <th>상품명</th>
+                        <th>수량</th>
+                        <th>판매가</th>
+                        <th>할인</th>
+                        <th>포인트</th>
+                        <th>배송비</th>
+                        <th>총합</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <!-- 더미 상품 1 -->
+                    <tr>
+                        <td><input type="checkbox" class="chk-item" checked></td>
+                        <td class="product-col">
+                            <div class="prod-thumb">
+                                <span class="dummy-img">📷</span>
+                            </div>
+                            <div class="prod-info">
+                                <span class="brand">나이키</span>
+                                <strong class="name">나이키 스포츠웨어 클럽 플리스 후디 기모 맨투맨</strong>
+                                <span class="desc">옵션: 블랙 / L</span>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="count-control">
+                                <button type="button">-</button>
+                                <input type="text" value="1" readonly>
+                                <button type="button">+</button>
+                            </div>
+                        </td>
+                        <td>89,000원</td>
+                        <td class="discount">30%</td>
+                        <td>623P</td>
+                        <td>무료</td>
+                        <td class="total">62,300원</td>
+                    </tr>
+                    <!-- 더미 상품 2 -->
+                    <tr>
+                        <td><input type="checkbox" class="chk-item" checked></td>
+                        <td class="product-col">
+                            <div class="prod-thumb">
+                                <span class="dummy-img">📷</span>
+                            </div>
+                            <div class="prod-info">
+                                <span class="brand">아디다스</span>
+                                <strong class="name">오리지널스 삼선 슬리퍼 알파바운스</strong>
+                                <span class="desc">옵션: 화이트 / 260</span>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="count-control">
+                                <button type="button">-</button>
+                                <input type="text" value="2" readonly>
+                                <button type="button">+</button>
+                            </div>
+                        </td>
+                        <td>39,000원</td>
+                        <td class="discount">10%</td>
+                        <td>702P</td>
+                        <td>3,000원</td>
+                        <td class="total">70,200원</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <!-- 아래쪽: 삭제 버튼 & 결제 요약 박스 -->
+            <div class="cart-bottom-section">
+
+                <!-- 왼쪽: 선택 삭제 버튼 -->
+                <div class="cart-actions">
+                    <button type="button" class="btn-delete-sel">선택삭제</button>
+                </div>
+
+                <!-- 오른쪽: 결제 요약 박스 -->
+                <div class="summary-box">
+                    <h3>전체합계</h3>
+                    <div class="summary-row">
+                        <span>상품수</span>
+                        <span>2개</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>상품금액</span>
+                        <span>167,000원</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>할인금액</span>
+                        <span class="discount-price">- 34,500원</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>배송비</span>
+                        <span>3,000원</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>적립 포인트</span>
+                        <span>1,325P</span>
+                    </div>
+                    <div class="summary-total">
+                        <span>전체주문금액</span>
+                        <strong class="final-price">135,500원</strong>
+                    </div>
+                    <!-- 💡 클릭 시 JS에 의해 주문서 페이지로 이동합니다 -->
+                    <button type="button" class="btn-order">주문하기</button>
+                </div>
+
+            </div>
+
+        </div>
+
+        <footer th:replace="~{fragments/footer :: footer}"></footer>
+    </main>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script th:src="@{/js/common.js}"></script>
+<script th:src="@{/js/product.js}"></script>
 
 </body>
 </html>

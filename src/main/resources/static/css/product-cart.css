@@ -1,0 +1,226 @@
+/* =============================================
+   KMarket - product-cart.css
+   장바구니 페이지 전용 스타일
+   ============================================= */
+
+.page-wrapper {
+    max-width: var(--container-w);
+    margin: 24px auto 0;
+    padding: 0 12px 40px;   /* 하단 여백은 padding으로 */
+    display: flex;
+    gap: 20px;
+    align-items: flex-start; /* aside가 stretch되지 않도록 */
+}
+
+.main-content {
+    flex: 1;
+    min-width: 0;
+}
+
+/* ─────────────────────────────────────────────
+   ① 페이지 타이틀 + ② 브레드크럼
+───────────────────────────────────────────── */
+.list-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 14px;
+    border-bottom: 2px solid var(--color-primary);
+    margin-bottom: 16px;
+}
+.list-title {
+    font-size: 20px;
+    font-weight: 800;
+    color: var(--color-gray-900);
+}
+.breadcrumb {
+    font-size: 13px;
+    color: var(--color-gray-600);
+}
+.breadcrumb .sep {
+    margin: 0 4px;
+    color: var(--color-gray-400);
+}
+.breadcrumb .current {
+    color: var(--color-gray-900);
+    font-weight: 600;
+}
+
+/* 전체 컨텐츠 래퍼 (위: 테이블, 아래: 하단섹션) */
+.cart-content {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+}
+
+/* 상단: 상품 리스트 영역 (테이블 전체 너비) */
+.cart-list-section {
+    width: 100%;
+}
+
+.cart-table {
+    width: 100%;
+    border-collapse: collapse;
+    border-top: 2px solid var(--color-gray-900);
+}
+.cart-table th, .cart-table td {
+    padding: 16px 8px;
+    border-bottom: 1px solid var(--color-gray-200);
+    text-align: center;
+    vertical-align: middle;
+}
+.cart-table th {
+    background: var(--color-gray-100);
+    font-size: 14px;
+    color: var(--color-gray-800);
+    font-weight: 600;
+}
+.cart-table td {
+    font-size: 14px;
+    color: var(--color-gray-800);
+}
+
+/* 상품명 컬럼 특화 */
+.cart-table .product-col {
+    display: flex !important;
+    flex-direction: row !important; /* 무조건 가로로 나란히 배치! */
+    align-items: center;
+    justify-content: flex-start;
+    text-align: left;
+    gap: 16px;
+    padding-left: 16px;
+}
+.prod-thumb {
+    width: 80px;
+    height: 80px;
+    background: var(--color-gray-100);
+    border: 1px solid var(--color-gray-200);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+.prod-thumb .dummy-img { font-size: 32px; color: var(--color-gray-400); }
+.prod-info {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+.prod-info .brand { font-size: 12px; color: var(--color-gray-500); }
+.prod-info .name { font-size: 15px; font-weight: 700; color: var(--color-gray-900); }
+.prod-info .desc { font-size: 13px; color: var(--color-gray-600); }
+
+/* 할인, 총합 강조 */
+.cart-table .discount { color: var(--color-sale); font-weight: bold; }
+.cart-table .total { font-weight: bold; font-size: 16px; color: var(--color-primary); }
+
+/* 수량 조절 버튼 */
+.cart-table .count-control {
+    display: inline-flex;
+    align-items: center;
+    border: 1px solid var(--color-gray-300);
+    background: var(--color-white);
+}
+.cart-table .count-control button {
+    width: 28px;
+    height: 28px;
+    background: none;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+    color: var(--color-gray-600);
+}
+.cart-table .count-control input {
+    width: 32px;
+    height: 28px;
+    border: none;
+    border-left: 1px solid var(--color-gray-300);
+    border-right: 1px solid var(--color-gray-300);
+    text-align: center;
+    font-size: 13px;
+    font-weight: bold;
+}
+
+
+/* ─────────────────────────────────────────────
+   하단: 액션 버튼 & 결제 요약 박스 감싸는 컨테이너
+───────────────────────────────────────────── */
+.cart-bottom-section {
+    display: flex;
+    justify-content: space-between; /* 💡 양쪽 끝으로 밀어내기 (좌: 삭제버튼, 우: 결제창) */
+    align-items: flex-start;
+    width: 100%;
+}
+
+/* 왼쪽: 선택 삭제 버튼 */
+.cart-actions {
+    margin-top: 0;
+}
+.btn-delete-sel {
+    padding: 8px 16px;
+    font-size: 13px;
+    background: var(--color-gray-200);
+    border: 1px solid var(--color-gray-300);
+    color: var(--color-gray-900);
+    cursor: pointer;
+    border-radius: var(--radius-sm);
+    transition: background 0.2s;
+}
+.btn-delete-sel:hover { background: var(--color-gray-100); }
+
+/* 오른쪽: 결제 요약 박스 */
+.summary-box {
+    width: 300px;
+    box-sizing: border-box;
+
+    border: 1px solid var(--color-gray-200);
+    border-radius: var(--radius-sm);
+    padding: 20px;
+    background: var(--color-white);
+
+    margin-bottom: 20px;
+}
+.summary-box h3 {
+    font-size: 18px;
+    font-weight: 800;
+    color: var(--color-gray-900);
+    margin-bottom: 24px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--color-gray-200);
+}
+.summary-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+    font-size: 14px;
+    color: var(--color-gray-700);
+}
+.summary-row .discount-price {
+    color: var(--color-sale);
+}
+.summary-total {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-top: 24px;
+    padding-top: 16px;
+    border-top: 1px solid var(--color-gray-200);
+    margin-bottom: 32px;
+}
+.summary-total span { font-size: 15px; font-weight: bold; color: var(--color-gray-900); }
+.summary-total .final-price { font-size: 24px; font-weight: 800; color: var(--color-primary); }
+
+.btn-order {
+    width: 100%;
+    height: 56px;
+    background: var(--color-primary);
+    color: var(--color-white);
+    border: none;
+    border-radius: var(--radius-sm);
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: filter 0.2s;
+}
+.btn-order:hover { filter: brightness(0.9); }
