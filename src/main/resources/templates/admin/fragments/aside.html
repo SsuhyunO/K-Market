@@ -6,11 +6,16 @@
     
     <nav class="aside-nav">
         
-        <div class="nav-item" data-menu="setting">
-            <a class="nav-link" th:href="@{/admin/site-settings}">
+        <details class="nav-item" data-menu="setting"
+                 th:attr="open=${category.name() == 'SITE_SETTINGS'
+                     or category.name() == 'BANNER_MANAGEMENT'
+                     or category.name() == 'TERMS_MANAGEMENT'
+                     or category.name() == 'VERSION_MANAGEMENT'
+                     or category.name() == 'CATEGORY'} ? 'open' : null">
+            <summary class="nav-link">
                 <span class="nav-icon">⚙️</span>환경설정
                 <span class="nav-arrow">›</span>
-            </a>
+            </summary>
             <ul class="sub-menu">
                 <li><a th:href="@{/admin/site-settings}">기본설정</a></li>
                 <li><a th:href="@{/admin/banner-management}">배너관리</a></li>
@@ -18,73 +23,80 @@
                 <li><a th:href="@{/admin/category-management}">카테고리</a></li>
                 <li><a th:href="@{/admin/version-management}">버전관리</a></li>
             </ul>
-        </div>
+        </details>
         
-        <div class="nav-item" data-menu="shop">
-            <a class="nav-link" th:href="@{/admin/shop-list}">
+        <details class="nav-item" data-menu="shop"
+                 th:attr="open=${category.name() == 'SHOP_LIST'
+                     or category.name() == 'SALES_STATUS'} ? 'open' : null">
+            <summary class="nav-link">
                 <span class="nav-icon">🏪</span>상점관리
                 <span class="nav-arrow">›</span>
-            </a>
+            </summary>
             <ul class="sub-menu">
                 <li><a th:href="@{/admin/shop-list}">상점목록</a></li>
                 <li><a th:href="@{/admin/sales-status}">매출현황</a></li>
             </ul>
-        </div>
+        </details>
         
-        <div class="nav-item" data-menu="member">
-            <a class="nav-link" th:href="@{/admin/member-list}">
+        <details class="nav-item" data-menu="member"
+                 th:attr="open=${category.name() == 'MEMBER_LIST'
+                     or category.name() == 'MANAGEMENT_POINT'} ? 'open' : null">
+            <summary class="nav-link">
                 <span class="nav-icon">👥</span>회원관리
                 <span class="nav-arrow">›</span>
-            </a>
+            </summary>
             <ul class="sub-menu">
                 <li><a th:href="@{/admin/member-list}">회원목록</a></li>
                 <li><a th:href="@{/admin/management-point}">포인트관리</a></li>
             </ul>
-        </div>
+        </details>
         
-        <div class="nav-item" data-menu="product">
-            <a class="nav-link" href="#">
+        <details class="nav-item" data-menu="product"
+                 th:attr="open=${category.name() == 'PRODUCT_LIST'
+                     or category.name() == 'PRODUCT_REGISTER'
+                     or category.name() == 'PRODUCT_EDIT'} ? 'open' : null">
+            <summary class="nav-link">
                 <span class="nav-icon">📦</span>상품관리
                 <span class="nav-arrow">›</span>
-            </a>
+            </summary>
             <ul class="sub-menu">
-                <li><a href="#">상품목록</a></li>
-                <li><a href="#">상품등록</a></li>
+                <li><a th:href="@{/admin/product/list}">상품목록</a></li>
+                <li><a th:href="@{/admin/product/register}">상품등록</a></li>
             </ul>
-        </div>
+        </details>
         
-        <div class="nav-item" data-menu="order">
-            <a class="nav-link" href="#">
+        <details class="nav-item" data-menu="order">
+            <summary class="nav-link">
                 <span class="nav-icon">🛒</span>주문관리
                 <span class="nav-arrow">›</span>
-            </a>
+            </summary>
             <ul class="sub-menu">
                 <li><a href="#">주문현황</a></li>
                 <li><a href="#">배송현황</a></li>
             </ul>
-        </div>
+        </details>
         
-        <div class="nav-item" data-menu="coupon">
-            <a class="nav-link" href="#">
+        <details class="nav-item" data-menu="coupon">
+            <summary class="nav-link">
                 <span class="nav-icon">🎟️</span>쿠폰관리
                 <span class="nav-arrow">›</span>
-            </a>
+            </summary>
             <ul class="sub-menu">
                 <li><a href="#">쿠폰목록</a></li>
                 <li><a href="#">쿠폰발급현황</a></li>
             </ul>
-        </div>
+        </details>
         
-        <div class="nav-item" data-menu="cs">
-            <a class="nav-link" href="#">
+        <details class="nav-item" data-menu="cs">
+            <summary class="nav-link">
                 <span class="nav-icon">💬</span>고객센터
                 <span class="nav-arrow">›</span>
-            </a>
+            </summary>
             <ul class="sub-menu">
                 <li><a href="#">공지사항</a></li>
                 <li><a href="#">자주묻는질문</a></li>
                 <li><a href="#">문의하기</a></li>
             </ul>
-        </div>
+        </details>
     </nav>
 </aside>
