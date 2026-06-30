@@ -1,0 +1,204 @@
+/* =============================================
+   KMarket - product-complete.css
+   주문완료 페이지 전용 스타일
+   ============================================= */
+
+.page-wrapper {
+    max-width: var(--container-w);
+    margin: 24px auto 0;
+    padding: 0 12px 40px;
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+}
+.main-content { flex: 1; min-width: 0; }
+
+/* 페이지 타이틀 + 브레드크럼 */
+.complete-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 14px;
+    border-bottom: 2px solid var(--color-primary);
+    margin-bottom: 32px;
+}
+.complete-title { font-size: 20px; font-weight: 800; color: var(--color-gray-900); }
+.breadcrumb { font-size: 13px; color: var(--color-gray-600); }
+.breadcrumb .sep { margin: 0 4px; color: var(--color-gray-400); }
+.breadcrumb .current { color: var(--color-gray-900); font-weight: 600; }
+.breadcrumb a:hover { color: var(--color-primary); }
+
+/* ① 완료 메시지 */
+.complete-message {
+    text-align: center;
+    padding: 32px 0 40px;
+}
+.complete-message .icon {
+    font-size: 48px;
+    margin-bottom: 16px;
+}
+.complete-message h2 {
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--color-gray-900);
+    margin-bottom: 12px;
+}
+.complete-message p {
+    font-size: 14px;
+    color: var(--color-gray-600);
+}
+
+/* ① 주문상품 테이블 */
+.complete-product-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 24px;
+}
+.complete-product-table thead th {
+    font-size: 13px;
+    color: var(--color-gray-500);
+    font-weight: 600;
+    padding: 12px 8px;
+    border-top: 2px solid var(--color-gray-900);
+    border-bottom: 1px solid var(--color-gray-200);
+    text-align: center;
+    background: var(--color-gray-50, #fafafa);
+}
+.complete-product-table thead th.col-product { text-align: left; }
+.complete-product-table tbody td {
+    padding: 16px 8px;
+    text-align: center;
+    font-size: 14px;
+    color: var(--color-gray-800);
+    border-bottom: 1px solid var(--color-gray-100);
+}
+.complete-product-table .col-check { width: 32px; }
+.complete-product-table .col-product { text-align: left; }
+.complete-product-table .order-amount { color: var(--color-primary); font-weight: 700; }
+
+.product-cell {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    text-align: left;
+}
+.product-thumb {
+    width: 56px;
+    height: 56px;
+    flex-shrink: 0;
+    border: 1px solid var(--color-gray-200);
+    border-radius: var(--radius-sm);
+    background: var(--color-gray-100);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-gray-400);
+    font-size: 22px;
+    overflow: hidden;
+}
+.product-thumb img { width: 100%; height: 100%; object-fit: cover; }
+.product-name-wrap { display: flex; flex-direction: column; gap: 2px; }
+.product-name { font-size: 14px; color: var(--color-gray-900); font-weight: 600; }
+.product-desc { font-size: 12px; color: var(--color-gray-500); }
+
+/* 총 금액 요약 박스 (테이블 하단 우측) */
+.amount-summary-wrap {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 40px;
+}
+.amount-summary {
+    width: 280px;
+    background: var(--color-gray-100, #fafafa);
+    border-radius: var(--radius-sm);
+    padding: 16px 20px;
+}
+.amount-summary .row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+    color: var(--color-gray-600);
+    margin-bottom: 8px;
+}
+.amount-summary .row:last-child { margin-bottom: 0; }
+.amount-summary .row .value { color: var(--color-gray-900); font-weight: 600; }
+.amount-summary .row.final {
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px dashed var(--color-gray-200);
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--color-gray-900);
+}
+.amount-summary .row.final .value {
+    color: var(--color-primary);
+    font-size: 16px;
+}
+
+/* ②③ 정보 섹션 공통 (주문정보 / 배송정보) */
+.info-section {
+    margin-bottom: 32px;
+}
+.info-section-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--color-gray-900);
+    padding-bottom: 12px;
+    margin-bottom: 16px;
+    border-top: 2px solid var(--color-gray-900);
+    border-bottom: 1px solid var(--color-gray-200);
+    padding-top: 12px;
+}
+
+/* 주문정보: 좌측 정보 리스트 + 우측 총 결제금액 */
+.order-info-layout {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 24px;
+}
+.order-info-list {
+    flex: 1;
+    display: grid;
+    grid-template-columns: 100px 1fr;
+    gap: 10px 12px;
+    font-size: 14px;
+}
+.order-info-list .label { color: var(--color-gray-500); }
+.order-info-list .value { color: var(--color-gray-900); }
+
+.order-final-amount {
+    flex-shrink: 0;
+    text-align: right;
+    white-space: nowrap;
+}
+.order-final-amount .label {
+    display: block;
+    font-size: 13px;
+    color: var(--color-gray-500);
+    margin-bottom: 6px;
+}
+.order-final-amount .value {
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--color-primary);
+}
+
+/* 배송정보 */
+.delivery-info-list {
+    display: grid;
+    grid-template-columns: 100px 1fr;
+    gap: 10px 12px;
+    font-size: 14px;
+}
+.delivery-info-list .label { color: var(--color-gray-500); }
+.delivery-info-list .value { color: var(--color-gray-900); }
+
+/* 반응형 */
+@media (max-width: 900px) {
+    .page-wrapper { flex-direction: column; }
+    .order-info-layout { flex-direction: column; align-items: flex-start; }
+    .order-final-amount { text-align: left; }
+    .amount-summary-wrap { justify-content: stretch; }
+    .amount-summary { width: 100%; box-sizing: border-box; }
+}

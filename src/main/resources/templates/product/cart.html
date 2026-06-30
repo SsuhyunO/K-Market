@@ -27,7 +27,7 @@
                     ((cateId == '31' or cateId == '32' or cateId == '33') ? '식품·생필품' :
                     ((cateId == '41' or cateId == '42' or cateId == '43') ? '홈·데코·취미' : null)))
                 }
-             ">>
+             ">
 
         <!-- ① 페이지 타이틀 + 브레드크럼 -->
         <div class="list-header">
@@ -49,19 +49,10 @@
             <!-- 위쪽: 장바구니 목록 (전체 너비 차지) -->
             <section class="cart-list-section">
                 <table class="cart-table">
-                    <colgroup>
-                        <col style="width: 5%;">
-                        <col style="width: 45%;">
-                        <col style="width: 10%;">
-                        <col style="width: 10%;">
-                        <col style="width: 10%;">
-                        <col style="width: 10%;">
-                        <col style="width: 10%;">
-                    </colgroup>
                     <thead>
                     <tr>
                         <th><input type="checkbox" id="chk-all" checked></th>
-                        <th>상품명</th>
+                        <th class="col-product">상품명</th>
                         <th>수량</th>
                         <th>판매가</th>
                         <th>할인</th>
@@ -75,12 +66,9 @@
                     <tr>
                         <td><input type="checkbox" class="chk-item" checked></td>
                         <td class="product-col">
-                            <div class="prod-thumb">
-                                <span class="dummy-img">📷</span>
-                            </div>
+                            <div class="prod-thumb">📷</div>
                             <div class="prod-info">
-                                <span class="brand">나이키</span>
-                                <strong class="name">나이키 스포츠웨어 클럽 플리스 후디 기모 맨투맨</strong>
+                                <span class="name">나이키 스포츠웨어 클럽 플리스 후디 기모 맨투맨</span>
                                 <span class="desc">옵션: 블랙 / L</span>
                             </div>
                         </td>
@@ -101,12 +89,9 @@
                     <tr>
                         <td><input type="checkbox" class="chk-item" checked></td>
                         <td class="product-col">
-                            <div class="prod-thumb">
-                                <span class="dummy-img">📷</span>
-                            </div>
+                            <div class="prod-thumb">📷</div>
                             <div class="prod-info">
-                                <span class="brand">아디다스</span>
-                                <strong class="name">오리지널스 삼선 슬리퍼 알파바운스</strong>
+                                <span class="name">오리지널스 삼선 슬리퍼 알파바운스</span>
                                 <span class="desc">옵션: 화이트 / 260</span>
                             </div>
                         </td>
@@ -137,33 +122,45 @@
 
                 <!-- 오른쪽: 결제 요약 박스 -->
                 <div class="summary-box">
-                    <h3>전체합계</h3>
+                    <h2 class="summary-title">전체합계</h2>
+
                     <div class="summary-row">
-                        <span>상품수</span>
-                        <span>2개</span>
-                    </div>
-                    <div class="summary-row">
-                        <span>상품금액</span>
-                        <span>167,000원</span>
+                        <span class="label">상품수</span>
+                        <span class="value" id="summaryItemCount" th:text="${orderItems != null ? #lists.size(orderItems) : 3}">3</span>
                     </div>
                     <div class="summary-row">
-                        <span>할인금액</span>
-                        <span class="discount-price">- 34,500원</span>
+                        <span class="label">상품금액</span>
+                        <span class="value" id="summaryProductPrice" th:text="(${productTotal} != null ? ${productTotal} : 167+',000') + '원'">167,000원</span>
                     </div>
                     <div class="summary-row">
-                        <span>배송비</span>
-                        <span>3,000원</span>
+                        <span class="label">할인금액</span>
+                        <span class="value minus" id="summaryDiscount" th:text="'-' + (${discountTotal} != null ? ${discountTotal} : 34+','+500) + '원'">-34,500원</span>
                     </div>
                     <div class="summary-row">
-                        <span>적립 포인트</span>
-                        <span>1,325P</span>
+                        <span class="label">배송비</span>
+                        <span class="value" id="summaryShipping" th:text="(${shippingTotal} != null ? ${shippingTotal} : 3+',000') + '원'">3,000원</span>
                     </div>
-                    <div class="summary-total">
-                        <span>전체주문금액</span>
-                        <strong class="final-price">135,500원</strong>
+
+                    <hr class="summary-divider">
+
+                    <div class="summary-row">
+                        <span class="label">전체주문금액</span>
+                        <span class="value" id="summaryOrderTotal" th:text="(${orderTotal} != null ? orderTotal : 135+','+500) + '원'">135,500원</span>
                     </div>
-                    <!-- 💡 클릭 시 JS에 의해 주문서 페이지로 이동합니다 -->
-                    <button type="button" class="btn-order">주문하기</button>
+                    <div class="summary-row">
+                        <span class="label">적립포인트</span>
+                        <span class="value" id="summaryEarnPoint" th:text="(${earnPoint != null ? earnPoint : 270})">270</span>
+                    </div>
+
+                    <hr class="summary-divider">
+
+                    <div class="summary-final">
+                        <span class="label">전체주문금액</span>
+                        <span class="value" id="summaryFinalPrice" th:text="(${finalPrice} != null ? finalPrice : 135+','+500) + '원'">135,500원</span>
+                    </div>
+
+                    <!-- 결제하기 클릭 시 결제완료 페이지로 이동 (실제 PG 연동/결제 테스트는 해당사항 없음) -->
+                    <button type="button" class="btn-order" id="btnOrder">주문하기</button>
                 </div>
 
             </div>
