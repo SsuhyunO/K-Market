@@ -1,5 +1,5 @@
 /* =============================================
-   KMarket - product-view.css
+   KMarket - view.css
    상품 상세 페이지 전용 스타일
    ============================================= */
 
@@ -247,7 +247,7 @@
 }
 .btn-wrap button:hover { opacity: 0.9; }
 .btn-cart {
-    background: var(--color-white);
+    background: var(--color-gray-200);
     border: 1px solid var(--color-gray-300);
     color: var(--color-gray-800);
 }
