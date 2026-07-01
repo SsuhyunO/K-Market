@@ -1,0 +1,182 @@
+.management-table {
+    min-width: 1120px;
+}
+
+.management-table th:nth-child(1),
+.management-table td:nth-child(1) {
+    width: 42px;
+}
+
+.management-table th:nth-child(2),
+.management-table td:nth-child(2) {
+    width: 72px;
+}
+
+.management-table th:nth-child(3),
+.management-table td:nth-child(3) {
+    width: 104px;
+}
+
+.management-table th:nth-child(4),
+.management-table td:nth-child(4) {
+    width: 140px;
+}
+
+.management-table th:nth-child(5),
+.management-table td:nth-child(5),
+.management-table th:nth-child(6),
+.management-table td:nth-child(6),
+.management-table th:nth-child(7),
+.management-table td:nth-child(7),
+.management-table th:nth-child(8),
+.management-table td:nth-child(8) {
+    width: 78px;
+}
+
+.management-table th:nth-child(9),
+.management-table td:nth-child(9) {
+    width: 86px;
+}
+
+.management-table th:nth-child(10),
+.management-table td:nth-child(10) {
+    width: 64px;
+}
+
+.management-table th:nth-child(11),
+.management-table td:nth-child(11) {
+    width: 74px;
+}
+
+.product-thumb {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border: 1px solid var(--adm-gray-300);
+    border-radius: 2px;
+    background: var(--adm-white);
+    vertical-align: middle;
+}
+
+.product-thumb::before {
+    content: "";
+    width: 22px;
+    height: 18px;
+    border: 1px solid var(--adm-gray-300);
+    background:
+        linear-gradient(135deg, transparent 48%, var(--adm-gray-300) 49%, var(--adm-gray-300) 51%, transparent 52%),
+        linear-gradient(45deg, transparent 48%, var(--adm-gray-300) 49%, var(--adm-gray-300) 51%, transparent 52%);
+}
+
+.product-control-button {
+    display: block;
+    width: 100%;
+    color: var(--adm-gray-700);
+    font-size: 12px;
+    line-height: 1.7;
+}
+
+.product-control-button:hover {
+    color: var(--adm-primary);
+}
+
+#product-detail-modal .modal-box {
+    width: min(100%, 820px);
+}
+
+#product-detail-modal .modal-body {
+    max-height: min(72vh, 720px);
+    overflow-y: auto;
+}
+
+.product-detail-modal {
+    display: grid;
+    gap: 18px;
+}
+
+.product-detail-summary {
+    display: grid;
+    grid-template-columns: 180px minmax(0, 1fr);
+    gap: 18px;
+}
+
+.product-detail-media {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 180px;
+    border: 1px solid var(--adm-gray-300);
+    border-radius: 4px;
+    background: var(--adm-gray-100);
+}
+
+.product-detail-thumb {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 96px;
+    height: 96px;
+    border: 1px solid var(--adm-gray-300);
+    border-radius: 3px;
+    background: var(--adm-white);
+}
+
+.product-detail-thumb::before {
+    content: "";
+    width: 48px;
+    height: 38px;
+    border: 1px solid var(--adm-gray-300);
+    background:
+        linear-gradient(135deg, transparent 48%, var(--adm-gray-300) 49%, var(--adm-gray-300) 51%, transparent 52%),
+        linear-gradient(45deg, transparent 48%, var(--adm-gray-300) 49%, var(--adm-gray-300) 51%, transparent 52%);
+}
+
+.product-detail-list {
+    display: grid;
+    border-top: 1px solid var(--adm-gray-300);
+}
+
+.product-detail-section h4 {
+    margin-bottom: 8px;
+    color: var(--adm-gray-900);
+    font-size: 13px;
+    font-weight: 800;
+}
+
+.product-detail-list div {
+    display: grid;
+    grid-template-columns: 128px minmax(0, 1fr);
+    border-bottom: 1px solid var(--adm-gray-300);
+}
+
+.product-detail-list dt,
+.product-detail-list dd {
+    min-height: 38px;
+    padding: 10px 12px;
+    font-size: 13px;
+    line-height: 1.4;
+}
+
+.product-detail-list dt {
+    background: var(--adm-gray-100);
+    color: var(--adm-gray-700);
+    font-weight: 800;
+}
+
+.product-detail-list dd {
+    color: var(--adm-gray-900);
+    word-break: break-word;
+}
+
+@media (max-width: 768px) {
+    .product-detail-summary,
+    .product-detail-list div {
+        grid-template-columns: 1fr;
+    }
+
+    #product-detail-modal .modal-body {
+        max-height: 70vh;
+    }
+}

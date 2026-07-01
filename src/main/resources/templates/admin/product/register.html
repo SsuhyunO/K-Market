@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>KMarket 상품등록</title>
+	<th:block th:replace="~{admin/fragments/head::head}"></th:block>
+	<link rel="stylesheet" th:href="@{/css/admin/global/section-table.css}"/>
+	<link rel="stylesheet" th:href="@{/css/admin/product/register.css}"/>
+</head>
+<body>
+<header th:replace="~{admin/fragments/header::header}"></header>
+<div class="admin-layout">
+	<aside th:replace="~{admin/fragments/aside::aside}"></aside>
+	
+	<main id="admin-main">
+		<!-- 브레드크럼 + 타이틀 -->
+		<div th:replace="~{admin/fragments/page-header::page-header}"></div>
+		
+		<form action="#" name="productRegisterForm" method="post" enctype="multipart/form-data">
+			
+			<section th:replace="~{admin/fragments/dash-section::dash-section(null, '상품분류', '1차, 2차 카테고리 기본분류는 반드시 선택하셔야 합니다.', ~{::current_category_state_section})}">
+				<th:block th:fragment="current_category_state_section">
+					<th:block th:replace="~{admin/fragments/section-table::section-table(~{::current_category_state_rows})}">
+						<th:block th:fragment="current_category_state_rows">
+							<tr>
+								<th><label for="root-category-selector">1차 분류</label></th>
+								<td>
+									<select id="root-category-selector" name="rootCategorySelector">
+										<option value=""></option>
+									</select>
+								</td>
+							</tr>
+							<tr>
+								<th><label for="sub-category-selector">2차 분류</label></th>
+								<td>
+									<select id="sub-category-selector" name="subCategorySelector">
+										<option value=""></option>
+									</select>
+								</td>
+							</tr>
+						</th:block>
+					</th:block>
+				</th:block>
+			</section>
+			
+			<section th:replace="~{admin/fragments/dash-section::dash-section(null, '기본정보', '기본정보는 반드시 입력하셔야 합니다.', ~{::product_default_info})}">
+				<th:block th:fragment="product_default_info">
+					<th:block th:replace="~{admin/fragments/section-table::section-table(~{::product_default_info_rows})}">
+						<th:block th:fragment="product_default_info_rows">
+							<tr>
+								<th><label for="name-id">상품명</label></th>
+								<td><input id="name-id"type="text" name="name" required/></td>
+							</tr>
+							<tr>
+								<th><label for="description-id">기본설명</label></th>
+								<td><input id="description-id" type="text" name="description" required/></td>
+							</tr>
+							<tr>
+								<th><label for="maker-id">제조사</label></th>
+								<td><input id="maker-id" type="text" name="maker" required/></td>
+							</tr>
+							<tr>
+								<th><label for="price-id">상품금액</label></th>
+								<td><input id="price-id" type="number" name="price" required/>원</td>
+							</tr>
+							<tr>
+								<th><label for="discount-id">할인율</label></th>
+								<td><input id="discount-id" type="number" name="discount" required/>%</td>
+							</tr>
+							<tr>
+								<th><label for="point-id">포인트</label></th>
+								<td><input id="point-id" type="number" name="point" required/>원</td>
+							</tr>
+							<tr>
+								<th><label for="stock">재고수량</label></th>
+								<td><input id="stock" type="number" name="stock" required/>개</td>
+							</tr>
+							<tr>
+								<th><label for="delivery-fee-id">배송비</label></th>
+								<td><input id="delivery-fee-id" type="number" name="deliveryFee" required/>원</td>
+							</tr>
+							<tr>
+								<th>상품 이미지</th>
+								<td class="image-upload-section">
+									<div>
+										<input type="file" name="listImage" required/>
+										<label>크기 190 x 190, 상품 목록에 출력 될 이미지 입니다.</label>
+									</div>
+									
+									<div>
+										<input type="file" name="mainImage" required/>
+										<label>크기 230 x 230, 상품 목록에 출력 될 이미지 입니다.</label>
+									</div>
+									
+									<div>
+										<input type="file" name="detailImage" required/>
+										<label>크기 456 x 456, 상품 목록에 출력 될 이미지 입니다.</label>
+									</div>
+								</td>
+							</tr>
+							<tr>
+								<th>상품 상세정보</th>
+								<td>
+									<input type="file" name="detailInfoFile" required/>
+									<label>크기 가로 940px, 높이 제약없음, 크기 최대 1MB</label>
+								</td>
+							</tr>
+						</th:block>
+					</th:block>
+				</th:block>
+			</section>
+			
+			<section th:replace="~{admin/fragments/dash-section::dash-section(null, '상품 선택정보', |상품별 선택정보(옵션) 입력입니다.&#10;예시) 옵션1: 사이즈, 옵션1 항목: XXL, XL, L, M, S (, 콤마로 구분)|, ~{::prod_option})}">
+				<th:block th:fragment="prod_option">
+					<th:block th:replace="~{admin/fragments/section-table::section-table(~{::prod_option_rows})}">
+						<th:block th:fragment="prod_option_rows">
+							<tr>
+								<th><label for="option1">옵션1</label></th>
+								<td>
+									<input id="option1" type="text" name="option1">
+								</td>
+								<th><label for="option1-value">옵션1 항목</label></th>
+								<td>
+									<input id="option1-value" type="text" name="option1Value">
+								</td>
+							</tr>
+						</th:block>
+					</th:block>
+					
+					<div class="product-btn-area">
+						<button type="button">옵션 추가</button>
+					</div>
+				</th:block>
+			</section>
+			
+			<section th:replace="~{admin/fragments/dash-section::dash-section(null, '상품정보 제공고시', '[전자상거래에 관한 상품정보 제공에 관한 고시] 항목에 의거 등록하는 정보입니다.', ~{::prod_info_notice})}">
+				<th:block th:fragment="prod_info_notice">
+					<th:block th:replace="~{admin/fragments/section-table::section-table(~{::prod_info_notice_rows})}">
+						<th:block th:fragment="prod_info_notice_rows">
+							<tr>
+								<th><label for="product-condition">상품상태</label></th>
+								<td><input id="product-condition" type="text" name="productCondition"></td>
+							</tr>
+							<tr>
+								<th><label for="tax-exempt">부가세 면세여부</label></th>
+								<td><input id="tax-exempt" type="text" name="taxExempt"></td>
+							</tr>
+							<tr>
+								<th><label for="receipt-issued">영수증 발행</label></th>
+								<td><input id="receipt-issued" type="text" name="receiptIssued"></td>
+							</tr>
+							<tr>
+								<th><label for="business-type">사업자구분</label></th>
+								<td><input id="business-type" type="text" name="businessType"></td>
+							</tr>
+							<tr>
+								<th><label for="origin">원산지</label></th>
+								<td><input id="origin" type="text" name="origin"></td>
+							</tr>
+						</th:block>
+					</th:block>
+					
+					<p class="product-info-notice-guide">
+						전자상거래등에서의 상품등의 정보 제공에 관한 고시에 따라 총 35개 상품군에 대해 상품 특성등을 양식에 따라
+						입력할 수 있습니다.
+					</p>
+				</th:block>
+			</section>
+
+			<section th:replace="~{admin/fragments/dash-section::dash-section('product-register-submit-section', null, null, ~{::product_submit_section})}">
+				<th:block th:fragment="product_submit_section">
+					<div class="section-form-actions">
+						<button class="section-submit-button" type="submit">등록하기</button>
+					</div>
+				</th:block>
+			</section>
+		</form>
+	</main>
+</div>
+
+<footer th:replace="~{admin/fragments/footer::footer}"></footer>
+</body>
+</html>
