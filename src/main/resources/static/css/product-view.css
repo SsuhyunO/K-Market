@@ -1,0 +1,444 @@
+/* =============================================
+   KMarket - product-view.css
+   상품 상세 페이지 전용 스타일
+   ============================================= */
+
+.page-wrapper {
+    max-width: var(--container-w);
+    margin: 24px auto 0;
+    padding: 0 12px 40px;   /* 하단 여백은 padding으로 */
+    display: flex;
+    gap: 20px;
+    align-items: flex-start; /* aside가 stretch되지 않도록 */
+}
+
+.main-content {
+    flex: 1;
+    min-width: 0;
+}
+
+/* ─────────────────────────────────────────────
+   ① 페이지 타이틀 + ② 브레드크럼
+───────────────────────────────────────────── */
+.view-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 14px;
+    border-bottom: 2px solid var(--color-primary);
+    margin-bottom: 16px;
+}
+.view-title {
+    font-size: 20px;
+    font-weight: 800;
+    color: var(--color-gray-900);
+}
+.breadcrumb {
+    font-size: 13px;
+    color: var(--color-gray-600);
+}
+.breadcrumb .sep {
+    margin: 0 4px;
+    color: var(--color-gray-400);
+}
+.breadcrumb .current {
+    color: var(--color-gray-900);
+    font-weight: 600;
+}
+
+/* ─────────────────────────────────────────────
+   ① 상품 기본 정보 영역 (상단)
+───────────────────────────────────────────── */
+.view-basic {
+    display: flex;
+    gap: 40px;
+    margin-bottom: 40px;
+}
+
+/* 왼쪽: 상품 이미지 */
+.view-img {
+    width: 450px;
+    height: 450px;
+    flex-shrink: 0;
+    background: var(--color-gray-100);
+    border: 1px solid var(--color-gray-200);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.view-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.view-img .dummy-img {
+    font-size: 60px;
+    color: var(--color-gray-400);
+}
+
+/* 오른쪽: 상품 상세 정보 */
+.view-info {
+    flex: 1;
+    min-width: 0;
+}
+
+/* 💡 새로 추가: 상품번호와 브랜드명 가로 배치용 */
+.view-info .brand-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 8px;
+}
+.view-info .brand-row .pno {
+    font-size: 13px;
+    color: var(--color-gray-400);
+}
+.view-info .brand-row .brand {
+    font-size: 14px;
+    color: var(--color-gray-500);
+    font-weight: 600;
+}
+
+.view-info .title {
+    font-size: 24px;
+    font-weight: 800;
+    color: var(--color-gray-900);
+    margin-bottom: 12px;
+    line-height: 1.3;
+}
+.view-info .desc {
+    font-size: 15px;
+    color: var(--color-gray-600);
+    margin-bottom: 24px;
+}
+
+/* 가격 정보 */
+.view-info .price-wrap {
+    padding-bottom: 24px;
+    border-bottom: 1px solid var(--color-gray-200);
+    margin-bottom: 24px;
+}
+.view-info .del-price {
+    font-size: 16px;
+    color: var(--color-price-del);
+    text-decoration: line-through;
+    margin-bottom: 8px;
+}
+.view-info .sale-row {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+}
+.view-info .rate {
+    font-size: 24px;
+    color: var(--color-sale);
+    font-weight: 800;
+}
+.view-info .final-price {
+    font-size: 32px;
+    font-weight: 800;
+    color: var(--color-gray-900);
+}
+.view-info .final-price span {
+    font-size: 20px;
+    font-weight: 600;
+}
+
+/* 요약 정보 (배송, 적립 등) */
+.view-summary {
+    margin-bottom: 24px;
+    font-size: 14px;
+}
+.view-summary .row {
+    display: flex;
+    margin-bottom: 12px;
+}
+.view-summary .row .th {
+    width: 100px;
+    color: var(--color-gray-500);
+}
+.view-summary .row .td {
+    flex: 1;
+    color: var(--color-gray-800);
+}
+.view-summary .row .td .highlight {
+    color: var(--color-primary);
+    font-weight: bold;
+}
+
+/* 수량 선택기 */
+.count-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px;
+    background: var(--color-gray-100);
+    border-radius: var(--radius-sm);
+    margin-bottom: 24px;
+}
+.count-wrap .name {
+    font-size: 14px;
+    color: var(--color-gray-800);
+    font-weight: 600;
+}
+.count-control {
+    display: flex;
+    align-items: center;
+    border: 1px solid var(--color-gray-300);
+    background: var(--color-white);
+}
+.count-control button {
+    width: 32px;
+    height: 32px;
+    background: none;
+    border: none;
+    font-size: 18px;
+    cursor: pointer;
+    color: var(--color-gray-600);
+}
+.count-control button:hover { background: var(--color-gray-100); }
+.count-control input {
+    width: 40px;
+    height: 32px;
+    border: none;
+    border-left: 1px solid var(--color-gray-300);
+    border-right: 1px solid var(--color-gray-300);
+    text-align: center;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+/* 총 상품 금액 */
+.total-price-wrap {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 32px;
+}
+.total-price-wrap .label {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--color-gray-900);
+}
+.total-price-wrap .total {
+    font-size: 32px;
+    font-weight: 800;
+    color: var(--color-primary);
+}
+.total-price-wrap .total span {
+    font-size: 20px;
+    font-weight: 600;
+}
+
+/* 버튼 영역 */
+.btn-wrap {
+    display: flex;
+    gap: 12px;
+}
+.btn-wrap button {
+    flex: 1;
+    height: 56px;
+    font-size: 18px;
+    font-weight: 700;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: opacity 0.2s;
+}
+.btn-wrap button:hover { opacity: 0.9; }
+.btn-cart {
+    background: var(--color-white);
+    border: 1px solid var(--color-gray-300);
+    color: var(--color-gray-800);
+}
+.btn-buy {
+    background: var(--color-primary);
+    border: 1px solid var(--color-primary);
+    color: var(--color-white);
+}
+
+/* ─────────────────────────────────────────────
+   ② 배너 (새로 추가)
+───────────────────────────────────────────── */
+.view-banner {
+    width: 100%;
+    height: 120px;
+    background: #e9ecef;
+    margin-bottom: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--color-gray-600);
+    font-size: 18px;
+    font-weight: bold;
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+}
+.view-banner img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* ─────────────────────────────────────────────
+   ③ 스크롤 스티키 탭 메뉴
+───────────────────────────────────────────── */
+.view-tabs {
+    display: flex;
+    position: sticky;
+    top: 222px; /* 배너90 + 헤더메인90 + 카테고리탭44 = 224px, 헤더 아래에 붙음 */
+    background: var(--color-white);
+    border-top: 2px solid var(--color-gray-900);
+    border-bottom: 1px solid var(--color-gray-300);
+    z-index: 90; /* 헤더(z-index:100)보다는 낮게, 콘텐츠보다는 높게 */
+    margin-bottom: 40px;
+}
+.view-tabs a {
+    flex: 1;
+    text-align: center;
+    padding: 16px 0;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--color-gray-600);
+    text-decoration: none;
+    border-right: 1px solid var(--color-gray-200);
+    transition: all 0.2s;
+}
+.view-tabs a:last-child { border-right: none; }
+.view-tabs a:hover { color: var(--color-primary); background: var(--color-gray-100); }
+.view-tabs a.active {
+    color: var(--color-primary);
+    border-bottom: 3px solid var(--color-primary);
+    margin-bottom: -1px;
+}
+
+/* ─────────────────────────────────────────────
+   ④ 상세 콘텐츠 공통 (상품상세, 제공공시, 리뷰)
+───────────────────────────────────────────── */
+.content-section {
+    /* 탭(224px 지점에 고정)에 가려지지 않도록 헤더+탭 높이만큼 여유 */
+    scroll-margin-top: 300px;
+    margin-bottom: 80px;
+}
+.content-section .sec-title {
+    font-size: 24px;
+    font-weight: 800;
+    color: var(--color-gray-900);
+    margin-bottom: 24px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid var(--color-gray-200);
+}
+
+/* 상품 상세 이미지 영역 */
+.detail-content {
+    text-align: center;
+    background: #f9f9f9;
+    min-height: 800px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-gray-500);
+    border: 1px dashed var(--color-gray-300);
+}
+.detail-content h3 { font-size: 24px; margin-bottom: 16px; }
+
+/* 정보 제공 공시 테이블 */
+.info-table {
+    width: 100%;
+    border-top: 2px solid var(--color-gray-800);
+    border-collapse: collapse;
+}
+.info-table th, .info-table td {
+    padding: 16px;
+    border-bottom: 1px solid var(--color-gray-200);
+    font-size: 14px;
+    line-height: 1.6;
+}
+.info-table th {
+    background: var(--color-gray-100);
+    color: var(--color-gray-900);
+    text-align: left;
+    width: 180px;
+    font-weight: 600;
+}
+.info-table td { color: var(--color-gray-700); }
+
+/* 리뷰 리스트 */
+.review-list {
+    width: 100%;
+}
+.review-item {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    gap: 4px 16px;
+    padding: 24px 0;
+    border-bottom: 1px solid var(--color-gray-200);
+}
+
+/* 썸네일: 왼쪽 고정 폭, 메타/텍스트보다 먼저 보이도록 order로 배치 */
+.review-item .thumb {
+    order: -1;
+    align-self: flex-start;
+    flex: 0 0 64px;
+    width: 64px;
+    height: 64px;
+    background: var(--color-gray-100);
+    border: 1px solid var(--color-gray-200);
+    border-radius: var(--radius-sm);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-gray-400);
+}
+.review-item .thumb .dummy-img {
+    font-size: 22px;
+}
+
+/* 메타(별점/아이디/날짜): 썸네일 옆 첫 줄 전체 차지 */
+.review-item .meta {
+    order: 0;
+    flex: 1 0 calc(100% - 80px); /* 썸네일(64px) + gap(16px) 만큼 제외 */
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 14px;
+    color: var(--color-gray-500);
+}
+.review-item .meta .stars { color: #f5a623; letter-spacing: -2px; }
+
+/* 본문 텍스트: 메타 아래 줄, 썸네일 옆 공간을 그대로 사용 */
+.review-item .text {
+    order: 1;
+    flex: 1 0 calc(100% - 80px);
+    font-size: 15px;
+    line-height: 1.5;
+    color: var(--color-gray-800);
+}
+
+/* 리뷰 페이지네이션 */
+.review-pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    padding: 32px 0 8px;
+}
+.review-pagination a {
+    font-size: 14px;
+    color: var(--color-gray-600);
+    padding: 4px 8px;
+    border-radius: var(--radius-sm);
+    transition: color 0.2s, background 0.2s;
+}
+.review-pagination a:hover { background: var(--color-gray-100); }
+.review-pagination a.active {
+    color: var(--color-primary);
+    font-weight: 700;
+}
+.review-pagination .page-nav {
+    font-weight: 600;
+    color: var(--color-gray-400);
+}
+.review-pagination .page-nav:hover { color: var(--color-primary); }

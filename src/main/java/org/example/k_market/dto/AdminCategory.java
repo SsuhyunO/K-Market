@@ -11,6 +11,7 @@ import java.util.Optional;
 @AllArgsConstructor
 @ToString
 public enum AdminCategory {
+
     MAIN("/admin/main", "관리자 메인", "HOME &rsaquo; 관리자 메인"),
     SITE_SETTINGS("/admin/site-settings", "기본설정", "HOME &rsaquo; 환경설정 &rsaquo; 기본설정"),
     BANNER_MANAGEMENT("/admin/banner-management", "배너관리", "HOME &rsaquo; 환경설정 &rsaquo; 배너관리"),
