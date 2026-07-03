@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>케이마켓 - 아이디 찾기</title>
-    <link rel="stylesheet" href="../css/member/userid.css">
+    <link rel="stylesheet" th:href="@{/css/member/userid.css}">
 </head>
 <body>
 
@@ -13,11 +13,12 @@
     <header>
         <div class="header-inner">
             <a href="./login.html" class="logo">CI ( 로고 )</a>
+            <a th:href="@{/member/login}" class="logo">CI ( 로고 )</a>
             <nav class="header-nav">
-                <a href="login.html">로그인</a>
-                <a href="join.html">회원가입</a>
-                <a href="/my/home.html">마이페이지</a>
-                <a href="/kmarket/cart">🛒 장바구니</a>
+                <a th:href="@{/member/login}">로그인</a>
+                <a th:href="@{/member/join}">회원가입</a>
+                <a th:href="@{/my/home}">마이페이지</a>
+                <a th:href="@{/kmarket/cart}">🛒 장바구니</a>
             </nav>
         </div>
     </header>
@@ -95,7 +96,7 @@
         </p>
 
         <div class="btn-area">
-            <button type="button" class="btn-cancel" onclick="location.href='./login.html'">취소</button>
+            <button type="button" class="btn-cancel" th:onclick="|location.href='@{/member/login}'|">취소</button>
             <button type="button" class="btn-next" onclick="goNext()">다음</button>
         </div>
     </main>
@@ -107,7 +108,7 @@
         </div>
     </footer>
 
-    <script src="/js/member/userid.js">
+    <script th:src="@{/js/member/userid.js}">
         
     </script>
 

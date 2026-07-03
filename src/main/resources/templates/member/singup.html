@@ -5,19 +5,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>케이마켓 - 약관동의</title>
-    <link rel="stylesheet" href="/css/member/singup.css">
+    <link rel="stylesheet" th:href="@{/css/member/singup.css}">
 </head>
 <body>
 
     <!-- 헤더 -->
     <header>
         <div class="header-inner">
-            <a href="./login.html" class="logo">CI ( 로고 )</a>
+            <a th:href="@{/member/login}" class="logo">CI ( 로고 )</a>
             <nav class="header-nav">
-                <a href="login.html">로그인</a>
-                <a href="join.html">회원가입</a>
-                <a href="/my/home.html">마이페이지</a>
-                <a href="/kmarket/cart">🛒 장바구니</a>
+                <a th:href="@{/member/login}">로그인</a>
+                <a th:href="@{/member/join}">회원가입</a>
+                <a th:href="@{/my/home}">마이페이지</a>
+                <a th:href="@{/kmarket/cart}">🛒 장바구니</a>
             </nav>
         </div>
     </header>
@@ -154,7 +154,7 @@
         </div>
     </footer>
 
-    <script src="/js/member/singup.js"> 
+    <script th:src="@{/js/member/singup.js}">
         
     </script>
 
