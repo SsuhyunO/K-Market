@@ -52,5 +52,5 @@ let currentTab = 'email';
                 if (!phone) { alert('휴대폰 번호를 입력해 주세요.'); return; }
                 if (!phoneVerified) { alert('휴대폰 인증을 완료해 주세요.'); return; }
             }
-            window.location.href = './changepassword.html';
+            window.location.href = changePasswordUrl;
         }

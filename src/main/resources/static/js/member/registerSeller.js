@@ -44,5 +44,5 @@
             }
 
             alert('판매자 회원가입이 완료되었습니다!');
-            window.location.href = './login.html';
+            window.location.href = indexUrl;
         }

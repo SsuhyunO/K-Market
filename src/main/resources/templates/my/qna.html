@@ -17,7 +17,7 @@
             <a th:href="@{/member/login}">로그인</a>
             <a th:href="@{/member/join}">회원가입</a>
             <a th:href="@{/my/home}" class="active">마이페이지</a>
-            <a th:href="@{/cart}">🛒장바구니</a>
+            <a th:href="@{/product/cart}">🛒장바구니</a>
         </nav>
     </div>
 </header>
@@ -60,9 +60,9 @@
                 <ul>
                     <li><a th:href="@{/my/order}" data-menu="orders">전체주문내역</a></li>
                     <li><a th:href="@{/my/point}" data-menu="points">포인트내역</a></li>
-                    <li><a th:href="@{/my/coupon}" class="active" data-menu="coupons">쿠폰</a></li>
+                    <li><a th:href="@{/my/coupon}"  data-menu="coupons">쿠폰</a></li>
                     <li><a th:href="@{/my/review}" data-menu="reviews">나의리뷰</a></li>
-                    <li><a th:href="@{/my/qna}" data-menu="inquiry">문의하기</a></li>
+                    <li><a th:href="@{/my/qna}" class="active" data-menu="inquiry">문의하기</a></li>
                     <li><a th:href="@{/my/info}"  data-menu="settings">나의설정</a></li>
                 </ul>
             </nav>

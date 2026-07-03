@@ -12,13 +12,12 @@
     <!-- 헤더 -->
     <header>
         <div class="header-inner">
-            <a href="./login.html" class="logo">CI ( 로고 )</a>
-            <a th:href="@{/member/login}" class="logo">CI ( 로고 )</a>
+            <a th:href="@{/}" class="logo">CI ( 로고 )</a>
             <nav class="header-nav">
                 <a th:href="@{/member/login}">로그인</a>
                 <a th:href="@{/member/join}">회원가입</a>
                 <a th:href="@{/my/home}">마이페이지</a>
-                <a th:href="@{/kmarket/cart}">🛒 장바구니</a>
+                <a th:href="@{/product/cart}">🛒 장바구니</a>
             </nav>
         </div>
     </header>
@@ -49,8 +48,8 @@
         <p class="guide-text">고객님의 정보와 일치하는 아이디 입니다.</p>
 
         <div class="btn-area">
-            <button type="button" class="btn-login" onclick="location.href='./login.html'">로그인</button>
-            <button type="button" class="btn-findpw" onclick="location.href='./changepassword.html'">비밀번호 찾기</button>
+            <button type="button" class="btn-login" th:onclick="|location.href='@{/member/login}'|">로그인</button>
+            <button type="button" class="btn-findpw" th:onclick="|location.href='@{/member/changepassword}'|">비밀번호 찾기</button>
         </div>
     </main>
 

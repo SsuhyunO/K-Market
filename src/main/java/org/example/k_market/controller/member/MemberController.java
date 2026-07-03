@@ -36,9 +36,9 @@ public class MemberController {
         return "member/changepassword";
     }
 
-    @GetMapping("/member/singup")
+    @GetMapping("/member/signup")
     public String singup() {
-        return "member/singup";
+        return "member/signup";
     }
 
     @GetMapping("/member/userid")
