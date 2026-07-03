@@ -32,6 +32,10 @@ function observeCategoryChanges(categoryTree, categoryState) {
             if (mutation.type === 'attributes' && mutation.attributeName === 'open') {
                 handleOpenMutation(categoryTree, categoryState, mutation.target);
             }
+
+            if (mutation.type === 'attributes' && mutation.attributeName === 'data-info-notice-type') {
+                handleInfoNoticeTypeMutation(categoryTree, categoryState, mutation.target);
+            }
         });
     });
 
@@ -40,7 +44,7 @@ function observeCategoryChanges(categoryTree, categoryState) {
         childList: true,
         characterData: true,
         attributes: true,
-        attributeFilter: ['open']
+        attributeFilter: ['open', 'data-info-notice-type']
     });
 }
 
@@ -110,6 +114,23 @@ function handleOpenMutation(categoryTree, categoryState, target) {
     categoryState.sync(item);
     dispatchCategoryEvent(categoryTree, 'category:toggle', item, categoryState, {
         open: currentState.open
+    });
+}
+
+/**
+ * 카테고리 기본 상품군 변경 여부를 비교하고 실제 변경 시 update 이벤트를 발행한다.
+ */
+function handleInfoNoticeTypeMutation(categoryTree, categoryState, item) {
+    if (!item?.matches?.('.category-item') || !categoryTree.contains(item)) return;
+
+    const previousState = categoryState.get(item);
+    const currentState = categoryState.snapshot(item);
+    if (!previousState || previousState.infoNoticeType === currentState.infoNoticeType) return;
+
+    categoryState.sync(item);
+    dispatchCategoryEvent(categoryTree, 'category:update', item, categoryState, {
+        previousInfoNoticeType: previousState.infoNoticeType,
+        infoNoticeType: currentState.infoNoticeType
     });
 }
 

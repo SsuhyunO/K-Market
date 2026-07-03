@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>KMarket 공지사항 보기</title>
+    <th:block th:replace="~{admin/fragments/head::head}"></th:block>
+    <link rel="stylesheet" th:href="@{/css/admin/global/action-bar.css}">
+    <link rel="stylesheet" th:href="@{/css/admin/global/section-table.css}">
+    <link rel="stylesheet" th:href="@{/css/admin/cs/board.css}">
+    <script type="module" th:src="@{/js/admin/cs/cs-board.js}"></script>
+</head>
+<body>
+<header th:replace="~{admin/fragments/header::header}"></header>
+<div class="admin-layout">
+    <aside th:replace="~{admin/fragments/aside::aside}"></aside>
+
+    <main id="admin-main">
+        <div th:replace="~{admin/fragments/page-header::page-header}"></div>
+
+        <section th:replace="~{admin/fragments/dash-section::dash-section(null, '공지사항 보기', null, ~{::content})}">
+            <th:block th:fragment="content">
+                <table class="section-table cs-view-table">
+                    <tr>
+                        <th>유형</th>
+                        <td>고객서비스</td>
+                    </tr>
+                    <tr>
+                        <th>제목</th>
+                        <td>[필독] 사이트 이용 안내</td>
+                    </tr>
+                    <tr>
+                        <th>내용</th>
+                        <td class="cs-view-content">안녕하세요. 케이마켓입니다.
+공지사항 내용이 출력되는 영역입니다. 고객센터 공지사항의 상세 내용을 확인할 수 있습니다.</td>
+                    </tr>
+                </table>
+
+                <div th:replace="~{admin/fragments/action-bar::action-bar(~{::actions})}">
+                    <th:block th:fragment="actions">
+                        <button class="cs-board-button danger" type="button" data-cs-delete data-confirm-message="공지사항을 삭제하시겠습니까?">삭제</button>
+                        <button class="cs-board-button secondary" type="button" th:data-cs-link="@{/admin/cs/notice/modify}">수정</button>
+                        <button class="cs-board-button primary" type="button" th:data-cs-link="@{/admin/cs/notice/list}">목록</button>
+                    </th:block>
+                </div>
+            </th:block>
+        </section>
+    </main>
+</div>
+<footer th:replace="~{admin/fragments/footer::footer}"></footer>
+</body>
+</html>

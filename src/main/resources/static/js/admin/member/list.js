@@ -1,7 +1,8 @@
 import { Validation } from '../../global/validation.js';
 import { initModals, openModal } from '../../global/modal-form.js';
 import { FormValidation } from '../global/form-validation.js';
-import { openDaumPostcode } from '../../global/daumpostcode.js';
+import { ModalFormValidation } from '../global/modal-form-validation.js';
+import { isDaumPostcodeCanceled, openDaumPostcode } from '../../global/daumpostcode.js';
 
 document.addEventListener("DOMContentLoaded", function () {
     initModals();
@@ -25,6 +26,8 @@ function initMemberPostcode() {
             addressField.value = address;
             detailAddressField?.focus();
         } catch (error) {
+            if (isDaumPostcodeCanceled(error)) return;
+
             console.error(error);
             alert("우편번호 서비스를 불러오지 못했습니다.");
         }
@@ -54,6 +57,7 @@ function initMemberEditModal() {
         openModal(modal);
         renderTargetOptions(targetSelect, selectedMembers);
         fillEditForm(selectedMembers[0]);
+        renderMemberEditErrors();
     });
 
     form.addEventListener("click", function (e) {
@@ -72,6 +76,7 @@ function initMemberEditModal() {
         openModal(modal);
         renderTargetOptions(targetSelect, [member]);
         fillEditForm(member);
+        renderMemberEditErrors();
     });
 
     targetSelect.addEventListener("change", function () {
@@ -80,6 +85,7 @@ function initMemberEditModal() {
         if (!member) return;
 
         fillEditForm(member);
+        renderMemberEditErrors();
     });
 }
 
@@ -87,12 +93,13 @@ function initMemberEditValidation() {
     const registerForm = document.getElementById("member-edit-form");
     if (!registerForm) return;
 
-    FormValidation.bind({
+    ModalFormValidation.bind({
         form: registerForm,
         validate: validateMemberEditForm,
         isField: isMemberEditField,
         getRelatedFieldIds: getMemberEditRelatedFieldIds,
-        ensureErrors: ensureMemberEditErrors
+        ensureErrors: ensureMemberEditErrors,
+        validateOnOpen: true
     });
 }
 
@@ -166,6 +173,14 @@ function validatePhone(form, errors) {
 
 function isMemberEditField(form, target) {
     return target.matches("input, select, textarea") && form.contains(target);
+}
+
+function renderMemberEditErrors() {
+    const form = document.getElementById("member-edit-form");
+    if (!form) return;
+
+    FormValidation.clearFieldErrors(form);
+    FormValidation.renderFieldErrors(form, validateMemberEditForm(form));
 }
 
 function bindCheckboxGroup(form, selectAll) {

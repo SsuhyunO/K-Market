@@ -9,6 +9,9 @@
     <script type="module" th:src="@{/js/admin/setting/category/category-observer.js}"></script>
     <script type="module" th:src="@{/js/admin/setting/category/category-listener.js}"></script>
     <script type="module" th:src="@{/js/admin/setting/category/category-management.js}"></script>
+    <script th:inline="javascript">
+        window.productInfoNoticeTemplates = /*[[${productInfoNoticeTemplates}]]*/ {};
+    </script>
 </head>
 <body>
 <header th:replace="~{admin/fragments/header::header}"></header>
@@ -37,7 +40,7 @@
                                 <summary class="category-hidden-summary">여성패션 하위 카테고리</summary>
 
                                 <ul class="category-list">
-                                    <li class="category-item">
+                                    <li class="category-item" data-info-notice-type="clothing">
                                         <div class="category-row">
                                             <span class="category-title">브랜드의류</span>
                                             <div class="category-actions">
@@ -46,7 +49,7 @@
                                             </div>
                                         </div>
                                     </li>
-                                    <li class="category-item">
+                                    <li class="category-item" data-info-notice-type="bag">
                                         <div class="category-row">
                                             <span class="category-title">브랜드가방</span>
                                             <div class="category-actions">
@@ -55,7 +58,7 @@
                                             </div>
                                         </div>
                                     </li>
-                                    <li class="category-item">
+                                    <li class="category-item" data-info-notice-type="shoes">
                                         <div class="category-row">
                                             <span class="category-title">브랜드신발</span>
                                             <div class="category-actions">
@@ -64,7 +67,7 @@
                                             </div>
                                         </div>
                                     </li>
-                                    <li class="category-item">
+                                    <li class="category-item" data-info-notice-type="etc">
                                         <div class="category-row">
                                             <span class="category-title">브랜드잡화</span>
                                             <div class="category-actions">

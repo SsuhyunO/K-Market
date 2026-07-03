@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>KMarket 문의하기 목록</title>
+    <th:block th:replace="~{admin/fragments/head::head}"></th:block>
+    <link rel="stylesheet" th:href="@{/css/admin/global/management-table-form.css}">
+    <link rel="stylesheet" th:href="@{/css/admin/global/action-bar.css}">
+    <link rel="stylesheet" th:href="@{/css/admin/cs/board.css}">
+    <script type="module" th:src="@{/js/admin/cs/cs-board.js}"></script>
+</head>
+<body class="cs-board-page cs-qna-page">
+<header th:replace="~{admin/fragments/header::header}"></header>
+<div class="admin-layout">
+    <aside th:replace="~{admin/fragments/aside::aside}"></aside>
+
+    <main id="admin-main">
+        <div th:replace="~{admin/fragments/page-header::page-header}"></div>
+
+        <section th:replace="~{admin/fragments/dash-section::dash-section(null, '문의하기 목록', null, ~{::content})}">
+            <th:block th:fragment="content">
+                <div class="cs-type-filter">
+                    <select aria-label="문의하기 1차 유형 선택">
+                        <option value="">1차 선택</option>
+                        <option value="member">회원</option>
+                        <option value="seller">판매자</option>
+                    </select>
+                    <select aria-label="문의하기 2차 유형 선택">
+                        <option value="">2차 선택</option>
+                        <option value="join">가입</option>
+                        <option value="withdraw">탈퇴</option>
+                        <option value="order">주문</option>
+                    </select>
+                </div>
+
+                <form th:replace="~{admin/fragments/management-table-form::management-table-form(
+                    '#',
+                    ~{::table_content},
+                    ~{::table_footer},
+                    'qnaNo')}">
+                    <th:block th:fragment="table_content">
+                        <tr>
+                            <th><label><input type="checkbox" id="select-all"></label></th>
+                            <th>번호</th>
+                            <th>1차유형</th>
+                            <th>2차유형</th>
+                            <th>제목</th>
+                            <th>작성자</th>
+                            <th>작성일</th>
+                            <th>상태</th>
+                        </tr>
+                        <tr>
+                            <td><label><input type="checkbox" name="qnaNo" value="120"></label></td>
+                            <td>120</td>
+                            <td>회원</td>
+                            <td>가입</td>
+                            <td><button class="cs-title-button" type="button" th:data-cs-link="@{/admin/cs/qna/reply}">개인회원과 법인회원에 차이가 있나요?</button></td>
+                            <td>chh**</td>
+                            <td>00.00.00</td>
+                            <td>검토중</td>
+                        </tr>
+                        <tr>
+                            <td><label><input type="checkbox" name="qnaNo" value="119"></label></td>
+                            <td>119</td>
+                            <td>회원</td>
+                            <td>가입</td>
+                            <td><button class="cs-title-button" type="button" th:data-cs-link="@{/admin/cs/qna/reply}">법인으로 사업자인데 가입 가능한가요?</button></td>
+                            <td>chh**</td>
+                            <td>00.00.00</td>
+                            <td>검토중</td>
+                        </tr>
+                        <tr>
+                            <td><label><input type="checkbox" name="qnaNo" value="118"></label></td>
+                            <td>118</td>
+                            <td>회원</td>
+                            <td>가입</td>
+                            <td><button class="cs-title-button" type="button" th:data-cs-link="@{/admin/cs/qna/view}">아이디를 여러 개 사용할 수 있나요?</button></td>
+                            <td>chh**</td>
+                            <td>00.00.00</td>
+                            <td><span class="cs-status-complete">답변완료</span></td>
+                        </tr>
+                        <tr>
+                            <td><label><input type="checkbox" name="qnaNo" value="117"></label></td>
+                            <td>117</td>
+                            <td>회원</td>
+                            <td>가입</td>
+                            <td><button class="cs-title-button" type="button" th:data-cs-link="@{/admin/cs/qna/view}">회원 종류 및 혜택 안내</button></td>
+                            <td>chh**</td>
+                            <td>00.00.00</td>
+                            <td><span class="cs-status-complete">답변완료</span></td>
+                        </tr>
+                        <tr>
+                            <td><label><input type="checkbox" name="qnaNo" value="113"></label></td>
+                            <td>113</td>
+                            <td>회원</td>
+                            <td>탈퇴</td>
+                            <td><button class="cs-title-button" type="button" th:data-cs-link="@{/admin/cs/qna/view}">회원탈퇴 후 재가입이 가능한가요?</button></td>
+                            <td>chh**</td>
+                            <td>00.00.00</td>
+                            <td><span class="cs-status-complete">답변완료</span></td>
+                        </tr>
+                        <tr>
+                            <td><label><input type="checkbox" name="qnaNo" value="112"></label></td>
+                            <td>112</td>
+                            <td>회원</td>
+                            <td>탈퇴</td>
+                            <td><button class="cs-title-button" type="button" th:data-cs-link="@{/admin/cs/qna/view}">회원탈퇴는 어떻게 하나요?</button></td>
+                            <td>chh**</td>
+                            <td>00.00.00</td>
+                            <td><span class="cs-status-complete">답변완료</span></td>
+                        </tr>
+                        <tr>
+                            <td><label><input type="checkbox" name="qnaNo" value="111"></label></td>
+                            <td>111</td>
+                            <td>회원</td>
+                            <td>탈퇴</td>
+                            <td><button class="cs-title-button" type="button" th:data-cs-link="@{/admin/cs/qna/view}">탈퇴하면 개인정보도 모두 삭제되나요?</button></td>
+                            <td>chh**</td>
+                            <td>00.00.00</td>
+                            <td><span class="cs-status-complete">답변완료</span></td>
+                        </tr>
+                    </th:block>
+
+                    <th:block th:fragment="table_footer">
+                        <button type="submit"
+                                data-management-action="bulk-submit"
+                                data-empty-message="삭제할 문의글을 선택해주세요."
+                                data-confirm-message="선택한 문의글을 삭제하시겠습니까?"
+                                data-action-variant="secondary">선택삭제</button>
+                        <nav th:replace="~{/admin/fragments/admin-pagination}"></nav>
+                        <span class="btn-area-spacer"></span>
+                    </th:block>
+                </form>
+            </th:block>
+        </section>
+    </main>
+</div>
+<footer th:replace="~{admin/fragments/footer::footer}"></footer>
+</body>
+</html>

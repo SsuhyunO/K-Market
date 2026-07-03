@@ -109,12 +109,14 @@ function serializeCategoryTree(categoryTree) {
     return getRootItems(categoryTree).map((item, index) => ({
         id: item.dataset.categoryId ?? '',
         title: getCategoryTitle(item),
+        infoNoticeType: null,
         depth: 1,
         order: index,
         children: getChildItems(item).map((child, childIndex) => ({
             id: child.dataset.categoryId ?? '',
             parentId: item.dataset.categoryId ?? '',
             title: getCategoryTitle(child),
+            infoNoticeType: getCategoryInfoNoticeType(child),
             depth: 2,
             order: childIndex
         }))
@@ -140,4 +142,11 @@ function getChildItems(rootItem) {
  */
 function getCategoryTitle(item) {
     return item.querySelector(':scope > .category-row > .category-title')?.textContent.trim() ?? '';
+}
+
+/**
+ * 특정 카테고리에 매핑된 기본 상품정보 제공고시 상품군 코드를 반환한다.
+ */
+function getCategoryInfoNoticeType(item) {
+    return item.dataset.infoNoticeType || 'etc';
 }

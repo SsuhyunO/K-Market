@@ -30,7 +30,7 @@
 			            <option value="연락처">연락처</option>
 		            </th:block>
                 </th:block>
-                <th:block th:replace="~{admin/fragments/management-table-form::management-table-form(
+                <form th:replace="~{admin/fragments/management-table-form::management-table-form(
                     null,
                     ~{::table-content},
                     ~{::shop-table-footer},
@@ -48,19 +48,20 @@
                             <th>관리</th>
                         </tr>
                     </th:block>
-                </th:block>
+	                
+	                <th:block th:fragment="shop-table-footer">
+		                <button type="submit"
+		                        data-management-action="bulk-submit"
+		                        data-empty-message="삭제할 상점을 선택해주세요."
+		                        data-confirm-message="선택한 상점을 삭제하시겠습니까?"
+		                        data-action-variant="secondary">선택삭제</button>
+		                <nav th:replace="~{/admin/fragments/admin-pagination}"></nav>
+		                <button type="button"
+		                        data-modal-target="shop-register-modal"
+		                        data-action-variant="primary">상점등록</button>
+	                </th:block>
+                </form>
 
-                <th:block th:fragment="shop-table-footer" th:remove="all">
-                    <button type="submit"
-                            data-management-action="bulk-submit"
-                            data-empty-message="삭제할 상점을 선택해주세요."
-                            data-confirm-message="선택한 상점을 삭제하시겠습니까?"
-                            data-action-variant="secondary">선택삭제</button>
-                    <nav th:replace="~{/admin/fragments/admin-pagination}"></nav>
-                    <button type="button"
-                            data-modal-target="shop-register-modal"
-                            data-action-variant="primary">상점등록</button>
-                </th:block>
                 
 	            <div th:replace="~{admin/fragments/modal::modal('shop-register-modal', '상점등록', ~{::shop_register_modal_content})}">
 		            <th:block th:fragment="shop_register_modal_content">
@@ -139,4 +140,3 @@
 <footer th:replace="~{admin/fragments/footer::footer}"></footer>
 </body>
 </html>
-

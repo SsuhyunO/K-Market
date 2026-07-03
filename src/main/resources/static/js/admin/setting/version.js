@@ -1,5 +1,6 @@
 import { initModals } from '../../global/modal-form.js';
 import { FormValidation } from '../global/form-validation.js';
+import { ModalFormValidation } from '../global/modal-form-validation.js';
 import { ManagementTableForm } from '../global/management-table-form.js';
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -12,7 +13,7 @@ function initVersionRegisterValidation() {
     const registerForm = document.getElementById("version-register-form");
     if (!registerForm) return;
 
-    FormValidation.bind({
+    ModalFormValidation.bind({
         form: registerForm,
         validate: validateVersionRegisterForm,
         isField: isVersionRegisterField,

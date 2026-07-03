@@ -34,7 +34,7 @@ export function bindCategoryModifier(root = document) {
 
         row.addEventListener('click', e => {
             if (e.target.closest('.category-actions')) return;
-            if (activeModify?.input.contains(e.target)) return;
+            if (activeModify?.inputWrap.contains(e.target)) return;
 
             details.open = !details.open;
             syncCategoryOpenState(item, details, toggle);
@@ -112,12 +112,15 @@ export function bindCategoryModifier(root = document) {
     function modifyAction(row, cateActions) {
         if (!cancelModifyAction()) return;
 
+        const item = row.closest('.category-item');
+        const isRoot = item.parentElement?.matches('.category-tree > .category-list') ?? false;
         const title = row.querySelector(':scope > .category-title');
         if (!title) return;
 
         const input = document.createElement('input');
         const inputWrap = document.createElement('div');
         const errorText = document.createElement('p');
+        const noticeTypeSelect = isRoot ? null : createInfoNoticeTypeSelect(item.dataset.infoNoticeType || 'etc');
         const confirmButton = document.createElement('button');
         const cancelButton = document.createElement('button');
         const hiddenButtons = [...cateActions.children];
@@ -132,7 +135,7 @@ export function bindCategoryModifier(root = document) {
             'click', e =>
                 processClickButtonDefault(
                     e,
-                    () => confirmModifyAction(e, title, input)));
+                    () => confirmModifyAction(e, title, input, noticeTypeSelect)));
 
         cancelButton.classList.add('category-delete-button');
         cancelButton.innerText = '취소';
@@ -142,19 +145,16 @@ export function bindCategoryModifier(root = document) {
             e =>
                 processClickButtonDefault(e, () => cancelModifyAction()));
 
-        inputWrap.classList.add('category-title');
+        inputWrap.classList.add('category-title', 'category-edit-fields');
+        if (noticeTypeSelect) inputWrap.classList.add('has-notice-type');
         errorText.classList.add('field-error');
-
-        inputWrap.style.width = '100%';
-        input.style.width = '100%';
 
         input.value = title.textContent;
         input.type = 'text';
-        input.style.resize = 'none';
-        input.style.paddingLeft = '5px';
+        input.classList.add('category-edit-title-input');
         input.addEventListener('keydown', e => {
             if (e.key === 'Enter') {
-                processClickButtonDefault(e, () => confirmModifyAction(e, title, input));
+                processClickButtonDefault(e, () => confirmModifyAction(e, title, input, noticeTypeSelect));
             }
 
             if (e.key === 'Escape') {
@@ -166,6 +166,7 @@ export function bindCategoryModifier(root = document) {
         cateActions.appendChild(confirmButton);
         cateActions.appendChild(cancelButton);
         inputWrap.appendChild(input);
+        if (noticeTypeSelect) inputWrap.appendChild(noticeTypeSelect);
         inputWrap.appendChild(errorText);
         title.parentElement.insertBefore(inputWrap, title);
 
@@ -173,6 +174,7 @@ export function bindCategoryModifier(root = document) {
             row,
             title,
             input,
+            noticeTypeSelect,
             inputWrap,
             errorText,
             confirmButton,
@@ -190,16 +192,23 @@ export function bindCategoryModifier(root = document) {
     /**
      * 수정 입력값을 검증하고 확인 후 제목 DOM에 반영한다.
      */
-    function confirmModifyAction(e, title, input) {
+    function confirmModifyAction(e, title, input, noticeTypeSelect) {
         if (!Validation.required(input.value).valid) {
             renderModifyError(input, activeModify?.errorText, '내용을 입력해주세요.');
             return;
         }
 
-        if (title.innerText !== input.value &&
-            !confirm(`변경 사항을 적용하시겠습니까?\n${title.innerText} -> ${input.value}`)) return;
+        const item = title.closest('.category-item');
+        const previousNoticeType = item?.dataset.infoNoticeType || '';
+        const nextNoticeType = noticeTypeSelect?.value || previousNoticeType;
+        const titleChanged = title.innerText !== input.value;
+        const noticeTypeChanged = Boolean(noticeTypeSelect) && previousNoticeType !== nextNoticeType;
+
+        if ((titleChanged || noticeTypeChanged) &&
+            !confirm(createModifyConfirmMessage(title.innerText, input.value, previousNoticeType, nextNoticeType))) return;
 
         title.innerText = input.value;
+        if (item && noticeTypeSelect) item.dataset.infoNoticeType = nextNoticeType;
         closeModifyAction();
     }
 
@@ -209,10 +218,13 @@ export function bindCategoryModifier(root = document) {
     function cancelModifyAction() {
         if (!activeModify) return true;
 
-        const {title, input} = activeModify;
-        const isChanged = input.value !== title.innerText;
+        const {title, input, noticeTypeSelect} = activeModify;
+        const item = title.closest('.category-item');
+        const previousNoticeType = item?.dataset.infoNoticeType || '';
+        const isChanged = input.value !== title.innerText ||
+            (noticeTypeSelect && noticeTypeSelect.value !== previousNoticeType);
 
-        if (isChanged && !confirm(`${title.innerText} -> ${input.value}\n변경을 취소하시겠습니까?`)) return false;
+        if (isChanged && !confirm('변경을 취소하시겠습니까?')) return false;
 
         closeModifyAction();
         return true;
@@ -282,8 +294,8 @@ export function bindCategoryModifier(root = document) {
         const details = addButton.closest('details');
         if (!details) return;
 
-        const item = createSubCategoryItem('새로운 카테고리');
         const list = ensureSubCategoryList(details, addButton);
+        const item = createSubCategoryItem('새로운 카테고리', 'etc');
 
         list.appendChild(item);
         details.open = true;
@@ -326,11 +338,12 @@ export function bindCategoryModifier(root = document) {
     /**
      * 2차 카테고리 li DOM을 생성하고 수정/삭제 이벤트를 바인딩한다.
      */
-    function createSubCategoryItem(titleText) {
+    function createSubCategoryItem(titleText, infoNoticeType = 'etc') {
         const item = document.createElement('li');
         const row = createCategoryRow(titleText, false);
 
         item.classList.add('category-item');
+        item.dataset.infoNoticeType = infoNoticeType;
         ensureCategoryId(item);
         item.appendChild(row);
         bindCategoryActions(row.querySelector('.category-actions'));
@@ -388,6 +401,54 @@ export function bindCategoryModifier(root = document) {
         button.type = 'button';
         button.textContent = text;
         return button;
+    }
+
+    /**
+     * 상품정보 제공고시 상품군 선택 select를 생성한다.
+     */
+    function createInfoNoticeTypeSelect(selectedValue) {
+        const select = document.createElement('select');
+        const templates = window.productInfoNoticeTemplates || {};
+
+        select.classList.add('category-notice-type-select');
+        select.setAttribute('aria-label', '기본 상품군');
+
+        Object.values(templates).forEach(template => {
+            const option = document.createElement('option');
+            option.value = template.code;
+            option.textContent = template.name;
+            option.selected = template.code === selectedValue;
+            select.appendChild(option);
+        });
+
+        if (!select.options.length) {
+            const option = document.createElement('option');
+            option.value = 'etc';
+            option.textContent = '기타 재화';
+            select.appendChild(option);
+        }
+
+        return select;
+    }
+
+    /**
+     * 수정 확인 메시지를 제목/상품군 변경 여부에 맞춰 만든다.
+     */
+    function createModifyConfirmMessage(previousTitle, nextTitle, previousNoticeType, nextNoticeType) {
+        const templates = window.productInfoNoticeTemplates || {};
+        const lines = ['변경 사항을 적용하시겠습니까?'];
+
+        if (previousTitle !== nextTitle) {
+            lines.push(`${previousTitle} -> ${nextTitle}`);
+        }
+
+        if (previousNoticeType !== nextNoticeType) {
+            const previousName = templates[previousNoticeType]?.name || previousNoticeType;
+            const nextName = templates[nextNoticeType]?.name || nextNoticeType;
+            lines.push(`상품군: ${previousName} -> ${nextName}`);
+        }
+
+        return lines.join('\n');
     }
 
     /**

@@ -117,6 +117,7 @@
 }
 
 .modal-form-actions button[type="submit"] {
+    margin-top: 0;
     border: 1px solid var(--adm-primary-dk);
     background: var(--adm-primary);
     color: var(--adm-white);

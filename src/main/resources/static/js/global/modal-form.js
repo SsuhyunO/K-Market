@@ -1,3 +1,5 @@
+import { delegate } from './event-manager.js';
+
 export function initModals() {
     bindModalOpenButtons();
     bindModalCloseButtons();
@@ -6,24 +8,20 @@ export function initModals() {
 }
 
 function bindModalOpenButtons() {
-    document.querySelectorAll("[data-modal-target]").forEach(button => {
-        button.addEventListener("click", function () {
-            const modal = document.getElementById(button.dataset.modalTarget);
-            if (!modal) return;
+    delegate(document, "click", "[data-modal-target]", function (e, button) {
+        const modal = document.getElementById(button.dataset.modalTarget);
+        if (!modal) return;
 
-            openModal(modal);
-        });
+        openModal(modal);
     });
 }
 
 function bindModalCloseButtons() {
-    document.querySelectorAll("[data-modal-close]").forEach(button => {
-        button.addEventListener("click", function () {
-            const modal = button.closest("[data-modal]");
-            if (!modal) return;
+    delegate(document, "click", "[data-modal-close]", function (e, button) {
+        const modal = button.closest("[data-modal]");
+        if (!modal) return;
 
-            closeModal(modal);
-        });
+        closeModal(modal);
     });
 }
 

@@ -30,7 +30,7 @@
                     </th:block>
                 </th:block>
 
-                <th:block th:replace="~{admin/fragments/management-table-form::management-table-form(
+                <form th:replace="~{admin/fragments/management-table-form::management-table-form(
                     null,
                     ~{::table-content},
                     ~{::member-table-footer},
@@ -103,7 +103,7 @@
 			                선택수정
 		                </button>
 	                </th:block>
-                </th:block>
+                </form>
 
                 <div th:replace="~{admin/fragments/modal::modal('member-edit-modal', '회원수정', ~{::member_edit_modal_content})}">
                     <th:block th:fragment="member_edit_modal_content">
@@ -200,4 +200,3 @@
 <footer th:replace="~{admin/fragments/footer::footer}"></footer>
 </body>
 </html>
-
