@@ -1,0 +1,237 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Malgun Gothic', '맑은 고딕', sans-serif;
+    font-size: 14px;
+    color: #333;
+    background-color: #fff;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+/* ===== HEADER ===== */
+header {
+    border-bottom: 1px solid #ddd;
+    padding: 0 40px;
+}
+
+.header-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 80px;
+}
+
+.logo {
+    width: 160px;
+    height: 50px;
+    border: 2px solid #4CAF50;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #4CAF50;
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.header-nav {
+    display: flex;
+    gap: 20px;
+    font-size: 13px;
+}
+
+.header-nav a {
+    color: #555;
+}
+
+.header-nav a:hover {
+    color: #4CAF50;
+}
+
+.header-nav .active {
+    color: #4CAF50;
+    font-weight: bold;
+}
+
+/* ===== MAIN ===== */
+main {
+    max-width: 1200px;
+    margin: 60px auto;
+    padding: 0 40px;
+}
+
+.join-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 40px;
+}
+
+/* 환영 문구 */
+.welcome-text {
+    text-align: center;
+}
+
+.welcome-text p {
+    font-size: 14px;
+    color: #555;
+    margin-bottom: 10px;
+}
+
+.welcome-text h2 {
+    font-size: 28px;
+    font-weight: bold;
+    color: #222;
+}
+
+/* 카드 영역 */
+.join-cards {
+    display: flex;
+    gap: 30px;
+    justify-content: center;
+}
+
+.join-card {
+    width: 220px;
+    border: 1px solid #ddd;
+    overflow: hidden;
+}
+
+.card-header {
+    padding: 16px;
+    text-align: center;
+    font-size: 16px;
+    font-weight: bold;
+    color: #fff;
+}
+
+.card-normal .card-header { background-color: #c0392b; }
+.card-seller .card-header { background-color: #2e86c1; }
+
+.card-body {
+    padding: 24px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.card-desc {
+    font-size: 13px;
+    color: #333;
+    font-weight: bold;
+}
+
+.card-sub {
+    font-size: 12px;
+    color: #888;
+    margin-bottom: 16px;
+}
+
+.btn-join {
+    display: inline-block;
+    padding: 8px 24px;
+    border: 1px solid #aaa;
+    font-size: 13px;
+    color: #333;
+    text-align: center;
+    cursor: pointer;
+    background-color: #fff;
+}
+
+.btn-join:hover {
+    background-color: #f0f0f0;
+}
+
+/* ===== FOOTER ===== */
+footer {
+    border-top: 1px solid #ddd;
+    margin-top: 60px;
+}
+
+.footer-info {
+    background-color: #f7f7f7;
+    padding: 24px 40px;
+}
+
+.footer-nav {
+    max-width: 1200px;
+    margin: 0 auto 20px auto;
+    display: flex;
+    gap: 24px;
+    justify-content: center;
+    font-size: 13px;
+    color: #555;
+}
+
+.footer-nav a {
+    color: #555;
+}
+
+.footer-nav a:hover {
+    text-decoration: underline;
+}
+
+.footer-info-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    gap: 60px;
+    align-items: center;
+    justify-content: center;
+}
+
+.footer-logo-box {
+    width: 100px;
+    height: 70px;
+    border: 1px solid #ddd;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #aaa;
+    font-size: 12px;
+    flex-shrink: 0;
+    background-color: #fff;
+}
+
+.footer-company {
+    font-size: 13px;
+    line-height: 2;
+    color: #555;
+}
+
+.footer-company strong {
+    font-size: 15px;
+    color: #333;
+    display: block;
+    margin-bottom: 4px;
+}
+
+.footer-cs {
+    font-size: 13px;
+    line-height: 2;
+    color: #555;
+}
+
+.footer-cs strong {
+    font-size: 15px;
+    color: #333;
+    display: block;
+    margin-bottom: 4px;
+}
+
+.footer-copyright {
+    text-align: center;
+    padding: 16px;
+    font-size: 12px;
+    color: #aaa;
+    border-top: 1px solid #eee;
+}

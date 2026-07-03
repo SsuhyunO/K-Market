@@ -1,0 +1,64 @@
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>케이마켓 - 아이디 찾기 결과</title>
+    <link rel="stylesheet" th:href="@{/css/member/userid.css}">
+</head>
+<body>
+
+    <!-- 헤더 -->
+    <header>
+        <div class="header-inner">
+            <a th:href="@{/}" class="logo">CI ( 로고 )</a>
+            <nav class="header-nav">
+                <a th:href="@{/member/login}">로그인</a>
+                <a th:href="@{/member/join}">회원가입</a>
+                <a th:href="@{/my/home}">마이페이지</a>
+                <a th:href="@{/product/cart}">🛒 장바구니</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- 메인 -->
+    <main class="result-wrapper">
+        <h2 class="result-title">아이디 찾기 결과</h2>
+
+        <table class="result-table">
+            <tr>
+                <th>이름</th>
+                <td>홍길동</td>
+            </tr>
+            <tr>
+                <th>아이디</th>
+                <td>honggildong</td>
+            </tr>
+            <tr>
+                <th>이메일</th>
+                <td>honggildong@gmail.com</td>
+            </tr>
+            <tr>
+                <th>가입일</th>
+                <td>2022-11-16 10:20:22</td>
+            </tr>
+        </table>
+
+        <p class="guide-text">고객님의 정보와 일치하는 아이디 입니다.</p>
+
+        <div class="btn-area">
+            <button type="button" class="btn-login" th:onclick="|location.href='@{/member/login}'|">로그인</button>
+            <button type="button" class="btn-findpw" th:onclick="|location.href='@{/member/changepassword}'|">비밀번호 찾기</button>
+        </div>
+    </main>
+
+    <!-- 푸터 -->
+    <footer>
+        <div class="footer-copyright">
+            Copyright © 2025 김철학 All rights reserved.
+        </div>
+    </footer>
+
+</body>
+</html>

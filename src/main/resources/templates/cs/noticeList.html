@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>케이마켓 고객센터 - 공지사항 목록</title>
+
+    <!-- noticeList 전용 CSS -->
+    <link rel="stylesheet" th:href="@{/css/cs/noticeList.css}">
+</head>
+
+<body>
+<div id="wrapper">
+
+    <!-- =========================
+         헤더
+    ========================= -->
+    <header>
+        <div class="notice-list-header-top">
+            <a th:href="@{/member/login}">로그인</a>
+            <a th:href="@{/member/register}">회원가입</a>
+            <a th:href="@{/my/home}">마이페이지</a>
+            <a th:href="@{/product/cart}">장바구니</a>
+        </div>
+
+        <div class="notice-list-logo-area">
+            <a th:href="@{/cs/index}" class="notice-list-logo-box">CI ( 로고 )</a>
+        </div>
+    </header>
+
+
+    <!-- =========================
+         현재 위치
+    ========================= -->
+    <div class="notice-list-breadcrumb">
+        홈 &gt; 공지사항
+    </div>
+
+
+    <!-- =========================
+         메인
+    ========================= -->
+    <main>
+        <div class="notice-list-flex">
+
+            <!-- 좌측 메뉴 -->
+            <aside class="notice-list-aside">
+                <h2>공지사항</h2>
+
+                <ul>
+                    <li>
+                        <a th:href="@{/cs/noticeList}" class="active">전체</a>
+                    </li>
+                    <li>
+                        <a th:href="@{/cs/noticeList(type='service')}">고객서비스</a>
+                    </li>
+                    <li>
+                        <a th:href="@{/cs/noticeList(type='safe')}">안전거래</a>
+                    </li>
+                    <li>
+                        <a th:href="@{/cs/noticeList(type='danger')}">위해상품</a>
+                    </li>
+                    <li>
+                        <a th:href="@{/cs/noticeList(type='event')}">이벤트당첨</a>
+                    </li>
+                </ul>
+            </aside>
+
+
+            <!-- 공지사항 목록 -->
+            <section class="notice-list-content">
+                <h2>전체</h2>
+                <p class="notice-list-desc">공지사항 전체 내용입니다.</p>
+
+                <table class="notice-list-table">
+                    <tbody>
+                    <tr>
+                        <td class="notice-list-title">
+                            <a th:href="@{/cs/noticeView}">[ 안내 ] 해외결제 사칭 문자주의</a>
+                        </td>
+                        <td class="notice-list-date">22.10.31</td>
+                    </tr>
+
+                    <tr>
+                        <td class="notice-list-title">
+                            <a th:href="@{/cs/noticeView}">[ 발표 ] G.Live X SK스토아 이벤트 당첨자</a>
+                        </td>
+                        <td class="notice-list-date">22.10.31</td>
+                    </tr>
+
+                    <tr>
+                        <td class="notice-list-title">
+                            <a th:href="@{/cs/noticeView}">[ 안내 ] 로젠택배군 교환수거지시서 안내</a>
+                        </td>
+                        <td class="notice-list-date">22.10.31</td>
+                    </tr>
+
+                    <tr>
+                        <td class="notice-list-title">
+                            <a th:href="@{/cs/noticeView}">[ 안내 ] 위치정보이용약관 개정공지</a>
+                        </td>
+                        <td class="notice-list-date">22.10.31</td>
+                    </tr>
+
+                    <tr>
+                        <td class="notice-list-title">
+                            <a th:href="@{/cs/noticeView}">[ 안내 ] 구매회원 이용약관 개정</a>
+                        </td>
+                        <td class="notice-list-date">22.10.31</td>
+                    </tr>
+
+                    <tr>
+                        <td class="notice-list-title">
+                            <a th:href="@{/cs/noticeView}">[ 안내 ] 시스템 점검 예정 안내</a>
+                        </td>
+                        <td class="notice-list-date">22.10.31</td>
+                    </tr>
+                    </tbody>
+                </table>
+
+
+                <!-- 페이지네이션 -->
+                <div class="notice-list-pagination">
+                    <a th:href="@{/cs/noticeList(page=0)}">이전</a>
+                    <a th:href="@{/cs/noticeList(page=1)}" class="active">1</a>
+                    <a th:href="@{/cs/noticeList(page=2)}">2</a>
+                    <a th:href="@{/cs/noticeList(page=3)}">3</a>
+                    <a th:href="@{/cs/noticeList(page=4)}">4</a>
+                    <a th:href="@{/cs/noticeList(page=5)}">5</a>
+                    <a th:href="@{/cs/noticeList(page=2)}">다음</a>
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+
+    <!-- =========================
+         푸터
+    ========================= -->
+    <footer>
+        <div class="notice-list-footer-menu">
+            <a th:href="@{/company/about}">회사소개</a>
+            <a th:href="@{/policy/service}">서비스이용약관</a>
+            <a th:href="@{/policy/privacy}">개인정보처리방침</a>
+            <a th:href="@{/policy/finance}">전자금융거래약관</a>
+        </div>
+
+        <div class="notice-list-footer-info">
+            <div class="notice-list-footer-logo">
+                이미지
+            </div>
+
+            <div class="notice-list-company-info">
+                <strong>(주)케이마켓</strong><br>
+                부산광역시 부산진구 중앙대로 300<br>
+                대표이사 : 홍길동<br>
+                사업자등록번호 : 123-45-12345
+            </div>
+
+            <div class="notice-list-customer-info">
+                <h3>고객센터</h3>
+                Tel : 1234-5678<br>
+                평일 09:00 ~ 18:00
+            </div>
+        </div>
+    </footer>
+</div>
+</body>
+</html>

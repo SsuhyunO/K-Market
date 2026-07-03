@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>KMarket 자주묻는질문 수정</title>
+    <th:block th:replace="~{admin/fragments/head::head}"></th:block>
+    <link rel="stylesheet" th:href="@{/css/admin/global/action-bar.css}">
+    <link rel="stylesheet" th:href="@{/css/admin/global/section-table.css}">
+    <link rel="stylesheet" th:href="@{/css/admin/cs/board.css}">
+    <script type="module" th:src="@{/js/admin/cs/cs-board.js}"></script>
+</head>
+<body>
+<header th:replace="~{admin/fragments/header::header}"></header>
+<div class="admin-layout">
+    <aside th:replace="~{admin/fragments/aside::aside}"></aside>
+
+    <main id="admin-main">
+        <div th:replace="~{admin/fragments/page-header::page-header}"></div>
+
+        <section th:replace="~{admin/fragments/dash-section::dash-section(null, '자주묻는질문 수정', null, ~{::content})}">
+            <th:block th:fragment="content">
+                <form action="#" method="post">
+                    <table class="section-table cs-form-table">
+                        <tr>
+                            <th><label for="faq-type">유형</label></th>
+                            <td><input id="faq-type" type="text" name="type" value="회원"></td>
+                        </tr>
+                        <tr>
+                            <th><label for="faq-title">제목</label></th>
+                            <td><input id="faq-title" type="text" name="title" value="회원가입은 어떻게 하나요?"></td>
+                        </tr>
+                        <tr>
+                            <th><label for="faq-content">내용</label></th>
+                            <td><textarea id="faq-content" name="content">회원가입은 화면 상단 회원가입 메뉴에서 진행할 수 있습니다.</textarea></td>
+                        </tr>
+                    </table>
+
+                    <div th:replace="~{admin/fragments/action-bar::action-bar(~{::actions})}">
+                        <th:block th:fragment="actions">
+                            <button class="cs-board-button secondary" type="button" th:data-cs-link="@{/admin/cs/faq/view}">취소</button>
+                            <button class="cs-board-button primary" type="submit">수정하기</button>
+                        </th:block>
+                    </div>
+                </form>
+            </th:block>
+        </section>
+    </main>
+</div>
+<footer th:replace="~{admin/fragments/footer::footer}"></footer>
+</body>
+</html>

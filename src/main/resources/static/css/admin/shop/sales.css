@@ -1,0 +1,75 @@
+.sales-status-select {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 12px;
+}
+
+.sales-status-select select {
+    min-width: 120px;
+    height: 34px;
+    padding: 0 34px 0 12px;
+    border: 1px solid var(--adm-gray-300);
+    border-radius: 4px;
+    background: var(--adm-white);
+    color: var(--adm-gray-700);
+    font-size: 13px;
+    font-weight: 600;
+    outline: none;
+    cursor: pointer;
+    transition: border-color var(--transition), box-shadow var(--transition);
+}
+
+.sales-status-select select:focus {
+    border-color: var(--adm-primary);
+    box-shadow: 0 0 0 2px rgba(37, 99, 235, .12);
+}
+
+.management-table th:nth-child(1),
+.management-table td:nth-child(1) {
+    width: 64px;
+}
+
+.management-table th:nth-child(2),
+.management-table td:nth-child(2) {
+    width: 120px;
+}
+
+.management-table th:nth-child(3),
+.management-table td:nth-child(3) {
+    width: 130px;
+}
+
+.management-table th:nth-child(4),
+.management-table td:nth-child(4) {
+    width: 100px;
+}
+
+.management-table th:nth-child(5),
+.management-table td:nth-child(5) {
+    width: 100px;
+}
+
+.management-table th:nth-child(6),
+.management-table td:nth-child(6) {
+    width: 100px;
+}
+
+.management-table th:nth-child(7),
+.management-table td:nth-child(7) {
+    width: 100px;
+}
+
+.management-table th:nth-child(8),
+.management-table td:nth-child(8) {
+    width: 100px;
+}
+
+.management-table th:nth-child(9),
+.management-table td:nth-child(9) {
+    width: 100px;
+}
+
+.management-table th:nth-child(10),
+.management-table td:nth-child(10) {
+    width: 100px;
+}

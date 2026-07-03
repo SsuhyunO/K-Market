@@ -52,7 +52,7 @@
     vertical-align: middle;
 }
 
-.management-pagination {
+.admin-pagination {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -61,8 +61,8 @@
     color: var(--adm-gray-700);
 }
 
-.management-pagination a,
-.management-pagination span {
+.admin-pagination a,
+.admin-pagination span {
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -71,87 +71,8 @@
     color: inherit;
 }
 
-.management-pagination a:hover,
-.management-pagination .current {
+.admin-pagination a:hover,
+.admin-pagination .current {
     color: var(--adm-primary);
     font-weight: 800;
-}
-
-.btn-area {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 12px;
-}
-
-.btn-area > button {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-width: 90px;
-    height: 34px;
-    padding: 0 16px;
-    border-radius: 4px;
-    font-size: 13px;
-    font-weight: 700;
-    box-shadow: 0 1px 2px rgba(30, 41, 59, .14);
-    transition: background var(--transition), border-color var(--transition), color var(--transition), box-shadow var(--transition), transform var(--transition);
-}
-
-.btn-area > button:active {
-    transform: translateY(1px);
-}
-
-#delete-button {
-    border: 1px solid var(--adm-gray-300);
-    background: var(--adm-white);
-    color: var(--adm-gray-700);
-}
-
-#delete-button:hover {
-    border-color: var(--adm-red);
-    color: var(--adm-red);
-    background: #fff5f2;
-}
-
-#register-button {
-    border: 1px solid var(--adm-primary-dk);
-    background: var(--adm-primary);
-    color: var(--adm-white);
-}
-
-#register-button:hover {
-    background: var(--adm-primary-dk);
-    box-shadow: 0 2px 5px rgba(30, 41, 59, .22);
-}
-
-@media (max-width: 768px) {
-    .btn-area {
-        display: flex;
-        flex-wrap: nowrap;
-        gap: 8px;
-        overflow-x: auto;
-        overflow-y: hidden;
-    }
-
-    .btn-area > button {
-        flex-shrink: 0;
-    }
-
-    .management-pagination a,
-    .management-pagination span {
-        display: inline-flex;
-        flex-shrink: 0;
-        align-items: center;
-        justify-content: center;
-        min-width: 20px;
-        height: 24px;
-        color: inherit;
-    }
-
-    .management-pagination a:hover,
-    .management-pagination .current {
-        color: var(--adm-primary);
-        font-weight: 800;
-    }
 }

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>KMarket 상품등록</title>
+	<th:block th:replace="~{admin/fragments/head::head}"></th:block>
+	<link rel="stylesheet" th:href="@{/css/admin/global/section-table.css}"/>
+	<link rel="stylesheet" th:href="@{/css/admin/product/register.css}"/>
+	<script th:src="@{/js/admin/product/info-notice-form.js}"></script>
+	<script th:src="@{/js/admin/product/productCategoryNotice.js}"></script>
+	<script th:src="@{/js/admin/product/optionModifier.js}"></script>
+	<script th:src="@{/js/admin/product/productFormState.js}"></script>
+</head>
+<body>
+<header th:replace="~{admin/fragments/header::header}"></header>
+<div class="admin-layout">
+	<aside th:replace="~{admin/fragments/aside::aside}"></aside>
+
+	<main id="admin-main">
+		<div th:replace="~{admin/fragments/page-header::page-header}"></div>
+		<form th:replace="~{admin/fragments/product-form::product-form('productRegisterForm', '등록하기', @{/admin/product/register})}"></form>
+	</main>
+</div>
+
+<footer th:replace="~{admin/fragments/footer::footer}"></footer>
+</body>
+</html>

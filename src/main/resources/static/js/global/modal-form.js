@@ -1,8 +1,6 @@
-document.addEventListener("DOMContentLoaded", function () {
-    initModals();
-});
+import { delegate } from './event-manager.js';
 
-function initModals() {
+export function initModals() {
     bindModalOpenButtons();
     bindModalCloseButtons();
     bindModalBackdropClose();
@@ -10,31 +8,33 @@ function initModals() {
 }
 
 function bindModalOpenButtons() {
-    document.querySelectorAll("[data-modal-target]").forEach(button => {
-        button.addEventListener("click", function () {
-            const modal = document.getElementById(button.dataset.modalTarget);
-            if (!modal) return;
+    delegate(document, "click", "[data-modal-target]", function (e, button) {
+        const modal = document.getElementById(button.dataset.modalTarget);
+        if (!modal) return;
 
-            openModal(modal);
-        });
+        openModal(modal);
     });
 }
 
 function bindModalCloseButtons() {
-    document.querySelectorAll("[data-modal-close]").forEach(button => {
-        button.addEventListener("click", function () {
-            const modal = button.closest("[data-modal]");
-            if (!modal) return;
+    delegate(document, "click", "[data-modal-close]", function (e, button) {
+        const modal = button.closest("[data-modal]");
+        if (!modal) return;
 
-            closeModal(modal);
-        });
+        closeModal(modal);
     });
 }
 
 function bindModalBackdropClose() {
     document.querySelectorAll("[data-modal]").forEach(modal => {
+        let isBackdropPointerDown = false;
+
+        modal.addEventListener("mousedown", function (e) {
+            isBackdropPointerDown = e.target === modal;
+        });
+
         modal.addEventListener("click", function (e) {
-            if (e.target !== modal) return;
+            if (!isBackdropPointerDown || e.target !== modal) return;
             closeModal(modal);
         });
     });
@@ -48,12 +48,12 @@ function bindModalEscapeClose() {
     });
 }
 
-function openModal(modal) {
+export function openModal(modal) {
     modal.classList.remove("hidden");
     modal.dispatchEvent(new CustomEvent("modal:open", { bubbles: true }));
 }
 
-function closeModal(modal) {
+export function closeModal(modal) {
     modal.classList.add("hidden");
     modal.dispatchEvent(new CustomEvent("modal:close", { bubbles: true }));
 }

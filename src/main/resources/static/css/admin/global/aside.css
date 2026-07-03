@@ -36,6 +36,14 @@
 
 .nav-item { position: relative; }
 
+.nav-item summary {
+    list-style: none;
+}
+
+.nav-item summary::-webkit-details-marker {
+    display: none;
+}
+
 .nav-link {
     display: flex;
     align-items: center;
@@ -48,7 +56,7 @@
     cursor: pointer;
 }
 .nav-link:hover,
-.nav-item:hover > .nav-link {
+.nav-item[open] > .nav-link {
     background: #2d3f55;
     color: var(--adm-white);
 }
@@ -59,20 +67,18 @@
     transition: transform var(--transition);
     color: #475569;
 }
-.nav-item:hover > .nav-link .nav-arrow {
+.nav-item[open] > .nav-link .nav-arrow {
     transform: rotate(90deg);
     color: #60a5fa;
 }
 
-/* 서브 메뉴 — 아코디언 스타일 (hover로 표시) */
+/* 서브 메뉴 — 아코디언 스타일 (클릭으로 표시) */
 .sub-menu {
-    display: none;
     background: #0f172a;
     padding: 4px 0;
     border-left: 3px solid var(--adm-primary);
     margin-left: 16px;
 }
-.nav-item:hover > .sub-menu { display: block; }
 
 .sub-menu a {
     display: flex;

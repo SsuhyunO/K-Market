@@ -1,0 +1,224 @@
+<form th:fragment="product-form(formName, submitLabel, actionUrl)"
+      th:action="${actionUrl}"
+      th:name="${formName}"
+      method="post"
+      enctype="multipart/form-data">
+	
+	<section th:replace="~{admin/fragments/dash-section::dash-section(null, '상품분류', '1차, 2차 카테고리 기본분류는 반드시 선택하셔야 합니다.', ~{::current_category_state_section})}">
+		<th:block th:fragment="current_category_state_section">
+			<th:block th:replace="~{admin/fragments/section-table::section-table(~{::current_category_state_rows})}">
+				<th:block th:fragment="current_category_state_rows">
+					<tr>
+						<th><label for="root-category-selector">1차 분류</label></th>
+							<td>
+								<select id="root-category-selector" name="rootCategorySelector">
+									<option value="">1차 카테고리 선택</option>
+									<option value="women-fashion">여성패션</option>
+									<option value="men-fashion">남성패션</option>
+									<option value="food">식품</option>
+									<option value="living-health">생활 / 건강</option>
+									<option value="baby">유아동</option>
+									<option value="appliance">가전</option>
+								</select>
+							</td>
+						</tr>
+					<tr>
+						<th><label for="sub-category-selector">2차 분류</label></th>
+							<td>
+								<select id="sub-category-selector" name="subCategorySelector">
+									<option value="">2차 카테고리 선택</option>
+									<option value="women-clothing" data-parent="women-fashion" data-info-notice-type="clothing">브랜드의류</option>
+									<option value="women-bag" data-parent="women-fashion" data-info-notice-type="bag">브랜드가방</option>
+									<option value="women-shoes" data-parent="women-fashion" data-info-notice-type="shoes">브랜드신발</option>
+									<option value="women-etc" data-parent="women-fashion" data-info-notice-type="etc">브랜드잡화</option>
+									<option value="men-clothing" data-parent="men-fashion" data-info-notice-type="clothing">남성의류</option>
+									<option value="food-default" data-parent="food" data-info-notice-type="food">일반식품</option>
+									<option value="living-default" data-parent="living-health" data-info-notice-type="etc">생활용품</option>
+									<option value="baby-default" data-parent="baby" data-info-notice-type="baby">영유아용품</option>
+									<option value="appliance-default" data-parent="appliance" data-info-notice-type="digital">디지털가전</option>
+								</select>
+							</td>
+						</tr>
+				</th:block>
+			</th:block>
+		</th:block>
+	</section>
+	
+	<section th:replace="~{admin/fragments/dash-section::dash-section(null, '기본정보', '기본정보는 반드시 입력하셔야 합니다.', ~{::product_default_info})}">
+		<th:block th:fragment="product_default_info">
+			<th:block th:replace="~{admin/fragments/section-table::section-table(~{::product_default_info_rows})}">
+				<th:block th:fragment="product_default_info_rows">
+					<tr>
+						<th><label for="name-id">상품명</label></th>
+						<td><input id="name-id" type="text" name="prodName" maxlength="255" required/></td>
+					</tr>
+					<tr>
+						<th><label for="description-id">기본설명</label></th>
+						<td><input id="description-id" type="text" name="description" required/></td>
+					</tr>
+					<tr>
+						<th><label for="maker-id">제조사</label></th>
+						<td><input id="maker-id" type="text" name="maker" required/></td>
+					</tr>
+					<tr>
+						<th><label for="price-id">상품금액</label></th>
+						<td><input id="price-id" type="number" name="price" min="0" required/>원</td>
+					</tr>
+					<tr>
+						<th><label for="discount-id">할인율</label></th>
+						<td><input id="discount-id" type="number" name="discount" min="0" max="100" required/>%</td>
+					</tr>
+					<tr>
+						<th><label for="point-id">포인트</label></th>
+						<td><input id="point-id" type="number" name="point" min="0" required/>원</td>
+					</tr>
+					<tr>
+						<th><label for="stock">재고수량</label></th>
+						<td>
+							<input id="stock" type="number" value="0" readonly required/>개
+							<span class="row-description">옵션 조합별 재고수량 합계가 자동 반영됩니다.</span>
+						</td>
+					</tr>
+					<tr>
+						<th><label for="delivery-fee-id">배송비</label></th>
+						<td><input id="delivery-fee-id" type="number" name="deliveryFee" required/>원</td>
+					</tr>
+					<tr>
+						<th>상품 이미지</th>
+						<td class="image-upload-section">
+							<div>
+								<input type="file" name="thumb1" required/>
+								<label>크기 190 x 190, 상품 목록에 출력 될 이미지 입니다.</label>
+							</div>
+							
+							<div>
+								<input type="file" name="thumb2" required/>
+								<label>크기 230 x 230, 상품 목록에 출력 될 이미지 입니다.</label>
+							</div>
+							
+							<div>
+								<input type="file" name="thumb3" required/>
+								<label>크기 456 x 456, 상품 목록에 출력 될 이미지 입니다.</label>
+							</div>
+						</td>
+					</tr>
+					<tr>
+						<th>상품 상세정보</th>
+						<td>
+							<input type="file" name="detailInfoFile" required/>
+							<label>크기 가로 940px, 높이 제약없음, 크기 최대 1MB</label>
+						</td>
+					</tr>
+				</th:block>
+			</th:block>
+		</th:block>
+	</section>
+	
+	<section th:replace="~{admin/fragments/dash-section::dash-section('product-option-section', '상품 선택정보', '상품별 선택정보(옵션) 입력입니다.', ~{::prod_option})}">
+		<th:block th:fragment="prod_option">
+			<th:block th:replace="~{admin/fragments/section-table::section-table(~{::prod_option_rows})}">
+				<th:block th:fragment="prod_option_rows">
+					<tr data-option-row>
+						<th><label for="option1" data-option-label>옵션1</label></th>
+						<td>
+							<input id="option1" type="text" maxlength="50" data-option-name-input>
+						</td>
+						<th><label for="option1-value">옵션1 항목</label></th>
+						<td>
+							<div class="option-item-editor" data-option-item-editor>
+								<button class="option-item-open-button" type="button" data-option-item-open>항목 추가</button>
+								<div class="option-item-add-row" hidden>
+									<input id="option1-value" type="text" maxlength="30" data-option-item-draft>
+									<button class="option-item-add-button" type="button" data-option-item-add>확인</button>
+									<button class="option-item-cancel-button" type="button" data-option-item-cancel>취소</button>
+								</div>
+								<div class="option-item-list" data-option-item-list></div>
+							</div>
+						</td>
+						<td class="option-delete-cell">
+							<button class="option-delete-button" type="button" data-option-delete>삭제</button>
+						</td>
+					</tr>
+				</th:block>
+			</th:block>
+			
+			<div class="product-btn-area">
+				<button id="option-add-button" type="button">옵션 추가</button>
+			</div>
+			
+			<div class="option-stock-section">
+				<h4>옵션 조합별 재고</h4>
+				<div class="option-stock-table-wrap">
+					<table class="option-stock-table">
+						<thead>
+						<tr>
+							<th>옵션 조합</th>
+							<th>재고수량</th>
+							<th>판매상태</th>
+						</tr>
+						</thead>
+						<tbody data-option-stock-body></tbody>
+					</table>
+				</div>
+				<div data-option-item-fields></div>
+			</div>
+		</th:block>
+	</section>
+	
+	<section th:replace="~{admin/fragments/dash-section::dash-section(null, '상품정보 제공고시', '[전자상거래에 관한 상품정보 제공에 관한 고시] 항목에 의거 등록하는 정보입니다.', ~{::prod_info_notice})}">
+		<th:block th:fragment="prod_info_notice">
+				<div class="product-info-notice-toolbar">
+					<label for="product-info-notice-type">상품군</label>
+					<input id="product-info-notice-type-value" type="hidden" name="infoNoticeType"
+					       th:value="${productInfoNoticeTemplates.values().iterator().next().code}">
+					<select id="product-info-notice-type" disabled>
+						<option th:each="template, stat : ${productInfoNoticeTemplates.values()}"
+						        th:value="${template.code}"
+						        th:text="${template.name}"
+					        th:selected="${stat.first}">
+						의류
+					</option>
+				</select>
+			</div>
+			
+			<th:block th:with="selectedTemplate=${productInfoNoticeTemplates.values().iterator().next()}">
+				<th:block th:replace="~{admin/fragments/section-table::section-table(~{::prod_info_notice_rows})}">
+					<th:block th:fragment="prod_info_notice_rows">
+						<tbody id="product-info-notice-fields">
+						<tr th:each="field : ${selectedTemplate.fields}">
+							<th>
+								<label th:for="|notice-${field.key}|" th:text="${field.label}">항목명</label>
+								<span class="notice-required-mark" th:if="${field.required}">*</span>
+							</th>
+							<td>
+								<input th:id="|notice-${field.key}|"
+								       type="text"
+								       th:name="|informationNoticeValues[${field.key}]|"
+								       th:placeholder="${field.placeholder}"
+								       th:required="${field.required}">
+							</td>
+						</tr>
+						</tbody>
+					</th:block>
+				</th:block>
+			</th:block>
+			
+			<p class="product-info-notice-guide">
+				상품군을 선택하면 전자상거래 상품정보 제공고시 기준에 맞는 입력 항목이 자동으로 변경됩니다.
+			</p>
+			
+			<script th:inline="javascript">
+                window.productInfoNoticeTemplates = /*[[${productInfoNoticeTemplates}]]*/ {};
+			</script>
+		</th:block>
+	</section>
+	
+	<section th:replace="~{admin/fragments/dash-section::dash-section('product-submit-section', null, null, ~{::product_submit_section})}">
+		<th:block th:fragment="product_submit_section">
+			<div class="section-form-actions">
+				<p class="product-form-state-message" data-product-form-state>변경사항이 없습니다.</p>
+				<button class="section-submit-button" type="submit" th:text="${submitLabel}">저장하기</button>
+			</div>
+		</th:block>
+	</section>
+</form>

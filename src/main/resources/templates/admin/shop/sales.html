@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>KMarket 버전관리</title>
+	<th:block th:replace="~{admin/fragments/head::head}"></th:block>
+	<link rel="stylesheet" th:href="@{/css/admin/global/management-table-form.css}">
+	<link rel="stylesheet" th:href="@{/css/admin/shop/sales.css}">
+</head>
+<body>
+<header th:replace="~{admin/fragments/header::header}"></header>
+<div class="admin-layout">
+	<aside th:replace="~{admin/fragments/aside::aside}"></aside>
+
+	<main id="admin-main">
+		<div th:replace="~{admin/fragments/page-header::page-header}"></div>
+
+		<section th:replace="~{admin/fragments/dash-section::dash-section(null, null, null, ~{::main_content})}">
+			<th:block th:fragment="main_content">
+				<div class="sales-status-select">
+					<select>
+						<option value="일별">일별</option>
+						<option value="주간">주간</option>
+						<option value="한달">한달</option>
+					</select>
+				</div>
+				<div th:replace="~{admin/fragments/management-table-form::management-table(~{::table-content})}">
+					<th:block th:fragment="table-content">
+						<tr>
+							<th>번호</th>
+							<th>상호명</th>
+							<th>사업자등록번호</th>
+							<th>주문건수</th>
+							<th>결제완료</th>
+							<th>배송중</th>
+							<th>배송완료</th>
+							<th>구매확정</th>
+							<th>주문합계</th>
+							<th>매출합계</th>
+						</tr>
+					</th:block>
+				</div>
+				<nav th:replace="~{admin/fragments/admin-pagination}"></nav>
+			</th:block>
+		</section>
+	</main>
+</div>
+
+<footer th:replace="~{admin/fragments/footer::footer}"></footer>
+</body>
+</html>

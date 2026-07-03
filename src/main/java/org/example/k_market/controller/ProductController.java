@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
  *               ratingDesc(평점높은순) | reviewDesc(후기많은순) | latest(최근등록순)
  *  - page     : 페이지 번호 (기본값 1), 10개씩 페이징
  */
-@Controller
+@Controller("commonProductController")
 public class ProductController {
 
     private static final int PAGE_SIZE = 10;

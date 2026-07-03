@@ -1,0 +1,15 @@
+﻿<form th:fragment="management-table-form(formAction, content, footerContent, checkboxName)"
+      id="management-table-form"
+      th:action="${formAction}"
+    method="post"
+    th:data-checkbox-name="${checkboxName}">
+    <div th:replace="~{admin/fragments/management-table-form::management-table(${content})}"></div>
+    <div th:if="${footerContent != null}"
+         th:replace="~{admin/fragments/action-bar::action-bar(${footerContent})}"></div>
+</form>
+
+<div th:fragment="management-table(content)" class="management-table-scroll">
+    <table class="management-table">
+        <th:block th:replace="${content}"></th:block>
+    </table>
+</div>

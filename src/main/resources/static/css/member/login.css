@@ -1,0 +1,327 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Malgun Gothic', '맑은 고딕', sans-serif;
+    font-size: 14px;
+    color: #333;
+    background-color: #fff;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+/* ===== HEADER ===== */
+header {
+    border-bottom: 1px solid #ddd;
+    padding: 0 40px;
+}
+
+.header-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 80px;
+}
+
+.logo {
+    width: 160px;
+    height: 50px;
+    border: 2px solid #4CAF50;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #4CAF50;
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.header-nav {
+    display: flex;
+    gap: 20px;
+    font-size: 13px;
+}
+
+.header-nav a {
+    color: #555;
+}
+
+.header-nav a:hover {
+    color: #4CAF50;
+}
+
+.header-nav .active {
+    color: #4CAF50;
+    font-weight: bold;
+}
+
+/* ===== MAIN ===== */
+main {
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 0 40px;
+}
+
+.main-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+.login-container {
+    display: flex;
+    gap: 40px;
+    justify-content: center;
+    align-items: center;
+}
+
+/* ===== 로그인 폼 박스 ===== */
+.login-box {
+    width: 440px;
+    border: 1px solid #ddd;
+    padding: 40px;
+}
+
+.login-box h2 {
+    font-size: 22px;
+    font-weight: bold;
+    margin-bottom: 24px;
+    padding-bottom: 16px;
+    border-bottom: 2px solid #333;
+}
+
+.login-form-row {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 12px;
+}
+
+.input-area {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.input-row {
+    display: flex;
+    align-items: center;
+}
+
+.input-row label {
+    width: 80px;
+    font-size: 14px;
+    flex-shrink: 0;
+}
+
+.input-row input {
+    flex: 1;
+    height: 38px;
+    border: 1px solid #ccc;
+    padding: 0 10px;
+    font-size: 14px;
+    outline: none;
+}
+
+.input-row input:focus {
+    border-color: #4CAF50;
+}
+
+.btn-login {
+    width: 80px;
+    background-color: #4CAF50;
+    color: #fff;
+    border: none;
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+    align-self: stretch;
+}
+
+.btn-login:hover {
+    background-color: #388E3C;
+}
+
+/* 자동로그인 / 아이디찾기 등 */
+.login-options {
+    display: flex;
+    align-items: center;
+    flex-wrap: nowrap;
+    white-space: nowrap;
+    gap: 8px;
+    font-size: 13px;
+    color: #555;
+    margin-bottom: 20px;
+}
+
+.login-options input[type="checkbox"] {
+    cursor: pointer;
+}
+
+.login-options a {
+    color: #555;
+}
+
+.login-options a:hover {
+    color: #4CAF50;
+    text-decoration: underline;
+}
+
+.login-options span {
+    color: #ccc;
+}
+
+/* 소셜 로그인 */
+.social-login {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 24px;
+}
+
+.social-btn {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: bold;
+    color: #fff;
+}
+
+.social-btn.naver { background-color: #03C75A; }
+.social-btn.kakao { background-color: #FEE500; color: #3C1E1E; }
+.social-btn.google { background-color: #fff; border: 1px solid #ddd; color: #555; }
+
+/* 어워드 로고 */
+.award-logos {
+    display: flex;
+    gap: 6px;
+    flex-wrap: nowrap;
+    width: 900px;
+}
+
+.award-item {
+    flex: 1;
+    height: 56px;
+    border: 1px solid #ddd;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #aaa;
+    font-size: 10px;
+    text-align: center;
+    min-width: 0;
+}
+
+/* 배너 광고 */
+.banner-box {
+    width: 420px;
+    height: 260px;
+    border: 1px solid #ddd;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #aaa;
+    font-size: 15px;
+    background-color: #f9f9f9;
+    flex-shrink: 0;
+}
+
+/* ===== FOOTER ===== */
+footer {
+    border-top: 1px solid #ddd;
+    margin-top: 60px;
+}
+
+.footer-nav {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 16px 40px;
+    display: flex;
+    gap: 24px;
+    justify-content: center;
+    font-size: 13px;
+    color: #aaa;
+    background-color: #f7f7f7;
+}
+
+.footer-nav a {
+    color: #555;
+}
+
+.footer-nav a:hover {
+    text-decoration: underline;
+}
+
+.footer-info {
+    background-color: #f7f7f7;
+    padding: 24px 40px;
+}
+
+.footer-info-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    gap: 60px;
+    align-items: center;
+    justify-content: center;
+}
+
+.footer-logo-box {
+    width: 100px;
+    height: 70px;
+    border: 1px solid #ddd;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #aaa;
+    font-size: 12px;
+    flex-shrink: 0;
+    background-color: #fff;
+}
+
+.footer-company {
+    font-size: 13px;
+    line-height: 2;
+    color: #555;
+}
+
+.footer-company strong {
+    font-size: 15px;
+    color: #333;
+    display: block;
+    margin-bottom: 4px;
+}
+
+.footer-cs {
+    font-size: 13px;
+    line-height: 2;
+    color: #555;
+}
+
+.footer-cs strong {
+    font-size: 15px;
+    color: #333;
+    display: block;
+    margin-bottom: 4px;
+}
+
+.footer-copyright {
+    text-align: center;
+    padding: 16px;
+    font-size: 12px;
+    color: #aaa;
+    border-top: 1px solid #eee;
+}

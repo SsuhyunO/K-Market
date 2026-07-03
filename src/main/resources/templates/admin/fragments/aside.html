@@ -1,0 +1,108 @@
+<aside id="admin-aside" th:fragment="aside">
+    <div class="aside-logo">
+        <div class="logo-text">K<span>market</span></div>
+        <div class="logo-sub">㈜케이마켓</div>
+    </div>
+    
+    <nav class="aside-nav">
+        
+        <details class="nav-item" data-menu="setting"
+                 th:attr="open=${category.name() == 'SITE_SETTINGS'
+                     or category.name() == 'BANNER_MANAGEMENT'
+                     or category.name() == 'TERMS_MANAGEMENT'
+                     or category.name() == 'VERSION_MANAGEMENT'
+                     or category.name() == 'CATEGORY'} ? 'open' : null">
+            <summary class="nav-link">
+                <span class="nav-icon">⚙️</span>환경설정
+                <span class="nav-arrow">›</span>
+            </summary>
+            <ul class="sub-menu">
+                <li><a th:href="@{/admin/site-settings}">기본설정</a></li>
+                <li><a th:href="@{/admin/banner-management}">배너관리</a></li>
+                <li><a th:href="@{/admin/terms-management}">약관관리</a></li>
+                <li><a th:href="@{/admin/category-management}">카테고리</a></li>
+                <li><a th:href="@{/admin/version-management}">버전관리</a></li>
+            </ul>
+        </details>
+        
+        <details class="nav-item" data-menu="shop"
+                 th:attr="open=${category.name() == 'SHOP_LIST'
+                     or category.name() == 'SALES_STATUS'} ? 'open' : null">
+            <summary class="nav-link">
+                <span class="nav-icon">🏪</span>상점관리
+                <span class="nav-arrow">›</span>
+            </summary>
+            <ul class="sub-menu">
+                <li><a th:href="@{/admin/shop-list}">상점목록</a></li>
+                <li><a th:href="@{/admin/sales-status}">매출현황</a></li>
+            </ul>
+        </details>
+        
+        <details class="nav-item" data-menu="member"
+                 th:attr="open=${category.name() == 'MEMBER_LIST'
+                     or category.name() == 'MANAGEMENT_POINT'} ? 'open' : null">
+            <summary class="nav-link">
+                <span class="nav-icon">👥</span>회원관리
+                <span class="nav-arrow">›</span>
+            </summary>
+            <ul class="sub-menu">
+                <li><a th:href="@{/admin/member-list}">회원목록</a></li>
+                <li><a th:href="@{/admin/management-point}">포인트관리</a></li>
+            </ul>
+        </details>
+        
+        <details class="nav-item" data-menu="product"
+                 th:attr="open=${category.name() == 'PRODUCT_LIST'
+                     or category.name() == 'PRODUCT_REGISTER'
+                     or category.name() == 'PRODUCT_EDIT'} ? 'open' : null">
+            <summary class="nav-link">
+                <span class="nav-icon">📦</span>상품관리
+                <span class="nav-arrow">›</span>
+            </summary>
+            <ul class="sub-menu">
+                <li><a th:href="@{/admin/product/list}">상품목록</a></li>
+                <li><a th:href="@{/admin/product/register}">상품등록</a></li>
+            </ul>
+        </details>
+        
+        <details class="nav-item" data-menu="order"
+                th:attr="open=${category.name() == 'ORDER_STATUS'
+                    or category.name() == 'DELIVERY_STATUS'} ? 'open' : null">
+            <summary class="nav-link">
+                <span class="nav-icon">🛒</span>주문관리
+                <span class="nav-arrow">›</span>
+            </summary>
+            <ul class="sub-menu">
+                <li><a th:href="@{/admin/order/order-list}">주문현황</a></li>
+                <li><a th:href="@{/admin/order/delivery-list}">배송현황</a></li>
+            </ul>
+        </details>
+        
+        <details class="nav-item" data-menu="coupon"
+                 th:attr="open=${category.name() == 'COUPON_LIST'
+                    or category.name() == 'COUPON_ISSUED'} ? 'open' : null">
+            <summary class="nav-link">
+                <span class="nav-icon">🎟️</span>쿠폰관리
+                <span class="nav-arrow">›</span>
+            </summary>
+            <ul class="sub-menu">
+                <li><a th:href="@{/admin/coupon/list}">쿠폰목록</a></li>
+                <li><a th:href="@{/admin/coupon/used}">쿠폰발급현황</a></li>
+            </ul>
+        </details>
+        
+        <details class="nav-item" data-menu="cs"
+                 th:attr="open=${#strings.startsWith(category.name(), 'CS_')} ? 'open' : null">
+            <summary class="nav-link">
+                <span class="nav-icon">💬</span>고객센터
+                <span class="nav-arrow">›</span>
+            </summary>
+            <ul class="sub-menu">
+                <li><a th:href="@{/admin/cs/notice/list}">공지사항</a></li>
+                <li><a th:href="@{/admin/cs/faq/list}">자주묻는질문</a></li>
+                <li><a th:href="@{/admin/cs/qna/list}">문의하기</a></li>
+                <li><a th:href="@{/admin/cs/recruit/list}">채용하기</a></li>
+            </ul>
+        </details>
+    </nav>
+</aside>

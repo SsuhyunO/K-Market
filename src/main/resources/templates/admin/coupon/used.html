@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>KMarket 쿠폰발급현황</title>
+    <th:block th:replace="~{admin/fragments/head::head}"></th:block>
+    <link rel="stylesheet" th:href="@{/css/admin/global/management-table-form.css}">
+    <link rel="stylesheet" th:href="@{/css/admin/global/action-bar.css}">
+    <link rel="stylesheet" th:href="@{/css/admin/global/modal-form.css}">
+    <link rel="stylesheet" th:href="@{/css/admin/global/search-form.css}">
+    <link rel="stylesheet" th:href="@{/css/admin/global/section-table.css}">
+    <link rel="stylesheet" th:href="@{/css/admin/coupon/coupon.css}">
+    <script type="module" th:src="@{/js/admin/coupon/used.js}"></script>
+</head>
+<body class="coupon-issued-page">
+<header th:replace="~{admin/fragments/header::header}"></header>
+<div class="admin-layout">
+    <aside th:replace="~{admin/fragments/aside::aside}"></aside>
+
+    <main id="admin-main">
+        <div th:replace="~{admin/fragments/page-header::page-header}"></div>
+
+        <section th:replace="~{admin/fragments/dash-section::dash-section(null, null, null, ~{::main_content})}">
+            <th:block th:fragment="main_content">
+                <th:block th:replace="~{admin/fragments/search-form(~{::options})}">
+                    <th:block th:fragment="options">
+                        <option value="쿠폰번호">쿠폰번호</option>
+                        <option value="쿠폰명">쿠폰명</option>
+                        <option value="사용자">사용자</option>
+                        <option value="상태">상태</option>
+                    </th:block>
+                </th:block>
+
+                <div th:replace="~{admin/fragments/management-table-form::management-table(~{::table_content})}">
+                    <th:block th:fragment="table_content">
+                        <tr>
+                            <th>발급번호</th>
+                            <th>쿠폰번호</th>
+                            <th>쿠폰명</th>
+                            <th>혜택</th>
+                            <th>사용자</th>
+                            <th>상태</th>
+                            <th>발급일</th>
+                            <th>사용일</th>
+                            <th>관리</th>
+                        </tr>
+                        <tr data-coupon-no="102123141"
+                            data-coupon-type="개별상품 할인"
+                            data-coupon-name="10월 한정 감사 쿠폰"
+                            data-benefit="2,000원 할인"
+                            data-period="0000-00-00 ~ 0000-00-00"
+                            data-member-id="user01"
+                            data-member-name="홍길동"
+                            data-issued-at="0000-00-00 00:00:00"
+                            data-used-at="-"
+                            data-status="미사용"
+                            data-description="사용 가능한 발급 쿠폰입니다.">
+                            <td><button class="coupon-link-button" type="button" data-coupon-issued-detail-button>5001</button></td>
+                            <td>102123141</td>
+                            <td>10월 한정 감사 쿠폰</td>
+                            <td>2,000원</td>
+                            <td>user01</td>
+                            <td><span class="coupon-status ready">미사용</span></td>
+                            <td>0000-00-00<br>00:00:00</td>
+                            <td>-</td>
+                            <td><button class="coupon-action-button" type="button" data-issued-coupon-stop-button>중단</button></td>
+                        </tr>
+                        <tr data-coupon-no="102123142"
+                            data-coupon-type="주문상품 할인"
+                            data-coupon-name="회원가입 축하 쿠폰"
+                            data-benefit="15% 할인"
+                            data-period="발급일로부터 100일"
+                            data-member-id="guest17"
+                            data-member-name="김유신"
+                            data-issued-at="0000-00-00 00:00:00"
+                            data-used-at="0000-00-00 00:00:00"
+                            data-status="사용완료"
+                            data-description="주문 결제에 사용된 쿠폰입니다.">
+                            <td><button class="coupon-link-button" type="button" data-coupon-issued-detail-button>5002</button></td>
+                            <td>102123142</td>
+                            <td>회원가입 축하 쿠폰</td>
+                            <td>15%</td>
+                            <td>guest17</td>
+                            <td><span class="coupon-status used">사용완료</span></td>
+                            <td>0000-00-00<br>00:00:00</td>
+                            <td>0000-00-00<br>00:00:00</td>
+                            <td><button class="coupon-action-button" type="button" disabled>중단</button></td>
+                        </tr>
+                        <tr data-coupon-no="102123143"
+                            data-coupon-type="배송비 무료"
+                            data-coupon-name="배송비 무료 쿠폰"
+                            data-benefit="배송비 무료"
+                            data-period="발급일로부터 30일"
+                            data-member-id="member22"
+                            data-member-name="이순신"
+                            data-issued-at="0000-00-00 00:00:00"
+                            data-used-at="-"
+                            data-status="기간만료"
+                            data-description="사용기간이 만료된 쿠폰입니다.">
+                            <td><button class="coupon-link-button" type="button" data-coupon-issued-detail-button>5003</button></td>
+                            <td>102123143</td>
+                            <td>배송비 무료 쿠폰</td>
+                            <td>배송비 무료</td>
+                            <td>member22</td>
+                            <td><span class="coupon-status expired">기간만료</span></td>
+                            <td>0000-00-00<br>00:00:00</td>
+                            <td>-</td>
+                            <td><button class="coupon-action-button" type="button" disabled>중단</button></td>
+                        </tr>
+                    </th:block>
+                </div>
+
+                <div th:replace="~{admin/fragments/action-bar::action-bar(~{::coupon_issued_table_footer})}">
+                    <th:block th:fragment="coupon_issued_table_footer">
+                        <span class="btn-area-spacer"></span>
+                        <nav th:replace="~{/admin/fragments/admin-pagination}"></nav>
+                        <span class="btn-area-spacer"></span>
+                    </th:block>
+                </div>
+
+                <div th:replace="~{admin/fragments/modal::modal('coupon-issued-detail-modal', '쿠폰정보', ~{::coupon_issued_detail_modal_content})}">
+                    <th:block th:fragment="coupon_issued_detail_modal_content">
+                        <div class="coupon-modal-detail">
+                            <table class="section-table">
+                                <tr>
+                                    <th>쿠폰번호</th>
+                                    <td id="coupon-issued-detail-coupon-no"></td>
+                                    <th>상태</th>
+                                    <td id="coupon-issued-detail-status"></td>
+                                </tr>
+                                <tr>
+                                    <th>쿠폰종류</th>
+                                    <td id="coupon-issued-detail-coupon-type"></td>
+                                    <th>사용자</th>
+                                    <td><span id="coupon-issued-detail-member-id"></span> / <span id="coupon-issued-detail-member-name"></span></td>
+                                </tr>
+                                <tr>
+                                    <th>쿠폰명</th>
+                                    <td colspan="3" id="coupon-issued-detail-coupon-name"></td>
+                                </tr>
+                                <tr>
+                                    <th>혜택</th>
+                                    <td colspan="3" id="coupon-issued-detail-benefit"></td>
+                                </tr>
+                                <tr>
+                                    <th>사용기간</th>
+                                    <td colspan="3" id="coupon-issued-detail-period"></td>
+                                </tr>
+                                <tr>
+                                    <th>발급일</th>
+                                    <td colspan="3" id="coupon-issued-detail-issued-at"></td>
+                                </tr>
+                                <tr>
+                                    <th>사용일</th>
+                                    <td colspan="3" id="coupon-issued-detail-used-at"></td>
+                                </tr>
+                                <tr>
+                                    <th>안내사항</th>
+                                    <td colspan="3" id="coupon-issued-detail-description"></td>
+                                </tr>
+                            </table>
+                            <div class="modal-form-actions">
+                                <button type="button" data-modal-close>닫기</button>
+                            </div>
+                        </div>
+                    </th:block>
+                </div>
+            </th:block>
+        </section>
+    </main>
+</div>
+
+<footer th:replace="~{admin/fragments/footer::footer}"></footer>
+</body>
+</html>

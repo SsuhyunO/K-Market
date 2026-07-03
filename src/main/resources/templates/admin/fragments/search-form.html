@@ -1,0 +1,8 @@
+<form class="search-form" name="search-form" th:fragment="search-form(options)">
+	<label class="search-form-label" for="search-type">검색조건</label>
+	<select id="search-type" name="search-type" aria-label="검색조건">
+		<th:block th:replace="${options}"></th:block>
+	</select>
+	<input type="text" name="keyword" placeholder="검색어입력" aria-label="검색어">
+	<button type="submit">검색</button>
+</form>

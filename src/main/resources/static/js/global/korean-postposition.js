@@ -1,4 +1,4 @@
-const KoreanPostposition = (() => {
+export const KoreanPostposition = (() => {
     function object(text) {
         return hasFinalConsonant(text) ? "을" : "를";
     }
