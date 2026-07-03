@@ -12,12 +12,12 @@
     <!-- 헤더 -->
     <header>
         <div class="header-inner">
-            <a th:href="@{/member/login}" class="logo">CI ( 로고 )</a>
+            <a th:href="@{/}" class="logo">CI ( 로고 )</a>
             <nav class="header-nav">
                 <a th:href="@{/member/login}">로그인</a>
                 <a th:href="@{/member/join}">회원가입</a>
                 <a th:href="@{/my/home}">마이페이지</a>
-                <a th:href="@{/kmarket/cart}">🛒 장바구니</a>
+                <a th:href="@{/product/cart}">🛒 장바구니</a>
             </nav>
         </div>
     </header>
@@ -39,7 +39,7 @@
                     <div class="card-body">
                         <p class="card-desc">개인구매회원 (외국 인포함)</p>
                         <p class="card-sub">만 14세 이상가능</p>
-                        <a th:href="@{/member/singup(type=normal)}" class="btn-join">회원가입</a>
+                        <a th:href="@{/member/signup(type=normal)}" class="btn-join">회원가입</a>
                     </div>
                 </div>
 
@@ -49,7 +49,7 @@
                     <div class="card-body">
                         <p class="card-desc">사업자판매회원</p>
                         <p class="card-sub">사업자등록증 증빙보 유한회원</p>
-                        <a th:href="@{/member/singup(type=seller)}" class="btn-join">회원가입</a>
+                        <a th:href="@{/member/signup(type=seller)}" class="btn-join">회원가입</a>
                     </div>
                 </div>
 
@@ -61,10 +61,10 @@
     <footer>
         <div class="footer-info">
             <div class="footer-nav">
-                <a href="#">회사소개</a>
-                <a href="#">서비스이용약관</a>
-                <a href="#">개인정보처리방침</a>
-                <a href="#">전자금융거래약관</a>
+                <a th:href="@{/company/index}">회사소개</a>
+                <a th:href="@{/policy/buyer}">서비스이용약관</a>
+                <a th:href="@{/policy/privacy}">개인정보처리방침</a>
+                <a th:href="@{/policy/finance}">전자금융거래약관</a>
             </div>
             <div class="footer-info-inner">
                 <div class="footer-logo-box">로고</div>

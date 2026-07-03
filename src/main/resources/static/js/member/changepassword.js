@@ -23,5 +23,5 @@
                 alert('비밀번호가 일치하지 않습니다.'); return;
             }
             alert('비밀번호가 변경되었습니다.');
-            window.location.href = './login.html';
+            window.location.href = loginUrl;
         }
