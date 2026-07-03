@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${categoryName} + ' - KMarket'">상품목록 - KMarket</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/common.css}">
+    <link rel="stylesheet" th:href="@{/css/product-list.css}">
+</head>
+<body>
+
+<header th:replace="~{fragments/header :: header}"></header>
+
+<div class="page-wrapper">
+
+    <!-- aside에서 1차/2차 카테고리 클릭 시 이 페이지(/product/list)로 이동 -->
+    <aside th:replace="~{fragments/aside :: aside}"></aside>
+
+    <main class="main-content">
+
+        <!-- ① 페이지 타이틀 + ② 브레드크럼 -->
+        <!--
+            💡 퍼블리싱 전용 매핑 로직 (서버 연결 전 테스트용)
+            주소창의 ?category=12 번호를 읽어 1차(parent)와 2차(current) 이름을 자동으로 할당합니다.
+        -->
+        <div class="list-header"
+             th:with="
+                cateId=${param.category != null ? param.category[0] : '12'},
+                parentName=${
+                    (cateId == '11' or cateId == '12' or cateId == '13') ? '패션·뷰티' :
+                    ((cateId == '21' or cateId == '22' or cateId == '23') ? '가전·디지털' :
+                    ((cateId == '31' or cateId == '32' or cateId == '33') ? '식품·생필품' :
+                    ((cateId == '41' or cateId == '42' or cateId == '43') ? '홈·데코·취미' : null)))
+                },
+                currentName=${
+                    cateId == '11' ? '남성의류' :
+                    (cateId == '12' ? '여성의류' :
+                    (cateId == '13' ? '화장품·뷰티' :
+                    (cateId == '21' ? '컴퓨터·PC' :
+                    (cateId == '22' ? '생활가전' :
+                    (cateId == '23' ? '모바일' :
+                    (cateId == '31' ? '신선식품' :
+                    (cateId == '32' ? '가공식품' :
+                    (cateId == '33' ? '생활용품' :
+                    (cateId == '41' ? '가구·인테리어' :
+                    (cateId == '42' ? '데코문구·오피스' :
+                    (cateId == '43' ? '문구반려·취미' : '전체상품')))))))))))
+                }
+             ">
+
+            <!-- 메인 타이틀 -->
+            <h1 class="list-title" th:text="${currentName}">상품목록</h1>
+
+            <nav class="breadcrumb">
+                <a th:href="@{/}">HOME</a>
+
+                <!-- 1차 카테고리 (매핑된 이름이 있을 때만 노출) -->
+                <th:block th:if="${parentName != null}">
+                    <span class="sep">&gt;</span>
+                    <a href="#" th:text="${parentName}">1차 카테고리</a>
+                </th:block>
+
+                <!-- 2차 (현재) 카테고리 -->
+                <span class="sep">&gt;</span>
+                <span class="current" th:text="${currentName}">현재 카테고리</span>
+            </nav>
+        </div>
+
+        <!-- ③ 상품 정렬: 판매많은순 | 낮은가격순 | 높은가격순 | 평점높은순 | 후기많은순 | 최근등록순 -->
+        <nav class="sort-tabs">
+            <a th:href="@{/product/list(category=${categoryId}, sort='sales')}"
+               th:class="${sort == null or sort == 'sales'} ? 'active' : ''">판매많은순</a>
+            <span class="sep">|</span>
+            <a th:href="@{/product/list(category=${categoryId}, sort='priceAsc')}"
+               th:class="${sort == 'priceAsc'} ? 'active' : ''">낮은가격순</a>
+            <span class="sep">|</span>
+            <a th:href="@{/product/list(category=${categoryId}, sort='priceDesc')}"
+               th:class="${sort == 'priceDesc'} ? 'active' : ''">높은가격순</a>
+            <span class="sep">|</span>
+            <a th:href="@{/product/list(category=${categoryId}, sort='ratingDesc')}"
+               th:class="${sort == 'ratingDesc'} ? 'active' : ''">평점높은순</a>
+            <span class="sep">|</span>
+            <a th:href="@{/product/list(category=${categoryId}, sort='reviewDesc')}"
+               th:class="${sort == 'reviewDesc'} ? 'active' : ''">후기많은순</a>
+            <span class="sep">|</span>
+            <a th:href="@{/product/list(category=${categoryId}, sort='latest')}"
+               th:class="${sort == 'latest'} ? 'active' : ''">최근등록순</a>
+        </nav>
+
+        <!-- ④ 상품 리스트: 10개씩 페이징 -->
+        <div class="product-list-row">
+
+            <!-- productList가 없거나 비어있을 때 placeholder 4개 -->
+            <th:block th:if="${productList == null or #lists.isEmpty(productList)}">
+
+                <a th:href="@{/product/view(category=${param.category != null ? param.category[0] : 11})}" class="product-row-item" th:each="i : ${#numbers.sequence(1, 4)}">
+                    <div class="row-thumb">🖼️</div>
+                    <div class="row-info">
+                        <div class="row-product-name">상품명</div>
+                        <div class="row-product-desc">간단한 상품 설명</div>
+                        <div class="row-price-area">
+                            <span class="row-price">27,000 원</span>
+                            <span class="row-price-del">30,000원</span>
+                            <span class="row-sale-rate">10%↓</span>
+                        </div>
+                        <div class="row-shipping">
+                            <span class="free">무료배송</span>
+                        </div>
+                    </div>
+                    <div class="row-meta">
+                        <div class="row-seller">
+                            <span class="seller-badge">🏠</span> 판매자
+                        </div>
+                        <div class="row-seller-grade grade-excellent">
+                            <span class="grade-icon">🏅</span> 고객만족우수
+                        </div>
+                        <div class="row-rating">
+                            <span class="rating-label">상품평</span>
+                            <span class="stars">★★★★☆</span>
+                        </div>
+                    </div>
+                </a>
+
+            </th:block>
+
+            <!-- 실제 데이터 -->
+            <a th:each="product : ${productList}"
+               th:href="@{/product/{id}(id=${product.id})}"
+               class="product-row-item">
+
+                <div class="row-thumb">
+                    <img th:if="${product.thumbnailUrl}" th:src="${product.thumbnailUrl}" alt="">
+                    <span th:unless="${product.thumbnailUrl}">🖼️</span>
+                </div>
+
+                <div class="row-info">
+                    <div class="row-product-name" th:text="${product.name}">상품명</div>
+                    <div class="row-product-desc" th:text="${product.description}">간단한 상품 설명</div>
+
+                    <div class="row-price-area">
+                        <span class="row-price" th:text="${product.salePrice} + ' 원'">27,000 원</span>
+                        <span class="row-price-del" th:if="${product.discountRate > 0}"
+                              th:text="${product.originalPrice} + '원'">30,000원</span>
+                        <span class="row-sale-rate" th:if="${product.discountRate > 0}"
+                              th:text="${product.discountRate} + '%↓'">10%↓</span>
+                    </div>
+
+                    <!-- 배송비 여부에 따라 무료배송 / 배송비 표시 -->
+                    <div class="row-shipping">
+                        <span class="free" th:if="${product.freeShipping}">무료배송</span>
+                        <span class="paid" th:unless="${product.freeShipping}"
+                              th:text="'배송비 ' + ${product.shippingFee} + '원'">배송비 2,500원</span>
+                    </div>
+                </div>
+
+                <div class="row-meta">
+                    <div class="row-seller">
+                        <span class="seller-badge">🏠</span>
+                        <span th:text="${product.sellerName}">판매자</span>
+                    </div>
+
+                    <!-- 판매자 등급에 따라 뱃지 출력 -->
+                    <div class="row-seller-grade"
+                         th:class="'row-seller-grade ' + (${product.sellerGrade == 'EXCELLENT'} ? 'grade-excellent' : (${product.sellerGrade == 'GOOD'} ? 'grade-good' : 'grade-normal'))">
+                        <span class="grade-icon">🏅</span>
+                        <span th:text="${product.sellerGrade == 'EXCELLENT'} ? '고객만족우수' : (${product.sellerGrade == 'GOOD'} ? '우수' : '일반')">고객만족우수</span>
+                    </div>
+
+                    <!-- 상품평에 따라 rating 별점 출력
+                         Controller에서 product.ratingStarsText (예: "★★★★☆")를 미리 만들어서 넘겨주는 방식 추천 -->
+                    <div class="row-rating">
+                        <span class="rating-label">상품평</span>
+                        <span class="stars" th:text="${product.ratingStarsText}">★★★★☆</span>
+                    </div>
+                </div>
+
+            </a>
+
+        </div>
+
+        <!-- 페이지네이션: 7개씩 노출, 이전/다음 -->
+        <nav class="list-pagination">
+            <a href="#" class="page-nav">&lt; 이전</a>
+            <a href="#" class="active">1</a>
+            <a href="#">2</a>
+            <a href="#">3</a>
+            <a href="#">4</a>
+            <a href="#">5</a>
+            <a href="#">6</a>
+            <a href="#">7</a>
+            <a href="#" class="page-nav">다음 &gt;</a>
+        </nav>
+
+        <footer th:replace="~{fragments/footer :: footer}"></footer>
+
+    </main>
+
+</div>
+
+<script th:src="@{/js/common.js}"></script>
+</body>
+</html>

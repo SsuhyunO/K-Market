@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>주문완료 - KMarket</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/common.css}">
+    <link rel="stylesheet" th:href="@{/css/product-complete.css}">
+</head>
+<body>
+
+<header th:replace="~{fragments/header :: header}"></header>
+
+<div class="page-wrapper">
+
+    <aside th:replace="~{fragments/aside :: aside}"></aside>
+
+    <main class="main-content">
+
+        <!-- 페이지 타이틀 + 브레드크럼 (HOME > 주문하기 > 주문완료) -->
+        <div class="complete-header">
+            <h1 class="complete-title">주문완료</h1>
+            <nav class="breadcrumb">
+                <a th:href="@{/}">HOME</a>
+                <span class="sep">&gt;</span>
+                <a th:href="@{/product/order}">주문하기</a>
+                <span class="sep">&gt;</span>
+                <span class="current">주문완료</span>
+            </nav>
+        </div>
+
+        <!-- 완료 안내 메시지 -->
+        <div class="complete-message">
+            <div class="icon">✅</div>
+            <h2>
+                <span th:text="${customerName != null ? customerName : '고객'}">고객</span>님의 주문이 정상적으로 완료되었습니다.
+            </h2>
+            <p>즐거운 쇼핑이 되셨나요? 항상 고객님을 위한 케이마켓이 되겠습니다.</p>
+        </div>
+
+        <!-- ① 주문상품: 썸네일, 상품명·설명, 상품금액, 할인금액, 수량, 주문금액 출력 -->
+        <table class="complete-product-table">
+            <thead>
+            <tr>
+                <th class="col-check"><input type="checkbox" checked disabled></th>
+                <th class="col-product">상품명</th>
+                <th>상품금액</th>
+                <th>할인금액</th>
+                <th>수량</th>
+                <th>주문금액</th>
+            </tr>
+            </thead>
+            <tbody>
+
+            <!-- orderItems가 없을 때 placeholder 2개 -->
+            <th:block th:if="${orderItems == null or #lists.isEmpty(orderItems)}">
+                <tr>
+                    <td><input type="checkbox" checked disabled></td>
+                    <td>
+                        <div class="product-cell">
+                            <div class="product-thumb">📷</div>
+                            <div class="product-name-wrap">
+                                <span class="product-name">나이키 스포츠웨어 클럽 플리스 후디 기모 맨투맨</span>
+                                <span class="product-desc">옵션: 블랙 / L</span>
+                            </div>
+                        </div>
+                    </td>
+                    <td>89,000</td>
+                    <td>-26,700</td>
+                    <td>1</td>
+                    <td class="order-amount">62,300</td>
+                </tr>
+                <tr>
+                    <td><input type="checkbox" checked disabled></td>
+                    <td>
+                        <div class="product-cell">
+                            <div class="product-thumb">📷</div>
+                            <div class="product-name-wrap">
+                                <span class="product-name">오리지널스 삼선 슬리퍼 알파바운스</span>
+                                <span class="product-desc">옵션: 화이트 / 260</span>
+                            </div>
+                        </div>
+                    </td>
+                    <td>39,000</td>
+                    <td>-7,800</td>
+                    <td>2</td>
+                    <td class="order-amount">70,200</td>
+                </tr>
+            </th:block>
+
+            <!-- 실제 데이터 -->
+            <tr th:each="item : ${orderItems}">
+                <td><input type="checkbox" checked disabled></td>
+                <td>
+                    <div class="product-cell">
+                        <div class="product-thumb">
+                            <img th:if="${item.thumbnailUrl}" th:src="${item.thumbnailUrl}" alt="">
+                            <span th:unless="${item.thumbnailUrl}">🖼️</span>
+                        </div>
+                        <div class="product-name-wrap">
+                            <span class="product-name" th:text="${item.productName}">상품명</span>
+                            <span class="product-desc" th:text="${item.optionText}">상품설명</span>
+                        </div>
+                    </div>
+                </td>
+                <td th:text="${item.price}">27,000</td>
+                <td th:text="'-' + ${item.discountAmount}">-1,350</td>
+                <td th:text="${item.quantity}">1</td>
+                <td class="order-amount" th:text="${item.lineTotal}">25,650</td>
+            </tr>
+
+            </tbody>
+        </table>
+
+        <!-- 총 상품금액 / 총 할인금액 / 배송비 / 총 결제금액 요약 -->
+        <div class="amount-summary-wrap">
+            <div class="amount-summary">
+                <div class="row">
+                    <span class="label">총 상품금액</span>
+                    <span class="value" th:text="(${productTotal} != null ? productTotal : 167+',000') + '원'">167,000원</span>
+                </div>
+                <div class="row">
+                    <span class="label">총 할인금액</span>
+                    <span class="value" th:text="'-' + (${discountTotal} != null ? discountTotal : 35+','+500) + '원'">-35,500원</span>
+                </div>
+                <div class="row">
+                    <span class="label">배송비</span>
+                    <span class="value" th:text="(${shippingTotal} != null ? shippingTotal : 3+',000') + '원'">3000원</span>
+                </div>
+                <div class="row final">
+                    <span class="label">총 결제금액</span>
+                    <span class="value" th:text="(${finalPrice} != null ? finalPrice : 134+','+500) + '원'">134,500원</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- ② 주문정보: 주문번호, 결제방법, 주문자/연락처, 총 결제금액 출력 -->
+        <section class="info-section">
+            <h3 class="info-section-title">주문정보</h3>
+            <div class="order-info-layout">
+                <div class="order-info-list">
+                    <span class="label">주문번호</span>
+                    <span class="value" th:text="${orderNo != null ? orderNo : '1000121121'}">1000121121</span>
+
+                    <span class="label">결제방법</span>
+                    <span class="value" th:text="${payMethodName != null ? payMethodName : '신용카드'}">신용카드</span>
+
+                    <span class="label">주문자 / 연락처</span>
+                    <span class="value">
+                        <span th:text="${ordererName != null ? ordererName : '홍길동'}">홍길동</span>
+                        / <span th:text="${ordererPhone != null ? ordererPhone : '010-1234-1234'}">010-1234-1234</span>
+                    </span>
+                </div>
+
+                <div class="order-final-amount">
+                    <span class="label">총 결제금액</span>
+                    <span class="value" th:text="(${finalPrice} != null ? finalPrice :  134+','+500) + '원'">134,500원</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- ③ 배송정보: 수취인, 연락처, 배송지 주소 출력 -->
+        <section class="info-section">
+            <h3 class="info-section-title">배송정보</h3>
+            <div class="delivery-info-list">
+                <span class="label">수취인</span>
+                <span class="value" th:text="${recvName != null ? recvName : '홍길동'}">홍길동</span>
+
+                <span class="label">연락처</span>
+                <span class="value" th:text="${recvPhone != null ? recvPhone : '010 - 1234 - 1234'}">010 - 1234 - 1234</span>
+
+                <span class="label">배송지 주소</span>
+                <span class="value" th:text="${recvFullAddr != null ? recvFullAddr : '부산 금정구 123-11 10층'}">부산 금정구 123-11 10층</span>
+            </div>
+        </section>
+
+        <footer th:replace="~{fragments/footer :: footer}"></footer>
+
+    </main>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script th:src="@{/js/common.js}"></script>
+
+</body>
+</html>
