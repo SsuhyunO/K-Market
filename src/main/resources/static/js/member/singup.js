@@ -35,8 +35,8 @@
             }
 
             if (memberType === 'seller') {
-                window.location.href = './registerSeller.html';
+                window.location.href = 'registerSeller';
             } else {
-                window.location.href = './register.html';
+                window.location.href = 'register';
             }
         }
