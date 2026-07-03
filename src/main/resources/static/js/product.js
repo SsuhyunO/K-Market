@@ -7,6 +7,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // 3. 상품 상세 화면(view.html) 리뷰 페이지네이션 기능 바인딩
     initReviewPagination();
+
+    // 4. 상품 상세 화면(view.html) 장바구니 및 구매하기 버튼 페이지 이동 바인딩
+    initCartAndBuyButtons();
 });
 
 
@@ -143,6 +146,43 @@ function initReviewPagination() {
             }
         });
     });
+}
+
+/* ─────────────────────────────────────────────
+   상품 상세(view.html) 장바구니/바로구매 버튼 이동
+───────────────────────────────────────────── */
+function initCartAndBuyButtons() {
+    const btnCart = document.querySelector('.btn-cart');
+    const btnBuy = document.querySelector('.btn-buy');
+    const btnOrder = document.querySelector('.btn-order')
+    const btnPay = document.querySelector('.btn-pay')
+
+    if (btnCart) {
+        btnCart.addEventListener('click', function() {
+            // 장바구니 버튼 클릭 시 alert 띄운 후 경로 이동
+            alert('상품이 장바구니에 담겼습니다.');
+            window.location.href = '/K_Market/product/cart'; // 장바구니 화면으로 이동
+        });
+    }
+
+    if (btnBuy) {
+        btnBuy.addEventListener('click', function() {
+            // 바로 구매 버튼 클릭 시 바로 경로 이동
+            window.location.href = '/K_Market/product/order'; // 주문결제 화면으로 이동
+        });
+    }
+
+    if (btnOrder){
+        btnOrder.addEventListener('click', function (){
+            window.location.href = '/K_Market/product/order';
+        })
+    }
+
+    if (btnPay){
+        btnPay.addEventListener('click', function (){
+            window.location.href = '/K_Market/product/complete';
+        })
+    }
 }
 
 /**
