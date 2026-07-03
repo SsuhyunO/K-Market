@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>KMarket 공지사항 목록</title>
+    <th:block th:replace="~{admin/fragments/head::head}"></th:block>
+    <link rel="stylesheet" th:href="@{/css/admin/global/management-table-form.css}">
+    <link rel="stylesheet" th:href="@{/css/admin/global/action-bar.css}">
+    <link rel="stylesheet" th:href="@{/css/admin/cs/board.css}">
+    <script type="module" th:src="@{/js/admin/cs/cs-board.js}"></script>
+</head>
+<body class="cs-board-page">
+<header th:replace="~{admin/fragments/header::header}"></header>
+<div class="admin-layout">
+    <aside th:replace="~{admin/fragments/aside::aside}"></aside>
+
+    <main id="admin-main">
+        <div th:replace="~{admin/fragments/page-header::page-header}"></div>
+
+        <section th:replace="~{admin/fragments/dash-section::dash-section(null, '공지사항 목록', null, ~{::content})}">
+            <th:block th:fragment="content">
+                <div class="cs-type-filter">
+                    <select aria-label="공지사항 유형 선택">
+                        <option value="">유형선택</option>
+                        <option value="customer-service">고객서비스</option>
+                        <option value="event-winner">이벤트 당첨</option>
+                        <option value="safe-trade">안전거래</option>
+                        <option value="hazard-product">위해상품</option>
+                    </select>
+                </div>
+
+                <form th:replace="~{admin/fragments/management-table-form::management-table-form(
+                    '#',
+                    ~{::table_content},
+                    ~{::table_footer},
+                    'noticeNo')}">
+                    <th:block th:fragment="table_content">
+                        <tr>
+                            <th><label><input type="checkbox" id="select-all"></label></th>
+                            <th>번호</th>
+                            <th>유형</th>
+                            <th>제목</th>
+                            <th>조회</th>
+                            <th>날짜</th>
+                            <th>관리</th>
+                        </tr>
+                        <tr>
+                            <td><label><input type="checkbox" name="noticeNo" value="100"></label></td>
+                            <td>100</td>
+                            <td>고객서비스</td>
+                            <td><button class="cs-title-button" type="button" th:data-cs-link="@{/admin/cs/notice/view}">[안내] 해외결제 사칭 문자 주의</button></td>
+                            <td>120</td>
+                            <td>00.00.00</td>
+                            <td>
+                                <div class="cs-manage-actions">
+                                    <button type="button" data-cs-delete data-confirm-message="공지사항을 삭제하시겠습니까?">[삭제]</button>
+                                    <button type="button" th:data-cs-link="@{/admin/cs/notice/modify}">[수정]</button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><label><input type="checkbox" name="noticeNo" value="99"></label></td>
+                            <td>99</td>
+                            <td>이벤트 당첨</td>
+                            <td><button class="cs-title-button" type="button" th:data-cs-link="@{/admin/cs/notice/view}">[발표] G.LIVE X SK스토아 이벤트 당첨자</button></td>
+                            <td>120</td>
+                            <td>00.00.00</td>
+                            <td>
+                                <div class="cs-manage-actions">
+                                    <button type="button" data-cs-delete data-confirm-message="공지사항을 삭제하시겠습니까?">[삭제]</button>
+                                    <button type="button" th:data-cs-link="@{/admin/cs/notice/modify}">[수정]</button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><label><input type="checkbox" name="noticeNo" value="98"></label></td>
+                            <td>98</td>
+                            <td>안전거래</td>
+                            <td><button class="cs-title-button" type="button" th:data-cs-link="@{/admin/cs/notice/view}">[안내] 로맨틱배송 / 교환 수거지시 지연 안내</button></td>
+                            <td>120</td>
+                            <td>00.00.00</td>
+                            <td>
+                                <div class="cs-manage-actions">
+                                    <button type="button" data-cs-delete data-confirm-message="공지사항을 삭제하시겠습니까?">[삭제]</button>
+                                    <button type="button" th:data-cs-link="@{/admin/cs/notice/modify}">[수정]</button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><label><input type="checkbox" name="noticeNo" value="97"></label></td>
+                            <td>97</td>
+                            <td>고객서비스</td>
+                            <td><button class="cs-title-button" type="button" th:data-cs-link="@{/admin/cs/notice/view}">[안내] 위치정보이용 약관 개정 공지</button></td>
+                            <td>120</td>
+                            <td>00.00.00</td>
+                            <td>
+                                <div class="cs-manage-actions">
+                                    <button type="button" data-cs-delete data-confirm-message="공지사항을 삭제하시겠습니까?">[삭제]</button>
+                                    <button type="button" th:data-cs-link="@{/admin/cs/notice/modify}">[수정]</button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><label><input type="checkbox" name="noticeNo" value="93"></label></td>
+                            <td>93</td>
+                            <td>고객서비스</td>
+                            <td><button class="cs-title-button" type="button" th:data-cs-link="@{/admin/cs/notice/view}">[안내] 구매회원 이용약관 개정</button></td>
+                            <td>120</td>
+                            <td>00.00.00</td>
+                            <td>
+                                <div class="cs-manage-actions">
+                                    <button type="button" data-cs-delete data-confirm-message="공지사항을 삭제하시겠습니까?">[삭제]</button>
+                                    <button type="button" th:data-cs-link="@{/admin/cs/notice/modify}">[수정]</button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><label><input type="checkbox" name="noticeNo" value="92"></label></td>
+                            <td>92</td>
+                            <td>위해상품</td>
+                            <td><button class="cs-title-button" type="button" th:data-cs-link="@{/admin/cs/notice/view}">[위해상품정보] 우주 주기형 지도점검 회수사 유의사항</button></td>
+                            <td>120</td>
+                            <td>00.00.00</td>
+                            <td>
+                                <div class="cs-manage-actions">
+                                    <button type="button" data-cs-delete data-confirm-message="공지사항을 삭제하시겠습니까?">[삭제]</button>
+                                    <button type="button" th:data-cs-link="@{/admin/cs/notice/modify}">[수정]</button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><label><input type="checkbox" name="noticeNo" value="91"></label></td>
+                            <td>91</td>
+                            <td>고객서비스</td>
+                            <td><button class="cs-title-button" type="button" th:data-cs-link="@{/admin/cs/notice/view}">[안내] 씨티은행 시스템 점검에 따른 계좌, 체크카드 서비스 제한</button></td>
+                            <td>120</td>
+                            <td>00.00.00</td>
+                            <td>
+                                <div class="cs-manage-actions">
+                                    <button type="button" data-cs-delete data-confirm-message="공지사항을 삭제하시겠습니까?">[삭제]</button>
+                                    <button type="button" th:data-cs-link="@{/admin/cs/notice/modify}">[수정]</button>
+                                </div>
+                            </td>
+                        </tr>
+                    </th:block>
+
+                    <th:block th:fragment="table_footer">
+                        <button type="submit"
+                                data-management-action="bulk-submit"
+                                data-empty-message="삭제할 공지사항을 선택해주세요."
+                                data-confirm-message="선택한 공지사항을 삭제하시겠습니까?"
+                                data-action-variant="secondary">선택삭제</button>
+                        <nav th:replace="~{/admin/fragments/admin-pagination}"></nav>
+                        <button type="button" th:data-cs-link="@{/admin/cs/notice/write}" data-action-variant="primary">작성하기</button>
+                    </th:block>
+                </form>
+            </th:block>
+        </section>
+    </main>
+</div>
+<footer th:replace="~{admin/fragments/footer::footer}"></footer>
+</body>
+</html>

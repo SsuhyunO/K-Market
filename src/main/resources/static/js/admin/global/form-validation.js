@@ -6,26 +6,8 @@ export const FormValidation = (() => {
         if (!form) return;
 
         if (options.ensureErrors) options.ensureErrors(form);
-        bindModalState(form, options);
         bindSubmitValidation(form, options);
         bindLiveValidation(form, options);
-    }
-
-    function bindModalState(form, options) {
-        const modal = form.closest("[data-modal]");
-        if (!modal) return;
-
-        modal.addEventListener("modal:open", function () {
-            resetForm(form);
-
-            if (options.validateOnOpen) {
-                renderFieldErrors(form, options.validate(form));
-            }
-        });
-
-        modal.addEventListener("modal:close", function () {
-            resetForm(form);
-        });
     }
 
     function bindSubmitValidation(form, options) {
@@ -131,6 +113,7 @@ export const FormValidation = (() => {
         bind,
         addRequiredError,
         ensureFieldErrors,
+        resetForm,
         clearFieldErrors,
         clearFieldError,
         renderFieldErrors,

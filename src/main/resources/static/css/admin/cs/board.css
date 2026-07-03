@@ -1,0 +1,285 @@
+.cs-board-page .management-table {
+    min-width: 980px;
+}
+
+.cs-type-filter {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 12px;
+}
+
+.cs-type-filter select {
+    width: 110px;
+    height: 34px;
+    padding: 0 10px;
+    border: 1px solid var(--adm-gray-300);
+    border-radius: 4px;
+    background: var(--adm-white);
+    color: var(--adm-gray-700);
+    font-size: 13px;
+}
+
+.cs-board-page .management-table th:first-child,
+.cs-board-page .management-table td:first-child {
+    width: 42px;
+}
+
+.cs-board-page .management-table th:nth-child(2),
+.cs-board-page .management-table td:nth-child(2) {
+    width: 72px;
+}
+
+.cs-board-page .management-table th:nth-child(3),
+.cs-board-page .management-table td:nth-child(3) {
+    width: 120px;
+}
+
+.cs-board-page .management-table th:nth-child(5),
+.cs-board-page .management-table td:nth-child(5),
+.cs-board-page .management-table th:nth-child(6),
+.cs-board-page .management-table td:nth-child(6),
+.cs-board-page .management-table th:nth-child(7),
+.cs-board-page .management-table td:nth-child(7) {
+    width: 92px;
+}
+
+.cs-title-button {
+    display: inline;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: inherit;
+    cursor: pointer;
+    font: inherit;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+}
+
+.cs-board-page .management-table td:nth-child(4) {
+    text-align: left;
+}
+
+.cs-qna-page .management-table {
+    min-width: 1040px;
+}
+
+.cs-qna-page .management-table th:nth-child(3),
+.cs-qna-page .management-table td:nth-child(3),
+.cs-qna-page .management-table th:nth-child(4),
+.cs-qna-page .management-table td:nth-child(4) {
+    width: 88px;
+}
+
+.cs-qna-page .management-table th:nth-child(5),
+.cs-qna-page .management-table td:nth-child(5) {
+    width: auto;
+    text-align: left;
+}
+
+.cs-qna-page .management-table th:nth-child(6),
+.cs-qna-page .management-table td:nth-child(6),
+.cs-qna-page .management-table th:nth-child(7),
+.cs-qna-page .management-table td:nth-child(7),
+.cs-qna-page .management-table th:nth-child(8),
+.cs-qna-page .management-table td:nth-child(8) {
+    width: 92px;
+}
+
+.cs-recruit-page .management-table {
+    min-width: 1120px;
+}
+
+.cs-recruit-page .management-table th:nth-child(3),
+.cs-recruit-page .management-table td:nth-child(3),
+.cs-recruit-page .management-table th:nth-child(4),
+.cs-recruit-page .management-table td:nth-child(4),
+.cs-recruit-page .management-table th:nth-child(5),
+.cs-recruit-page .management-table td:nth-child(5),
+.cs-recruit-page .management-table th:nth-child(7),
+.cs-recruit-page .management-table td:nth-child(7),
+.cs-recruit-page .management-table th:nth-child(8),
+.cs-recruit-page .management-table td:nth-child(8) {
+    width: 86px;
+}
+
+.cs-recruit-page .management-table th:nth-child(6),
+.cs-recruit-page .management-table td:nth-child(6) {
+    text-align: left;
+}
+
+.cs-recruit-page .management-table th:nth-child(9),
+.cs-recruit-page .management-table td:nth-child(9),
+.cs-recruit-page .management-table th:nth-child(10),
+.cs-recruit-page .management-table td:nth-child(10) {
+    width: 118px;
+}
+
+.cs-recruit-search-form {
+    margin-bottom: 12px;
+}
+
+.cs-recruit-status {
+    font-weight: 700;
+}
+
+.cs-recruit-status.active {
+    color: #16a34a;
+}
+
+.cs-recruit-status.ended {
+    color: #64748b;
+}
+
+.cs-status-complete {
+    color: var(--adm-primary);
+    font-weight: 700;
+}
+
+.cs-title-button:hover,
+.cs-title-button:focus-visible {
+    color: var(--adm-primary);
+}
+
+.cs-manage-actions {
+    display: grid;
+    gap: 3px;
+    justify-items: center;
+}
+
+.cs-manage-actions button {
+    display: inline;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: inherit;
+    cursor: pointer;
+    font: inherit;
+}
+
+.cs-manage-actions button:hover,
+.cs-manage-actions button:focus-visible {
+    color: var(--adm-primary);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+}
+
+.cs-view-table th,
+.cs-form-table th {
+    width: 130px;
+}
+
+.cs-view-content {
+    min-height: 160px;
+    line-height: 1.7;
+    white-space: pre-line;
+}
+
+.cs-answer-input {
+    min-height: 88px;
+}
+
+.cs-recruit-modal-table th {
+    width: 92px;
+}
+
+.cs-recruit-modal-table textarea {
+    min-height: 108px;
+}
+
+.cs-recruit-period-fields {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.cs-recruit-period-fields input[type="date"] {
+    width: 130px;
+}
+
+.cs-recruit-modal-actions {
+    justify-content: center;
+    gap: 8px;
+}
+
+#recruit-register-modal .modal-box {
+    width: min(100%, 640px);
+}
+
+#recruit-register-modal .modal-form-actions button {
+    width: 72px;
+    min-width: 72px;
+    height: 32px;
+    min-height: 32px;
+    margin-top: 0;
+}
+
+#recruit-register-modal .modal-form-actions button[type="button"] {
+    border-color: #9ca3af;
+    background: #9ca3af;
+}
+
+#recruit-register-modal .modal-form-actions button[type="button"]:hover {
+    border-color: #6b7280;
+    background: #6b7280;
+}
+
+.cs-board-actions {
+    justify-content: center;
+    gap: 6px;
+}
+
+.btn-area:has(.cs-board-button) {
+    justify-content: center;
+    gap: 6px;
+}
+
+.cs-board-button,
+.cs-board-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 82px;
+    height: 34px;
+    padding: 0 16px;
+    border-radius: 4px;
+    font-size: 13px;
+    font-weight: 700;
+    box-shadow: 0 1px 2px rgba(30, 41, 59, .14);
+}
+
+.cs-board-button.secondary,
+.cs-board-link.secondary {
+    border: 1px solid var(--adm-gray-300);
+    background: var(--adm-white);
+    color: var(--adm-gray-700);
+}
+
+.cs-board-button.secondary:hover,
+.cs-board-link.secondary:hover {
+    border-color: var(--adm-primary);
+    color: var(--adm-primary);
+}
+
+.cs-board-button.primary,
+.cs-board-link.primary {
+    border: 1px solid var(--adm-primary-dk);
+    background: var(--adm-primary);
+    color: var(--adm-white);
+}
+
+.cs-board-button.primary:hover,
+.cs-board-link.primary:hover {
+    background: var(--adm-primary-dk);
+}
+
+.cs-board-button.danger {
+    border: 1px solid var(--adm-gray-300);
+    background: var(--adm-white);
+    color: var(--adm-gray-700);
+}
+
+.cs-board-button.danger:hover {
+    border-color: var(--adm-red);
+    background: #fff5f2;
+    color: var(--adm-red);
+}

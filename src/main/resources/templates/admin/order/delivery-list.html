@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>KMarket 배송현황</title>
+	<th:block th:replace="~{admin/fragments/head::head}"></th:block>
+	<link rel="stylesheet" th:href="@{/css/admin/global/management-table-form.css}">
+	<link rel="stylesheet" th:href="@{/css/admin/global/action-bar.css}">
+	<link rel="stylesheet" th:href="@{/css/admin/global/modal-form.css}">
+	<link rel="stylesheet" th:href="@{/css/admin/global/section-table.css}">
+	<link rel="stylesheet" th:href="@{/css/admin/global/search-form.css}">
+	<link rel="stylesheet" th:href="@{/css/admin/order/delivery-list.css}">
+	<script type="module" th:src="@{/js/admin/order/delivery-list.js}"></script>
+</head>
+<body>
+<header th:replace="~{admin/fragments/header::header}"></header>
+<div class="admin-layout">
+	<aside th:replace="~{admin/fragments/aside::aside}"></aside>
+	
+	<main id="admin-main">
+		<div th:replace="~{admin/fragments/page-header::page-header}"></div>
+		
+		<section th:replace="~{admin/fragments/dash-section::dash-section(null, null, null, ~{::main_content})}">
+			<th:block th:fragment="main_content">
+				<form th:replace="~{admin/fragments/search-form(~{::options})}">
+					<th:block th:fragment="options">
+						<option value="송장번호">송장번호</option>
+						<option value="주문번호">주문번호</option>
+						<option value="수령인">수령인</option>
+						<option value="연락처">연락처</option>
+						<option value="택배사">택배사</option>
+					</th:block>
+				</form>
+				
+				<div th:replace="~{admin/fragments/management-table-form::management-table(~{::table-content})}">
+					<th:block th:fragment="table-content">
+						<tr>
+							<th>송장번호</th>
+							<th>주문번호</th>
+							<th>수령인</th>
+							<th>연락처</th>
+							<th>택배사</th>
+							<th>배송지</th>
+							<th>배송상태</th>
+							<th>접수일</th>
+							<th>관리</th>
+						</tr>
+						<tr>
+							<td><button class="delivery-detail-btn" type="button" data-modal-target="delivery-detail-modal">1234567890</button></td>
+							<td>10031410</td>
+							<td>홍길동</td>
+							<td>010-1234-1234</td>
+							<td>CJ대한통운</td>
+							<td class="delivery-address">부산 부산진구 중앙대로 123 10층</td>
+							<td><span class="delivery-status in-transit">배송중</span></td>
+							<td>2026-07-02</td>
+							<td><button class="delivery-manage-btn" type="button" data-modal-target="delivery-detail-modal">상세보기</button></td>
+						</tr>
+						<tr>
+							<td><button class="delivery-detail-btn" type="button" data-modal-target="delivery-detail-modal">9876543210</button></td>
+							<td>10031409</td>
+							<td>김유신</td>
+							<td>010-5678-5678</td>
+							<td>한진택배</td>
+							<td class="delivery-address">서울 강남구 테헤란로 25길 8</td>
+							<td><span class="delivery-status ready">배송준비</span></td>
+							<td>2026-07-01</td>
+							<td><button class="delivery-manage-btn" type="button" data-modal-target="delivery-detail-modal">상세보기</button></td>
+						</tr>
+						<tr>
+							<td><button class="delivery-detail-btn" type="button" data-modal-target="delivery-detail-modal">5588123001</button></td>
+							<td>10031408</td>
+							<td>이순신</td>
+							<td>010-2468-1357</td>
+							<td>로젠택배</td>
+							<td class="delivery-address">대전 유성구 대학로 99</td>
+							<td><span class="delivery-status complete">배송완료</span></td>
+							<td>2026-06-30</td>
+							<td><button class="delivery-manage-btn" type="button" data-modal-target="delivery-detail-modal">상세보기</button></td>
+						</tr>
+					</th:block>
+				</div>
+				
+				<div th:replace="~{admin/fragments/action-bar::action-bar(~{::action-bar-content})}">
+					<th:block th:fragment="action-bar-content">
+						<span></span>
+						<nav th:replace="~{/admin/fragments/admin-pagination}"></nav>
+						<span></span>
+					</th:block>
+				</div>
+				
+				<div th:replace="~{admin/fragments/modal::modal('delivery-detail-modal', '배송상세', ~{::delivery_detail_modal_content})}">
+					<th:block th:fragment="delivery_detail_modal_content">
+						<h4>상품정보</h4>
+						<div th:replace="~{admin/fragments/management-table-form::management-table(~{::product-list-table})}">
+							<th:block th:fragment="product-list-table">
+								<tr>
+									<th>상품이미지</th>
+									<th>상품번호</th>
+									<th>상품명</th>
+									<th>판매자</th>
+									<th>가격</th>
+									<th>수량</th>
+									<th>결제금액</th>
+								</tr>
+								<tr>
+									<td><span class="product-image-placeholder" aria-label="상품이미지"></span></td>
+									<td>100021</td>
+									<td>프리미엄 무선 키보드</td>
+									<td>kmarket</td>
+									<td>68,000</td>
+									<td>1</td>
+									<td>68,000</td>
+								</tr>
+							</th:block>
+						</div>
+						
+						<h4>주문정보</h4>
+						<table class="section-table">
+							<tr>
+								<th>주문번호</th>
+								<td>10031410</td>
+							</tr>
+							<tr>
+								<th>주문자 / 연락처</th>
+								<td>홍길동 / 010-1234-1234</td>
+							</tr>
+							<tr>
+								<th>결제방법</th>
+								<td>신용카드</td>
+							</tr>
+							<tr>
+								<th>총 결제금액</th>
+								<td>68,000원</td>
+							</tr>
+						</table>
+						
+						<h4>배송정보</h4>
+						<table class="section-table">
+							<tr>
+								<th>수취인</th>
+								<td>홍길동</td>
+							</tr>
+							<tr>
+								<th>연락처</th>
+								<td>010-1234-1234</td>
+							</tr>
+							<tr>
+								<th>배송지 주소</th>
+								<td>부산 부산진구 중앙대로 123 10층</td>
+							</tr>
+							<tr>
+								<th>택배사</th>
+								<td>CJ대한통운</td>
+							</tr>
+							<tr>
+								<th>송장번호</th>
+								<td>1234567890</td>
+							</tr>
+							<tr>
+								<th>배송상태</th>
+								<td><span class="delivery-status in-transit">배송중</span></td>
+							</tr>
+							<tr>
+								<th>접수일</th>
+								<td>2026-07-02</td>
+							</tr>
+						</table>
+					</th:block>
+				</div>
+			</th:block>
+		</section>
+	</main>
+</div>
+
+<footer th:replace="~{admin/fragments/footer::footer}"></footer>
+</body>
+</html>

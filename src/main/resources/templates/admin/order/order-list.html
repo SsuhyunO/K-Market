@@ -1,0 +1,216 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>KMarket 주문현황</title>
+	<th:block th:replace="~{admin/fragments/head::head}"></th:block>
+	<link rel="stylesheet" th:href="@{/css/admin/global/management-table-form.css}">
+	<link rel="stylesheet" th:href="@{/css/admin/global/action-bar.css}">
+	<link rel="stylesheet" th:href="@{/css/admin/global/modal-form.css}">
+	<link rel="stylesheet" th:href="@{/css/admin/global/section-table.css}">
+	<link rel="stylesheet" th:href="@{/css/admin/global/search-form.css}">
+	<link rel="stylesheet" th:href="@{/css/admin/order/order-list.css}">
+	<script type="module" th:src="@{/js/admin/order/order-list.js}"></script>
+</head>
+<body>
+<header th:replace="~{admin/fragments/header::header}"></header>
+<div class="admin-layout">
+	<aside th:replace="~{admin/fragments/aside::aside}"></aside>
+	
+	<main id="admin-main">
+		<div th:replace="~{admin/fragments/page-header::page-header}"></div>
+		
+		<section th:replace="~{admin/fragments/dash-section::dash-section(null, null, null, ~{::main_content})}">
+			<th:block th:fragment="main_content">
+				<form th:replace="~{admin/fragments/search-form(~{::options})}">
+					<th:block th:fragment="options">
+						<option value="아이디">아이디</option>
+						<option value="이름">이름</option>
+						<option value="이메일">이메일</option>
+						<option value="휴대폰">휴대폰</option>
+					</th:block>
+				</form>
+				
+				<div th:replace="~{admin/fragments/management-table-form::management-table(~{::table-content})}">
+					<th:block th:fragment="table-content">
+						<tr>
+							<th>주문번호</th>
+							<th>주문자</th>
+							<th>주문자명</th>
+							<th>주문건수</th>
+							<th>주문합계</th>
+							<th>결제수단</th>
+							<th>주문상태</th>
+							<th>주문일</th>
+							<th>배송</th>
+						</tr>
+						<tr>
+							<td><button class="order-detail-btn" type="button">123415215</button></td>
+							<td>abc123</td>
+							<td>홍길동</td>
+							<td>10</td>
+							<td>500,000</td>
+							<td>신용카드</td>
+							<td>결제완료</td>
+							<td>0000-00-00</td>
+							<td><button class="register-delivery-btn" type="button">배송하기</button></td>
+						</tr>
+					</th:block>
+				</div>
+				
+				<div th:replace="~{admin/fragments/action-bar::action-bar(~{::action-bar-content})}">
+					<th:block th:fragment="action-bar-content">
+						<span></span>
+						<nav th:replace="~{/admin/fragments/admin-pagination}"></nav>
+						<span></span>
+					</th:block>
+				</div>
+				
+				<div th:replace="~{admin/fragments/modal::modal('order-detail-modal', '주문상세', ~{::order_detail_modal_content})}">
+					<th:block th:fragment="order_detail_modal_content">
+						
+						<h4>상품정보</h4>
+						<div th:replace="~{admin/fragments/management-table-form::management-table(~{::product-list-table})}">
+							<th:block th:fragment="product-list-table">
+								<tr>
+									<th>상품이미지</th>
+									<th>상품번호</th>
+									<th>상품명</th>
+									<th>판매자</th>
+									<th>가격</th>
+									<th>할인</th>
+									<th>수량</th>
+									<th>배송비</th>
+									<th>결제금액</th>
+								</tr>
+							</th:block>
+						</div>
+						
+						<div id="products-price-section">
+							<dl id="products-price-summary">
+								<div>
+									<dt>총 상품금액</dt>
+									<dd>100,000원</dd>
+								</div>
+								<div>
+									<dt>총 할인금액</dt>
+									<dd>-7,000원</dd>
+								</div>
+								<div>
+									<dt>배송비</dt>
+									<dd>3,000원</dd>
+								</div>
+								<div>
+									<dt>총 결제금액</dt>
+									<dd>96,000원</dd>
+								</div>
+							</dl>
+						</div>
+						
+						<h4>결제정보</h4>
+						<table class="section-table payment-table">
+							<tr>
+								<th>주문번호</th>
+								<td>101012141</td>
+							</tr>
+							<tr>
+								<th>결제방법</th>
+								<td>신용카드 / 1234 **** **** 4432</td>
+							</tr>
+							<tr>
+								<th>주문자 / 연락처</th>
+								<td>김유신 / 010-1234-1234</td>
+							</tr>
+							<tr>
+								<th>결제상태</th>
+								<td>결제완료</td>
+							</tr>
+							<tr>
+								<th>총 결제금액</th>
+								<td>96,000원</td>
+							</tr>
+						</table>
+						
+						<h4>배송정보</h4>
+						<table class="section-table delivery-table">
+							<tr>
+								<th>수취인</th>
+								<td>김유신</td>
+							</tr>
+							<tr>
+								<th>연락처</th>
+								<td>010-1234-1234</td>
+							</tr>
+							<tr>
+								<th>배송지 주소</th>
+								<td>부산 부산진구 123-11 10층</td>
+							</tr>
+						</table>
+					</th:block>
+				</div>
+				
+				<div th:replace="~{admin/fragments/modal::modal('delivery-register-modal', '배송입력', ~{::delivery_register_modal_content})}">
+					<th:block th:fragment="delivery_register_modal_content">
+						<form action="#" name="deliveryRegisterForm" method="post" novalidate>
+							<table th:replace="~{admin/fragments/section-table::section-table(~{::rows})}">
+								<th:block th:fragment="rows">
+									<tr>
+										<th><label for="order-no">주문번호</label></th>
+										<td><input id="order-no" name="orderNo" type="text" value="10031410" readonly required/></td>
+									</tr>
+									<tr>
+										<th><label for="recipient">수령인</label></th>
+										<td><input id="recipient" name="recipient" type="text" required/></td>
+									</tr>
+									<tr>
+										<th><label for="zip-code">우편번호</label></th>
+										<td><input id="zip-code" name="zipCode" type="text" readonly required/></td>
+									</tr>
+									<tr>
+										<th><label for="default-addr">기본주소</label></th>
+										<td><input id="default-addr" name="defaultAddr" type="text" readonly required/></td>
+									</tr>
+									<tr>
+										<th><label for="detail-addr">상세주소</label></th>
+										<td><input id="detail-addr" name="detailAddr" type="text" required></td>
+									</tr>
+									<tr>
+										<th><label for="delivery-company">택배사</label></th>
+										<td>
+											<select id="delivery-company" name="deliveryCompany" required>
+												<option value="로젠택배">로젠택배</option>
+												<option value="CJ대한통운">CJ대한통운</option>
+												<option value="한진택배">한진택배</option>
+											</select>
+										</td>
+									</tr>
+									<tr>
+										<th><label for="tracking-number">운송장번호</label></th>
+										<td><input id="tracking-number" name="trackingNumber" type="text"></td>
+									</tr>
+									<tr>
+										<th><label for="etc">기타</label></th>
+										<td><textarea name="etc" id="etc"></textarea></td>
+									</tr>
+								</th:block>
+							</table>
+							
+							<div th:replace="~{admin/fragments/action-bar::action-bar(~{::modal-action-bar-content})}">
+								<th:block th:fragment="modal-action-bar-content">
+									<span></span>
+									<span></span>
+									<button type="submit" data-action-variant="primary">
+										등록하기
+									</button>
+								</th:block>
+							</div>
+						</form>
+					</th:block>
+				</div>
+			</th:block>
+		</section>
+	</main>
+</div>
+
+<footer th:replace="~{admin/fragments/footer::footer}"></footer>
+</body>
+</html>

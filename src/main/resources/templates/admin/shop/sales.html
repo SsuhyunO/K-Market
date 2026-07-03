@@ -23,7 +23,7 @@
 						<option value="한달">한달</option>
 					</select>
 				</div>
-				<th:block th:replace="~{admin/fragments/management-table-form::management-table(~{::table-content})}">
+				<div th:replace="~{admin/fragments/management-table-form::management-table(~{::table-content})}">
 					<th:block th:fragment="table-content">
 						<tr>
 							<th>번호</th>
@@ -38,7 +38,7 @@
 							<th>매출합계</th>
 						</tr>
 					</th:block>
-				</th:block>
+				</div>
 				<nav th:replace="~{admin/fragments/admin-pagination}"></nav>
 			</th:block>
 		</section>

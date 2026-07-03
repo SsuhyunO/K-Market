@@ -26,7 +26,7 @@
                     </th:block>
                 </th:block>
 
-                <th:block th:replace="~{admin/fragments/management-table-form::management-table-form(
+                <form th:replace="~{admin/fragments/management-table-form::management-table-form(
                     '#',
                     ~{::table-content},
                     ~{::point-table-footer},
@@ -103,7 +103,7 @@
                         <nav th:replace="~{/admin/fragments/admin-pagination}"></nav>
                         <span class="btn-area-spacer"></span>
                     </th:block>
-                </th:block>
+                </form>
             </th:block>
         </section>
     </main>

@@ -21,27 +21,32 @@
         
         <nav class="banner-nav">
             <ul>
-                <li th:classappend="${bannerCategory == 'mainTop'} ? 'current'">
-                    <a th:href="@{/admin/banner-management(bannerCategory='mainTop')}">메인상단 배너</a>
+                <li class="current">
+                    <a th:href="@{/admin/banner-management(bannerCategory='mainTop')}"
+                       data-banner-category="mainTop">메인상단 배너</a>
                 </li>
-                <li th:classappend="${bannerCategory == 'mainSlider'} ? 'current'">
-                    <a th:href="@{/admin/banner-management(bannerCategory='mainSlider')}">메인슬라이더 배너</a>
+                <li>
+                    <a th:href="@{/admin/banner-management(bannerCategory='mainSlider')}"
+                       data-banner-category="mainSlider">메인슬라이더 배너</a>
                 </li>
-                <li th:classappend="${bannerCategory == 'productDetailView'} ? 'current'">
-                    <a th:href="@{/admin/banner-management(bannerCategory='productDetailView')}">상품 상세보기 배너</a>
+                <li>
+                    <a th:href="@{/admin/banner-management(bannerCategory='productDetailView')}"
+                       data-banner-category="productDetailView">상품 상세보기 배너</a>
                 </li>
-                <li th:classappend="${bannerCategory == 'userLogin'} ? 'current'">
-                    <a th:href="@{/admin/banner-management(bannerCategory='userLogin')}">회원로그인 배너</a>
+                <li>
+                    <a th:href="@{/admin/banner-management(bannerCategory='userLogin')}"
+                       data-banner-category="userLogin">회원로그인 배너</a>
                 </li>
-                <li th:classappend="${bannerCategory == 'myPage'} ? 'current'">
-                    <a th:href="@{/admin/banner-management(bannerCategory='myPage')}">마이페이지 배너</a>
+                <li>
+                    <a th:href="@{/admin/banner-management(bannerCategory='myPage')}"
+                       data-banner-category="myPage">마이페이지 배너</a>
                 </li>
             </ul>
         </nav>
         
-        <section th:replace="~{admin/fragments/dash-section::dash-section(null, ${tableHeader}, null, ~{::content})}">
+        <section th:replace="~{admin/fragments/dash-section::dash-section('banner-management-section', '메인상단 배너', null, ~{::content})}">
             <th:block th:fragment="content">
-                <th:block th:replace="~{admin/fragments/management-table-form::management-table-form(
+                <form th:replace="~{admin/fragments/management-table-form::management-table-form(
                     null,
                     ~{::management-content},
                     ~{::banner-table-footer},
@@ -93,7 +98,7 @@
 		                        data-modal-target="banner-modal"
 		                        data-action-variant="primary">배너등록</button>
 	                </th:block>
-                </th:block>
+                </form>
 
 
 
@@ -117,12 +122,16 @@
                                 </tr>
                                 <tr>
                                     <th>
-                                        <label for="banner-size">배너크기</label>
-                                        <span class="row-description">권장 이미지 크기를 입력하세요.</span>
+                                        <label for="banner-width">배너크기</label>
                                     </th>
                                     <td>
-                                        <input id="banner-size" type="text" name="size" placeholder="예: 1200x80">
-                                        <p class="field-error" data-error-for="banner-size"></p>
+                                        <div class="banner-size-field-group">
+                                            <input id="banner-width" type="number" name="width" min="1" placeholder="너비">
+                                            <span>x</span>
+                                            <input id="banner-height" type="number" name="height" min="1" placeholder="높이">
+                                        </div>
+                                        <p class="field-error" data-error-for="banner-width"></p>
+                                        <p class="field-error" data-error-for="banner-height"></p>
                                     </td>
                                 </tr>
                                 <tr>

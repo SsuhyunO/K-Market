@@ -1,19 +1,119 @@
 import { Validation } from '../../global/validation.js';
 import { initModals } from '../../global/modal-form.js';
+import { delegate } from '../../global/event-manager.js';
 import { FormValidation } from '../global/form-validation.js';
+import { ModalFormValidation } from '../global/modal-form-validation.js';
 import { ManagementTableForm } from '../global/management-table-form.js';
+
+const BANNER_TABLE_HEADERS = {
+    mainTop: "메인상단 배너",
+    mainSlider: "메인 슬라이더 배너",
+    productDetailView: "상품 상세보기 배너",
+    userLogin: "회원로그인 배너",
+    myPage: "마이페이지 배너"
+};
 
 document.addEventListener("DOMContentLoaded", function () {
     initModals();
     ManagementTableForm.init();
+    initBannerCategoryNav();
     initBannerRegisterValidation();
 });
+
+function initBannerCategoryNav() {
+    const nav = document.querySelector(".banner-nav");
+    if (!nav) return;
+
+    const list = nav.querySelector("ul");
+    const links = [...nav.querySelectorAll("[data-banner-category]")];
+    if (!list || links.length === 0) return;
+
+    const indicator = document.createElement("span");
+    indicator.className = "banner-nav-indicator";
+    indicator.setAttribute("aria-hidden", "true");
+    list.prepend(indicator);
+    nav.classList.add("is-ready");
+
+    const currentCategory = getCurrentBannerCategory(links);
+    setCurrentBannerCategory(links, currentCategory);
+    updateBannerTableHeader(currentCategory);
+    moveBannerNavIndicator(nav, indicator);
+
+    delegate(nav, "click", "[data-banner-category]", function (e, link) {
+        e.preventDefault();
+
+        const category = link.dataset.bannerCategory;
+        if (!category) return;
+        if (link.closest("li")?.classList.contains("current")) return;
+
+        setCurrentBannerCategory(links, category);
+        updateBannerCategoryUrl(category);
+        updateBannerTableHeader(category);
+        moveBannerNavIndicator(nav, indicator);
+
+        nav.dispatchEvent(new CustomEvent("banner-category:change", {
+            bubbles: true,
+            detail: { category }
+        }));
+    });
+
+    window.addEventListener("resize", function () {
+        moveBannerNavIndicator(nav, indicator);
+    });
+
+    window.addEventListener("popstate", function () {
+        const category = getCurrentBannerCategory(links);
+        setCurrentBannerCategory(links, category);
+        updateBannerTableHeader(category);
+        moveBannerNavIndicator(nav, indicator);
+    });
+}
+
+function getCurrentBannerCategory(links) {
+    const params = new URLSearchParams(window.location.search);
+    const category = params.get("bannerCategory");
+    if (links.some(link => link.dataset.bannerCategory === category)) {
+        return category;
+    }
+
+    return links.find(link => link.closest("li")?.classList.contains("current"))?.dataset.bannerCategory
+        || links[0].dataset.bannerCategory;
+}
+
+function setCurrentBannerCategory(links, category) {
+    links.forEach(link => {
+        const isCurrent = link.dataset.bannerCategory === category;
+        link.closest("li")?.classList.toggle("current", isCurrent);
+        link.setAttribute("aria-current", isCurrent ? "page" : "false");
+    });
+}
+
+function updateBannerCategoryUrl(category) {
+    const url = new URL(window.location.href);
+    url.searchParams.set("bannerCategory", category);
+    window.history.pushState({ bannerCategory: category }, "", url);
+}
+
+function updateBannerTableHeader(category) {
+    const title = document.querySelector("#banner-management-section .section-title");
+    if (!title) return;
+
+    title.textContent = BANNER_TABLE_HEADERS[category] || BANNER_TABLE_HEADERS.mainTop;
+}
+
+function moveBannerNavIndicator(nav, indicator) {
+    const currentItem = nav.querySelector("li.current");
+    if (!currentItem) return;
+
+    indicator.style.width = `${currentItem.offsetWidth}px`;
+    indicator.style.transform = `translateX(${currentItem.offsetLeft}px)`;
+}
 
 function initBannerRegisterValidation() {
     const registerForm = document.getElementById("banner-register-form");
     if (!registerForm) return;
 
-    FormValidation.bind({
+    ModalFormValidation.bind({
         form: registerForm,
         validate: validateBannerRegisterForm,
         isField: isBannerRegisterField,
@@ -23,6 +123,10 @@ function initBannerRegisterValidation() {
 }
 
 function getBannerRegisterRelatedFieldIds(fieldId) {
+    if (fieldId === "banner-width" || fieldId === "banner-height") {
+        return ["banner-width", "banner-height"];
+    }
+
     if (fieldId === "banner-start-date" || fieldId === "banner-end-date") {
         return ["banner-start-date", "banner-end-date"];
     }
@@ -50,17 +154,22 @@ function validateBannerRegisterForm(registerForm) {
 }
 
 function validateBannerSize(form, errors) {
-    const field = form.querySelector("#banner-size");
-    if (!field) return;
+    const widthField = form.querySelector("#banner-width");
+    const heightField = form.querySelector("#banner-height");
+    if (!widthField || !heightField) return;
 
-    const value = field.value;
-    if (!Validation.required(value).valid) {
-        errors.push({ fieldId: field.id, message: "배너크기를 입력해주세요." });
+    validateBannerSizeField(widthField, "배너 너비를 입력해주세요.", "배너 너비는 1 이상의 숫자로 입력해주세요.", errors);
+    validateBannerSizeField(heightField, "배너 높이를 입력해주세요.", "배너 높이는 1 이상의 숫자로 입력해주세요.", errors);
+}
+
+function validateBannerSizeField(field, requiredMessage, numberMessage, errors) {
+    if (!Validation.required(field.value).valid) {
+        errors.push({ fieldId: field.id, message: requiredMessage });
         return;
     }
 
-    if (!Validation.pattern(value, /^\d+x\d+$/i).valid) {
-        errors.push({ fieldId: field.id, message: "배너크기는 1200x80 형식으로 입력해주세요." });
+    if (!Validation.pattern(field.value, /^[1-9]\d*$/).valid) {
+        errors.push({ fieldId: field.id, message: numberMessage });
     }
 }
 

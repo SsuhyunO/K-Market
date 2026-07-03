@@ -9,6 +9,7 @@
 }
 
 .banner-nav ul {
+    position: relative;
     display: flex;
     align-items: stretch;
     width: max-content;
@@ -25,6 +26,8 @@
 }
 
 .banner-nav a {
+    position: relative;
+    z-index: 1;
     display: flex;
     justify-content: center;
     min-height: 42px;
@@ -34,17 +37,34 @@
     font-size: 13px;
     font-weight: 700;
     white-space: nowrap;
-    transition: color var(--transition), background var(--transition);
+    transition: color var(--transition);
 }
 
 .banner-nav a:hover {
     color: var(--adm-primary);
-    background: var(--adm-gray-100);
 }
 
 .banner-nav .current a {
     color: var(--adm-white);
+}
+
+.banner-nav:not(.is-ready) .current a {
     background: var(--adm-primary);
+}
+
+.banner-nav .current a:hover {
+    color: var(--adm-white);
+}
+
+.banner-nav-indicator {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 0;
+    background: var(--adm-primary);
+    pointer-events: none;
+    transition: transform .28s ease, width .28s ease;
 }
 
 .management-table th:nth-child(1),
@@ -143,6 +163,20 @@
     width: min(100%, 520px);
 }
 
+.banner-size-field-group {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+    align-items: center;
+    gap: 8px;
+    width: min(100%, 360px);
+}
+
+.banner-size-field-group span {
+    color: var(--adm-gray-500);
+    font-size: 12px;
+    font-weight: 700;
+}
+
 .banner-modal-field-group span {
     color: var(--adm-gray-500);
     font-size: 12px;
@@ -154,11 +188,13 @@
         padding: 0 14px;
     }
 
-    .banner-modal-field-group {
+    .banner-modal-field-group,
+    .banner-size-field-group {
         grid-template-columns: 1fr;
     }
 
-    .banner-modal-field-group span {
+    .banner-modal-field-group span,
+    .banner-size-field-group span {
         display: none;
     }
 }

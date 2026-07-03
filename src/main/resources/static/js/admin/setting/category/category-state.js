@@ -39,6 +39,7 @@ function getCategoryState(item, categoryTree) {
     const row = item.querySelector(':scope > .category-row');
     const title = row?.querySelector(':scope > span.category-title')?.textContent ?? '';
     const isRoot = item.parentElement?.matches('.category-tree > .category-list') ?? false;
+    const infoNoticeType = isRoot ? '' : (item.dataset.infoNoticeType || 'etc');
     const rootItem = isRoot
         ? item
         : item.closest('.category-tree > .category-list > .category-item');
@@ -54,6 +55,7 @@ function getCategoryState(item, categoryTree) {
         parentItem: isRoot ? null : rootItem,
         rootId: getCategoryId(rootItem),
         rootItem,
+        infoNoticeType,
         categoryTree,
         open: item.querySelector(':scope > details')?.open ?? false
     };

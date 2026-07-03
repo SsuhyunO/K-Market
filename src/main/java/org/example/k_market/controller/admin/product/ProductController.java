@@ -1,6 +1,8 @@
 package org.example.k_market.controller.admin.product;
 
+import org.example.k_market.dto.product.ProductInfoNoticeTemplates;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -9,7 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class ProductController {
 
     @GetMapping("/register")
-    public String register() {
+    public String register(Model model) {
+        model.addAttribute("productInfoNoticeTemplates", ProductInfoNoticeTemplates.all());
         return "admin/product/register";
     }
 
@@ -19,7 +22,8 @@ public class ProductController {
     }
 
     @GetMapping("/edit")
-    public String edit() {
+    public String edit(Model model) {
+        model.addAttribute("productInfoNoticeTemplates", ProductInfoNoticeTemplates.all());
         return "admin/product/edit";
     }
 }

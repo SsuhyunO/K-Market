@@ -65,37 +65,43 @@
             </ul>
         </details>
         
-        <details class="nav-item" data-menu="order">
+        <details class="nav-item" data-menu="order"
+                th:attr="open=${category.name() == 'ORDER_STATUS'
+                    or category.name() == 'DELIVERY_STATUS'} ? 'open' : null">
             <summary class="nav-link">
                 <span class="nav-icon">🛒</span>주문관리
                 <span class="nav-arrow">›</span>
             </summary>
             <ul class="sub-menu">
-                <li><a href="#">주문현황</a></li>
-                <li><a href="#">배송현황</a></li>
+                <li><a th:href="@{/admin/order/order-list}">주문현황</a></li>
+                <li><a th:href="@{/admin/order/delivery-list}">배송현황</a></li>
             </ul>
         </details>
         
-        <details class="nav-item" data-menu="coupon">
+        <details class="nav-item" data-menu="coupon"
+                 th:attr="open=${category.name() == 'COUPON_LIST'
+                    or category.name() == 'COUPON_ISSUED'} ? 'open' : null">
             <summary class="nav-link">
                 <span class="nav-icon">🎟️</span>쿠폰관리
                 <span class="nav-arrow">›</span>
             </summary>
             <ul class="sub-menu">
-                <li><a href="#">쿠폰목록</a></li>
-                <li><a href="#">쿠폰발급현황</a></li>
+                <li><a th:href="@{/admin/coupon/list}">쿠폰목록</a></li>
+                <li><a th:href="@{/admin/coupon/used}">쿠폰발급현황</a></li>
             </ul>
         </details>
         
-        <details class="nav-item" data-menu="cs">
+        <details class="nav-item" data-menu="cs"
+                 th:attr="open=${#strings.startsWith(category.name(), 'CS_')} ? 'open' : null">
             <summary class="nav-link">
                 <span class="nav-icon">💬</span>고객센터
                 <span class="nav-arrow">›</span>
             </summary>
             <ul class="sub-menu">
-                <li><a href="#">공지사항</a></li>
-                <li><a href="#">자주묻는질문</a></li>
-                <li><a href="#">문의하기</a></li>
+                <li><a th:href="@{/admin/cs/notice/list}">공지사항</a></li>
+                <li><a th:href="@{/admin/cs/faq/list}">자주묻는질문</a></li>
+                <li><a th:href="@{/admin/cs/qna/list}">문의하기</a></li>
+                <li><a th:href="@{/admin/cs/recruit/list}">채용하기</a></li>
             </ul>
         </details>
     </nav>
