@@ -1,5 +1,5 @@
 <form th:fragment="section-form(action, multipart, rows)"
-      th:action="${action}"
+      th:action="@{${action}}"
       method="post"
       th:attr="enctype=${multipart} ? 'multipart/form-data' : null">
 	<table th:replace="~{admin/fragments/section-table::section-table(${rows})}"></table>
