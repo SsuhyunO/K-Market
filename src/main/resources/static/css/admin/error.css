@@ -1,0 +1,81 @@
+.admin-error-panel {
+    display: grid;
+    justify-items: center;
+    gap: 12px;
+    min-height: 360px;
+    padding: 64px 24px;
+    border: 1px solid var(--adm-gray-300);
+    border-radius: var(--radius);
+    background: var(--adm-white);
+    box-shadow: var(--shadow);
+    text-align: center;
+}
+
+.admin-error-code {
+    color: var(--adm-primary);
+    font-size: 56px;
+    font-weight: 900;
+    line-height: 1;
+}
+
+.admin-error-panel h2 {
+    color: var(--adm-gray-900);
+    font-size: 20px;
+    font-weight: 800;
+}
+
+.admin-error-message {
+    color: var(--adm-gray-600);
+    font-size: 14px;
+}
+
+.admin-error-path {
+    max-width: min(100%, 560px);
+    padding: 8px 12px;
+    border-radius: 4px;
+    background: var(--adm-gray-100);
+    color: var(--adm-gray-700);
+    font-size: 13px;
+    word-break: break-all;
+}
+
+.admin-error-actions {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 8px;
+}
+
+.admin-error-actions a,
+.admin-error-actions button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 150px;
+    height: 36px;
+    padding: 0 16px;
+    border-radius: 4px;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.admin-error-actions a {
+    border: 1px solid var(--adm-primary-dk);
+    background: var(--adm-primary);
+    color: var(--adm-white);
+}
+
+.admin-error-actions button {
+    border: 1px solid var(--adm-gray-300);
+    background: var(--adm-white);
+    color: var(--adm-gray-700);
+}
+
+.admin-error-actions a:hover {
+    background: var(--adm-primary-dk);
+}
+
+.admin-error-actions button:hover {
+    border-color: var(--adm-primary);
+    color: var(--adm-primary);
+}

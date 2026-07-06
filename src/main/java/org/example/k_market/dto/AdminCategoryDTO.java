@@ -1,17 +1,17 @@
 package org.example.k_market.dto;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.ToString;
 
 import java.util.Arrays;
 import java.util.Optional;
+import java.util.Set;
 
 @Getter
-@AllArgsConstructor
 @ToString
 public enum AdminCategoryDTO {
-    MAIN("/admin/main", "관리자 메인", "HOME &rsaquo; 관리자 메인"),
+    MAIN("/admin/main", "관리자 메인", "HOME &rsaquo; 관리자 메인", "/admin"),
+    ADMIN_ERROR("/admin/error", "페이지를 찾을 수 없습니다", "HOME &rsaquo; 오류"),
     SITE_SETTINGS("/admin/site-settings", "기본설정", "HOME &rsaquo; 환경설정 &rsaquo; 기본설정"),
     BANNER_MANAGEMENT("/admin/banner-management", "배너관리", "HOME &rsaquo; 환경설정 &rsaquo; 배너관리"),
     TERMS_MANAGEMENT("/admin/terms-management", "약관관리", "HOME &rsaquo; 환경설정 &rsaquo; 약관관리"),
@@ -28,7 +28,7 @@ public enum AdminCategoryDTO {
     DELIVERY_STATUS("/admin/order/delivery-list", "배송현황", "HOME &rsaquo; 주문관리 &rsaquo; 배송현황"),
     COUPON_LIST("/admin/coupon/list", "쿠폰목록", "HOME &rsaquo; 쿠폰관리 &rsaquo; 쿠폰목록"),
     COUPON_ISSUED("/admin/coupon/used", "쿠폰발급현황", "HOME &rsaquo; 쿠폰관리 &rsaquo; 쿠폰발급현황"),
-    CS_NOTICE_LIST("/admin/cs/notice/list", "공지사항 목록", "HOME &rsaquo; 고객센터 &rsaquo; 공지사항 목록"),
+    CS_NOTICE_LIST("/admin/cs/notice/list", "공지사항 목록", "HOME &rsaquo; 고객센터 &rsaquo; 공지사항 목록", "/admin/cs"),
     CS_NOTICE_VIEW("/admin/cs/notice/view", "공지사항 보기", "HOME &rsaquo; 고객센터 &rsaquo; 공지사항 보기"),
     CS_NOTICE_WRITE("/admin/cs/notice/write", "공지사항 작성", "HOME &rsaquo; 고객센터 &rsaquo; 공지사항 작성"),
     CS_NOTICE_MODIFY("/admin/cs/notice/modify", "공지사항 수정", "HOME &rsaquo; 고객센터 &rsaquo; 공지사항 수정"),
@@ -44,6 +44,14 @@ public enum AdminCategoryDTO {
     private final String path;
     private final String title;
     private final String nav;
+    private final Set<String> aliases;
+
+    AdminCategoryDTO(String path, String title, String nav, String... aliases) {
+        this.path = path;
+        this.title = title;
+        this.nav = nav;
+        this.aliases = Set.of(aliases);
+    }
 
     public static Optional<AdminCategoryDTO> fromPath(String path) {
         if ("/".equals(path)) {
@@ -51,7 +59,11 @@ public enum AdminCategoryDTO {
         }
 
         return Arrays.stream(values())
-                .filter(category -> category.path.equals(path))
+                .filter(category -> category.matches(path))
                 .findFirst();
+    }
+
+    private boolean matches(String path) {
+        return this.path.equals(path) || aliases.contains(path);
     }
 }

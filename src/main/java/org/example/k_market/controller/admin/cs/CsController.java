@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/admin/cs")
 public class CsController {
 
-    @GetMapping("/notice/list")
+    @GetMapping({"/notice/list", "", "/", "/notice"})
     public String noticeList() {
         return "admin/cs/notice/list";
     }
@@ -28,7 +28,7 @@ public class CsController {
         return "admin/cs/notice/modify";
     }
 
-    @GetMapping("/faq/list")
+    @GetMapping({"/faq/list", "/faq"})
     public String faqList() {
         return "admin/cs/faq/list";
     }
@@ -48,7 +48,7 @@ public class CsController {
         return "admin/cs/faq/modify";
     }
 
-    @GetMapping("/qna/list")
+    @GetMapping({"/qna/list", "/qna"})
     public String qnaList() {
         return "admin/cs/qna/list";
     }
