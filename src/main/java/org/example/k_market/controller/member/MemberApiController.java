@@ -81,4 +81,6 @@ public class MemberApiController {
         memberService.resetPassword(request);
         return "비밀번호가 변경되었습니다.";
     }
+
+
 }
