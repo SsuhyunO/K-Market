@@ -1,4 +1,4 @@
-package org.example.k_market.dto.product;
+package org.example.k_market.common.product;
 
 import java.util.Collections;
 import java.util.LinkedHashMap;

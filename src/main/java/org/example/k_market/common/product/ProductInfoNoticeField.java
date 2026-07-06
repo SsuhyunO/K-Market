@@ -1,4 +1,4 @@
-package org.example.k_market.dto.product;
+package org.example.k_market.common.product;
 
 public record ProductInfoNoticeField(
         String key,
