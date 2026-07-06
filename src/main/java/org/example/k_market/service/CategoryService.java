@@ -100,14 +100,9 @@ public class CategoryService {
                 .findById(dto.getCateId())
                 .ifPresent(category -> category.change(
                         dto.getName(),
-                        dto.getInfoNoticeType()
+                        dto.getInfoNoticeType(),
+                        dto.getSortOrder()
                 ));
-
-        category.change(
-            dto.getName(),
-            dto.getInfoNoticeType(),
-            dto.getSortOrder()
-        );
     }
 
     private void deleteCategory(int cateId) {
