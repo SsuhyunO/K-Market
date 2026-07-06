@@ -20,20 +20,25 @@ public class Category {
     @JoinColumn(name = "parentId")
     private Category parent;
 
+    private String code;
     private String name;
     private String infoNoticeType;
+    private int sortOrder;
 
     public CategoryDTO toDTO() {
         return CategoryDTO.builder()
                 .cateId(cateId)
                 .parentId(parent != null ? parent.getCateId() : null)
+                .code(code)
                 .name(name)
                 .infoNoticeType(infoNoticeType)
+                .sortOrder(sortOrder)
                 .build();
     }
 
-    public void change(String name, String infoNoticeType) {
+    public void change(String name, String infoNoticeType, int sortOrder) {
         this.name = name;
         this.infoNoticeType = infoNoticeType;
+        this.sortOrder = sortOrder;
     }
 }

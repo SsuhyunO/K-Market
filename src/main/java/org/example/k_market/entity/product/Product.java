@@ -3,6 +3,7 @@ package org.example.k_market.entity.product;
 import jakarta.persistence.*;
 import lombok.*;
 import org.example.k_market.dto.product.ProductDTO;
+import org.example.k_market.entity.category.Category;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
@@ -19,7 +20,9 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int prodNo;
 
-    private int cateId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "cateId")
+    private Category category;
     private String prodName;
     private int price;
     private int discount;
@@ -37,7 +40,7 @@ public class Product {
     public ProductDTO toDTO() {
         return ProductDTO.builder()
                 .prodNo(prodNo)
-                .cateId(cateId)
+                .cateId(category.getCateId())
                 .prodName(prodName)
                 .price(price)
                 .discount(discount)
