@@ -32,8 +32,18 @@
                 <button type="button" class="btn-print" aria-label="인쇄하기" title="인쇄하기">🖨️</button>
             </div>
 
-            <!-- ③ 약관 내용 (5개 페이지 공통 본문) -->
-            <div th:replace="~{fragments/policy-content :: content}"></div>
+            <div th:fragment="content" class="policy-content">
+                <article th:each="article, iterStat : ${articles}" class="policy-article">
+                    <h3 class="article-title" th:text="${article.title}"></h3>
+                    <p class="article-body" th:text="${article.content}"></p>
+
+                    <hr class="policy-divider" th:if="${!iterStat.last}">
+                </article>
+
+                <p th:if="${#lists.isEmpty(articles)}" class="policy-empty">
+                    등록된 약관 내용이 없습니다.
+                </p>
+            </div>
 
         </section>
 
