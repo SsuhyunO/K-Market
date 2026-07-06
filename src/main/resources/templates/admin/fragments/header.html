@@ -6,7 +6,7 @@
         </a>
     </div>
     <nav class="header-util">
-        <a href="/index" class="util-link">
+        <a th:href="@{/}" class="util-link">
             <span class="home-icon">🏠</span> 홈
         </a>
         <span class="sep">|</span>
@@ -14,6 +14,6 @@
             <button type="submit" class="util-link">로그아웃</button>
         </form>
         <span class="sep">|</span>
-        <a href="/admin/cs" class="util-link">고객센터</a>
+        <a th:href="@{/admin/cs}" class="util-link">고객센터</a>
     </nav>
 </header>

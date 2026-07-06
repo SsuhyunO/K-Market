@@ -11,7 +11,7 @@
 	<link rel="stylesheet" th:href="@{/css/admin/order/delivery-list.css}">
 	<script type="module" th:src="@{/js/admin/order/delivery-list.js}"></script>
 </head>
-<body>
+<body class="delivery-list-page">
 <header th:replace="~{admin/fragments/header::header}"></header>
 <div class="admin-layout">
 	<aside th:replace="~{admin/fragments/aside::aside}"></aside>
@@ -31,53 +31,51 @@
 					</th:block>
 				</form>
 				
-				<div th:replace="~{admin/fragments/management-table-form::management-table(~{::table-content})}">
-					<th:block th:fragment="table-content">
-						<tr>
-							<th>송장번호</th>
-							<th>주문번호</th>
-							<th>수령인</th>
-							<th>연락처</th>
-							<th>택배사</th>
-							<th>배송지</th>
-							<th>배송상태</th>
-							<th>접수일</th>
-							<th>관리</th>
-						</tr>
-						<tr>
-							<td><button class="delivery-detail-btn" type="button" data-modal-target="delivery-detail-modal">1234567890</button></td>
-							<td>10031410</td>
-							<td>홍길동</td>
-							<td>010-1234-1234</td>
-							<td>CJ대한통운</td>
-							<td class="delivery-address">부산 부산진구 중앙대로 123 10층</td>
-							<td><span class="delivery-status in-transit">배송중</span></td>
-							<td>2026-07-02</td>
-							<td><button class="delivery-manage-btn" type="button" data-modal-target="delivery-detail-modal">상세보기</button></td>
-						</tr>
-						<tr>
-							<td><button class="delivery-detail-btn" type="button" data-modal-target="delivery-detail-modal">9876543210</button></td>
-							<td>10031409</td>
-							<td>김유신</td>
-							<td>010-5678-5678</td>
-							<td>한진택배</td>
-							<td class="delivery-address">서울 강남구 테헤란로 25길 8</td>
-							<td><span class="delivery-status ready">배송준비</span></td>
-							<td>2026-07-01</td>
-							<td><button class="delivery-manage-btn" type="button" data-modal-target="delivery-detail-modal">상세보기</button></td>
-						</tr>
-						<tr>
-							<td><button class="delivery-detail-btn" type="button" data-modal-target="delivery-detail-modal">5588123001</button></td>
-							<td>10031408</td>
-							<td>이순신</td>
-							<td>010-2468-1357</td>
-							<td>로젠택배</td>
-							<td class="delivery-address">대전 유성구 대학로 99</td>
-							<td><span class="delivery-status complete">배송완료</span></td>
-							<td>2026-06-30</td>
-							<td><button class="delivery-manage-btn" type="button" data-modal-target="delivery-detail-modal">상세보기</button></td>
-						</tr>
-					</th:block>
+				<div class="delivery-list-table">
+					<div th:replace="~{admin/fragments/management-table-form::management-table(~{::table-content})}">
+						<th:block th:fragment="table-content">
+							<tr>
+								<th>송장번호</th>
+								<th>주문번호</th>
+								<th>수령인</th>
+								<th>연락처</th>
+								<th>택배사</th>
+								<th>배송지</th>
+								<th>배송상태</th>
+								<th>접수일</th>
+							</tr>
+							<tr>
+								<td><button class="delivery-detail-btn" type="button" data-modal-target="delivery-detail-modal">1234567890</button></td>
+								<td>10031410</td>
+								<td>홍길동</td>
+								<td>010-1234-1234</td>
+								<td>CJ대한통운</td>
+								<td class="delivery-address">부산 부산진구 중앙대로 123 10층</td>
+								<td><span class="delivery-status in-transit">배송중</span></td>
+								<td>2026-07-02</td>
+							</tr>
+							<tr>
+								<td><button class="delivery-detail-btn" type="button" data-modal-target="delivery-detail-modal">9876543210</button></td>
+								<td>10031409</td>
+								<td>김유신</td>
+								<td>010-5678-5678</td>
+								<td>한진택배</td>
+								<td class="delivery-address">서울 강남구 테헤란로 25길 8</td>
+								<td><span class="delivery-status ready">배송준비</span></td>
+								<td>2026-07-01</td>
+							</tr>
+							<tr>
+								<td><button class="delivery-detail-btn" type="button" data-modal-target="delivery-detail-modal">5588123001</button></td>
+								<td>10031408</td>
+								<td>이순신</td>
+								<td>010-2468-1357</td>
+								<td>로젠택배</td>
+								<td class="delivery-address">대전 유성구 대학로 99</td>
+								<td><span class="delivery-status complete">배송완료</span></td>
+								<td>2026-06-30</td>
+							</tr>
+						</th:block>
+					</div>
 				</div>
 				
 				<div th:replace="~{admin/fragments/action-bar::action-bar(~{::action-bar-content})}">

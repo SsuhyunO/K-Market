@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller("adminCouponController")
 @RequestMapping("/admin/coupon")
 public class CouponController {
-    @GetMapping("/list")
+    @GetMapping({"/list", "", "/"})
     public String list() {
         return "admin/coupon/list";
     }

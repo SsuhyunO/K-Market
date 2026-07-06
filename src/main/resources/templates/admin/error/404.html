@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>KMarket 관리자 오류</title>
+    <th:block th:replace="~{admin/fragments/head::head}"></th:block>
+    <link rel="stylesheet" th:href="@{/css/admin/error.css}">
+</head>
+<body>
+<header th:replace="~{admin/fragments/header::header}"></header>
+<div class="admin-layout">
+    <aside th:replace="~{admin/fragments/aside::aside}"></aside>
+
+    <main id="admin-main">
+        <div th:replace="~{admin/fragments/page-header::page-header}"></div>
+
+        <section class="admin-error-panel">
+            <p class="admin-error-code">404</p>
+            <h2>요청하신 관리자 페이지를 찾을 수 없습니다.</h2>
+            <p class="admin-error-message">
+                입력한 주소가 올바른지 확인하거나 관리자 메인에서 다시 이동해주세요.
+            </p>
+            <p class="admin-error-path" th:if="${requestedPath != null}" th:text="${requestedPath}"></p>
+            <div class="admin-error-actions">
+                <a th:href="@{/admin/main}">관리자 메인으로 이동</a>
+                <button type="button" onclick="history.back()">이전 페이지로 돌아가기</button>
+            </div>
+        </section>
+    </main>
+</div>
+<footer th:replace="~{admin/fragments/footer::footer}"></footer>
+</body>
+</html>
