@@ -1,7 +1,7 @@
-package org.example.k_market.controller.admin;
+package org.example.k_market.advice;
 
 import jakarta.servlet.http.HttpServletRequest;
-import org.example.k_market.dto.AdminCategoryDTO;
+import org.example.k_market.common.admin.AdminCategory;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 public class AdminCategoryAdvice {
 
     @ModelAttribute("category")
-    public AdminCategoryDTO category(HttpServletRequest request) {
-        return AdminCategoryDTO.fromPath(request.getServletPath())
-                .orElse(AdminCategoryDTO.MAIN);
+    public AdminCategory category(HttpServletRequest request) {
+        return AdminCategory.fromPath(request.getServletPath())
+                .orElse(AdminCategory.MAIN);
     }
 }

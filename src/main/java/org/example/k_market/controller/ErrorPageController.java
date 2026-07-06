@@ -2,7 +2,7 @@ package org.example.k_market.controller;
 
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.http.HttpServletRequest;
-import org.example.k_market.dto.AdminCategoryDTO;
+import org.example.k_market.common.admin.AdminCategory;
 import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,7 +16,7 @@ public class ErrorPageController implements ErrorController {
         String path = getOriginalPath(request);
 
         if (path.equals("/admin") || path.startsWith("/admin/")) {
-            model.addAttribute("category", AdminCategoryDTO.ADMIN_ERROR);
+            model.addAttribute("category", AdminCategory.ADMIN_ERROR);
             model.addAttribute("requestedPath", path);
             return "admin/error/404";
         }

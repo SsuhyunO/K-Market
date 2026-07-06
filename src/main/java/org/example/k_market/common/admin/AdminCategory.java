@@ -1,4 +1,4 @@
-package org.example.k_market.dto;
+package org.example.k_market.common.admin;
 
 import lombok.Getter;
 import lombok.ToString;
@@ -9,7 +9,7 @@ import java.util.Set;
 
 @Getter
 @ToString
-public enum AdminCategoryDTO {
+public enum AdminCategory {
     MAIN("/admin/main", "관리자 메인", "HOME &rsaquo; 관리자 메인", "/admin"),
     ADMIN_ERROR("/admin/error", "페이지를 찾을 수 없습니다", "HOME &rsaquo; 오류"),
     SITE_SETTINGS("/admin/site-settings", "기본설정", "HOME &rsaquo; 환경설정 &rsaquo; 기본설정"),
@@ -46,14 +46,14 @@ public enum AdminCategoryDTO {
     private final String nav;
     private final Set<String> aliases;
 
-    AdminCategoryDTO(String path, String title, String nav, String... aliases) {
+    AdminCategory(String path, String title, String nav, String... aliases) {
         this.path = path;
         this.title = title;
         this.nav = nav;
         this.aliases = Set.of(aliases);
     }
 
-    public static Optional<AdminCategoryDTO> fromPath(String path) {
+    public static Optional<AdminCategory> fromPath(String path) {
         if ("/".equals(path)) {
             return Optional.of(MAIN);
         }

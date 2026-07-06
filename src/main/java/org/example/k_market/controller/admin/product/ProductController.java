@@ -1,6 +1,6 @@
 package org.example.k_market.controller.admin.product;
 
-import org.example.k_market.dto.product.ProductInfoNoticeTemplates;
+import org.example.k_market.common.product.ProductInfoNoticeTemplates;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
