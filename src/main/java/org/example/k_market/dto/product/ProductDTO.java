@@ -1,6 +1,7 @@
 package org.example.k_market.dto.product;
 
 import lombok.*;
+import org.example.k_market.entity.category.Category;
 import org.example.k_market.entity.product.Product;
 
 @Getter
@@ -24,10 +25,10 @@ public class ProductDTO {
     private String infoNoticeType;
     private String createAt;
 
-    public Product toEntity() {
+    public Product toEntity(Category category) {
         return Product.builder()
                 .prodNo(prodNo)
-                .cateId(cateId)
+                .category(category)
                 .prodName(prodName)
                 .price(price)
                 .discount(discount)

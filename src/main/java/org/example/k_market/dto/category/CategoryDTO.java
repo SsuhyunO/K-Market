@@ -12,8 +12,10 @@ import org.example.k_market.entity.category.Category;
 public class CategoryDTO {
     private int cateId;
     private Integer parentId;
+    private String code;
     private String name;
     private String infoNoticeType;
+    private int sortOrder;
 
     private String action; // CREATE, UPDATE, DELETE
 
@@ -28,8 +30,10 @@ public class CategoryDTO {
         return Category.builder()
                 .cateId(cateId == 0 ? null : cateId)
                 .parent(parent)
+                .code(code)
                 .name(name)
                 .infoNoticeType(infoNoticeType)
+                .sortOrder(sortOrder)
                 .build();
     }
 }
