@@ -35,12 +35,17 @@ public class CategoryService {
     }
 
     private void updateCategory(CategoryDTO dto) {
-        if (!categoryRepository.existsById(dto.getCateId())) return;
-        categoryRepository.save(dto.toEntity());
+        Category category = categoryRepository
+                .findById(dto.getCateId())
+                .orElseThrow();
+
+        category.change(
+            dto.getName(),
+            dto.getInfoNoticeType()
+        );
     }
 
     private void deleteCategory(int cateId) {
-        if (!categoryRepository.existsById(cateId)) return;
         categoryRepository.deleteById(cateId);
     }
 }

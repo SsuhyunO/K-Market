@@ -31,4 +31,9 @@ public class Category {
                 .infoNoticeType(infoNoticeType)
                 .build();
     }
+
+    public void change(String name, String infoNoticeType) {
+        this.name = name;
+        this.infoNoticeType = infoNoticeType;
+    }
 }
