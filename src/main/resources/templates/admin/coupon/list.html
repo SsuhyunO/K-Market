@@ -129,7 +129,7 @@
                 <div th:replace="~{admin/fragments/action-bar::action-bar(~{::coupon_table_footer})}">
                     <th:block th:fragment="coupon_table_footer">
                         <span class="btn-area-spacer"></span>
-                        <nav th:replace="~{/admin/fragments/admin-pagination}"></nav>
+                        <nav th:replace="~{admin/fragments/admin-pagination::admin-pagination}"></nav>
                         <button type="button"
                                 data-modal-target="coupon-register-modal"
                                 data-action-variant="primary">쿠폰등록</button>
