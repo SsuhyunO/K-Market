@@ -19,7 +19,7 @@ public class FileDTO {
     private String originalName;
     private String path;
     private String extension;
-    private int fileSize;
+    private Long fileSize;
     private LocalDateTime createdAt;
 
     public File toEntity(){
@@ -29,7 +29,7 @@ public class FileDTO {
                 .originalName(this.originalName)
                 .path(this.path)
                 .extension(this.extension)
-                .fileSize((int) this.fileSize)
+                .fileSize((long)this.fileSize)
                 .createdAt(this.createdAt)
                 .build();
     }

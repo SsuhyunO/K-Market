@@ -21,7 +21,7 @@ public class File {
     private String originalName;
     private String path;
     private String extension;
-    private int fileSize;
+    private Long fileSize;
 
     @CreationTimestamp
     private LocalDateTime createdAt;
