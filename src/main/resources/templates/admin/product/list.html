@@ -172,7 +172,7 @@
                                 data-empty-message="삭제할 상품을 선택해주세요."
                                 data-confirm-message="선택한 상품을 삭제하시겠습니까?"
                                 data-action-variant="secondary">선택삭제</button>
-                        <nav th:replace="~{/admin/fragments/admin-pagination}"></nav>
+                        <nav th:replace="~{admin/fragments/admin-pagination::admin-pagination}"></nav>
                         <button type="button"
                                 th:onclick="|location.href='@{/admin/product/register}'|"
                                 data-action-variant="primary">상품등록</button>

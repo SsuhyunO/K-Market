@@ -77,10 +77,10 @@
                                 배너링크 : ${banner.url}
                             </td>
                             <td th:text="${banner.location}"></td>
-                            <td th:text="${banner.createAt.replace(0, 10)}"></td>
-                            <td th:text="${banner.leaveAt.replace(0, 10)}"></td>
-                            <td th:text="${banner.createAt.replace(11, 16)}"></td>
-                            <td th:text="${banner.leaveAt.replace(11, 16)}"></td>
+                            <td th:text="${banner.createAt != null && #strings.length(banner.createAt) >= 10 ? #strings.substring(banner.createAt, 0, 10) : banner.createAt}"></td>
+                            <td th:text="${banner.leaveAt != null && #strings.length(banner.leaveAt) >= 10 ? #strings.substring(banner.leaveAt, 0, 10) : banner.leaveAt}"></td>
+                            <td th:text="${banner.createAt != null && #strings.length(banner.createAt) >= 16 ? #strings.substring(banner.createAt, 11, 16) : ''}"></td>
+                            <td th:text="${banner.leaveAt != null && #strings.length(banner.leaveAt) >= 16 ? #strings.substring(banner.leaveAt, 11, 16) : ''}"></td>
                             <td>
                                 <button class="banner-state-button" type="submit"
                                         th:text="${banner.active == 'ACTIVE' ? '[비활성]' : '[활성]'}"></button>
@@ -93,7 +93,7 @@
 		                        data-empty-message="삭제할 배너를 선택해주세요."
 		                        data-confirm-message="선택한 배너를 삭제하시겠습니까?"
 		                        data-action-variant="secondary">선택삭제</button>
-		                <nav th:replace="~{/admin/fragments/admin-pagination}"></nav>
+		                <nav th:replace="~{admin/fragments/admin-pagination::admin-pagination}"></nav>
 		                <button type="button"
 		                        data-modal-target="banner-modal"
 		                        data-action-variant="primary">배너등록</button>

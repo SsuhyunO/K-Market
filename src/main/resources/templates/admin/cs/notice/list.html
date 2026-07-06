@@ -149,7 +149,7 @@
                                 data-empty-message="삭제할 공지사항을 선택해주세요."
                                 data-confirm-message="선택한 공지사항을 삭제하시겠습니까?"
                                 data-action-variant="secondary">선택삭제</button>
-                        <nav th:replace="~{/admin/fragments/admin-pagination}"></nav>
+                        <nav th:replace="~{admin/fragments/admin-pagination::admin-pagination}"></nav>
                         <button type="button" th:data-cs-link="@{/admin/cs/notice/write}" data-action-variant="primary">작성하기</button>
                     </th:block>
                 </form>

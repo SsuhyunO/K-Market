@@ -35,14 +35,13 @@ public class CategoryService {
     }
 
     private void updateCategory(CategoryDTO dto) {
-        Category category = categoryRepository
+        categoryRepository
                 .findById(dto.getCateId())
-                .orElseThrow();
+                .ifPresent(category -> category.change(
+                        dto.getName(),
+                        dto.getInfoNoticeType()
+                ));
 
-        category.change(
-            dto.getName(),
-            dto.getInfoNoticeType()
-        );
     }
 
     private void deleteCategory(int cateId) {
