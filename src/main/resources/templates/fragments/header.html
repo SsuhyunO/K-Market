@@ -1,3 +1,5 @@
+
+
 <header th:fragment="header" id="header">
 
     <div class="header-banner">
@@ -24,10 +26,12 @@
                 </button>
             </form>
 
-            <nav class="util-nav" style="display:flex; gap:16px; white-space:nowrap; flex-shrink:0;">
-                <a th:href="@{/member/login}" style="font-size:13px; color:var(--color-gray-600);">로그인</a>
-                <span style="color:var(--color-gray-200);">|</span>
-                <a th:href="@{/member/join}" style="font-size:13px; color:var(--color-gray-600);">회원가입</a>
+            <nav class="util-nav" style="display:flex; gap:16px; white-space:nowrap; flex-shrink:0; align-items:center;">
+                <span id="authArea" style="display:flex; gap:16px; align-items:center;">
+                    <a th:href="@{/member/login}" id="navLoginLink" style="font-size:13px; color:var(--color-gray-600);">로그인</a>
+                    <span style="color:var(--color-gray-200);">|</span>
+                    <a th:href="@{/member/join}" id="navJoinLink" style="font-size:13px; color:var(--color-gray-600);">회원가입</a>
+                </span>
                 <span style="color:var(--color-gray-200);">|</span>
                 <a th:href="@{/my/home}" style="font-size:13px; color:var(--color-gray-600);">마이페이지</a>
                 <span style="color:var(--color-gray-200);">|</span>
@@ -45,5 +49,7 @@
             <a th:href="@{/}+'#section-discount'"  data-section="discount">할인상품</a>
         </div>
     </nav>
+
+    <script th:src="@{/js/common/auth-header.js}"></script>
 
 </header>

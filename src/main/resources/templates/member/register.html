@@ -33,20 +33,24 @@
                 <th>아이디</th>
                 <td>
                     <input type="text" class="input-id" placeholder="" maxlength="12" id="userId">
+                    <button type="button" class="btn-verify" onclick="checkUserId()">중복확인</button>
                     <span class="hint">영문, 숫자  4~12자 설정</span>
+                    <div id="userId-msg" style="font-size:13px; margin-top:4px;"></div>
                 </td>
             </tr>
             <tr>
                 <th>비밀번호</th>
                 <td>
                     <input type="password" class="input-pw" id="userPw">
-                    <span class="hint">영문, 숫자, 특수문자  8~12자 설정</span>
+                    <span class="hint">숫자, 특수문자 필수  8~12자 설정</span>
+                    <div id="pw-msg" style="font-size:13px; margin-top:4px;"></div>
                 </td>
             </tr>
             <tr>
                 <th>비밀번호확인</th>
                 <td>
                     <input type="password" class="input-pw" id="userPwConfirm">
+                    <div id="pwConfirm-msg" style="font-size:13px; margin-top:4px;"></div>
                 </td>
             </tr>
 
@@ -80,6 +84,15 @@
                 <td>
                     <input type="email" class="input-email" placeholder="이메일입력" id="userEmail">
                     <button type="button" class="btn-verify" onclick="sendEmailCode()">이메일 인증</button>
+                </td>
+            </tr>
+            <!-- 이 코드를 기존 EMAIL <tr> 태그 바로 밑에 복사해서 붙여넣으세요 -->
+            <tr id="emailCodeRow" style="display: none;">
+                <th>인증번호</th>
+                <td>
+                    <input type="text" class="input-email" placeholder="인증번호 입력" id="emailCode">
+                    <button type="button" class="btn-verify" onclick="verifyEmailCode()">인증 확인</button>
+                    <div id="emailCode-msg" style="font-size:13px; margin-top:4px;"></div>
                 </td>
             </tr>
             <tr>
@@ -126,14 +139,12 @@
         const loginUrl = /*[[@{/member/login}]]*/ '/member/login';
         const indexUrl = /*[[@{/}]]*/ '/';
     </script>
-    <script th:src="@{/js/member/register.js}"></script>
-
 
     <!-- 카카오 주소 API -->
     <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-    <script th:src="@{/js/member/register.js}">
-        
-    </script>
+
+    <script th:src="@{/js/member/register.js}"></script>
+
 
 </body>
 </html>

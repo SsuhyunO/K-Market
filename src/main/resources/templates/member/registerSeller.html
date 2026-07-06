@@ -33,7 +33,9 @@
                 <th>아이디</th>
                 <td>
                     <input type="text" class="input-id" maxlength="12" id="userId">
+                    <button type="button" class="btn-verify" onclick="checkUserId()">중복확인</button>
                     <span class="hint">영문, 숫자  4~12자 설정</span>
+                    <div id="userId-msg" style="font-size:13px; margin-top:4px;"></div>
                 </td>
             </tr>
             <tr>
@@ -41,12 +43,14 @@
                 <td>
                     <input type="password" class="input-pw" id="userPw">
                     <span class="hint">영문, 숫자, 특수문자  8~12자 설정</span>
+                    <div id="pw-msg" style="font-size:13px; margin-top:4px;"></div>
                 </td>
             </tr>
             <tr>
                 <th>비밀번호확인</th>
                 <td>
                     <input type="password" class="input-pw" id="userPwConfirm">
+                    <div id="pwConfirm-msg" style="font-size:13px; margin-top:4px;"></div>
                 </td>
             </tr>
 
@@ -69,8 +73,10 @@
             <tr>
                 <th>사업자등록번호</th>
                 <td>
-                    <input type="text" class="input-biz" placeholder="이메일입력" id="bizNum">
+                    <input type="text" class="input-biz" placeholder="- 포함 입력" id="bizNum">
+                    <button type="button" class="btn-verify" onclick="checkBizNum()">중복확인</button>
                     <span class="hint-inline">- 포함  12 자리 입력</span>
+                    <div id="bizNum-msg" style="font-size:13px; margin-top:4px;"></div>
                 </td>
             </tr>
             <tr>
@@ -128,14 +134,10 @@
         const loginUrl = /*[[@{/member/login}]]*/ '/member/login';
         const indexUrl = /*[[@{/}]]*/ '/';
     </script>
-    <script th:src="@{/js/member/registerSeller.js}"></script>
-
-
 
     <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-    <script th:src="@{/js/member/registerSeller.js}">
-       
-    </script>
+
+    <script th:src="@{/js/member/registerSeller.js}"></script>
 
 </body>
 </html>
