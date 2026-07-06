@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.example.k_market.dao.MemberDAO">
+
+    <!-- 회원가입 -->
+    <insert id="insertMember" parameterType="Member">
+        INSERT INTO member
+        (uid, password, birthDate, gender, name, phone, email,
+         memberType, memberLevel, pointBalance, zipCode, addr1, addr2, regIp, createdAt)
+        VALUES
+            (#{uid}, #{password}, #{birthDate}, #{gender}, #{name}, #{phone}, #{email},
+             #{memberType}, #{memberLevel}, #{pointBalance}, #{zipCode}, #{addr1}, #{addr2}, #{regIp}, NOW())
+    </insert>
+
+    <!-- uid로 회원 조회 (로그인 시 사용) -->
+    <select id="findByUid" parameterType="String" resultType="Member">
+        SELECT uid, password, birthDate, gender, name, phone, email,
+               memberType, memberLevel, pointBalance, zipCode, addr1, addr2, regIp, createdAt
+        FROM member
+        WHERE uid = #{uid}
+    </select>
+
+    <!-- 아이디 중복확인 -->
+    <select id="countByUid" parameterType="String" resultType="int">
+        SELECT COUNT(*) FROM member WHERE uid = #{uid}
+    </select>
+
+    <!-- 이름 + 이메일로 아이디 찾기 -->
+    <select id="findUidByNameAndEmail" resultType="String">
+        SELECT uid FROM member
+        WHERE name = #{name} AND email = #{email}
+    </select>
+
+    <!-- uid + 이메일 일치 확인 -->
+    <select id="countByUidAndEmail" resultType="int">
+        SELECT COUNT(*) FROM member
+        WHERE uid = #{uid} AND email = #{email}
+    </select>
+
+    <!-- 비밀번호 변경 -->
+    <update id="updatePassword">
+        UPDATE member SET password = #{password}
+        WHERE uid = #{uid}
+    </update>
+
+    <!-- 회원정보 수정 -->
+    <update id="updateMember" parameterType="Member">
+        UPDATE member
+        SET name = #{name},
+            phone = #{phone},
+            email = #{email},
+            zipCode = #{zipCode},
+            addr1 = #{addr1},
+            addr2 = #{addr2}
+        WHERE uid = #{uid}
+    </update>
+
+</mapper>
