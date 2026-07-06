@@ -1,4 +1,4 @@
-package org.example.k_market.entity.Admin;
+package org.example.k_market.entity.admin;
 
 
 import jakarta.persistence.*;
@@ -19,9 +19,9 @@ public class AdminConfig {
     private int mainSliderBannerId;
     private String siteName;
     private String siteSubName;
-    private int headerLogoFiled;
-    private int footerLogoFiled;
-    private int faviconFiled;
+    private int headerLogoImageId;
+    private int footerLogoImageId;
+    private int faviconImageId;
     private int logoFiled;
     private String bussName;
     private String ceo;

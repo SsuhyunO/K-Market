@@ -7,25 +7,49 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import java.util.List;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
 
-    // 비밀번호 암호화 도구 (BCrypt 방식)
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
-    // 어떤 URL에 로그인이 필요한지 등 접근 규칙 설정
+    // 프론트를 다른 포트(라이브서버, npm dev서버 등)에서 띄워서 테스트하는 경우
+    // credentials: 'include' 로 세션 쿠키를 주고받으려면 CORS 설정이 반드시 필요합니다.
+    // 같은 서버(Thymeleaf/JSP)에서 정적 파일을 서빙한다면 이 빈은 없어도 무방하지만,
+    // 있어도 해가 되지 않으니 그대로 두는 걸 권장합니다.
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration config = new CorsConfiguration();
+        // TODO: 실제 프론트 주소로 변경하세요 (예: http://localhost:5500)
+        config.setAllowedOrigins(List.of("http://localhost:5500", "http://127.0.0.1:5500"));
+        config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        config.setAllowedHeaders(List.of("*"));
+        config.setAllowCredentials(true); // 세션 쿠키 주고받으려면 필수
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", config);
+        return source;
+    }
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(csrf -> csrf.disable()) // 일단 개발 편의상 꺼둠
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+                .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .anyRequest().permitAll() // 지금은 일단 전부 허용
+                                .anyRequest().permitAll()
+                        // 나중에 보안 강화할 때 다시 좁힐 예정
                 );
+
         return http.build();
     }
 }

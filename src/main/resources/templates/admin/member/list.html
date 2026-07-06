@@ -95,7 +95,7 @@
 	                
 	                <th:block th:fragment="member-table-footer">
 		                <span class="btn-area-spacer"></span>
-		                <nav th:replace="~{/admin/fragments/admin-pagination}"></nav>
+		                <nav th:replace="~{admin/fragments/admin-pagination::admin-pagination}"></nav>
 		                <button type="button"
 		                        data-management-action="bulk-edit"
 		                        data-empty-message="수정할 회원을 선택해주세요."

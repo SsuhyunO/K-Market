@@ -1,8 +1,8 @@
-package org.example.k_market.entity.Admin;
+package org.example.k_market.entity.admin;
 
 import jakarta.persistence.*;
-import jdk.jfr.Timespan;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 
@@ -22,5 +22,7 @@ public class File {
     private String path;
     private String extension;
     private int fileSize;
+
+    @CreationTimestamp
     private LocalDateTime createdAt;
 }
