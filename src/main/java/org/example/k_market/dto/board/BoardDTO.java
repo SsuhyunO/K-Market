@@ -2,6 +2,8 @@ package org.example.k_market.dto.board;
 
 import lombok.*;
 
+import java.time.LocalDateTime;
+
 @Getter
 @Setter
 @ToString
@@ -15,5 +17,6 @@ public class BoardDTO {
     private String title;
     private String content;
     private int fileId;
-    private String createdAt;
+    private LocalDateTime createdAt;
 }
+

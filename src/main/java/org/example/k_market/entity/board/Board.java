@@ -1,5 +1,6 @@
 package org.example.k_market.entity.board;
 
+
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -14,16 +15,23 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "board")
 public class Board {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int boardNo;
-
+    private Integer boardNo;
     private String memberUid;
     private String boardType;
     private String title;
     private String content;
-    private int fileId;
+    private Integer fileId;
 
     @CreationTimestamp
     private LocalDateTime createdAt;
+
+    public void updateBoard(String boardType, String title, String content, Integer fileId) {
+        this.boardType = boardType;
+        this.title = title;
+        this.content = content;
+        this.fileId = fileId;
+    }
 }
