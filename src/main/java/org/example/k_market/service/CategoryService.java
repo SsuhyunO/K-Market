@@ -123,18 +123,18 @@ public class CategoryService {
         if (target.getParent() != null) {
             // 2차 카테고리 삭제: 자기 자신에 속한 상품을 미분류로 이동
             productRepository.moveProductsToUncategorized(
-                    List.of(target.getCateId()),
-                    uncategorized
+                List.of(target.getCateId()),
+                uncategorized
             );
 
             categoryRepository.deleteById(target.getCateId());
         } else {
             // 1차 카테고리 삭제: 하위 2차 카테고리 상품을 미분류로 이동 후 자식 삭제
             List<Integer> childCategoryIds = categoryRepository
-                    .findByParent_CateId(target.getCateId())
-                    .stream()
-                    .map(Category::getCateId)
-                    .toList();
+                .findByParent_CateId(target.getCateId())
+                .stream()
+                .map(Category::getCateId)
+                .toList();
 
             if (!childCategoryIds.isEmpty()) {
                 productRepository.moveProductsToUncategorized(childCategoryIds, uncategorized);
