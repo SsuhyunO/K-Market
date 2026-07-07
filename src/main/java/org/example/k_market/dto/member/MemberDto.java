@@ -63,6 +63,9 @@ public class MemberDto {
 
         @NotBlank(message = "비밀번호를 입력하세요.")
         private String password;
+
+        // ===== 추가된 부분: 자동로그인 체크박스 값 =====
+        private boolean autoLogin;
     }
 
     // 아이디 중복확인 요청
@@ -145,7 +148,6 @@ public class MemberDto {
         private String email;
         private String regDate;
 
-        // ⚠️ Member에 getRegDate() 없으면 필드명 알려줘, 여기만 고치면 됨
         public static FindUidResult from(Member member) {
             return FindUidResult.builder()
                     .name(member.getName())
@@ -164,7 +166,7 @@ public class MemberDto {
     public static class Response {
         private String uid;
         private String name;
-        private String birthDate; // ===== 추가된 부분: 마이페이지 생년월일 표시용 =====
+        private String birthDate;
         private String email;
         private String phone;
         private String memberType;
@@ -178,7 +180,7 @@ public class MemberDto {
             return Response.builder()
                     .uid(member.getUid())
                     .name(member.getName())
-                    .birthDate(member.getBirthDate()) // ===== 추가된 부분 =====
+                    .birthDate(member.getBirthDate())
                     .email(member.getEmail())
                     .phone(member.getPhone())
                     .memberType(member.getMemberType())
@@ -201,5 +203,92 @@ public class MemberDto {
         private String zipCode;
         private String addr1;
         private String addr2;
+    }
+
+    // ===== 관리자 회원목록 화면용 응답 =====
+    @Getter
+    @Builder
+    public static class AdminListItem {
+        private int no;                  // 화면용 순번 (DB PK 아님)
+        private String uid;
+        private String name;
+        private String gender;
+        private String gradeLabel;       // "VVIP" 등 변환된 값
+        private Integer memberLevel;     // 원본 숫자값 (드롭다운 변경 시 필요)
+        private Integer pointBalance;
+        private String email;
+        private String phone;
+        private String zipCode;
+        private String address;          // addr1
+        private String detailAddress;    // addr2
+        private String createdAt;
+        private String lastLoginAt;
+        private String note;
+        private String status;
+        private String statusLabel;      // "정상"/"탈퇴" 변환된 값
+
+        public static AdminListItem from(Member member, int no) {
+            return AdminListItem.builder()
+                    .no(no)
+                    .uid(member.getUid())
+                    .name(member.getName())
+                    .gender(member.getGender())
+                    .gradeLabel(toGradeLabel(member.getMemberLevel()))
+                    .memberLevel(member.getMemberLevel())
+                    .pointBalance(member.getPointBalance())
+                    .email(member.getEmail())
+                    .phone(member.getPhone())
+                    .zipCode(member.getZipCode())
+                    .address(member.getAddr1())
+                    .detailAddress(member.getAddr2())
+                    .createdAt(format(member.getCreatedAt()))
+                    .lastLoginAt(format(member.getLastLoginAt()))
+                    .note(member.getNote())
+                    .status(member.getStatus())
+                    .statusLabel("ACTIVE".equals(member.getStatus()) ? "정상" : "탈퇴")
+                    .build();
+        }
+
+        private static String format(java.time.LocalDateTime dt) {
+            return dt != null
+                    ? dt.format(java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))
+                    : "";
+        }
+
+        // 등급 매핑 기준 (추후 팀 협의 시 숫자만 조정)
+        // 1=FAMILY, 2=SILVER, 3=GOLD, 4=VIP, 5=VVIP
+        private static String toGradeLabel(Integer level) {
+            if (level == null) return "FAMILY";
+            return switch (level) {
+                case 5 -> "VVIP";
+                case 4 -> "VIP";
+                case 3 -> "GOLD";
+                case 2 -> "SILVER";
+                default -> "FAMILY";
+            };
+        }
+    }
+
+    // ===== 관리자 회원정보 수정 요청 =====
+    @Getter
+    @NoArgsConstructor
+    public static class AdminUpdateRequest {
+        private String uid;            // 수정 대상 식별용 (필수)
+        private String name;
+        private String gender;
+        private String email;
+        private String phone;
+        private String zipCode;
+        private String address;
+        private String detailAddress;
+        private String note;
+    }
+
+    // ===== 관리자 등급 즉시변경 요청 =====
+    @Getter
+    @NoArgsConstructor
+    public static class AdminGradeUpdateRequest {
+        private String uid;
+        private Integer memberLevel;
     }
 }

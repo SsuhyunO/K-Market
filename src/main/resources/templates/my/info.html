@@ -7,6 +7,7 @@
     <title>나의설정 | K-Market</title>
     <link rel="stylesheet" th:href="@{/css/my/info.css}">
     <script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+    <meta id="ctxPath" th:content="@{/}" content="/">
 </head>
 <body>
 
@@ -15,10 +16,6 @@
     <div class="header-inner">
         <a th:href="@{/}" class="logo">CI ( 로고 )</a>
         <nav class="header-nav"><div class="footer-nav">
-            <a th:href="@{/company/index}">회사소개</a>
-            <a th:href="@{/policy/buyer}">서비스이용약관</a>
-            <a th:href="@{/policy/privacy}">개인정보처리방침</a>
-            <a th:href="@{/policy/finance}">전자금융거래약관</a>
         </div>
             <a th:href="@{/member/login}">로그인</a>
             <a th:href="@{/member/join}">회원가입</a>
@@ -99,18 +96,20 @@
                         <td>
                             <button type="button" class="btn-info-action" id="pwChangeBtn">비밀번호수정</button>
 
-                            <!-- 평소엔 숨겨져 있다가 위 버튼 누르면 나타남 -->
-                            <div class="pw-edit-section" id="pwEditSection" style="display:none; margin-top:10px;">
+                            <div class="pw-edit-section" id="pwEditSection" style="display:none;">
                                 <div class="pw-check-row">
                                     <input type="password" class="info-input" id="currentPwInput" placeholder="현재 비밀번호 확인">
-                                    <span id="pwCheckMsg" style="font-size:13px; margin-left:8px;"></span>
+                                    <button type="button" class="btn-info-edit" id="pwVerifyBtn">확인</button>
+                                    <span class="pw-msg" id="pwCheckMsg"></span>
                                 </div>
 
                                 <!-- 현재 비밀번호가 확인된 경우에만 나타남 -->
-                                <div class="pw-new-row" id="pwNewSection" style="display:none; margin-top:10px;">
-                                    <input type="password" class="info-input" id="newPwInput" placeholder="새 비밀번호"><br>
-                                    <input type="password" class="info-input" id="newPwConfirmInput" placeholder="새 비밀번호 확인" style="margin-top:6px;"><br>
-                                    <button type="button" class="btn-info-save" id="pwSaveBtn" style="margin-top:6px;">저장</button>
+                                <div class="pw-new-row" id="pwNewSection" style="display:none;">
+                                    <input type="password" class="info-input" id="newPwInput" placeholder="새 비밀번호">
+                                    <span class="pw-msg" id="pwRuleMsg"></span>
+                                    <input type="password" class="info-input" id="newPwConfirmInput" placeholder="새 비밀번호 확인">
+                                    <span class="pw-msg" id="pwMatchMsg"></span>
+                                    <button type="button" class="btn-info-save" id="pwSaveBtn">저장</button>
                                 </div>
                             </div>
                         </td>

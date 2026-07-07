@@ -7,6 +7,9 @@ import org.example.k_market.repository.MemberRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.util.UUID;
+
 @Service
 @RequiredArgsConstructor
 public class MemberService {
@@ -92,6 +95,30 @@ public class MemberService {
     public void updateProfile(String uid, MemberDto.UpdateRequest request) {
         Member member = findByUid(uid);
         member.updateProfile(request.getPhone(), request.getZipCode(), request.getAddr1(), request.getAddr2());
+        memberRepository.save(member);
+    }
+
+    // ===== 추가된 부분: 자동로그인 토큰 발급 (7일 유지) =====
+    public String issueAutoLoginToken(String uid) {
+        Member member = findByUid(uid);
+        String token = UUID.randomUUID().toString();
+        member.issueAutoLoginToken(token, LocalDateTime.now().plusDays(7));
+        memberRepository.save(member);
+        return token;
+    }
+
+    // ===== 추가된 부분: 토큰으로 회원 조회 (만료 체크 포함, 유효하지 않으면 null) =====
+    public Member findByValidAutoLoginToken(String token) {
+        return memberRepository.findByAutoLoginToken(token)
+                .filter(m -> m.getAutoLoginExpireAt() != null
+                        && m.getAutoLoginExpireAt().isAfter(LocalDateTime.now()))
+                .orElse(null);
+    }
+
+    // ===== 추가된 부분: 자동로그인 토큰 삭제 (로그아웃/탈퇴 시) =====
+    public void clearAutoLoginToken(String uid) {
+        Member member = findByUid(uid);
+        member.clearAutoLoginToken();
         memberRepository.save(member);
     }
 }

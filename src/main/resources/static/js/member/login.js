@@ -5,6 +5,10 @@ async function submitLogin(event) {
     const uid = document.getElementById('userId').value.trim();
     const pw = document.getElementById('userPw').value;
 
+    // ===== 추가된 부분: 자동로그인 체크박스 값 =====
+    const autoLoginCheckbox = document.querySelector('input[name="autoLogin"]');
+    const autoLogin = autoLoginCheckbox ? autoLoginCheckbox.checked : false;
+
     if (!uid || !pw) {
         alert('아이디와 비밀번호를 입력해 주세요.');
         return;
@@ -15,7 +19,7 @@ async function submitLogin(event) {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             credentials: 'include',
-            body: JSON.stringify({ uid: uid, password: pw })
+            body: JSON.stringify({ uid: uid, password: pw, autoLogin: autoLogin })
         });
 
         if (!res.ok) {

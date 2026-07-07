@@ -58,27 +58,38 @@ public class Member {
     @Column(name = "createdAt", nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
-    // ===== 추가된 부분: 탈퇴 여부 =====
-    // 실제 삭제(hard delete) 대신 이 값만 바꾸는 soft delete 방식
     @Column(name = "status", length = 20, nullable = false)
     private String status; // "ACTIVE" (기본값) / "WITHDRAWN"
 
     @Column(name = "withdrawnAt")
     private LocalDateTime withdrawnAt;
 
+    @Column(name = "autoLoginToken", length = 100)
+    private String autoLoginToken;
+
+    @Column(name = "autoLoginExpireAt")
+    private LocalDateTime autoLoginExpireAt;
+
+    // ===== 추가된 부분: 최근 로그인 시각 =====
+    @Column(name = "lastLoginAt")
+    private LocalDateTime lastLoginAt;
+
+    // ===== 추가된 부분: 관리자 메모 =====
+    @Column(name = "note", columnDefinition = "TEXT")
+    private String note;
+
     @PrePersist
     protected void onCreate() {
         this.createdAt = LocalDateTime.now();
         if (this.pointBalance == null) this.pointBalance = 0;
         if (this.memberLevel == null) this.memberLevel = 1;
-        if (this.status == null) this.status = "ACTIVE"; // 추가된 부분
+        if (this.status == null) this.status = "ACTIVE";
     }
 
     public void changePassword(String encodedPassword) {
         this.password = encodedPassword;
     }
 
-    // ===== 추가된 부분 =====
     public void withdraw() {
         this.status = "WITHDRAWN";
         this.withdrawnAt = LocalDateTime.now();
@@ -88,12 +99,43 @@ public class Member {
         return "WITHDRAWN".equals(this.status);
     }
 
-    // ===== 추가된 부분: 마이페이지 정보수정(휴대폰/주소)용 =====
-    // 이메일은 정책상 여기서 수정 불가 -> 파라미터에서 의도적으로 제외
+    public void issueAutoLoginToken(String token, LocalDateTime expireAt) {
+        this.autoLoginToken = token;
+        this.autoLoginExpireAt = expireAt;
+    }
+
+    public void clearAutoLoginToken() {
+        this.autoLoginToken = null;
+        this.autoLoginExpireAt = null;
+    }
+
     public void updateProfile(String phone, String zipCode, String addr1, String addr2) {
         if (phone != null) this.phone = phone;
         if (zipCode != null) this.zipCode = zipCode;
         if (addr1 != null) this.addr1 = addr1;
         if (addr2 != null) this.addr2 = addr2;
+    }
+
+    // ===== 추가된 부분: 로그인 시각 갱신 =====
+    public void updateLastLoginAt() {
+        this.lastLoginAt = LocalDateTime.now();
+    }
+
+    // ===== 추가된 부분: 관리자 화면 수정용 =====
+    public void adminUpdate(String name, String gender, String email, String phone,
+                            String zipCode, String addr1, String addr2, String note) {
+        if (name != null) this.name = name;
+        if (gender != null) this.gender = gender;
+        if (email != null) this.email = email;
+        if (phone != null) this.phone = phone;
+        if (zipCode != null) this.zipCode = zipCode;
+        if (addr1 != null) this.addr1 = addr1;
+        if (addr2 != null) this.addr2 = addr2;
+        if (note != null) this.note = note;
+    }
+
+    // ===== 추가된 부분: 등급 즉시변경용 =====
+    public void changeMemberLevel(Integer memberLevel) {
+        this.memberLevel = memberLevel;
     }
 }

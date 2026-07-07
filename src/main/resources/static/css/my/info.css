@@ -479,6 +479,61 @@ main {
     background-color: #3d9140 !important;
 }
 
+/* ===== 비밀번호 수정 영역 ===== */
+.pw-edit-section {
+    margin-top: 10px;
+    padding: 16px;
+    background-color: #f9f9f9;
+    border: 1px solid #eee;
+    border-radius: 4px;
+    max-width: 340px;
+}
+
+.pw-check-row {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.pw-check-row .info-input {
+    width: 100%;
+    max-width: 220px;
+}
+
+.pw-new-row {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin-top: 14px;
+    padding-top: 14px;
+    border-top: 1px dashed #ddd;
+}
+
+.pw-new-row .info-input {
+    width: 100%;
+}
+
+.pw-new-row .btn-info-save {
+    align-self: flex-start;
+    margin-top: 8px;
+}
+
+.pw-msg {
+    font-size: 12px;
+    font-weight: bold;
+    min-height: 14px;
+    display: inline-block;
+}
+
+.pw-msg.pw-msg-success {
+    color: #4CAF50;
+}
+
+.pw-msg.pw-msg-error {
+    color: #e53935;
+}
+
 /* ===== Email 행 ===== */
 .info-email-row {
     display: flex;

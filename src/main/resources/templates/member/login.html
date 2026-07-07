@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -10,7 +8,6 @@
 </head>
 <body>
 
-<!-- 헤더 -->
 <header>
     <div class="header-inner">
         <a th:href="@{/}" class="logo">CI ( 로고 )</a>
@@ -23,14 +20,11 @@
     </div>
 </header>
 
-<!-- 메인 -->
 <main>
     <div class="main-wrapper">
 
-        <!-- 로그인 + 배너 가로 영역 -->
         <div class="login-container">
 
-            <!-- 로그인 폼 -->
             <div class="login-box">
                 <h2>로그인</h2>
 
@@ -62,7 +56,6 @@
                     </div>
                 </form>
 
-                <!-- 소셜 로그인 -->
                 <div class="social-login">
                     <button class="social-btn naver" title="네이버 로그인">N</button>
                     <button class="social-btn kakao" title="카카오 로그인">K</button>
@@ -70,14 +63,15 @@
                 </div>
             </div>
 
-            <!-- 배너 광고 -->
             <div class="banner-box">
-                420 × 260 배너 광고
+                <video autoplay muted loop playsinline class="banner-video">
+                    <source th:src="@{/images/login_banner.mp4}" type="video/mp4">
+                    브라우저가 비디오 태그를 지원하지 않습니다.
+                </video>
             </div>
 
         </div>
 
-        <!-- 인증 어워드 로고 -->
         <div class="award-logos">
             <div class="award-item">로고1</div>
             <div class="award-item">로고2</div>
@@ -90,7 +84,6 @@
     </div>
 </main>
 
-<!-- 푸터 -->
 <footer>
     <div class="footer-info">
         <div class="footer-nav">
