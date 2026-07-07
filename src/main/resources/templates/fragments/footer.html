@@ -34,9 +34,13 @@
                     (365일 09:00~18:00)
                 </p>
             </div>
+            <p>[[${@appInfoDTO.appName}]] - [[${@appInfoDTO.appVersion}]]</p>
         </div>
     </div>
 
-    <span class="version">[[${@appInfoDTO.appName}]] - [[${@appInfoDTO.appVersion}]]</span>
+    <div style="text-align:center; font-size:12px; color:#999; padding:10px 0;"
+         th:text="${siteConfig != null ? siteConfig.copyright : 'Copyright © Kmarket.co.kr All rights reserved.'}">
+        Copyright © Kmarket.co.kr All rights reserved.
+    </div>
 
 </div>
