@@ -21,24 +21,26 @@ public class ProductDTO {
     private int thumb1FileId;
     private int thumb2FileId;
     private int thumb3FileId;
+    private int detailInfoFileId;
     private String sellerUid;
     private String infoNoticeType;
-    private String createAt;
+    private String createdAt;
 
     public Product toEntity(Category category) {
         return Product.builder()
-                .prodNo(prodNo)
-                .category(category)
-                .prodName(prodName)
-                .price(price)
-                .discount(discount)
-                .point(point)
-                .sold(sold)
-                .thumb1FileId(thumb1FileId)
-                .thumb2FileId(thumb2FileId)
-                .thumb3FileId(thumb3FileId)
-                .sellerUid(sellerUid)
-                .infoNoticeType(infoNoticeType)
-                .build();
+            .prodNo(prodNo)
+            .category(category)
+            .prodName(prodName)
+            .price(price)
+            .discount(discount)
+            .point(point)
+            .sold(sold)
+            .thumb1FileId(thumb1FileId)
+            .thumb2FileId(thumb2FileId)
+            .thumb3FileId(thumb3FileId)
+            .detailInfoFileId(detailInfoFileId)
+            .sellerUid(sellerUid)
+            .infoNoticeType(infoNoticeType)
+            .build();
     }
 }

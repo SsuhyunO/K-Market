@@ -3,6 +3,9 @@
       th:name="${formName}"
       method="post"
       enctype="multipart/form-data">
+	<p class="product-form-error"
+	   th:if="${productErrorMessage != null}"
+	   th:text="${productErrorMessage}">상품 등록에 실패했습니다.</p>
 	
 	<section th:replace="~{admin/fragments/dash-section::dash-section(null, '상품분류', '1차, 2차 카테고리 기본분류는 반드시 선택하셔야 합니다.', ~{::current_category_state_section})}">
 		<th:block th:fragment="current_category_state_section">
@@ -11,31 +14,26 @@
 					<tr>
 						<th><label for="root-category-selector">1차 분류</label></th>
 							<td>
-								<select id="root-category-selector" name="rootCategorySelector">
+								<select id="root-category-selector" name="rootCategorySelector" required>
 									<option value="">1차 카테고리 선택</option>
-									<option value="women-fashion">여성패션</option>
-									<option value="men-fashion">남성패션</option>
-									<option value="food">식품</option>
-									<option value="living-health">생활 / 건강</option>
-									<option value="baby">유아동</option>
-									<option value="appliance">가전</option>
+									<option th:each="rootCategory : ${categoryTree}"
+									        th:value="${rootCategory.cateId}"
+									        th:text="${rootCategory.name}">1차 카테고리</option>
 								</select>
 							</td>
 						</tr>
 					<tr>
 						<th><label for="sub-category-selector">2차 분류</label></th>
 							<td>
-								<select id="sub-category-selector" name="subCategorySelector">
+								<select id="sub-category-selector" name="cateId" required>
 									<option value="">2차 카테고리 선택</option>
-									<option value="women-clothing" data-parent="women-fashion" data-info-notice-type="clothing">브랜드의류</option>
-									<option value="women-bag" data-parent="women-fashion" data-info-notice-type="bag">브랜드가방</option>
-									<option value="women-shoes" data-parent="women-fashion" data-info-notice-type="shoes">브랜드신발</option>
-									<option value="women-etc" data-parent="women-fashion" data-info-notice-type="etc">브랜드잡화</option>
-									<option value="men-clothing" data-parent="men-fashion" data-info-notice-type="clothing">남성의류</option>
-									<option value="food-default" data-parent="food" data-info-notice-type="food">일반식품</option>
-									<option value="living-default" data-parent="living-health" data-info-notice-type="etc">생활용품</option>
-									<option value="baby-default" data-parent="baby" data-info-notice-type="baby">영유아용품</option>
-									<option value="appliance-default" data-parent="appliance" data-info-notice-type="digital">디지털가전</option>
+									<th:block th:each="rootCategory : ${categoryTree}">
+										<option th:each="childCategory : ${rootCategory.children}"
+										        th:value="${childCategory.cateId}"
+										        th:data-parent="${rootCategory.cateId}"
+										        th:data-info-notice-type="${childCategory.infoNoticeType}"
+										        th:text="${childCategory.name}">2차 카테고리</option>
+									</th:block>
 								</select>
 							</td>
 						</tr>
@@ -87,17 +85,17 @@
 						<th>상품 이미지</th>
 						<td class="image-upload-section">
 							<div>
-								<input type="file" name="thumb1" required/>
+								<input type="file" name="thumb1" accept="image/*" required/>
 								<label>크기 190 x 190, 상품 목록에 출력 될 이미지 입니다.</label>
 							</div>
 							
 							<div>
-								<input type="file" name="thumb2" required/>
+								<input type="file" name="thumb2" accept="image/*" required/>
 								<label>크기 230 x 230, 상품 목록에 출력 될 이미지 입니다.</label>
 							</div>
 							
 							<div>
-								<input type="file" name="thumb3" required/>
+								<input type="file" name="thumb3" accept="image/*" required/>
 								<label>크기 456 x 456, 상품 목록에 출력 될 이미지 입니다.</label>
 							</div>
 						</td>
@@ -105,7 +103,7 @@
 					<tr>
 						<th>상품 상세정보</th>
 						<td>
-							<input type="file" name="detailInfoFile" required/>
+							<input type="file" name="detailInfoFile" accept="image/*" required/>
 							<label>크기 가로 940px, 높이 제약없음, 크기 최대 1MB</label>
 						</td>
 					</tr>
