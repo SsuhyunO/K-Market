@@ -3,6 +3,7 @@ package org.example.k_market.controller.advice; // TODO: 기존 프로젝트에 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.util.Map;
@@ -15,7 +16,7 @@ import java.util.Map;
  * IllegalStateException 이 그대로 500 에러로 나가서
  * 프론트에서 "탈퇴한 계정입니다" 같은 메시지를 받아볼 수 없습니다.
  */
-@RestControllerAdvice
+@RestControllerAdvice(annotations = RestController.class)
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(IllegalArgumentException.class)

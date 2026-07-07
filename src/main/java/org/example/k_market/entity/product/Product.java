@@ -28,30 +28,32 @@ public class Product {
     private int discount;
     private int point;
     private int sold;
-    private int thumb1FileId;
-    private int thumb2FileId;
-    private int thumb3FileId;
+    private Integer thumb1FileId;
+    private Integer thumb2FileId;
+    private Integer thumb3FileId;
+    private Integer detailInfoFileId;
     private String sellerUid;
     private String infoNoticeType;
 
     @CreationTimestamp
-    private LocalDateTime createAt;
+    private LocalDateTime createdAt;
 
     public ProductDTO toDTO() {
         return ProductDTO.builder()
-                .prodNo(prodNo)
-                .cateId(category.getCateId())
-                .prodName(prodName)
-                .price(price)
-                .discount(discount)
-                .point(point)
-                .sold(sold)
-                .thumb1FileId(thumb1FileId)
-                .thumb2FileId(thumb2FileId)
-                .thumb3FileId(thumb3FileId)
-                .sellerUid(sellerUid)
-                .infoNoticeType(infoNoticeType)
-                .createAt(createAt.toString())
-                .build();
+            .prodNo(prodNo)
+            .cateId(category.getCateId())
+            .prodName(prodName)
+            .price(price)
+            .discount(discount)
+            .point(point)
+            .sold(sold)
+            .thumb1FileId(thumb1FileId)
+            .thumb2FileId(thumb2FileId)
+            .thumb3FileId(thumb3FileId)
+            .detailInfoFileId(detailInfoFileId)
+            .sellerUid(sellerUid)
+            .infoNoticeType(infoNoticeType)
+            .createdAt(createdAt.toString())
+            .build();
     }
 }
