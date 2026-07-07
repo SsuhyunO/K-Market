@@ -95,32 +95,6 @@ function validateCouponRegisterForm(form) {
     validateCouponPeriod(form, errors);
     FormValidation.addRequiredError(form, "coupon-register-description", "유의사항을 입력해주세요.", errors);
 
-    // 🌟 [핵심 추가] 모든 검증이 완벽히 통과했을 때 (errors가 없을 때) 종료일 자동 계산 및 전송 준비
-    if (errors.length === 0) {
-        const startDateVal = form.querySelector("#coupon-register-start-date")?.value || "";
-        const endDateInput = form.querySelector("#coupon-register-end-date");
-        const validDaysVal = form.querySelector("#coupon-register-valid-days")?.value || "";
-
-        // 사용자가 종료일 날짜를 직접 고르지 않고, 사용일수(validDays)만 입력한 경우에만 작동
-        if (!endDateInput.value && startDateVal && validDaysVal) {
-            const start = new Date(startDateVal);
-
-            // 시작일에 입력된 일수(validDays) 만큼 더하기 계산
-            start.setDate(start.getDate() + parseInt(validDaysVal, 10));
-
-            // 서버 DTO(String expireDate)와 HTML 대시보드가 인식할 수 있는 YYYY-MM-DD 포맷으로 변환
-            const yyyy = start.getFullYear();
-            const mm = String(start.getMonth() + 1).padStart(2, '0');
-            const dd = String(start.getDate()).padStart(2, '0');
-
-            // 💡 버튼 누른 시점에 비어있던 종료일 input창에 계산된 날짜를 강제로 채워넣음!
-            endDateInput.value = `${yyyy}-${mm}-${dd}`;
-
-            // 콘솔창에서 계산이 잘 되었는지 테스트 확인용 (개발 완료 후 삭제 가능)
-            console.log("종료일 자동 계산 반영 완료:", endDateInput.value);
-        }
-    }
-
     return errors;
 }
 

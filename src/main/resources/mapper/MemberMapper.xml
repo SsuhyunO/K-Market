@@ -3,7 +3,7 @@
 <mapper namespace="org.example.k_market.dao.MemberDAO">
 
     <!-- 회원가입 -->
-    <insert id="insertMember" parameterType="Member">
+    <insert id="insertMember" parameterType="org.example.k_market.entity.Member">
         INSERT INTO member
         (uid, password, birthDate, gender, name, phone, email,
          memberType, memberLevel, pointBalance, zipCode, addr1, addr2, regIp, createdAt)
@@ -13,7 +13,7 @@
     </insert>
 
     <!-- uid로 회원 조회 (로그인 시 사용) -->
-    <select id="findByUid" parameterType="String" resultType="Member">
+    <select id="findByUid" parameterType="String" resultType="org.example.k_market.entity.Member">
         SELECT uid, password, birthDate, gender, name, phone, email,
                memberType, memberLevel, pointBalance, zipCode, addr1, addr2, regIp, createdAt
         FROM member
@@ -44,7 +44,7 @@
     </update>
 
     <!-- 회원정보 수정 -->
-    <update id="updateMember" parameterType="Member">
+    <update id="updateMember" parameterType="org.example.k_market.entity.Member">
         UPDATE member
         SET name = #{name},
             phone = #{phone},

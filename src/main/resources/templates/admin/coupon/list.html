@@ -43,85 +43,45 @@
                             <th>상태</th>
                             <th>관리</th>
                         </tr>
-                        <tr data-coupon-no="102123141"
-                            data-coupon-type="개별상품 할인"
-                            data-coupon-name="10월 한정 감사 쿠폰"
-                            data-benefit="2,000원 할인"
-                            data-period="0000-00-00 ~ 0000-00-00"
-                            data-issuer="관리자"
-                            data-issue-count="43"
-                            data-used-count="18"
-                            data-status="발급중"
-                            data-description="10월 한정 감사 프로모션 쿠폰입니다.">
-                            <td><button class="coupon-link-button" type="button" data-coupon-detail-button>102123141</button></td>
-                            <td>개별상품 할인</td>
-                            <td>10월 한정 감사 쿠폰</td>
-                            <td>2,000원</td>
-                            <td>0000-00-00<br>0000-00-00</td>
-                            <td>43</td>
-                            <td>18</td>
-                            <td><span class="coupon-status active">발급중</span></td>
-                            <td><button class="coupon-action-button" type="button" data-coupon-end-button>종료</button></td>
-                        </tr>
-                        <tr data-coupon-no="102123142"
-                            data-coupon-type="주문상품 할인"
-                            data-coupon-name="회원가입 축하 쿠폰"
-                            data-benefit="15% 할인"
-                            data-period="발급일로부터 100일"
-                            data-issuer="관리자"
-                            data-issue-count="262"
-                            data-used-count="98"
-                            data-status="발급중"
-                            data-description="신규 회원 가입 시 자동 발급되는 쿠폰입니다.">
-                            <td><button class="coupon-link-button" type="button" data-coupon-detail-button>102123142</button></td>
-                            <td>주문상품 할인</td>
-                            <td>회원가입 축하 쿠폰</td>
-                            <td>15%</td>
-                            <td>발급일로부터<br>100일</td>
-                            <td>262</td>
-                            <td>98</td>
-                            <td><span class="coupon-status active">발급중</span></td>
-                            <td><button class="coupon-action-button" type="button" data-coupon-end-button>종료</button></td>
-                        </tr>
-                        <tr data-coupon-no="102123143"
-                            data-coupon-type="배송비 무료"
-                            data-coupon-name="배송비 무료 쿠폰"
-                            data-benefit="배송비 무료"
-                            data-period="발급일로부터 30일"
-                            data-issuer="관리자"
-                            data-issue-count="262"
-                            data-used-count="121"
-                            data-status="발급중"
-                            data-description="전 상품 배송비 무료 혜택 쿠폰입니다.">
-                            <td><button class="coupon-link-button" type="button" data-coupon-detail-button>102123143</button></td>
-                            <td>배송비 무료</td>
-                            <td>배송비 무료 쿠폰</td>
-                            <td>배송비 무료</td>
-                            <td>발급일로부터<br>30일</td>
-                            <td>262</td>
-                            <td>121</td>
-                            <td><span class="coupon-status active">발급중</span></td>
-                            <td><button class="coupon-action-button" type="button" data-coupon-end-button>종료</button></td>
-                        </tr>
-                        <tr data-coupon-no="102123144"
-                            data-coupon-type="개별상품 할인"
-                            data-coupon-name="설날 감사 쿠폰"
-                            data-benefit="1,500원 할인"
-                            data-period="0000-00-00 ~ 0000-00-00"
-                            data-issuer="관리자"
-                            data-issue-count="80"
-                            data-used-count="56"
-                            data-status="종료"
-                            data-description="설날 프로모션 기간에 사용된 쿠폰입니다.">
-                            <td><button class="coupon-link-button" type="button" data-coupon-detail-button>102123144</button></td>
-                            <td>개별상품 할인</td>
-                            <td>설날 감사 쿠폰</td>
-                            <td>1,500원</td>
-                            <td>0000-00-00<br>0000-00-00</td>
-                            <td>80</td>
-                            <td>56</td>
-                            <td><span class="coupon-status disabled">종료</span></td>
-                            <td><button class="coupon-action-button" type="button" disabled>종료</button></td>
+                        <tr th:each="coupon : ${couponList}"
+                            th:attr="data-coupon-no=${coupon.couponNo},
+                                     data-coupon-type=${coupon.couponType},
+                                     data-coupon-name=${coupon.name},
+                                     data-benefit=${coupon.benefit},
+                                     data-period=${coupon.startDate + ' ~ ' + coupon.expireDate},
+                                     data-issuer=${coupon.companyName},
+                                     data-issue-count=${coupon.issuedCnt},
+                                     data-used-count=${coupon.usedCnt},
+                                     data-status=${coupon.status},
+                                     data-description=${coupon.notice}">
+
+                            <td>
+                                <button class="coupon-link-button" type="button" data-coupon-detail-button
+                                        th:text="${coupon.couponNo}"></button>
+                            </td>
+
+                            <td th:switch="${coupon.couponType}">
+                                <span th:case="'PRODUCT'">개별상품 할인</span>
+                                <span th:case="'ORDER'">주문상품 할인</span>
+                                <span th:case="'DELIVERY'">배송비 무료</span>
+                            </td>
+
+                            <td th:text="${coupon.name}"></td>
+                            <td th:text="${coupon.benefit}"></td>
+                            <td th:text="${coupon.startDate + ' ~ ' + coupon.expireDate}"></td>
+                            <td th:text="${coupon.issuedCnt}"></td>
+                            <td th:text="${coupon.usedCnt}"></td>
+
+                            <td>
+                                <span class="coupon-status"
+                                      th:classappend="${coupon.status == 'ACTIVE'} ? 'active' : 'disabled'"
+                                      th:text="${coupon.status == 'ACTIVE'} ? '발급중' : '종료'"></span>
+                            </td>
+
+                            <td>
+                                <button class="coupon-action-button" type="button" data-coupon-end-button
+                                        th:disabled="${coupon.status != 'ACTIVE'}">종료</button>
+                            </td>
                         </tr>
                     </th:block>
                 </div>
@@ -143,7 +103,7 @@
                                 <tr>
                                     <th><label for="coupon-register-issuer">발급처</label></th>
                                     <td>
-                                        <input id="coupon-register-issuer" type="text" name="sellerUid" value="(주)다있어">
+                                        <input id="coupon-register-issuer" type="text" name="issuer" th:value="${companyName}">
                                     </td>
                                 </tr>
                                 <tr>

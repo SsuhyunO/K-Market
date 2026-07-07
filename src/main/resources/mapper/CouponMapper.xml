@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.example.k_market.dao.CouponDAO">
+
+    <select id="findAll" resultType="org.example.k_market.dto.coupon.CouponDTO">
+        SELECT
+            c.couponNo      AS couponNo,
+            c.couponType    AS couponType,
+            c.sellerUid     AS sellerUid,
+            s.companyName   AS companyName,
+            c.benefit       AS benefit,
+            c.issuedCnt     AS issuedCnt,
+            c.usedCnt       AS usedCnt,
+            c.status        AS status,
+            c.notice        AS notice,
+            c.name          AS name,
+            c.expireDate    AS expireDate,
+            c.startDate     AS startDate,
+            c.createdAt     AS createdAt
+        FROM coupon c
+        JOIN seller s ON c.sellerUid = s.uid
+        ORDER BY c.couponNo DESC
+    </select>
+
+    <insert id="insert" parameterType="org.example.k_market.dto.coupon.CouponDTO"
+            useGeneratedKeys="true" keyProperty="couponNo">
+        INSERT INTO coupon
+        (couponType, sellerUid, benefit, issuedCnt, usedCnt, status, notice, name, expireDate, startDate)
+        VALUES
+            (#{couponType}, #{sellerUid}, #{benefit},  #{issuedCnt}, 0, 'ACTIVE', #{notice}, #{name}, #{expireDate}, #{startDate})
+    </insert>
+
+</mapper>
