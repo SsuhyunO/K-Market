@@ -3,7 +3,7 @@
 <mapper namespace="org.example.k_market.dao.SellerDAO">
 
     <!-- 판매자 등록 -->
-    <insert id="insertSeller" parameterType="Seller">
+    <insert id="insertSeller" parameterType="org.example.k_market.entity.Seller">
         INSERT INTO seller
             (uid, companyName, bizRegNo, onlineSalesNo, tel, fax)
         VALUES
@@ -11,7 +11,7 @@
     </insert>
 
     <!-- uid로 판매자 조회 -->
-    <select id="findByUid" parameterType="String" resultType="Seller">
+    <select id="findByUid" parameterType="String" resultType="org.example.k_market.entity.Seller">
         SELECT uid, companyName, bizRegNo, onlineSalesNo, tel, fax
         FROM seller
         WHERE uid = #{uid}
@@ -23,7 +23,7 @@
     </select>
 
     <!-- 판매자 정보 수정 -->
-    <update id="updateSeller" parameterType="Seller">
+    <update id="updateSeller" parameterType="org.example.k_market.entity.Seller">
         UPDATE seller
         SET companyName = #{companyName},
             onlineSalesNo = #{onlineSalesNo},

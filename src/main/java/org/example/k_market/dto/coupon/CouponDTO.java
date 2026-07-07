@@ -1,6 +1,9 @@
 package org.example.k_market.dto.coupon;
 
 import lombok.*;
+import org.example.k_market.entity.coupon.Coupon;
+
+import java.time.LocalDate;
 
 @Getter
 @Setter
@@ -21,4 +24,24 @@ public class CouponDTO {
     private String expireDate;
     private String createdAt;
     private String startDate;
+
+    // 추가 필드
+    private int validDays;
+    private String companyName;
+
+    public Coupon toEntity(){
+        return Coupon.builder()
+                .couponNo(couponNo)
+                .couponType(couponType)
+                .sellerUid(sellerUid)
+                .benefit(benefit)
+                .issuedCnt(issuedCnt)
+                .usedCnt(usedCnt)
+                .status(status)
+                .notice(notice)
+                .name(name)
+                .expireDate(expireDate)
+                .startDate(startDate)
+                .build();
+    }
 }

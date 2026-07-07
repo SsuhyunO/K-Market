@@ -32,4 +32,20 @@ public class Coupon {
     private LocalDateTime createdAt;
 
     private String startDate;
+
+    public Coupon toEntity(){
+        return Coupon.builder()
+                .couponNo(couponNo)
+                .couponType(couponType)
+                .sellerUid(sellerUid)
+                .benefit(benefit)
+                .issuedCnt(issuedCnt)
+                .usedCnt(usedCnt)
+                .status(status)
+                .notice(notice)
+                .name(name)
+                .expireDate(expireDate)
+                .startDate(startDate)
+                .build();
+    }
 }
