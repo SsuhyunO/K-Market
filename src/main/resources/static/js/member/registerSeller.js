@@ -1,20 +1,23 @@
-// 비밀번호 특수문자 포함 + 길이 실시간 체크
+// 비밀번호 영문/숫자/특수문자 포함 + 길이 실시간 체크
 document.getElementById('userPw').addEventListener('input', function() {
     const pw = this.value;
     const msg = document.getElementById('pw-msg');
+    const hasEnglish = /[A-Za-z]/.test(pw);
+    const hasNumber = /[0-9]/.test(pw);
     const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(pw);
     const validLength = pw.length >= 8 && pw.length <= 12;
 
     if (pw.length === 0) {
         msg.textContent = '';
+        checkPwMatch();
         return;
     }
     if (!validLength) {
         msg.style.color = '#c0392b';
         msg.textContent = '비밀번호는 8~12자로 입력해 주세요.';
-    } else if (!hasSpecialChar) {
+    } else if (!hasEnglish || !hasNumber || !hasSpecialChar) {
         msg.style.color = '#c0392b';
-        msg.textContent = '특수문자를 포함해 주세요.';
+        msg.textContent = '영문, 숫자, 특수문자를 모두 포함해 주세요.';
     } else {
         msg.style.color = '#4CAF50';
         msg.textContent = '사용 가능한 비밀번호입니다.';
@@ -46,13 +49,21 @@ function checkPwMatch() {
 let idChecked = false;
 let bizChecked = false;
 
+const ID_PATTERN = /^[A-Za-z0-9]{4,12}$/;
+const PW_LENGTH_OK = pw => pw.length >= 8 && pw.length <= 12;
+const PW_HAS_ENGLISH = pw => /[A-Za-z]/.test(pw);
+const PW_HAS_NUMBER = pw => /[0-9]/.test(pw);
+const PW_HAS_SPECIAL = pw => /[!@#$%^&*(),.?":{}|<>]/.test(pw);
+const BIZ_NUM_PATTERN = /^\d{3}-\d{2}-\d{5}$/;
+const MAIL_ORDER_PATTERN = /^제\d{4}-[가-힣]+-\d{4,5}호$/;
+
 async function checkUserId() {
     const id = document.getElementById('userId').value.trim();
     const msg = document.getElementById('userId-msg');
 
-    if (!id || id.length < 4 || id.length > 12) {
+    if (!ID_PATTERN.test(id)) {
         msg.style.color = '#c0392b';
-        msg.textContent = '아이디는 4~12자로 입력해 주세요.';
+        msg.textContent = '아이디는 영문, 숫자 4~12자로 입력해 주세요.';
         idChecked = false;
         return;
     }
@@ -82,9 +93,9 @@ async function checkBizNum() {
     const bizNum = document.getElementById('bizNum').value.trim();
     const msg = document.getElementById('bizNum-msg');
 
-    if (!bizNum) {
+    if (!BIZ_NUM_PATTERN.test(bizNum)) {
         msg.style.color = '#c0392b';
-        msg.textContent = '사업자등록번호를 입력해 주세요.';
+        msg.textContent = '사업자등록번호 형식이 올바르지 않습니다. (예: 123-45-67890)';
         bizChecked = false;
         return;
     }
@@ -110,6 +121,23 @@ async function checkBizNum() {
     }
 }
 
+// 통신판매업번호 형식 실시간 체크 (별도 중복확인 API가 없어 형식만 검사)
+document.getElementById('mailOrderNum').addEventListener('blur', function() {
+    const val = this.value.trim();
+    const msg = document.getElementById('mailOrderNum-msg');
+
+    if (!val) {
+        msg.textContent = '';
+        return;
+    }
+    if (!MAIL_ORDER_PATTERN.test(val)) {
+        msg.style.color = '#c0392b';
+        msg.textContent = '형식이 올바르지 않습니다. (예: 제2024-서울강남-01234호)';
+    } else {
+        msg.style.color = '#4CAF50';
+        msg.textContent = '올바른 형식입니다.';
+    }
+});
 
 function openPostcode() {
     new daum.Postcode({
@@ -133,18 +161,17 @@ async function submitJoin() {
     const fax     = document.getElementById('fax').value.trim();
     const email   = document.getElementById('userEmail').value.trim();
 
-    if (!id || id.length < 4 || id.length > 12) {
-        alert('아이디는 4~12자로 입력해 주세요.'); return;
+    if (!ID_PATTERN.test(id)) {
+        alert('아이디는 영문, 숫자 4~12자로 입력해 주세요.'); return;
     }
     if (!idChecked) {
         alert('아이디 중복확인을 해주세요.'); return;
     }
-    const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(pw);
-    if (!pw || pw.length < 8 || pw.length > 12) {
+    if (!PW_LENGTH_OK(pw)) {
         alert('비밀번호는 8~12자로 입력해 주세요.'); return;
     }
-    if (!hasSpecialChar) {
-        alert('비밀번호에 특수문자를 포함해 주세요.'); return;
+    if (!PW_HAS_ENGLISH(pw) || !PW_HAS_NUMBER(pw) || !PW_HAS_SPECIAL(pw)) {
+        alert('비밀번호는 영문, 숫자, 특수문자를 모두 포함해야 합니다.'); return;
     }
     if (pw !== pwCf) {
         alert('비밀번호가 일치하지 않습니다.'); return;
@@ -155,14 +182,17 @@ async function submitJoin() {
     if (!ceo) {
         alert('대표자명을 입력해 주세요.'); return;
     }
-    if (!bizNum) {
-        alert('사업자등록번호를 입력해 주세요.'); return;
+    if (!BIZ_NUM_PATTERN.test(bizNum)) {
+        alert('사업자등록번호 형식이 올바르지 않습니다. (예: 123-45-67890)'); return;
     }
     if (!bizChecked) {
         alert('사업자등록번호 중복확인을 해주세요.'); return;
     }
     if (!mailNum) {
         alert('통신판매업번호를 입력해 주세요.'); return;
+    }
+    if (!MAIL_ORDER_PATTERN.test(mailNum)) {
+        alert('통신판매업번호 형식이 올바르지 않습니다. (예: 제2024-서울강남-01234호)'); return;
     }
     if (!tel) {
         alert('전화번호를 입력해 주세요.'); return;
@@ -205,14 +235,4 @@ async function submitJoin() {
         console.error(err);
         alert('서버와 통신 중 오류가 발생했습니다.');
     }
-}
-
-function openPostcode() {
-    new daum.Postcode({
-        oncomplete: function(data) {
-            document.getElementById('postcode').value = data.zonecode;
-            document.getElementById('addrBase').value = data.roadAddress || data.jibunAddress;
-            document.getElementById('addrDetail').focus();
-        }
-    }).open();
 }

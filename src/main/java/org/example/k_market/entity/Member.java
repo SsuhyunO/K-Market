@@ -58,14 +58,42 @@ public class Member {
     @Column(name = "createdAt", nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
+    // ===== 추가된 부분: 탈퇴 여부 =====
+    // 실제 삭제(hard delete) 대신 이 값만 바꾸는 soft delete 방식
+    @Column(name = "status", length = 20, nullable = false)
+    private String status; // "ACTIVE" (기본값) / "WITHDRAWN"
+
+    @Column(name = "withdrawnAt")
+    private LocalDateTime withdrawnAt;
+
     @PrePersist
     protected void onCreate() {
         this.createdAt = LocalDateTime.now();
         if (this.pointBalance == null) this.pointBalance = 0;
         if (this.memberLevel == null) this.memberLevel = 1;
+        if (this.status == null) this.status = "ACTIVE"; // 추가된 부분
     }
 
     public void changePassword(String encodedPassword) {
         this.password = encodedPassword;
+    }
+
+    // ===== 추가된 부분 =====
+    public void withdraw() {
+        this.status = "WITHDRAWN";
+        this.withdrawnAt = LocalDateTime.now();
+    }
+
+    public boolean isWithdrawn() {
+        return "WITHDRAWN".equals(this.status);
+    }
+
+    // ===== 추가된 부분: 마이페이지 정보수정(휴대폰/주소)용 =====
+    // 이메일은 정책상 여기서 수정 불가 -> 파라미터에서 의도적으로 제외
+    public void updateProfile(String phone, String zipCode, String addr1, String addr2) {
+        if (phone != null) this.phone = phone;
+        if (zipCode != null) this.zipCode = zipCode;
+        if (addr1 != null) this.addr1 = addr1;
+        if (addr2 != null) this.addr2 = addr2;
     }
 }

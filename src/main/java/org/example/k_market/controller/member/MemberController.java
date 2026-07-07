@@ -1,10 +1,15 @@
 package org.example.k_market.controller.member;
 
+import lombok.RequiredArgsConstructor;
+import org.example.k_market.service.PolicyService;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
+@RequiredArgsConstructor
 @Controller
 public class MemberController {
+    private final PolicyService policyService;
 
     @GetMapping("/member/login")
     public String login() {
@@ -37,7 +42,13 @@ public class MemberController {
     }
 
     @GetMapping("/member/signup")
-    public String singup() {
+    public String singup(Model model) {
+        model.addAttribute("buyerPolicy", policyService.getPolicyContent("buyer"));
+        model.addAttribute("sellerPolicy", policyService.getPolicyContent("seller"));
+        model.addAttribute("financePolicy", policyService.getPolicyContent("finance"));
+        model.addAttribute("locationPolicy", policyService.getPolicyContent("location"));
+        model.addAttribute("privacyPolicy", policyService.getPolicyContent("privacy"));
+
         return "member/signup";
     }
 

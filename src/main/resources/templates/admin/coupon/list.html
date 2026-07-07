@@ -138,12 +138,12 @@
 
                 <div th:replace="~{admin/fragments/modal::modal('coupon-register-modal', '쿠폰등록', ~{::coupon_register_modal_content})}">
                     <th:block th:fragment="coupon_register_modal_content">
-                        <form id="coupon-register-form" action="#" method="post" novalidate>
+                        <form id="coupon-register-form" th:action="@{/admin/coupon/register}" method="post" novalidate>
                             <table class="section-table coupon-modal-table">
                                 <tr>
                                     <th><label for="coupon-register-issuer">발급처</label></th>
                                     <td>
-                                        <input id="coupon-register-issuer" type="text" name="issuer" value="(주)다있어">
+                                        <input id="coupon-register-issuer" type="text" name="sellerUid" value="(주)다있어">
                                     </td>
                                 </tr>
                                 <tr>
@@ -160,7 +160,16 @@
                                 <tr>
                                     <th><label for="coupon-register-name">쿠폰명</label></th>
                                     <td>
-                                        <input id="coupon-register-name" type="text" name="couponName">
+                                        <input id="coupon-register-name" type="text" name="name">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th><label for="coupon-register-issued-cnt">총 발급수</label></th>
+                                    <td>
+                                        <div class="coupon-issue-count-field" style="display: flex; align-items: center; gap: 5px;">
+                                            <input id="coupon-register-issued-cnt" type="number" name="issuedCnt" min="1" placeholder="예: 1000">
+                                            <span>개</span>
+                                        </div>
                                     </td>
                                 </tr>
                                 <tr>
@@ -187,7 +196,7 @@
                                         <div class="coupon-period-fields">
                                             <input id="coupon-register-start-date" type="date" name="startDate" aria-label="시작일">
                                             <span>~</span>
-                                            <input id="coupon-register-end-date" type="date" name="endDate" aria-label="종료일">
+                                            <input id="coupon-register-end-date" type="date" name="expireDate" aria-label="종료일">
                                         </div>
                                         <div class="coupon-period-fields">
                                             <span>또는 발급일로부터</span>
@@ -199,7 +208,7 @@
                                 <tr>
                                     <th><label for="coupon-register-description">유의사항</label></th>
                                     <td>
-                                        <textarea id="coupon-register-description" name="description"></textarea>
+                                        <textarea id="coupon-register-description" name="notice"></textarea>
                                     </td>
                                 </tr>
                             </table>

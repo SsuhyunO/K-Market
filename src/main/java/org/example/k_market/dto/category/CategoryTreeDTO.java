@@ -12,6 +12,5 @@ import java.util.List;
 public class CategoryTreeDTO {
     private int cateId;
     private String name;
-    private String infoNoticeType;
     private List<CategoryDTO> children;
 }
