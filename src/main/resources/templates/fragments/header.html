@@ -1,7 +1,22 @@
 <header th:fragment="header" id="header">
 
     <div class="header-banner">
-        <span class="banner-placeholder">🛍️ 가로 × 세로 크기 배너광고 (1063 × 90)</span>
+
+        <!-- DB에 등록된 메인상단 배너가 있으면 출력 -->
+        <a th:if="${mainTopBanners != null and !#lists.isEmpty(mainTopBanners)}"
+           th:href="${mainTopBanners[0].link}"
+           target="_blank">
+            <img th:src="@{/files/{id}(id=${mainTopBanners[0].fileId})}"
+                 th:alt="${mainTopBanners[0].name}"
+                 style="width:1063px; height:90px; object-fit:cover; display:block; margin:0 auto;">
+        </a>
+
+        <!-- 배너가 없으면 기존 안내문 출력 -->
+        <span th:if="${mainTopBanners == null or #lists.isEmpty(mainTopBanners)}"
+              class="banner-placeholder">
+        🛍️ 가로 × 세로 크기 배너광고 (1063 × 90)
+        </span>
+
     </div>
 
     <div class="header-main">
