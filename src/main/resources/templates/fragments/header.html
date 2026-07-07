@@ -1,5 +1,3 @@
-
-
 <header th:fragment="header" id="header">
 
     <div class="header-banner">
@@ -8,38 +6,57 @@
 
     <div class="header-main">
         <div class="container" style="display:flex; align-items:center; gap:20px; height:100%;">
+
+            <!-- 로고 영역 -->
             <div class="logo">
                 <a th:href="@{/}">
-                    <div>
-                        <div class="logo-text">K<span style="color:#222;font-weight:400;">market</span></div>
+
+                    <!-- DB에 저장된 헤더 로고가 있으면 이미지 출력 -->
+                    <img th:if="${siteConfig != null and siteConfig.headerLogoFiled != 0}"
+                         th:src="@{/files/{id}(id=${siteConfig.headerLogoFiled})}"
+                         alt="Kmarket"
+                         style="width:185px; height:60px; object-fit:contain; display:block;">
+
+                    <!-- DB에 로고가 없으면 기존 텍스트 로고 출력 -->
+                    <div th:if="${siteConfig == null or siteConfig.headerLogoFiled == 0}">
+                        <div class="logo-text">
+                            K<span style="color:#222;font-weight:400;">market</span>
+                        </div>
                         <div class="logo-sub">㈜케이마켓</div>
                     </div>
+
                 </a>
             </div>
 
+            <!-- 검색창 -->
             <form th:action="@{/search}" method="GET" class="search-box">
                 <input type="text" name="keyword" placeholder="검색어를 입력하세요" id="searchInput" required>
                 <button type="submit" aria-label="검색">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                        <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+                        <circle cx="11" cy="11" r="8"/>
+                        <path d="m21 21-4.35-4.35"/>
                     </svg>
                 </button>
             </form>
 
+            <!-- 사용자 메뉴 -->
             <nav class="util-nav" style="display:flex; gap:16px; white-space:nowrap; flex-shrink:0; align-items:center;">
                 <span id="authArea" style="display:flex; gap:16px; align-items:center;">
                     <a th:href="@{/member/login}" id="navLoginLink" style="font-size:13px; color:var(--color-gray-600);">로그인</a>
                     <span style="color:var(--color-gray-200);">|</span>
                     <a th:href="@{/member/join}" id="navJoinLink" style="font-size:13px; color:var(--color-gray-600);">회원가입</a>
                 </span>
+
                 <span style="color:var(--color-gray-200);">|</span>
                 <a th:href="@{/my/home}" style="font-size:13px; color:var(--color-gray-600);">마이페이지</a>
+
                 <span style="color:var(--color-gray-200);">|</span>
                 <a th:href="@{/product/cart}" style="font-size:13px; color:var(--color-gray-600);">🛒 장바구니</a>
             </nav>
         </div>
     </div>
 
+    <!-- 상품 메뉴 -->
     <nav class="header-nav">
         <div class="container">
             <a th:href="@{/}+'#section-hit'"       data-section="hit">히트상품</a>

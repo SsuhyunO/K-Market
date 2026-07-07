@@ -7,61 +7,131 @@ import org.example.k_market.entity.admin.AdminConfig;
 import org.example.k_market.repository.admin.AdminConfigRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 @Slf4j
 @RequiredArgsConstructor
 @Service
-@Transactional
 public class AdminConfigService {
 
     private final AdminConfigRepository adminConfigRepository;
+    private final FileService fileService;
 
-    // 환경설정 저장 및 수정 (최초 등록 혹은 갱신)
-    public void saveConfig(AdminConfigDTO dto) {
-        AdminConfig config = AdminConfig.builder()
-                .id(dto.getId())
-                .mainSliderBannerId(dto.getMainSliderBannerId())
-                .siteName(dto.getSiteName())
-                .siteSubName(dto.getSiteSubName())
-                .headerLogoImageId(dto.getHeaderLogoImageId())
-                .footerLogoImageId(dto.getFooterLogoImageId())
-                .faviconImageId(dto.getFaviconImageId())
-                .logoFiled(dto.getLogoFiled())
-                .bussName(dto.getBussName())
-                .ceo(dto.getCeo())
-                .bussRegNum(dto.getBussRegNum())
-                .mailOrdBussReg(dto.getMailOrdBussReg())
-                .defaultAddr(dto.getDefaultAddr())
-                .detailAddr(dto.getDetailAddr())
-                .csPhone(dto.getCsPhone())
-                .csBussHours(dto.getCsBussHours())
-                .csEmail(dto.getCsEmail())
-                .csElectronicDisputePhone(dto.getCsElectronicDisputePhone())
-                .mainTopBannerId(dto.getMainTopBannerId())
-                .prodDetailViewBannerId(dto.getProdDetailViewBannerId())
-                .userLoginBannerId(dto.getUserLoginBannerId())
-                .myPageBannerId(dto.getMyPageBannerId())
-                .copyright(dto.getCopyright())
-                .build();
+    // 환경설정 단건 조회
+    public AdminConfigDTO findById(Integer id) {
 
-        adminConfigRepository.save(config);
+        AdminConfig config = adminConfigRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("환경설정을 찾을 수 없습니다. id=" + id));
+
+        return toDTO(config);
     }
 
-    // 환경설정 상세 조회
-    @Transactional(readOnly = true) // 단순 조회를 위한 성능 최적화
-    public AdminConfigDTO getConfig(Integer id) {
-        AdminConfig config = adminConfigRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("환경설정 정보가 존재하지 않습니다. id=" + id));
+    // 사이트 제목 / 부제 수정
+    @Transactional
+    public void modifySiteSettings(AdminConfigDTO dto) {
 
+        AdminConfig config = adminConfigRepository.findById(1)
+                .orElseThrow(() -> new IllegalArgumentException("환경설정을 찾을 수 없습니다."));
+
+        config.updateSiteSettings(
+                dto.getSiteName(),
+                dto.getSiteSubName()
+        );
+    }
+
+    // 로고 수정
+    @Transactional
+    public void modifySiteLogo(MultipartFile headerLogo,
+                               MultipartFile footerLogo,
+                               MultipartFile favicon) {
+
+        AdminConfig config = adminConfigRepository.findById(1)
+                .orElseThrow(() -> new IllegalArgumentException("환경설정을 찾을 수 없습니다."));
+
+        int headerLogoFiled = config.getHeaderLogoFiled();
+        int footerLogoFiled = config.getFooterLogoFiled();
+        int faviconFiled = config.getFaviconFiled();
+        int logoFiled = config.getLogoFiled();
+
+        // 헤더 로고 업로드
+        if (headerLogo != null && !headerLogo.isEmpty()) {
+            var headerLogoFile = fileService.uploadFile(headerLogo);
+            headerLogoFiled = headerLogoFile.getId();
+        }
+
+        // 푸터 로고 업로드
+        if (footerLogo != null && !footerLogo.isEmpty()) {
+            var footerLogoFile = fileService.uploadFile(footerLogo);
+            footerLogoFiled = footerLogoFile.getId();
+        }
+
+        // 파비콘 업로드
+        if (favicon != null && !favicon.isEmpty()) {
+            var faviconFile = fileService.uploadFile(favicon);
+            faviconFiled = faviconFile.getId();
+        }
+
+        config.updateSiteLogo(
+                headerLogoFiled,
+                footerLogoFiled,
+                faviconFiled,
+                logoFiled
+        );
+    }
+
+    // 기업 정보 수정
+    @Transactional
+    public void modifyCorporateInfo(AdminConfigDTO dto) {
+
+        AdminConfig config = adminConfigRepository.findById(1)
+                .orElseThrow(() -> new IllegalArgumentException("환경설정을 찾을 수 없습니다."));
+
+        config.updateCorporateInfo(
+                dto.getBussName(),
+                dto.getCeo(),
+                dto.getBussRegNum(),
+                dto.getMailOrdBussReg(),
+                dto.getDefaultAddr(),
+                dto.getDetailAddr()
+        );
+    }
+
+    // 고객센터 정보 수정
+    @Transactional
+    public void modifyCustomerSupportInfo(AdminConfigDTO dto) {
+
+        AdminConfig config = adminConfigRepository.findById(1)
+                .orElseThrow(() -> new IllegalArgumentException("환경설정을 찾을 수 없습니다."));
+
+        config.updateCustomerSupportInfo(
+                dto.getCsPhone(),
+                dto.getCsBussHours(),
+                dto.getCsEmail(),
+                dto.getCsElectronicDisputePhone()
+        );
+    }
+
+    // 카피라이트 수정
+    @Transactional
+    public void modifyCopyright(AdminConfigDTO dto) {
+
+        AdminConfig config = adminConfigRepository.findById(1)
+                .orElseThrow(() -> new IllegalArgumentException("환경설정을 찾을 수 없습니다."));
+
+        config.updateCopyright(dto.getCopyright());
+    }
+
+    // Entity → DTO 변환
+    private AdminConfigDTO toDTO(AdminConfig config) {
 
         return AdminConfigDTO.builder()
                 .id(config.getId())
                 .mainSliderBannerId(config.getMainSliderBannerId())
                 .siteName(config.getSiteName())
                 .siteSubName(config.getSiteSubName())
-                .headerLogoImageId(config.getHeaderLogoImageId())
-                .footerLogoImageId(config.getFooterLogoImageId())
-                .faviconImageId(config.getFaviconImageId())
+                .headerLogoFiled(config.getHeaderLogoFiled())
+                .footerLogoFiled(config.getFooterLogoFiled())
+                .faviconFiled(config.getFaviconFiled())
                 .logoFiled(config.getLogoFiled())
                 .bussName(config.getBussName())
                 .ceo(config.getCeo())
