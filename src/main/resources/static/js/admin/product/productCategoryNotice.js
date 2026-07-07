@@ -22,6 +22,8 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 function filterSubCategories(rootCategoryValue, subCategorySelector, subCategoryOptions) {
+    subCategorySelector.disabled = !rootCategoryValue;
+
     subCategoryOptions.forEach(option => {
         const shouldShow = !option.dataset.parent || option.dataset.parent === rootCategoryValue;
         option.hidden = !shouldShow;

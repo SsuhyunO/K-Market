@@ -1,56 +1,93 @@
 let currentTab = 'email';
-        let emailVerified = false;
-        let phoneVerified = false;
+let emailVerified = false;
 
-        function switchTab(event, tab) {
-            currentTab = tab;
-            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-            document.querySelectorAll('.tab-panel').forEach(panel => panel.classList.remove('active'));
-            event.target.classList.add('active');
-            document.getElementById('panel-' + tab).classList.add('active');
-            document.getElementById('guide-email').style.display = tab === 'email' ? 'block' : 'none';
-            document.getElementById('guide-phone').style.display = tab === 'phone' ? 'block' : 'none';
-        }
+function switchTab(event, tab) {
+    currentTab = tab;
+    document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+    document.querySelectorAll('.tab-panel').forEach(panel => panel.classList.remove('active'));
+    event.target.classList.add('active');
+    document.getElementById('panel-' + tab).classList.add('active');
+    document.getElementById('guide-email').style.display = tab === 'email' ? 'block' : 'none';
+    document.getElementById('guide-phone').style.display = tab === 'phone' ? 'block' : 'none';
+}
 
-        function sendEmailCode() {
-            const email = document.getElementById('email-addr').value.trim();
-            if (!email) { alert('이메일을 입력해 주세요.'); return; }
-            alert('인증번호를 발송했습니다.');
-        }
+async function sendEmailCode() {
+    const email = document.getElementById('email-addr').value.trim();
+    if (!email) { alert('이메일을 입력해 주세요.'); return; }
+    try {
+        const res = await fetch('/K_Market/api/member/email/send-code', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email })
+        });
+        if (!res.ok) { alert('인증번호 발송에 실패했습니다.'); return; }
+        alert('인증번호를 발송했습니다.');
+    } catch (err) {
+        console.error(err);
+        alert('서버와 통신 중 오류가 발생했습니다.');
+    }
+}
 
-        function confirmEmailCode() {
-            const code = document.getElementById('email-code').value.trim();
-            if (!code) { alert('인증번호를 입력해 주세요.'); return; }
+async function confirmEmailCode() {
+    const email = document.getElementById('email-addr').value.trim();
+    const code = document.getElementById('email-code').value.trim();
+    if (!code) { alert('인증번호를 입력해 주세요.'); return; }
+    try {
+        const res = await fetch('/K_Market/api/member/email/verify-code', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email, authCode: code })
+        });
+        const ok = await res.json();
+        if (ok) {
             emailVerified = true;
             alert('이메일 인증이 완료되었습니다.');
+        } else {
+            emailVerified = false;
+            alert('인증번호가 일치하지 않습니다.');
         }
+    } catch (err) {
+        console.error(err);
+        alert('서버와 통신 중 오류가 발생했습니다.');
+    }
+}
 
-        function sendPhoneCode() {
-            const phone = document.getElementById('phone-num').value.trim();
-            if (!phone) { alert('휴대폰 번호를 입력해 주세요.'); return; }
-            alert('인증번호를 발송했습니다.');
-        }
+// 휴대폰 인증은 SMS 업체 연동 전까지 비활성화
+function sendPhoneCode() {
+    alert('휴대폰 인증은 준비 중입니다.');
+}
+function confirmPhoneCode() {
+    alert('휴대폰 인증은 준비 중입니다.');
+}
 
-        function confirmPhoneCode() {
-            const code = document.getElementById('phone-code').value.trim();
-            if (!code) { alert('인증번호를 입력해 주세요.'); return; }
-            phoneVerified = true;
-            alert('휴대폰 인증이 완료되었습니다.');
-        }
+async function goNext() {
+    if (currentTab !== 'email') {
+        alert('휴대폰 인증은 준비 중입니다. 이메일 인증을 이용해 주세요.');
+        return;
+    }
 
-        function goNext() {
-            if (currentTab === 'email') {
-                const name  = document.getElementById('email-name').value.trim();
-                const email = document.getElementById('email-addr').value.trim();
-                if (!name)  { alert('이름을 입력해 주세요.'); return; }
-                if (!email) { alert('이메일을 입력해 주세요.'); return; }
-                if (!emailVerified) { alert('이메일 인증을 완료해 주세요.'); return; }
-            } else {
-                const name  = document.getElementById('phone-name').value.trim();
-                const phone = document.getElementById('phone-num').value.trim();
-                if (!name)  { alert('이름을 입력해 주세요.'); return; }
-                if (!phone) { alert('휴대폰 번호를 입력해 주세요.'); return; }
-                if (!phoneVerified) { alert('휴대폰 인증을 완료해 주세요.'); return; }
-            }
-            window.location.href = resultIdUrl;
+    const name  = document.getElementById('email-name').value.trim();
+    const email = document.getElementById('email-addr').value.trim();
+    if (!name)  { alert('이름을 입력해 주세요.'); return; }
+    if (!email) { alert('이메일을 입력해 주세요.'); return; }
+    if (!emailVerified) { alert('이메일 인증을 완료해 주세요.'); return; }
+
+    try {
+        const res = await fetch('/K_Market/api/member/find-uid', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ name, email })
+        });
+        if (!res.ok) {
+            const errMsg = await res.text();
+            alert(errMsg || '일치하는 회원 정보가 없습니다.');
+            return;
         }
+        const result = await res.json();
+        sessionStorage.setItem('findUidResult', JSON.stringify(result));
+        window.location.href = resultIdUrl;
+    } catch (err) {
+        console.error(err);
+        alert('서버와 통신 중 오류가 발생했습니다.');
+    }
+}

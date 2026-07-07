@@ -22,7 +22,7 @@ async function submitLogin(event) {
             if (res.status === 401 || res.status === 400) {
                 alert('아이디 또는 비밀번호가 일치하지 않습니다.');
             } else {
-                alert('로그인 중 오류가 발생했습니다.');
+                alert('아이디 또는 비밀번호가 일치하지 않습니다.');
             }
             return;
         }

@@ -5,8 +5,9 @@
     <title>KMarket 오류</title>
 </head>
 <body>
-<h1>페이지를 찾을 수 없습니다.</h1>
-<p>요청하신 페이지가 존재하지 않습니다.</p>
+<h1 th:text="${errorCode ?: 404}">404</h1>
+<h2 th:text="${errorTitle ?: '페이지를 찾을 수 없습니다.'}">페이지를 찾을 수 없습니다.</h2>
+<p th:text="${errorMessage ?: '요청하신 페이지가 존재하지 않습니다.'}">요청하신 페이지가 존재하지 않습니다.</p>
 <a href="/">홈으로 이동</a>
 </body>
 </html>

@@ -3,6 +3,7 @@ package org.example.k_market.service;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.example.k_market.dto.category.CategoryDTO;
+import org.example.k_market.dto.category.CategorySaveDTO;
 import org.example.k_market.dto.category.CategoryTreeDTO;
 import org.example.k_market.dto.category.request.CategorySaveRequest;
 import org.example.k_market.entity.category.Category;
@@ -10,6 +11,7 @@ import org.example.k_market.repository.category.CategoryRepository;
 import org.example.k_market.repository.product.ProductRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -23,24 +25,56 @@ public class CategoryService {
 
     @Transactional
     public void saveCategories(CategorySaveRequest request) {
-        for (CategoryDTO dto : request.getCategories()) {
-            if (dto.getAction() == null) {
-                throw new IllegalArgumentException("카테고리 작업 유형이 없습니다.");
-            }
+        List<CategorySaveDTO> categories = request.getCategories();
 
-            switch (dto.getAction()) {
-                case "CREATE" -> categoryRepository.save(dto.toEntity());
-                case "UPDATE" -> updateCategory(dto);
-                case "DELETE" -> deleteCategory(dto.getCateId());
-                default -> throw new IllegalArgumentException("지원하지 않는 카테고리 작업입니다.: " + dto.getAction());
-            }
-        }
+        validateActions(categories);
+
+        Map<String, Category> createdCategoryMap = new HashMap<>();
+        Map<String, List<CategorySaveDTO>> categoriesByAction = categories
+            .stream()
+            .collect(Collectors.groupingBy(CategorySaveDTO::getAction));
+
+        // 1. 삭제
+        categoriesByAction
+            .getOrDefault("DELETE", List.of())
+            .stream()
+            .filter(dto -> isPersistedId(dto.getId()))
+            .forEach(dto -> deleteCategory(toCateId(dto.getId())));
+
+        Map<Boolean, List<CategorySaveDTO>> categoriesByHasParent = categoriesByAction
+            .getOrDefault("CREATE", List.of())
+            .stream()
+            .collect(Collectors.partitioningBy(dto -> dto.getParentId() != null));
+
+        // 2. 신규 루트 카테고리 생성
+        categoriesByHasParent
+            .get(false)
+            .forEach(dto -> createdCategoryMap.put(dto.getId(), categoryRepository.save(dto.toCategoryEntity(null))));
+
+        // 3. 신규 리프 카테고리 생성
+        categoriesByHasParent
+            .get(true)
+            .forEach(dto -> createdCategoryMap.put(
+                dto.getId(),
+                categoryRepository.save(
+                    dto.toCategoryEntity(
+                        resolveParent(
+                            dto.getParentId(),
+                            createdCategoryMap)))));
+
+        // 4. 기존 카테고리 수정
+        categoriesByAction
+            .getOrDefault("UPDATE", List.of())
+            .stream()
+            .filter(dto -> isPersistedId(dto.getId()))
+            .forEach(this::updateCategory);
     }
 
     public List<CategoryDTO> getCategories() {
         return categoryRepository
                 .findAllByOrderBySortOrderAscCateIdAsc()
                 .stream()
+                .filter(category -> !UNCATEGORIZED_CODE.equals(category.getCode()))
                 .map(Category::toDTO)
                 .toList();
     }
@@ -59,7 +93,6 @@ public class CategoryService {
                 .map(root -> CategoryTreeDTO.builder()
                         .cateId(root.getCateId())
                         .name(root.getName())
-                        .infoNoticeType(root.getInfoNoticeType())
                         .children(childrenByParentId.getOrDefault(root.getCateId(), List.of())) // 루트 카테고리에 자식 카테고리 초기화
                         .build())
                 .toList();
@@ -95,14 +128,67 @@ public class CategoryService {
                 .orElse(null);
     }
 
-    private void updateCategory(CategoryDTO dto) {
-        categoryRepository
-                .findById(dto.getCateId())
-                .ifPresent(category -> category.change(
-                        dto.getName(),
-                        dto.getInfoNoticeType(),
-                        dto.getSortOrder()
-                ));
+    private void updateCategory(CategorySaveDTO dto) {
+        Category category = categoryRepository
+                .findById(toCateId(dto.getId()))
+                .orElseThrow();
+
+        if (UNCATEGORIZED_CODE.equals(category.getCode())) {
+            throw new IllegalArgumentException("미분류 카테고리는 수정할 수 없습니다.");
+        }
+
+        category.change(
+            dto.getName(),
+            dto.getInfoNoticeType(),
+            dto.getSortOrder()
+        );
+    }
+
+    private int toCateId(String id) {
+        if (!isPersistedId(id)) {
+            throw new IllegalArgumentException("DB 카테고리 ID가 아닙니다: " + id);
+        }
+
+        return Integer.parseInt(id);
+    }
+
+    private boolean isPersistedId(String id) {
+        return id != null && id.matches("[1-9]\\d*");
+    }
+
+    private void validateActions(List<CategorySaveDTO> categories) {
+        for (CategorySaveDTO dto : categories) {
+            if (dto.getAction() == null) {
+                throw new IllegalArgumentException("카테고리 작업 유형이 없습니다.");
+            }
+
+            if (!isSupportedAction(dto.getAction())) {
+                throw new IllegalArgumentException("지원하지 않는 카테고리 작업입니다.: " + dto.getAction());
+            }
+        }
+    }
+
+    private Category resolveParent(String parentId, Map<String, Category> createdCategoryMap) {
+        if (parentId == null) {
+            return null;
+        }
+
+        Category parent = createdCategoryMap.get(parentId);
+
+        if (parent != null) {
+            return parent;
+        }
+
+        if (isPersistedId(parentId)) {
+            return categoryRepository.findById(toCateId(parentId))
+                .orElseThrow(() -> new IllegalArgumentException("부모 카테고리가 존재하지 않습니다. id=" + parentId));
+        }
+
+        throw new IllegalArgumentException("부모 카테고리를 찾을 수 없습니다. id=" + parentId);
+    }
+
+    private boolean isSupportedAction(String action) {
+        return "CREATE".equals(action) || "UPDATE".equals(action) || "DELETE".equals(action);
     }
 
     private void deleteCategory(int cateId) {
@@ -123,18 +209,18 @@ public class CategoryService {
         if (target.getParent() != null) {
             // 2차 카테고리 삭제: 자기 자신에 속한 상품을 미분류로 이동
             productRepository.moveProductsToUncategorized(
-                    List.of(target.getCateId()),
-                    uncategorized
+                List.of(target.getCateId()),
+                uncategorized
             );
 
             categoryRepository.deleteById(target.getCateId());
         } else {
             // 1차 카테고리 삭제: 하위 2차 카테고리 상품을 미분류로 이동 후 자식 삭제
             List<Integer> childCategoryIds = categoryRepository
-                    .findByParent_CateId(target.getCateId())
-                    .stream()
-                    .map(Category::getCateId)
-                    .toList();
+                .findByParent_CateId(target.getCateId())
+                .stream()
+                .map(Category::getCateId)
+                .toList();
 
             if (!childCategoryIds.isEmpty()) {
                 productRepository.moveProductsToUncategorized(childCategoryIds, uncategorized);

@@ -10,6 +10,8 @@ import java.util.List;
 public interface CategoryRepository extends JpaRepository<Category, Integer> {
     Category findByCode(String code);
     List<Category> findAllByOrderBySortOrderAscCateIdAsc();
+    List<Category> findByParentIsNullOrderBySortOrderAscCateIdAsc();
+    List<Category> findByParent_CateIdOrderBySortOrderAscCateIdAsc(Integer parentId);
     List<Category> findByParentIsNull();
     List<Category> findByParent_CateId(Integer parentId);
 }

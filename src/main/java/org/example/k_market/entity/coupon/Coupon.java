@@ -31,5 +31,5 @@ public class Coupon {
     @CreationTimestamp
     private LocalDateTime createdAt;
 
-    private String updatedAt;
+    private String startDate;
 }

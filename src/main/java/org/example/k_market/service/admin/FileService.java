@@ -42,13 +42,13 @@ public class FileService {
 
             String storedName = UUID.randomUUID() + "_" + originalName;
 
-            Path uploadDir = Paths.get(uploadPath);
+            Path uploadDir = Paths.get(uploadPath).toAbsolutePath().normalize();
 
             if (!Files.exists(uploadDir)) {
                 Files.createDirectories(uploadDir);
             }
 
-            Path savePath = uploadDir.resolve(storedName);
+            Path savePath = uploadDir.resolve(storedName).normalize();
 
             multipartFile.transferTo(savePath.toFile());
 
