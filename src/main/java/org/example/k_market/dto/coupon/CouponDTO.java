@@ -20,5 +20,5 @@ public class CouponDTO {
     private String name;
     private String expireDate;
     private String createdAt;
-    private String updatedAt;
+    private String startDate;
 }

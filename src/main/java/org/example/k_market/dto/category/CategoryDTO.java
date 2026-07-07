@@ -17,8 +17,6 @@ public class CategoryDTO {
     private String infoNoticeType;
     private int sortOrder;
 
-    private String action; // CREATE, UPDATE, DELETE
-
     public Category toEntity() {
         Category parent = null;
         if (parentId != null) {
