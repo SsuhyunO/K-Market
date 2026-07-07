@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <title>KMarket 회원목록</title>
@@ -50,59 +51,60 @@
                             <th>상태</th>
                             <th>관리</th>
                         </tr>
-                        <tr>
+                        <tr th:each="member : ${memberList}">
                             <td>
                                 <label>
                                     <input type="checkbox"
                                            name="memberNo"
-                                           value="5"
-                                           data-user-id="abc1234"
-                                           data-name="홍길동"
-                                           data-gender="M"
-                                           data-grade="FAMILY"
-                                           data-status="정상"
-                                           data-email="abc1234@gmail.com"
-                                           data-phone="010-1234-1001"
-                                           data-zip-code="12345"
-                                           data-address="부산광역시부산진구부전동 123"
-                                           data-detail-address="OO 빌딩 3층 301호"
-                                           data-created-at="0000-00-00 00:00:00"
-                                           data-last-login-at="0000-00-00 00:00:00"
-                                           data-note="">
+                                           th:value="${member.no}"
+                                           th:attr="data-user-id=${member.uid},
+                                                    data-name=${member.name},
+                                                    data-gender=${member.gender},
+                                                    data-grade=${member.gradeLabel},
+                                                    data-member-level=${member.memberLevel},
+                                                    data-status=${member.statusLabel},
+                                                    data-email=${member.email},
+                                                    data-phone=${member.phone},
+                                                    data-zip-code=${member.zipCode},
+                                                    data-address=${member.address},
+                                                    data-detail-address=${member.detailAddress},
+                                                    data-created-at=${member.createdAt},
+                                                    data-last-login-at=${member.lastLoginAt},
+                                                    data-note=${member.note}">
                                 </label>
                             </td>
-                            <td>5</td>
-                            <td>xxxx...</td>
-                            <td>홍길동</td>
-                            <td>M</td>
+                            <td th:text="${member.no}">5</td>
+                            <td th:text="${member.uid}">xxxx...</td>
+                            <td th:text="${member.name}">홍길동</td>
+                            <td th:text="${member.gender}">M</td>
                             <td>
-                                <select class="member-grade-select">
-                                    <option>VVIP</option>
-                                    <option>VIP</option>
-                                    <option>GOLD</option>
-                                    <option>SILVER</option>
-                                    <option>FAMILY</option>
+                                <select class="member-grade-select" th:attr="data-uid=${member.uid}">
+                                    <option value="5" th:selected="${member.memberLevel} == 5">VVIP</option>
+                                    <option value="4" th:selected="${member.memberLevel} == 4">VIP</option>
+                                    <option value="3" th:selected="${member.memberLevel} == 3">GOLD</option>
+                                    <option value="2" th:selected="${member.memberLevel} == 2">SILVER</option>
+                                    <option value="1" th:selected="${member.memberLevel} == 1">FAMILY</option>
                                 </select>
                             </td>
-                            <td>15,000</td>
-                            <td>xxxxx@...</td>
-                            <td>010...</td>
-                            <td>0000-00-00<br>00:00:00</td>
-                            <td><span class="member-status active">정상</span></td>
+                            <td th:text="${#numbers.formatInteger(member.pointBalance, 0, 'COMMA')}">15,000</td>
+                            <td th:text="${member.email}">xxxxx@...</td>
+                            <td th:text="${member.phone}">010...</td>
+                            <td th:text="${member.createdAt}">0000-00-00 00:00:00</td>
+                            <td><span class="member-status active" th:text="${member.statusLabel}">정상</span></td>
                             <td><button class="member-action-button" type="button">[ 수정 ]</button></td>
                         </tr>
                     </th:block>
-	                
-	                <th:block th:fragment="member-table-footer">
-		                <span class="btn-area-spacer"></span>
-		                <nav th:replace="~{admin/fragments/admin-pagination::admin-pagination}"></nav>
-		                <button type="button"
-		                        data-management-action="bulk-edit"
-		                        data-empty-message="수정할 회원을 선택해주세요."
-		                        data-action-variant="primary">
-			                선택수정
-		                </button>
-	                </th:block>
+
+                    <th:block th:fragment="member-table-footer">
+                        <span class="btn-area-spacer"></span>
+                        <nav th:replace="~{admin/fragments/admin-pagination::admin-pagination}"></nav>
+                        <button type="button"
+                                data-management-action="bulk-edit"
+                                data-empty-message="수정할 회원을 선택해주세요."
+                                data-action-variant="primary">
+                            선택수정
+                        </button>
+                    </th:block>
                 </form>
 
                 <div th:replace="~{admin/fragments/modal::modal('member-edit-modal', '회원수정', ~{::member_edit_modal_content})}">

@@ -1,5 +1,5 @@
 import { Validation } from '../../global/validation.js';
-import { initModals, openModal } from '../../global/modal-form.js';
+import { initModals, openModal, closeModal } from '../../global/modal-form.js';
 import { FormValidation } from '../global/form-validation.js';
 import { ModalFormValidation } from '../global/modal-form-validation.js';
 import { isDaumPostcodeCanceled, openDaumPostcode } from '../../global/daumpostcode.js';
@@ -9,6 +9,8 @@ document.addEventListener("DOMContentLoaded", function () {
     initMemberEditModal();
     initMemberEditValidation();
     initMemberPostcode();
+    initMemberEditSubmit();   // 추가: 수정하기 버튼 -> 서버 반영
+    initMemberGradeSelect();  // 추가: 등급 select -> 즉시 서버 반영
 });
 
 function initMemberPostcode() {
@@ -86,6 +88,81 @@ function initMemberEditModal() {
 
         fillEditForm(member);
         renderMemberEditErrors();
+    });
+}
+
+// ===== 추가: 수정하기 버튼 클릭 시 서버로 전송 =====
+function initMemberEditSubmit() {
+    const editForm = document.getElementById("member-edit-form");
+    if (!editForm) return;
+
+    editForm.addEventListener("submit", async function (e) {
+        e.preventDefault();
+
+        const errors = validateMemberEditForm(editForm);
+        if (errors.length > 0) {
+            renderMemberEditErrors();
+            return;
+        }
+
+        const checkedGender = editForm.querySelector('input[name="gender"]:checked');
+
+        const payload = {
+            uid: document.getElementById("member-edit-user-id").value,
+            name: document.getElementById("member-edit-name").value,
+            gender: checkedGender ? checkedGender.value : null,
+            email: document.getElementById("member-edit-email").value,
+            phone: document.getElementById("member-edit-phone").value,
+            zipCode: document.getElementById("member-edit-zip-code").value,
+            address: document.getElementById("member-edit-address").value,
+            detailAddress: document.getElementById("member-edit-detail-address").value,
+            note: document.getElementById("member-edit-note").value
+        };
+
+        try {
+            const response = await fetch("member-update", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(payload)
+            });
+
+            if (!response.ok) {
+                throw new Error("수정 요청 실패");
+            }
+
+            alert("회원 정보가 수정되었습니다.");
+            location.reload(); // 목록 다시 불러오기 (DB 최신값 반영)
+        } catch (error) {
+            console.error(error);
+            alert("수정 중 오류가 발생했습니다.");
+        }
+    });
+}
+
+// ===== 추가: 등급 select 변경 시 즉시 서버 반영 =====
+function initMemberGradeSelect() {
+    document.addEventListener("change", async function (e) {
+        const select = e.target.closest(".member-grade-select");
+        if (!select) return;
+
+        const uid = select.dataset.uid;
+        const memberLevel = Number(select.value);
+
+        try {
+            const response = await fetch("member-grade-update", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ uid, memberLevel })
+            });
+
+            if (!response.ok) {
+                throw new Error("등급 변경 실패");
+            }
+            // 성공 시 별도 알림 없이 조용히 반영 (필요하면 alert 추가 가능)
+        } catch (error) {
+            console.error(error);
+            alert("등급 변경 중 오류가 발생했습니다.");
+        }
     });
 }
 

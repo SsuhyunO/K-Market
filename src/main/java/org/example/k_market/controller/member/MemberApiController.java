@@ -1,6 +1,8 @@
 package org.example.k_market.controller.member;
 
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +23,8 @@ public class MemberApiController {
     private final MemberService memberService;
     private final PasswordEncoder passwordEncoder;
     private final EmailAuthService emailAuthService;
+
+    private static final String AUTO_LOGIN_COOKIE = "autoLoginToken";
 
     // 이메일 인증번호 발송
     @PostMapping("/email/send-code")
@@ -51,7 +55,8 @@ public class MemberApiController {
 
     // 로그인
     @PostMapping("/login")
-    public MemberDto.Response login(@RequestBody MemberDto.LoginRequest request, HttpSession session) {
+    public MemberDto.Response login(@RequestBody MemberDto.LoginRequest request, HttpSession session,
+                                    HttpServletResponse response) {
         Member member = memberService.findByUid(request.getUid());
 
         if (!passwordEncoder.matches(request.getPassword(), member.getPassword())) {
@@ -64,12 +69,30 @@ public class MemberApiController {
         }
 
         session.setAttribute("loginMember", member.getUid());
+
+        // ===== 추가된 부분: 자동로그인 체크 시 토큰 발급 + 쿠키 저장 (7일) =====
+        if (request.isAutoLogin()) {
+            String token = memberService.issueAutoLoginToken(member.getUid());
+            Cookie cookie = new Cookie(AUTO_LOGIN_COOKIE, token);
+            cookie.setHttpOnly(true);
+            cookie.setPath("/");
+            cookie.setMaxAge(7 * 24 * 60 * 60); // 7일
+            response.addCookie(cookie);
+        }
+
         return MemberDto.Response.from(member);
     }
 
     // 로그아웃
     @PostMapping("/logout")
-    public String logout(HttpSession session) {
+    public String logout(HttpSession session, HttpServletRequest request, HttpServletResponse response) {
+        // ===== 추가된 부분: 자동로그인 토큰도 같이 제거 (안 하면 로그아웃해도 다시 자동 로그인됨) =====
+        String uid = (String) session.getAttribute("loginMember");
+        if (uid != null) {
+            memberService.clearAutoLoginToken(uid);
+        }
+        clearAutoLoginCookie(response);
+
         session.invalidate();
         return "로그아웃 되었습니다.";
     }
@@ -144,13 +167,26 @@ public class MemberApiController {
 
     // ===== 추가된 부분: 탈퇴 =====
     @PostMapping("/withdraw")
-    public String withdraw(HttpSession session) {
+    public String withdraw(HttpSession session, HttpServletResponse response) {
         String uid = (String) session.getAttribute("loginMember");
         if (uid == null) {
             throw new IllegalStateException("로그인이 필요합니다.");
         }
         memberService.withdraw(uid);
+        // ===== 추가된 부분: 탈퇴 시 자동로그인 토큰/쿠키도 정리 =====
+        memberService.clearAutoLoginToken(uid);
+        clearAutoLoginCookie(response);
+
         session.invalidate(); // 탈퇴 즉시 세션 종료 -> 이후 어떤 요청도 로그인 상태로 인식되지 않음
         return "탈퇴가 완료되었습니다.";
+    }
+
+    // ===== 추가된 부분: 자동로그인 쿠키 삭제 헬퍼 =====
+    private void clearAutoLoginCookie(HttpServletResponse response) {
+        Cookie cookie = new Cookie(AUTO_LOGIN_COOKIE, null);
+        cookie.setHttpOnly(true);
+        cookie.setPath("/");
+        cookie.setMaxAge(0);
+        response.addCookie(cookie);
     }
 }

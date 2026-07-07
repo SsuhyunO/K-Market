@@ -83,128 +83,174 @@ main {
     align-items: center;
 }
 
-/* ===== 로그인 폼 박스 ===== */
+/* ===== 로그인 폼 박스 (색상 및 트렌디 최적화 버전) ===== */
 .login-box {
     width: 440px;
-    border: 1px solid #ddd;
     padding: 40px;
+    /* 은은한 그린 그라데이션과 부드러운 배경색 */
+    background: linear-gradient(145deg, #f4fbf6, #ffffff);
+    border: 1px solid #d3ebd8;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(76, 175, 80, 0.06);
 }
 
 .login-box h2 {
-    font-size: 22px;
-    font-weight: bold;
-    margin-bottom: 24px;
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 28px;
     padding-bottom: 16px;
-    border-bottom: 2px solid #333;
+    border-bottom: 2px solid #4CAF50;
+    color: #1e4620; /* 텍스트도 짙은 그린 톤으로 매칭 */
 }
 
 .login-form-row {
     display: flex;
-    gap: 10px;
-    margin-bottom: 12px;
+    gap: 12px;
+    margin-bottom: 16px;
 }
 
 .input-area {
     flex: 1;
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 12px;
 }
 
 .input-row {
     display: flex;
     align-items: center;
+    position: relative;
 }
 
 .input-row label {
-    width: 80px;
+    width: 75px;
     font-size: 14px;
+    font-weight: 600;
+    color: #3b593d;
     flex-shrink: 0;
 }
 
 .input-row input {
     flex: 1;
-    height: 38px;
-    border: 1px solid #ccc;
-    padding: 0 10px;
+    height: 44px;
+    border: 1px solid #c2ded0;
+    border-radius: 8px;
+    padding: 0 14px;
     font-size: 14px;
     outline: none;
+    background-color: #fff;
+    transition: all 0.2s ease;
 }
 
+/* 입력 폼 포커스 시 그린 하이라이트 효과 극대화 */
 .input-row input:focus {
     border-color: #4CAF50;
+    background-color: #fff;
+    box-shadow: 0 0 0 4px rgba(76, 175, 80, 0.12);
 }
 
+/* 로그인 버튼 - 더 선명한 색감과 그림자 효과 */
 .btn-login {
-    width: 80px;
-    background-color: #4CAF50;
+    width: 90px;
+    background: linear-gradient(135deg, #4CAF50, #43a047);
     color: #fff;
     border: none;
-    font-size: 15px;
+    border-radius: 8px;
+    font-size: 16px;
     font-weight: bold;
     cursor: pointer;
     align-self: stretch;
+    box-shadow: 0 4px 12px rgba(76, 175, 80, 0.2);
+    transition: all 0.2s ease;
 }
 
 .btn-login:hover {
-    background-color: #388E3C;
+    background: linear-gradient(135deg, #43a047, #388E3C);
+    box-shadow: 0 6px 16px rgba(76, 175, 80, 0.3);
 }
 
-/* 자동로그인 / 아이디찾기 등 */
+.btn-login:active {
+    transform: scale(0.97);
+}
+
+/* 자동로그인 / 링크 영역 깔끔 정렬 */
 .login-options {
     display: flex;
     align-items: center;
+    justify-content: space-between;
     flex-wrap: nowrap;
     white-space: nowrap;
-    gap: 8px;
+    gap: 4px;
     font-size: 13px;
-    color: #555;
-    margin-bottom: 20px;
+    color: #556b58;
+    margin-bottom: 28px;
+    padding: 0 2px;
+}
+
+.login-options label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+    font-weight: 500;
 }
 
 .login-options input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
     cursor: pointer;
+    accent-color: #4CAF50;
 }
 
 .login-options a {
-    color: #555;
+    color: #556b58;
+    transition: color 0.2s;
 }
 
 .login-options a:hover {
     color: #4CAF50;
-    text-decoration: underline;
 }
 
 .login-options span {
-    color: #ccc;
+    color: #d1ded4;
 }
 
-/* 소셜 로그인 */
+/* 소셜 로그인 구분선 및 버튼 스타일 */
 .social-login {
     display: flex;
-    gap: 12px;
-    margin-bottom: 24px;
+    gap: 16px;
+    justify-content: center;
+    margin-bottom: 8px;
+    border-top: 1px dashed #cbdccf;
+    padding-top: 24px;
 }
 
 .social-btn {
-    width: 44px;
-    height: 44px;
+    width: 46px;
+    height: 46px;
     border-radius: 50%;
     border: none;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 14px;
-    font-weight: bold;
+    font-size: 15px;
+    font-weight: 800;
     color: #fff;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.06);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.social-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 14px rgba(0,0,0,0.12);
 }
 
 .social-btn.naver { background-color: #03C75A; }
-.social-btn.kakao { background-color: #FEE500; color: #3C1E1E; }
-.social-btn.google { background-color: #fff; border: 1px solid #ddd; color: #555; }
+.social-btn.kakao { background-color: #FEE500; color: #191919; }
+.social-btn.google { background-color: #fff; border: 1px solid #e2e8f0; color: #4f5b66; }
 
-/* 어워드 로고 */
+/* ===== 어워드 로고 및 기타 하단 공통 스타일 ===== */
 .award-logos {
     display: flex;
     gap: 6px;
@@ -225,19 +271,16 @@ main {
     min-width: 0;
 }
 
-/* 배너 광고 */
 .banner-box {
     width: 420px;
     height: 260px;
-    border: 1px solid #ddd;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #aaa;
-    font-size: 15px;
+    border: 1px solid #d3ebd8;
+    border-radius: 16px;
+    overflow: hidden;          /* 영상 모서리를 박스에 맞게 깎음 */
     background-color: #f9f9f9;
     flex-shrink: 0;
-}
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.02);
+}}
 
 /* ===== FOOTER ===== */
 footer {
@@ -324,4 +367,11 @@ footer {
     font-size: 12px;
     color: #aaa;
     border-top: 1px solid #eee;
+}
+/* css 파일 맨 밑에 이 스타일을 새로 추가 */
+.banner-video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;         /* 비율 유지하며 가득 채우기 */
+    display: block;
 }
