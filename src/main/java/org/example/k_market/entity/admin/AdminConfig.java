@@ -19,9 +19,9 @@ public class AdminConfig {
     private int mainSliderBannerId;
     private String siteName;
     private String siteSubName;
-    private int headerLogoImageId;
-    private int footerLogoImageId;
-    private int faviconImageId;
+    private int headerLogoFiled;
+    private int footerLogoFiled;
+    private int faviconFiled;
     private int logoFiled;
     private String bussName;
     private String ceo;
@@ -38,5 +38,46 @@ public class AdminConfig {
     private int userLoginBannerId;
     private int myPageBannerId;
     private String copyright;
+
+    public void updateSiteSettings(String siteName, String siteSubName) {
+        this.siteName = siteName;
+        this.siteSubName = siteSubName;
+    }
+
+    public void updateSiteLogo(int headerLogoFiled, int footerLogoFiled, int faviconFiled, int logoFiled) {
+        this.headerLogoFiled = headerLogoFiled;
+        this.footerLogoFiled = footerLogoFiled;
+        this.faviconFiled = faviconFiled;
+        this.logoFiled = logoFiled;
+    }
+
+    public void updateCorporateInfo(String bussName,
+                                    String ceo,
+                                    String bussRegNum,
+                                    String mailOrdBussReg,
+                                    String defaultAddr,
+                                    String detailAddr) {
+        this.bussName = bussName;
+        this.ceo = ceo;
+        this.bussRegNum = bussRegNum;
+        this.mailOrdBussReg = mailOrdBussReg;
+        this.defaultAddr = defaultAddr;
+        this.detailAddr = detailAddr;
+    }
+
+    public void updateCustomerSupportInfo(String csPhone,
+                                          String csBussHours,
+                                          String csEmail,
+                                          String csElectronicDisputePhone) {
+        this.csPhone = csPhone;
+        this.csBussHours = csBussHours;
+        this.csEmail = csEmail;
+        this.csElectronicDisputePhone = csElectronicDisputePhone;
+    }
+
+    public void updateCopyright(String copyright) {
+        this.copyright = copyright;
+    }
+
 
 }

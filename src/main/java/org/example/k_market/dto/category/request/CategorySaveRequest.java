@@ -1,7 +1,7 @@
 package org.example.k_market.dto.category.request;
 
 import lombok.*;
-import org.example.k_market.dto.category.CategoryDTO;
+import org.example.k_market.dto.category.CategorySaveDTO;
 
 import java.util.List;
 
@@ -12,5 +12,5 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 public class CategorySaveRequest {
-    private List<CategoryDTO> categories;
+    private List<CategorySaveDTO> categories;
 }

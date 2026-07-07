@@ -136,12 +136,35 @@ public class MemberDto {
         private String authCode;
     }
 
+    // 아이디 찾기 결과 (화면 표시용)
+    @Getter
+    @Builder
+    public static class FindUidResult {
+        private String name;
+        private String uid;
+        private String email;
+        private String regDate;
+
+        // ⚠️ Member에 getRegDate() 없으면 필드명 알려줘, 여기만 고치면 됨
+        public static FindUidResult from(Member member) {
+            return FindUidResult.builder()
+                    .name(member.getName())
+                    .uid(member.getUid())
+                    .email(member.getEmail())
+                    .regDate(member.getCreatedAt() != null
+                            ? member.getCreatedAt().format(java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))
+                            : "")
+                    .build();
+        }
+    }
+
     // 회원 정보 응답 (비밀번호 제외!)
     @Getter
     @Builder
     public static class Response {
         private String uid;
         private String name;
+        private String birthDate; // ===== 추가된 부분: 마이페이지 생년월일 표시용 =====
         private String email;
         private String phone;
         private String memberType;
@@ -155,6 +178,7 @@ public class MemberDto {
             return Response.builder()
                     .uid(member.getUid())
                     .name(member.getName())
+                    .birthDate(member.getBirthDate()) // ===== 추가된 부분 =====
                     .email(member.getEmail())
                     .phone(member.getPhone())
                     .memberType(member.getMemberType())

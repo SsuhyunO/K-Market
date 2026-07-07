@@ -14,30 +14,99 @@
 
     <div class="footer-info">
         <div class="footer-inner">
+
+            <!-- 푸터 로고 -->
             <div class="footer-logo-box">
-                <span class="logo-placeholder">KMarket</span>
+                <a th:href="@{/}">
+
+                    <!-- DB에 저장된 푸터 로고가 있으면 이미지 출력 -->
+                    <img th:if="${siteConfig != null and siteConfig.footerLogoFiled != 0}"
+                         th:src="@{/files/{id}(id=${siteConfig.footerLogoFiled})}"
+                         alt="KMarket"
+                         style="width:155px; height:36px; object-fit:contain; display:block;">
+
+                    <!-- DB에 푸터 로고가 없으면 기존 텍스트 출력 -->
+                    <span th:if="${siteConfig == null or siteConfig.footerLogoFiled == 0}"
+                          class="logo-placeholder">
+                        KMarket
+                    </span>
+
+                </a>
             </div>
+
+            <!-- 회사 정보 -->
             <div class="footer-corp">
-                <h3>㈜케이마켓</h3>
+                <h3 th:text="${siteConfig != null ? siteConfig.bussName : '㈜케이마켓'}">
+                    ㈜케이마켓
+                </h3>
+
                 <p>
-                    부산광역시 부산진구 중앙대로 103<br>
-                    그린타워 13층<br>
-                    대표이사 : 홍길동<br>
-                    사업자등록번호 : 123-45-12345
+                    <span th:text="${siteConfig != null ? siteConfig.defaultAddr : '부산광역시 부산진구 중앙대로 103'}">
+                        부산광역시 부산진구 중앙대로 103
+                    </span>
+                    <br>
+
+                    <span th:text="${siteConfig != null ? siteConfig.detailAddr : '그린타워 13층'}">
+                        그린타워 13층
+                    </span>
+                    <br>
+
+                    대표이사 :
+                    <span th:text="${siteConfig != null ? siteConfig.ceo : '홍길동'}">
+                        홍길동
+                    </span>
+                    <br>
+
+                    사업자등록번호 :
+                    <span th:text="${siteConfig != null ? siteConfig.bussRegNum : '123-45-12345'}">
+                        123-45-12345
+                    </span>
+                    <br>
+
+                    통신판매업신고 :
+                    <span th:text="${siteConfig != null ? siteConfig.mailOrdBussReg : '-'}">
+                        -
+                    </span>
                 </p>
             </div>
+
+            <!-- 고객센터 정보 -->
             <div class="footer-contact">
                 <h3>고객센터</h3>
+
                 <p>
-                    Tel : 1234-5678 평일 09:00~18:00<br>
-                    전자금융거래 분쟁 담당 : 1234-1234<br>
-                    (365일 09:00~18:00)
+                    Tel :
+                    <span th:text="${siteConfig != null ? siteConfig.csPhone : '1234-5678'}">
+                        1234-5678
+                    </span>
+
+                    <span th:text="${siteConfig != null ? siteConfig.csBussHours : '평일 09:00~18:00'}">
+                        평일 09:00~18:00
+                    </span>
+                    <br>
+
+                    전자금융거래 분쟁 담당 :
+                    <span th:text="${siteConfig != null ? siteConfig.csElectronicDisputePhone : '1234-1234'}">
+                        1234-1234
+                    </span>
+                    <br>
+
+                    이메일 :
+                    <span th:text="${siteConfig != null ? siteConfig.csEmail : 'help@kmarket.co.kr'}">
+                        help@kmarket.co.kr
+                    </span>
                 </p>
             </div>
             <div>
                 <p>[[${@appInfoDTO.appName}]] - [[${@appInfoDTO.appVersion}]]</p>
             </div>
         </div>
+    </div>
+
+    <!-- 카피라이트 -->
+    <div style="text-align:center; font-size:12px; color:#999; padding:10px 0;"
+         th:text="${siteConfig != null ? siteConfig.copyright : 'Copyright © Kmarket.co.kr All rights reserved.'}">
+        Copyright © Kmarket.co.kr All rights reserved.
     </div>
 
 </div>
