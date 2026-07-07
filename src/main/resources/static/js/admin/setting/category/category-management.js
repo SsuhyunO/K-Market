@@ -7,24 +7,70 @@ document.addEventListener('DOMContentLoaded', function () {
     if (!form || !categoryTree) return;
 
     let initialTreeHtml = categoryTree.innerHTML;
+    let deletedCategories = [];
+    let isSubmitting = false;
     const cancelButton = createCancelButton();
 
     form.querySelector('.section-form-actions')?.prepend(cancelButton);
     setActionState(form, false);
 
+    categoryTree.addEventListener('category:remove', event => {
+        if (categoryTree.dataset.categoryRestoring === 'true') return;
+
+        const categoryId = event.detail?.id;
+        if (!isPersistedCategoryId(categoryId)) return;
+
+        deletedCategories.push({
+            id: categoryId,
+            action: 'DELETE'
+        });
+    });
+
     cancelButton.addEventListener('click', () => {
         if (!confirm('변경사항을 취소하고 초기 상태로 되돌리시겠습니까?')) return;
 
         restoreInitialTree(form, categoryTree, initialTreeHtml);
+        deletedCategories = [];
     });
 
-    form.addEventListener('submit', event => {
+    form.addEventListener('submit', async event => {
         event.preventDefault();
+        if (isSubmitting) return;
 
-        const payload = serializeCategoryTree(categoryTree);
-        console.log('category-management submit payload:', payload);
+        try {
+            isSubmitting = true;
+            setSubmittingState(form, true);
+
+            const payload = {
+                categories: [
+                    ...serializeCategoryTree(categoryTree),
+                    ...dedupeDeletedCategories(deletedCategories)
+                ]
+            };
+
+            const response = await fetch(form.action, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(payload)
+            });
+
+            if (!response.ok) {
+                throw new Error(await getErrorMessage(response));
+            }
+
+            window.location.reload();
+        } catch (error) {
+            isSubmitting = false;
+            setSubmittingState(form, false);
+            setActionState(form, true);
+            alert(error.message || '카테고리 저장 중 오류가 발생했습니다.');
+            return;
+        }
 
         initialTreeHtml = categoryTree.innerHTML;
+        deletedCategories = [];
         setActionState(form, false);
         clearChangeMessage(form);
     });
@@ -94,6 +140,22 @@ function toggleSubmitButton(form, isEnabled) {
 }
 
 /**
+ * 저장 요청 중 중복 제출과 변경취소를 막는다.
+ */
+function setSubmittingState(form, isSubmitting) {
+    const submitButton = form.querySelector('.section-submit-button');
+    const cancelButton = form.querySelector('.category-reset-button');
+
+    if (submitButton) {
+        submitButton.disabled = isSubmitting;
+    }
+
+    if (cancelButton) {
+        cancelButton.disabled = isSubmitting;
+    }
+}
+
+/**
  * 변경사항 안내 메시지를 비운다.
  */
 function clearChangeMessage(form) {
@@ -102,25 +164,66 @@ function clearChangeMessage(form) {
 }
 
 /**
- * 현재 트리뷰 DOM을 제출용 카테고리 payload로 직렬화한다.
- * 백엔드 연동 전까지는 프론트 categoryId를 기준 식별자로 사용한다.
+ * 현재 트리뷰 DOM을 카테고리 저장 요청 DTO 형태로 직렬화한다.
+ * id와 parentId는 기존 DB id 또는 프론트 임시 id를 문자열 그대로 보낸다.
  */
 function serializeCategoryTree(categoryTree) {
-    return getRootItems(categoryTree).map((item, index) => ({
-        id: item.dataset.categoryId ?? '',
-        title: getCategoryTitle(item),
-        infoNoticeType: null,
-        depth: 1,
-        order: index,
-        children: getChildItems(item).map((child, childIndex) => ({
-            id: child.dataset.categoryId ?? '',
-            parentId: item.dataset.categoryId ?? '',
-            title: getCategoryTitle(child),
-            infoNoticeType: getCategoryInfoNoticeType(child),
-            depth: 2,
-            order: childIndex
-        }))
-    }));
+    return getRootItems(categoryTree).flatMap((item, index) => {
+        const rootCategoryId = item.dataset.categoryId ?? '';
+        const rootCategory = {
+            id: rootCategoryId,
+            parentId: null,
+            name: getCategoryTitle(item),
+            infoNoticeType: null,
+            sortOrder: index,
+            action: resolveSaveAction(rootCategoryId)
+        };
+
+        const childCategories = getChildItems(item).map((child, childIndex) => {
+            const childCategoryId = child.dataset.categoryId ?? '';
+
+            return {
+                id: childCategoryId,
+                parentId: rootCategoryId,
+                name: getCategoryTitle(child),
+                infoNoticeType: getCategoryInfoNoticeType(child),
+                sortOrder: childIndex,
+                action: resolveSaveAction(childCategoryId)
+            };
+        });
+
+        return [rootCategory, ...childCategories];
+    });
+}
+
+function resolveSaveAction(categoryId) {
+    return isPersistedCategoryId(categoryId) ? 'UPDATE' : 'CREATE';
+}
+
+function isPersistedCategoryId(categoryId) {
+    return /^[1-9]\d*$/.test(String(categoryId ?? ''));
+}
+
+function dedupeDeletedCategories(categories) {
+    const seen = new Set();
+
+    return categories.filter(category => {
+        if (seen.has(category.id)) return false;
+
+        seen.add(category.id);
+        return true;
+    });
+}
+
+async function getErrorMessage(response) {
+    const fallbackMessage = `카테고리 저장 실패: ${response.status}`;
+
+    try {
+        const error = await response.json();
+        return error?.message || fallbackMessage;
+    } catch {
+        return fallbackMessage;
+    }
 }
 
 /**
