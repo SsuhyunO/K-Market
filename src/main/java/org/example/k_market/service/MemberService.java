@@ -38,12 +38,12 @@ public class MemberService {
     }
 
     // 아이디 찾기
-    public String findUid(MemberDto.FindUidRequest request) {
+    public MemberDto.FindUidResult findUid(MemberDto.FindUidRequest request) {
         Member member = memberRepository.findByNameAndEmail(request.getName(), request.getEmail());
         if (member == null) {
             throw new IllegalArgumentException("일치하는 회원 정보가 없습니다.");
         }
-        return member.getUid();
+        return MemberDto.FindUidResult.from(member);
     }
 
     // 비밀번호 찾기 - 본인 확인 (uid + 이메일 일치 여부)
@@ -65,5 +65,33 @@ public class MemberService {
     public Member findByUid(String uid) {
         return memberRepository.findById(uid)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다."));
+    }
+
+    // ===== 추가된 부분: 현재 비밀번호 확인 (마이페이지 비밀번호 확인 팝업용) =====
+    public boolean verifyCurrentPassword(String uid, String rawPassword) {
+        Member member = findByUid(uid);
+        return passwordEncoder.matches(rawPassword, member.getPassword());
+    }
+
+    // ===== 추가된 부분: 마이페이지에서 비밀번호 변경 (uid + 새 비밀번호) =====
+    public void changePasswordByUid(String uid, String newRawPassword) {
+        Member member = findByUid(uid);
+        member.changePassword(passwordEncoder.encode(newRawPassword));
+        memberRepository.save(member);
+    }
+
+    // ===== 추가된 부분: 탈퇴 처리 (soft delete - 상태값만 변경) =====
+    public void withdraw(String uid) {
+        Member member = findByUid(uid);
+        member.withdraw();
+        memberRepository.save(member);
+    }
+
+    // ===== 추가된 부분: 마이페이지 정보수정(휴대폰/주소) =====
+    // 이메일은 정책상 수정 금지이므로 request.getEmail()은 의도적으로 사용하지 않음
+    public void updateProfile(String uid, MemberDto.UpdateRequest request) {
+        Member member = findByUid(uid);
+        member.updateProfile(request.getPhone(), request.getZipCode(), request.getAddr1(), request.getAddr2());
+        memberRepository.save(member);
     }
 }
