@@ -97,6 +97,9 @@
                     </span>
                 </p>
             </div>
+            <div>
+                <p>[[${@appInfoDTO.appName}]] - [[${@appInfoDTO.appVersion}]]</p>
+            </div>
         </div>
     </div>
 
@@ -105,7 +108,5 @@
          th:text="${siteConfig != null ? siteConfig.copyright : 'Copyright © Kmarket.co.kr All rights reserved.'}">
         Copyright © Kmarket.co.kr All rights reserved.
     </div>
-
-    <span class="version">[[${@appInfoDTO.appName}]] - [[${@appInfoDTO.appVersion}]]</span>
 
 </div>
