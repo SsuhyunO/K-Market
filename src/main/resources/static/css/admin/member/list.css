@@ -77,7 +77,11 @@
 }
 
 .member-status.active {
-    color: var(--adm-primary);
+    color: #1a8a1a;
+}
+
+.member-status.withdrawn {
+    color: #d33333;
 }
 
 .member-action-button {

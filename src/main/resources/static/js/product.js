@@ -159,9 +159,20 @@ function initCartAndBuyButtons() {
 
     if (btnCart) {
         btnCart.addEventListener('click', function() {
-            // 장바구니 버튼 클릭 시 alert 띄운 후 경로 이동
-            alert('상품이 장바구니에 담겼습니다.');
-            window.location.href = '/K_Market/product/cart'; // 장바구니 화면으로 이동
+            fetch('/K_Market/api/member/me')
+                .then(res => {
+                    if (!res.ok) throw new Error('unauthorized');
+                    return res.json();
+                })
+                .then(() => {
+                    // 로그인 상태 확인됨 → 정상적으로 장바구니 담기 처리
+                    alert('상품이 장바구니에 담겼습니다.');
+                    window.location.href = '/K_Market/product/cart';
+                })
+                .catch(() => {
+                    // 비로그인 상태 → 인터셉터와 동일한 방식으로 이동
+                    window.location.href = '/K_Market/product/cart';
+                });
         });
     }
 
