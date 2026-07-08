@@ -1,4 +1,4 @@
-package org.example.k_market.advice;
+package org.example.k_market.advice.admin;
 
 import jakarta.servlet.http.HttpServletRequest;
 import org.example.k_market.common.admin.AdminCategory;

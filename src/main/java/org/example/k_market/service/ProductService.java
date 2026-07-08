@@ -2,6 +2,7 @@ package org.example.k_market.service;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.example.k_market.dto.product.ProductDTO;
 import org.example.k_market.dto.product.request.ProductRegisterRequest;
 import org.example.k_market.entity.category.Category;
 import org.example.k_market.entity.product.Product;
@@ -12,6 +13,8 @@ import org.example.k_market.service.product.ProductNoticeWriter;
 import org.example.k_market.service.product.ProductOptionWriter;
 import org.example.k_market.service.product.ProductUploadedFiles;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -62,7 +65,11 @@ public class ProductService {
     }
 
     @Transactional
-    public void getProductList() {
-
+    public List<ProductDTO> getProductList() {
+        return productRepository
+            .findAll()
+            .stream()
+            .map(Product::toDTO)
+            .toList();
     }
 }
