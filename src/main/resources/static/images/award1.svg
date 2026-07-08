@@ -1,0 +1,12 @@
+<svg width="140" height="56" viewBox="0 0 140 56" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="g" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#4CAF50"/>
+      <stop offset="100%" stop-color="#2e7d32"/>
+    </linearGradient>
+  </defs>
+  <circle cx="20" cy="28" r="16" fill="url(#g)"/>
+  <path d="M20 18l2.4 5 5.5.5-4.2 3.8 1.2 5.4L20 29.8l-4.9 2.9 1.2-5.4-4.2-3.8 5.5-.5z" fill="#fff"/>
+  <text x="44" y="24" font-family="'Malgun Gothic','맑은 고딕',sans-serif" font-size="8.5" fill="#7a8a7c">2026 대한민국</text>
+  <text x="44" y="37" font-family="'Malgun Gothic','맑은 고딕',sans-serif" font-size="12.5" font-weight="800" fill="#1e4620">베스트쇼핑몰</text>
+</svg>

@@ -1,25 +1,16 @@
 
+
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-<meta charset="UTF-8">
-<title>마이페이지 | K-Market</title>
-<link rel="stylesheet" th:href="@{/css/my/home.css}">
+    <meta charset="UTF-8">
+    <title>마이페이지 | K-Market</title>
+    <link rel="stylesheet" th:href="@{/css/my/home.css}">
 </head>
 <body>
 
 <!-- ===== HEADER ===== -->
-<header>
-    <div class="header-inner">
-        <a th:href="@{/}" class="logo">CI ( 로고 )</a>
-        <nav class="header-nav">
-            <a th:href="@{/member/login}">로그인</a>
-            <a th:href="@{/member/join}">회원가입</a>
-            <a th:href="@{/my/home}" class="active">마이페이지</a>
-            <a th:href="@{/product/cart}">🛒장바구니</a>
-        </nav>
-    </div>
-</header>
+<div th:replace="~{fragments/header :: header}"></div>
 
 <!-- ===== MAIN ===== -->
 <main>
@@ -82,62 +73,62 @@
 
                 <table class="order-table">
                     <thead>
-                        <tr>
-                            <th style="width:120px;">날짜</th>
-                            <th>상품정보</th>
-                            <th style="width:100px;">상태</th>
-                            <th style="width:110px;">확인 / 신청</th>
-                        </tr>
+                    <tr>
+                        <th style="width:120px;">날짜</th>
+                        <th>상품정보</th>
+                        <th style="width:100px;">상태</th>
+                        <th style="width:110px;">확인 / 신청</th>
+                    </tr>
                     </thead>
                     <tbody>
-                        <tr class="js-order-row" data-date="2022-12-13" data-order-no="1012211341" data-company="(주) 상호명" data-product="상품명" data-qty="1" data-price="34,000원">
-                            <td class="order-date">2022-12-13</td>
-                            <td class="order-product">
-                                <div class="product-inner">
-                                    <div class="product-img">상품이미지</div>
-                                    <div class="product-info">
-                                        <p class="order-no"><a href="#" class="js-order-detail" data-order="1012211341">주문번호 : 1012211341</a></p>
-                                        <p class="company-name">(주) 상호명</p>
-                                        <p class="product-name">상품명</p>
-                                        <p class="product-qty">수량 : 1 개</p>
-                                        <p class="product-price">34,000원</p>
-                                    </div>
+                    <tr class="js-order-row" data-date="2022-12-13" data-order-no="1012211341" data-company="(주) 상호명" data-product="상품명" data-qty="1" data-price="34,000원">
+                        <td class="order-date">2022-12-13</td>
+                        <td class="order-product">
+                            <div class="product-inner">
+                                <div class="product-img">상품이미지</div>
+                                <div class="product-info">
+                                    <p class="order-no"><a href="#" class="js-order-detail" data-order="1012211341">주문번호 : 1012211341</a></p>
+                                    <p class="company-name">(주) 상호명</p>
+                                    <p class="product-name">상품명</p>
+                                    <p class="product-qty">수량 : 1 개</p>
+                                    <p class="product-price">34,000원</p>
                                 </div>
-                            </td>
-                            <td class="order-status">배송완료</td>
-                            <td class="order-action">
-                                <div class="action-btn-group">
-                                    <a href="#" class="btn-blue js-confirm-purchase">구매확정</a>
-                                    <a href="#" class="btn-blue js-write-review">상품평쓰기</a>
-                                    <a href="#" class="btn-white js-return-request">반품신청</a>
-                                    <a href="#" class="btn-white js-exchange-request">교환신청</a>
+                            </div>
+                        </td>
+                        <td class="order-status">배송완료</td>
+                        <td class="order-action">
+                            <div class="action-btn-group">
+                                <a href="#" class="btn-blue js-confirm-purchase">구매확정</a>
+                                <a href="#" class="btn-blue js-write-review">상품평쓰기</a>
+                                <a href="#" class="btn-white js-return-request">반품신청</a>
+                                <a href="#" class="btn-white js-exchange-request">교환신청</a>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr class="js-order-row" data-date="2022-12-13" data-order-no="1012211341" data-company="(주) 상호명" data-product="상품명" data-qty="1" data-price="34,000원">
+                        <td class="order-date">2022-12-13</td>
+                        <td class="order-product">
+                            <div class="product-inner">
+                                <div class="product-img">상품이미지</div>
+                                <div class="product-info">
+                                    <p class="order-no"><a href="#" class="js-order-detail" data-order="1012211341">주문번호 : 1012211341</a></p>
+                                    <p class="company-name">(주) 상호명</p>
+                                    <p class="product-name">상품명</p>
+                                    <p class="product-qty">수량 : 1 개</p>
+                                    <p class="product-price">34,000원</p>
                                 </div>
-                            </td>
-                        </tr>
-                        <tr class="js-order-row" data-date="2022-12-13" data-order-no="1012211341" data-company="(주) 상호명" data-product="상품명" data-qty="1" data-price="34,000원">
-                            <td class="order-date">2022-12-13</td>
-                            <td class="order-product">
-                                <div class="product-inner">
-                                    <div class="product-img">상품이미지</div>
-                                    <div class="product-info">
-                                        <p class="order-no"><a href="#" class="js-order-detail" data-order="1012211341">주문번호 : 1012211341</a></p>
-                                        <p class="company-name">(주) 상호명</p>
-                                        <p class="product-name">상품명</p>
-                                        <p class="product-qty">수량 : 1 개</p>
-                                        <p class="product-price">34,000원</p>
-                                    </div>
-                                </div>
-                            </td>
-                            <td class="order-status">배송완료</td>
-                            <td class="order-action">
-                                <div class="action-btn-group">
-                                    <a href="#" class="btn-blue js-confirm-purchase">구매확정</a>
-                                    <a href="#" class="btn-blue js-write-review">상품평쓰기</a>
-                                    <a href="#" class="btn-white js-return-request">반품신청</a>
-                                    <a href="#" class="btn-white js-exchange-request">교환신청</a>
-                                </div>
-                            </td>
-                        </tr>
+                            </div>
+                        </td>
+                        <td class="order-status">배송완료</td>
+                        <td class="order-action">
+                            <div class="action-btn-group">
+                                <a href="#" class="btn-blue js-confirm-purchase">구매확정</a>
+                                <a href="#" class="btn-blue js-write-review">상품평쓰기</a>
+                                <a href="#" class="btn-white js-return-request">반품신청</a>
+                                <a href="#" class="btn-white js-exchange-request">교환신청</a>
+                            </div>
+                        </td>
+                    </tr>
                     </tbody>
                 </table>
             </section>
@@ -150,32 +141,32 @@
                 </div>
                 <table class="point-table">
                     <thead>
-                        <tr>
-                            <th>날짜</th>
-                            <th>구분</th>
-                            <th>주문번호</th>
-                            <th>적립금액</th>
-                            <th>비고</th>
-                            <th>유효기간</th>
-                        </tr>
+                    <tr>
+                        <th>날짜</th>
+                        <th>구분</th>
+                        <th>주문번호</th>
+                        <th>적립금액</th>
+                        <th>비고</th>
+                        <th>유효기간</th>
+                    </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>2022-12-13</td>
-                            <td>적립</td>
-                            <td>2022121001</td>
-                            <td class="point-plus">340</td>
-                            <td>상품 구매확정</td>
-                            <td>2024-12-10</td>
-                        </tr>
-                        <tr>
-                            <td>2022-12-13</td>
-                            <td>적립</td>
-                            <td>2022120601</td>
-                            <td class="point-plus">120</td>
-                            <td>상품 구매확정</td>
-                            <td>2024-12-06</td>
-                        </tr>
+                    <tr>
+                        <td>2022-12-13</td>
+                        <td>적립</td>
+                        <td>2022121001</td>
+                        <td class="point-plus">340</td>
+                        <td>상품 구매확정</td>
+                        <td>2024-12-10</td>
+                    </tr>
+                    <tr>
+                        <td>2022-12-13</td>
+                        <td>적립</td>
+                        <td>2022120601</td>
+                        <td class="point-plus">120</td>
+                        <td>상품 구매확정</td>
+                        <td>2024-12-06</td>
+                    </tr>
                     </tbody>
                 </table>
             </section>
@@ -188,36 +179,36 @@
                 </div>
                 <table class="review-list-table">
                     <thead>
-                        <tr>
-                            <th style="width:60px;">번호</th>
-                            <th>상품명</th>
-                            <th>내용</th>
-                            <th style="width:120px;">평점</th>
-                            <th style="width:110px;">작성일</th>
-                        </tr>
+                    <tr>
+                        <th style="width:60px;">번호</th>
+                        <th>상품명</th>
+                        <th>내용</th>
+                        <th style="width:120px;">평점</th>
+                        <th style="width:110px;">작성일</th>
+                    </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td>상품번호 / 상품명</td>
-                            <td>배송이 빠릅니다. 잘 사용하 겠습니다 .</td>
-                            <td class="review-list-star"><span class="star-filled">★★★★</span><span class="star-empty">☆</span></td>
-                            <td>2022-12-10</td>
-                        </tr>
-                        <tr>
-                            <td>2</td>
-                            <td>상품번호 / 상품명</td>
-                            <td>배송이 빠릅니다. 잘 사용하 겠습니다 .</td>
-                            <td class="review-list-star"><span class="star-filled">★★★★</span><span class="star-empty">☆</span></td>
-                            <td>2022-12-06</td>
-                        </tr>
-                        <tr>
-                            <td>3</td>
-                            <td>상품번호 / 상품명</td>
-                            <td>배송이 빠릅니다. 잘 사용하 겠습니다 .</td>
-                            <td class="review-list-star"><span class="star-filled">★★★★</span><span class="star-empty">☆</span></td>
-                            <td>2022-12-06</td>
-                        </tr>
+                    <tr>
+                        <td>1</td>
+                        <td>상품번호 / 상품명</td>
+                        <td>배송이 빠릅니다. 잘 사용하 겠습니다 .</td>
+                        <td class="review-list-star"><span class="star-filled">★★★★</span><span class="star-empty">☆</span></td>
+                        <td>2022-12-10</td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>상품번호 / 상품명</td>
+                        <td>배송이 빠릅니다. 잘 사용하 겠습니다 .</td>
+                        <td class="review-list-star"><span class="star-filled">★★★★</span><span class="star-empty">☆</span></td>
+                        <td>2022-12-06</td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td>상품번호 / 상품명</td>
+                        <td>배송이 빠릅니다. 잘 사용하 겠습니다 .</td>
+                        <td class="review-list-star"><span class="star-filled">★★★★</span><span class="star-empty">☆</span></td>
+                        <td>2022-12-06</td>
+                    </tr>
                     </tbody>
                 </table>
             </section>
@@ -230,40 +221,40 @@
                 </div>
                 <table class="inquiry-list-table">
                     <thead>
-                        <tr>
-                            <th style="width:60px;">번호</th>
-                            <th style="width:100px;">문의채널</th>
-                            <th style="width:100px;">문의유형</th>
-                            <th>제목</th>
-                            <th style="width:110px;">작성일</th>
-                            <th style="width:80px;">상태</th>
-                        </tr>
+                    <tr>
+                        <th style="width:60px;">번호</th>
+                        <th style="width:100px;">문의채널</th>
+                        <th style="width:100px;">문의유형</th>
+                        <th>제목</th>
+                        <th style="width:110px;">작성일</th>
+                        <th style="width:80px;">상태</th>
+                    </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td>고객센터</td>
-                            <td>주문 / 결제</td>
-                            <td>신용카드 결제 중 오류가 난 경우 어떻게 하나요 ?</td>
-                            <td>2022-12-12</td>
-                            <td class="inquiry-status-checking">검토중</td>
-                        </tr>
-                        <tr>
-                            <td>2</td>
-                            <td>고객센터</td>
-                            <td>주문 / 결제</td>
-                            <td>신용카드 결제 중 오류가 난 경우 어떻게 하나요 ?</td>
-                            <td>2022-12-12</td>
-                            <td class="inquiry-status-done">답변완료</td>
-                        </tr>
-                        <tr>
-                            <td>3</td>
-                            <td>판매자 게시판</td>
-                            <td>배송</td>
-                            <td>배송기간이 보통 얼마나 걸리나요 ?</td>
-                            <td>2022-12-12</td>
-                            <td class="inquiry-status-done">답변완료</td>
-                        </tr>
+                    <tr>
+                        <td>1</td>
+                        <td>고객센터</td>
+                        <td>주문 / 결제</td>
+                        <td>신용카드 결제 중 오류가 난 경우 어떻게 하나요 ?</td>
+                        <td>2022-12-12</td>
+                        <td class="inquiry-status-checking">검토중</td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>고객센터</td>
+                        <td>주문 / 결제</td>
+                        <td>신용카드 결제 중 오류가 난 경우 어떻게 하나요 ?</td>
+                        <td>2022-12-12</td>
+                        <td class="inquiry-status-done">답변완료</td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td>판매자 게시판</td>
+                        <td>배송</td>
+                        <td>배송기간이 보통 얼마나 걸리나요 ?</td>
+                        <td>2022-12-12</td>
+                        <td class="inquiry-status-done">답변완료</td>
+                    </tr>
                     </tbody>
                 </table>
             </section>
@@ -351,35 +342,35 @@
             <div class="modal-section-title">주문정보</div>
             <table class="modal-order-table">
                 <thead>
-                    <tr>
-                        <th style="width:100px;">날짜</th>
-                        <th>상품정보</th>
-                        <th style="width:130px;">결제금액</th>
-                        <th style="width:80px;">상태</th>
-                    </tr>
+                <tr>
+                    <th style="width:100px;">날짜</th>
+                    <th>상품정보</th>
+                    <th style="width:130px;">결제금액</th>
+                    <th style="width:80px;">상태</th>
+                </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td class="modal-order-date">20xx-01-01</td>
-                        <td class="modal-order-product">
-                            <div class="product-inner">
-                                <div class="product-img">상품이미지</div>
-                                <div class="product-info">
-                                    <p class="order-no">주문번호 : 1012211341</p>
-                                    <p class="company-name"><a href="#" class="js-seller-info">(주) 상호명</a></p>
-                                    <p class="product-name">상품명</p>
-                                    <p class="product-qty">수량 : 1 개</p>
-                                    <p class="product-price">34,000원</p>
-                                </div>
+                <tr>
+                    <td class="modal-order-date">20xx-01-01</td>
+                    <td class="modal-order-product">
+                        <div class="product-inner">
+                            <div class="product-img">상품이미지</div>
+                            <div class="product-info">
+                                <p class="order-no">주문번호 : 1012211341</p>
+                                <p class="company-name"><a href="#" class="js-seller-info">(주) 상호명</a></p>
+                                <p class="product-name">상품명</p>
+                                <p class="product-qty">수량 : 1 개</p>
+                                <p class="product-price">34,000원</p>
                             </div>
-                        </td>
-                        <td class="modal-pay-info">
-                            <p>판매가 <span>34,000원</span></p>
-                            <p>할인 <span>-3,000원</span></p>
-                            <p class="modal-pay-total">결제금액 <span>34,000원</span></p>
-                        </td>
-                        <td class="modal-order-status">배송완료</td>
-                    </tr>
+                        </div>
+                    </td>
+                    <td class="modal-pay-info">
+                        <p>판매가 <span>34,000원</span></p>
+                        <p>할인 <span>-3,000원</span></p>
+                        <p class="modal-pay-total">결제금액 <span>34,000원</span></p>
+                    </td>
+                    <td class="modal-order-status">배송완료</td>
+                </tr>
                 </tbody>
             </table>
 
@@ -387,22 +378,22 @@
             <div class="modal-section-title">배송정보</div>
             <table class="modal-delivery-table">
                 <tbody>
-                    <tr>
-                        <th>이름</th>
-                        <td>홍길동</td>
-                    </tr>
-                    <tr>
-                        <th>연락처</th>
-                        <td>010-1234-1001</td>
-                    </tr>
-                    <tr>
-                        <th>주소</th>
-                        <td>[210**] 부산광역시 부산진구 대연동 121 10층 1004호</td>
-                    </tr>
-                    <tr>
-                        <th>배송요청사항</th>
-                        <td>없음</td>
-                    </tr>
+                <tr>
+                    <th>이름</th>
+                    <td>홍길동</td>
+                </tr>
+                <tr>
+                    <th>연락처</th>
+                    <td>010-1234-1001</td>
+                </tr>
+                <tr>
+                    <th>주소</th>
+                    <td>[210**] 부산광역시 부산진구 대연동 121 10층 1004호</td>
+                </tr>
+                <tr>
+                    <th>배송요청사항</th>
+                    <td>없음</td>
+                </tr>
                 </tbody>
             </table>
         </div>
@@ -422,38 +413,38 @@
             <!-- 3번: 판매자 정보 -->
             <table class="modal-seller-table">
                 <tbody>
-                    <tr>
-                        <th>판매자 등급</th>
-                        <td>파워딜러</td>
-                    </tr>
-                    <tr>
-                        <th>상호</th>
-                        <td>(주) 상호명</td>
-                    </tr>
-                    <tr>
-                        <th>대표자</th>
-                        <td>홍길동</td>
-                    </tr>
-                    <tr>
-                        <th>전화번호</th>
-                        <td>051-123-1000</td>
-                    </tr>
-                    <tr>
-                        <th>FAX</th>
-                        <td>051-123-1001</td>
-                    </tr>
-                    <tr>
-                        <th>Email</th>
-                        <td>company@abc.com</td>
-                    </tr>
-                    <tr>
-                        <th>사업자번호</th>
-                        <td>123-12-123457</td>
-                    </tr>
-                    <tr>
-                        <th>영업소 재지</th>
-                        <td>[210**] 부산광역시 부산진구 대연동 121 10층 1004호</td>
-                    </tr>
+                <tr>
+                    <th>판매자 등급</th>
+                    <td>파워딜러</td>
+                </tr>
+                <tr>
+                    <th>상호</th>
+                    <td>(주) 상호명</td>
+                </tr>
+                <tr>
+                    <th>대표자</th>
+                    <td>홍길동</td>
+                </tr>
+                <tr>
+                    <th>전화번호</th>
+                    <td>051-123-1000</td>
+                </tr>
+                <tr>
+                    <th>FAX</th>
+                    <td>051-123-1001</td>
+                </tr>
+                <tr>
+                    <th>Email</th>
+                    <td>company@abc.com</td>
+                </tr>
+                <tr>
+                    <th>사업자번호</th>
+                    <td>123-12-123457</td>
+                </tr>
+                <tr>
+                    <th>영업소 재지</th>
+                    <td>[210**] 부산광역시 부산진구 대연동 121 10층 1004호</td>
+                </tr>
                 </tbody>
             </table>
 
@@ -480,28 +471,28 @@
             <!-- 3번: 문의 입력 필드 -->
             <table class="modal-inquiry-table">
                 <tbody>
-                    <tr>
-                        <th>문의종류</th>
-                        <td>
-                            <label class="inquiry-radio"><input type="radio" name="inquiryType" value="product"> 상품</label>
-                            <label class="inquiry-radio"><input type="radio" name="inquiryType" value="delivery"> 배송</label>
-                            <label class="inquiry-radio"><input type="radio" name="inquiryType" value="return"> 반품/취소</label>
-                            <label class="inquiry-radio"><input type="radio" name="inquiryType" value="exchange"> 교환</label>
-                            <label class="inquiry-radio"><input type="radio" name="inquiryType" value="etc"> 기타</label>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>Email</th>
-                        <td><input type="email" class="inquiry-input" id="inquiryEmail" value="chh**@gmail.com"></td>
-                    </tr>
-                    <tr>
-                        <th>제목</th>
-                        <td><input type="text" class="inquiry-input" id="inquiryTitle"></td>
-                    </tr>
-                    <tr>
-                        <th>내용</th>
-                        <td><textarea class="inquiry-textarea" id="inquiryContent"></textarea></td>
-                    </tr>
+                <tr>
+                    <th>문의종류</th>
+                    <td>
+                        <label class="inquiry-radio"><input type="radio" name="inquiryType" value="product"> 상품</label>
+                        <label class="inquiry-radio"><input type="radio" name="inquiryType" value="delivery"> 배송</label>
+                        <label class="inquiry-radio"><input type="radio" name="inquiryType" value="return"> 반품/취소</label>
+                        <label class="inquiry-radio"><input type="radio" name="inquiryType" value="exchange"> 교환</label>
+                        <label class="inquiry-radio"><input type="radio" name="inquiryType" value="etc"> 기타</label>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Email</th>
+                    <td><input type="email" class="inquiry-input" id="inquiryEmail" value="chh**@gmail.com"></td>
+                </tr>
+                <tr>
+                    <th>제목</th>
+                    <td><input type="text" class="inquiry-input" id="inquiryTitle"></td>
+                </tr>
+                <tr>
+                    <th>내용</th>
+                    <td><textarea class="inquiry-textarea" id="inquiryContent"></textarea></td>
+                </tr>
                 </tbody>
             </table>
 
@@ -551,54 +542,54 @@
             <!-- 3번: 입력폼 -->
             <table class="modal-review-table">
                 <tbody>
-                    <tr>
-                        <th>상품명</th>
-                        <td>상품명 출력</td>
-                    </tr>
-                    <tr>
-                        <th>만족도</th>
-                        <td>
-                            <div class="star-rating" id="reviewStarRating">
-                                <span class="star" data-value="1">★</span>
-                                <span class="star" data-value="2">★</span>
-                                <span class="star" data-value="3">★</span>
-                                <span class="star" data-value="4">★</span>
-                                <span class="star" data-value="5">★</span>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>내용</th>
-                        <td>
-                            <textarea class="review-textarea" id="reviewContent" placeholder="최소 10자이상 200자내 외로작성하세요 ."></textarea>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>사진</th>
-                        <td>
-                            <div class="review-file-row">
-                                <label class="review-file-btn">
-                                    파일선택
-                                    <input type="file" class="review-file-input" accept="image/*" data-target="reviewFileName1">
-                                </label>
-                                <span class="review-file-name" id="reviewFileName1">선택된파일없음</span>
-                            </div>
-                            <div class="review-file-row">
-                                <label class="review-file-btn">
-                                    파일선택
-                                    <input type="file" class="review-file-input" accept="image/*" data-target="reviewFileName2">
-                                </label>
-                                <span class="review-file-name" id="reviewFileName2">선택된파일없음</span>
-                            </div>
-                            <div class="review-file-row">
-                                <label class="review-file-btn">
-                                    파일선택
-                                    <input type="file" class="review-file-input" accept="image/*" data-target="reviewFileName3">
-                                </label>
-                                <span class="review-file-name" id="reviewFileName3">선택된파일없음</span>
-                            </div>
-                        </td>
-                    </tr>
+                <tr>
+                    <th>상품명</th>
+                    <td>상품명 출력</td>
+                </tr>
+                <tr>
+                    <th>만족도</th>
+                    <td>
+                        <div class="star-rating" id="reviewStarRating">
+                            <span class="star" data-value="1">★</span>
+                            <span class="star" data-value="2">★</span>
+                            <span class="star" data-value="3">★</span>
+                            <span class="star" data-value="4">★</span>
+                            <span class="star" data-value="5">★</span>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th>내용</th>
+                    <td>
+                        <textarea class="review-textarea" id="reviewContent" placeholder="최소 10자이상 200자내 외로작성하세요 ."></textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <th>사진</th>
+                    <td>
+                        <div class="review-file-row">
+                            <label class="review-file-btn">
+                                파일선택
+                                <input type="file" class="review-file-input" accept="image/*" data-target="reviewFileName1">
+                            </label>
+                            <span class="review-file-name" id="reviewFileName1">선택된파일없음</span>
+                        </div>
+                        <div class="review-file-row">
+                            <label class="review-file-btn">
+                                파일선택
+                                <input type="file" class="review-file-input" accept="image/*" data-target="reviewFileName2">
+                            </label>
+                            <span class="review-file-name" id="reviewFileName2">선택된파일없음</span>
+                        </div>
+                        <div class="review-file-row">
+                            <label class="review-file-btn">
+                                파일선택
+                                <input type="file" class="review-file-input" accept="image/*" data-target="reviewFileName3">
+                            </label>
+                            <span class="review-file-name" id="reviewFileName3">선택된파일없음</span>
+                        </div>
+                    </td>
+                </tr>
                 </tbody>
             </table>
 
@@ -625,35 +616,35 @@
             <div class="modal-section-title">상품정보</div>
             <table class="modal-order-table">
                 <thead>
-                    <tr>
-                        <th style="width:100px;">날짜</th>
-                        <th>상품정보</th>
-                        <th style="width:130px;">결제금액</th>
-                        <th style="width:80px;">상태</th>
-                    </tr>
+                <tr>
+                    <th style="width:100px;">날짜</th>
+                    <th>상품정보</th>
+                    <th style="width:130px;">결제금액</th>
+                    <th style="width:80px;">상태</th>
+                </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td class="modal-order-date" id="returnDate">0000-00-00</td>
-                        <td class="modal-order-product">
-                            <div class="product-inner">
-                                <div class="product-img">상품이미지</div>
-                                <div class="product-info">
-                                    <p class="order-no" id="returnOrderNo">주문번호 : 1012211341</p>
-                                    <p class="company-name" id="returnCompany">(주) 상호명</p>
-                                    <p class="product-name" id="returnProduct">상품명</p>
-                                    <p class="product-qty" id="returnQty">수량 : 1 개</p>
-                                    <p class="product-price" id="returnPrice">34,000원</p>
-                                </div>
+                <tr>
+                    <td class="modal-order-date" id="returnDate">0000-00-00</td>
+                    <td class="modal-order-product">
+                        <div class="product-inner">
+                            <div class="product-img">상품이미지</div>
+                            <div class="product-info">
+                                <p class="order-no" id="returnOrderNo">주문번호 : 1012211341</p>
+                                <p class="company-name" id="returnCompany">(주) 상호명</p>
+                                <p class="product-name" id="returnProduct">상품명</p>
+                                <p class="product-qty" id="returnQty">수량 : 1 개</p>
+                                <p class="product-price" id="returnPrice">34,000원</p>
                             </div>
-                        </td>
-                        <td class="modal-pay-info">
-                            <p>판매가 <span>34,000원</span></p>
-                            <p>할인 <span>-3,000원</span></p>
-                            <p class="modal-pay-total">결제금액 <span>34,000원</span></p>
-                        </td>
-                        <td class="modal-order-status">배송완료</td>
-                    </tr>
+                        </div>
+                    </td>
+                    <td class="modal-pay-info">
+                        <p>판매가 <span>34,000원</span></p>
+                        <p>할인 <span>-3,000원</span></p>
+                        <p class="modal-pay-total">결제금액 <span>34,000원</span></p>
+                    </td>
+                    <td class="modal-order-status">배송완료</td>
+                </tr>
                 </tbody>
             </table>
 
@@ -661,31 +652,31 @@
             <div class="modal-section-title">반품정보 입력</div>
             <table class="modal-review-table">
                 <tbody>
-                    <tr>
-                        <th>반품유형</th>
-                        <td>
-                            <label class="inquiry-radio"><input type="radio" name="returnType" value="simple"> 단순 변심</label>
-                            <label class="inquiry-radio"><input type="radio" name="returnType" value="defect"> 파손 및 불량</label>
-                            <label class="inquiry-radio"><input type="radio" name="returnType" value="mistake"> 주문 실수</label>
-                            <label class="inquiry-radio"><input type="radio" name="returnType" value="etc"> 기타</label>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>사유입력</th>
-                        <td><input type="text" class="inquiry-input" id="returnReason"></td>
-                    </tr>
-                    <tr>
-                        <th>사진첨부(선택)</th>
-                        <td>
-                            <div class="review-file-row">
-                                <label class="review-file-btn">
-                                    파일선택
-                                    <input type="file" class="review-file-input" accept="image/*" data-target="returnFileName">
-                                </label>
-                                <span class="review-file-name" id="returnFileName">선택된 파일없음</span>
-                            </div>
-                        </td>
-                    </tr>
+                <tr>
+                    <th>반품유형</th>
+                    <td>
+                        <label class="inquiry-radio"><input type="radio" name="returnType" value="simple"> 단순 변심</label>
+                        <label class="inquiry-radio"><input type="radio" name="returnType" value="defect"> 파손 및 불량</label>
+                        <label class="inquiry-radio"><input type="radio" name="returnType" value="mistake"> 주문 실수</label>
+                        <label class="inquiry-radio"><input type="radio" name="returnType" value="etc"> 기타</label>
+                    </td>
+                </tr>
+                <tr>
+                    <th>사유입력</th>
+                    <td><input type="text" class="inquiry-input" id="returnReason"></td>
+                </tr>
+                <tr>
+                    <th>사진첨부(선택)</th>
+                    <td>
+                        <div class="review-file-row">
+                            <label class="review-file-btn">
+                                파일선택
+                                <input type="file" class="review-file-input" accept="image/*" data-target="returnFileName">
+                            </label>
+                            <span class="review-file-name" id="returnFileName">선택된 파일없음</span>
+                        </div>
+                    </td>
+                </tr>
                 </tbody>
             </table>
 
@@ -712,35 +703,35 @@
             <div class="modal-section-title">상품정보</div>
             <table class="modal-order-table">
                 <thead>
-                    <tr>
-                        <th style="width:100px;">날짜</th>
-                        <th>상품정보</th>
-                        <th style="width:130px;">결제금액</th>
-                        <th style="width:80px;">상태</th>
-                    </tr>
+                <tr>
+                    <th style="width:100px;">날짜</th>
+                    <th>상품정보</th>
+                    <th style="width:130px;">결제금액</th>
+                    <th style="width:80px;">상태</th>
+                </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td class="modal-order-date" id="exchangeDate">0000-00-00</td>
-                        <td class="modal-order-product">
-                            <div class="product-inner">
-                                <div class="product-img">상품이미지</div>
-                                <div class="product-info">
-                                    <p class="order-no" id="exchangeOrderNo">주문번호 : 1012211341</p>
-                                    <p class="company-name" id="exchangeCompany">(주) 상호명</p>
-                                    <p class="product-name" id="exchangeProduct">상품명</p>
-                                    <p class="product-qty" id="exchangeQty">수량 : 1 개</p>
-                                    <p class="product-price" id="exchangePrice">34,000원</p>
-                                </div>
+                <tr>
+                    <td class="modal-order-date" id="exchangeDate">0000-00-00</td>
+                    <td class="modal-order-product">
+                        <div class="product-inner">
+                            <div class="product-img">상품이미지</div>
+                            <div class="product-info">
+                                <p class="order-no" id="exchangeOrderNo">주문번호 : 1012211341</p>
+                                <p class="company-name" id="exchangeCompany">(주) 상호명</p>
+                                <p class="product-name" id="exchangeProduct">상품명</p>
+                                <p class="product-qty" id="exchangeQty">수량 : 1 개</p>
+                                <p class="product-price" id="exchangePrice">34,000원</p>
                             </div>
-                        </td>
-                        <td class="modal-pay-info">
-                            <p>판매가 <span>34,000원</span></p>
-                            <p>할인 <span>-3,000원</span></p>
-                            <p class="modal-pay-total">결제금액 <span>34,000원</span></p>
-                        </td>
-                        <td class="modal-order-status">배송완료</td>
-                    </tr>
+                        </div>
+                    </td>
+                    <td class="modal-pay-info">
+                        <p>판매가 <span>34,000원</span></p>
+                        <p>할인 <span>-3,000원</span></p>
+                        <p class="modal-pay-total">결제금액 <span>34,000원</span></p>
+                    </td>
+                    <td class="modal-order-status">배송완료</td>
+                </tr>
                 </tbody>
             </table>
 
@@ -748,31 +739,31 @@
             <div class="modal-section-title">교환정보 입력</div>
             <table class="modal-review-table">
                 <tbody>
-                    <tr>
-                        <th>교환유형</th>
-                        <td>
-                            <label class="inquiry-radio"><input type="radio" name="exchangeType" value="simple"> 단순 교환</label>
-                            <label class="inquiry-radio"><input type="radio" name="exchangeType" value="defect"> 파손 및 불량</label>
-                            <label class="inquiry-radio"><input type="radio" name="exchangeType" value="mistake"> 주문 실수</label>
-                            <label class="inquiry-radio"><input type="radio" name="exchangeType" value="etc"> 기타</label>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>사유입력</th>
-                        <td><input type="text" class="inquiry-input" id="exchangeReason"></td>
-                    </tr>
-                    <tr>
-                        <th>사진첨부(선택)</th>
-                        <td>
-                            <div class="review-file-row">
-                                <label class="review-file-btn">
-                                    파일선택
-                                    <input type="file" class="review-file-input" accept="image/*" data-target="exchangeFileName">
-                                </label>
-                                <span class="review-file-name" id="exchangeFileName">선택된 파일없음</span>
-                            </div>
-                        </td>
-                    </tr>
+                <tr>
+                    <th>교환유형</th>
+                    <td>
+                        <label class="inquiry-radio"><input type="radio" name="exchangeType" value="simple"> 단순 교환</label>
+                        <label class="inquiry-radio"><input type="radio" name="exchangeType" value="defect"> 파손 및 불량</label>
+                        <label class="inquiry-radio"><input type="radio" name="exchangeType" value="mistake"> 주문 실수</label>
+                        <label class="inquiry-radio"><input type="radio" name="exchangeType" value="etc"> 기타</label>
+                    </td>
+                </tr>
+                <tr>
+                    <th>사유입력</th>
+                    <td><input type="text" class="inquiry-input" id="exchangeReason"></td>
+                </tr>
+                <tr>
+                    <th>사진첨부(선택)</th>
+                    <td>
+                        <div class="review-file-row">
+                            <label class="review-file-btn">
+                                파일선택
+                                <input type="file" class="review-file-input" accept="image/*" data-target="exchangeFileName">
+                            </label>
+                            <span class="review-file-name" id="exchangeFileName">선택된 파일없음</span>
+                        </div>
+                    </td>
+                </tr>
                 </tbody>
             </table>
 

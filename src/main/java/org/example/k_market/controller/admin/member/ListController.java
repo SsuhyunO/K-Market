@@ -1,6 +1,7 @@
 package org.example.k_market.controller.admin.member;
 
 import lombok.RequiredArgsConstructor;
+import org.example.k_market.dto.common.PageInfo;
 import org.example.k_market.dto.member.MemberDto;
 import org.example.k_market.service.admin.AdminMemberService;
 import org.springframework.data.domain.Page;
@@ -25,13 +26,13 @@ public class ListController {
             @RequestParam(required = false) String keyword,
             Model model
     ) {
-        Pageable pageable = PageRequest.of(page, 10);
+        Pageable pageable = PageRequest.of(Math.max(page - 1, 0), 10);
 
         Page<MemberDto.AdminListItem> memberPage =
                 adminMemberService.searchMemberList(searchType, keyword, pageable);
 
         model.addAttribute("memberList", memberPage.getContent());
-        model.addAttribute("memberPage", memberPage);
+        model.addAttribute("pageInfo", new PageInfo(memberPage));
         model.addAttribute("searchType", searchType);
         model.addAttribute("keyword", keyword);
 

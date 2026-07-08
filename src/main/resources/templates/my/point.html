@@ -1,26 +1,17 @@
 
 
+
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-<meta charset="UTF-8">
-<title>포인트내역 | K-Market</title>
-<link rel="stylesheet" th:href="@{/css/my/point.css}">
+    <meta charset="UTF-8">
+    <title>포인트내역 | K-Market</title>
+    <link rel="stylesheet" th:href="@{/css/my/point.css}">
 </head>
 <body>
 
 <!-- ===== HEADER ===== -->
-<header>
-    <div class="header-inner">
-        <a th:href="@{/}" class="logo">CI ( 로고 )</a>
-        <nav class="header-nav">
-            <a th:href="@{/member/login}">로그인</a>
-            <a th:href="@{/member/join}">회원가입</a>
-            <a th:href="@{/my/home}" class="active">마이페이지</a>
-            <a th:href="@{/product/cart}">🛒장바구니</a>
-        </nav>
-    </div>
-</header>
+<div th:replace="~{fragments/header :: header}"></div>
 
 <!-- ===== MAIN ===== -->
 <main>
@@ -56,7 +47,7 @@
 
         <!-- 2번 영역: 사이드바 (전체주문내역 active) -->
         <aside class="sidebar">
-                        <nav class="sidebar-menu">
+            <nav class="sidebar-menu">
                 <ul>
                     <li><a th:href="@{/my/order}" data-menu="orders">전체주문내역</a></li>
                     <li><a th:href="@{/my/point}" class="active" data-menu="points">포인트내역</a></li>
@@ -124,17 +115,17 @@
 
                 <table class="point-table">
                     <thead>
-                        <tr>
-                            <th>날짜</th>
-                            <th>구분</th>
-                            <th>주문번호</th>
-                            <th>적립금액</th>
-                            <th>비고</th>
-                            <th>유효기간</th>
-                        </tr>
+                    <tr>
+                        <th>날짜</th>
+                        <th>구분</th>
+                        <th>주문번호</th>
+                        <th>적립금액</th>
+                        <th>비고</th>
+                        <th>유효기간</th>
+                    </tr>
                     </thead>
                     <tbody id="pointListBody">
-                        <!-- JS로 동적 렌더링 -->
+                    <!-- JS로 동적 렌더링 -->
                     </tbody>
                 </table>
 
@@ -173,28 +164,28 @@
         <div class="modal-body">
             <table class="modal-inquiry-table">
                 <tbody>
-                    <tr>
-                        <th>문의종류</th>
-                        <td>
-                            <label class="inquiry-radio"><input type="radio" name="inquiryType" value="product"> 상품</label>
-                            <label class="inquiry-radio"><input type="radio" name="inquiryType" value="delivery"> 배송</label>
-                            <label class="inquiry-radio"><input type="radio" name="inquiryType" value="return"> 반품/취소</label>
-                            <label class="inquiry-radio"><input type="radio" name="inquiryType" value="exchange"> 교환</label>
-                            <label class="inquiry-radio"><input type="radio" name="inquiryType" value="etc"> 기타</label>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>Email</th>
-                        <td><input type="email" class="inquiry-input" id="inquiryEmail" value="chh**@gmail.com"></td>
-                    </tr>
-                    <tr>
-                        <th>제목</th>
-                        <td><input type="text" class="inquiry-input" id="inquiryTitle"></td>
-                    </tr>
-                    <tr>
-                        <th>내용</th>
-                        <td><textarea class="inquiry-textarea" id="inquiryContent"></textarea></td>
-                    </tr>
+                <tr>
+                    <th>문의종류</th>
+                    <td>
+                        <label class="inquiry-radio"><input type="radio" name="inquiryType" value="product"> 상품</label>
+                        <label class="inquiry-radio"><input type="radio" name="inquiryType" value="delivery"> 배송</label>
+                        <label class="inquiry-radio"><input type="radio" name="inquiryType" value="return"> 반품/취소</label>
+                        <label class="inquiry-radio"><input type="radio" name="inquiryType" value="exchange"> 교환</label>
+                        <label class="inquiry-radio"><input type="radio" name="inquiryType" value="etc"> 기타</label>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Email</th>
+                    <td><input type="email" class="inquiry-input" id="inquiryEmail" value="chh**@gmail.com"></td>
+                </tr>
+                <tr>
+                    <th>제목</th>
+                    <td><input type="text" class="inquiry-input" id="inquiryTitle"></td>
+                </tr>
+                <tr>
+                    <th>내용</th>
+                    <td><textarea class="inquiry-textarea" id="inquiryContent"></textarea></td>
+                </tr>
                 </tbody>
             </table>
 

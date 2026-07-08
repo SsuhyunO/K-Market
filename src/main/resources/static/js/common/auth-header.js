@@ -14,10 +14,20 @@ document.addEventListener('DOMContentLoaded', async function () {
 
                 const authArea = document.getElementById('authArea');
                 const memberOnlyArea = document.getElementById('memberOnlyArea');
+
                 if (authArea) {
+                    // ===== 로그인/회원가입 링크 + 구분자(|) 숨기기 =====
+                    const loginLink = document.getElementById('navLoginLink');
+                    const joinLink = document.getElementById('navJoinLink');
+                    if (loginLink) loginLink.style.display = 'none';
+                    if (joinLink) joinLink.style.display = 'none';
+
+                    const authSeparator = authArea.querySelector('span');
+                    if (authSeparator) authSeparator.style.display = 'none';
+
                     const safeName = escapeHtml(member.name);
 
-                    // ===== 추가된 부분: 판매자(SELLER)면 "판매자" 표시 + admin 이동 링크 =====
+                    // ===== 판매자(SELLER)면 "판매자" 표시 + admin 이동 링크 =====
                     const isSeller = member.memberType === 'SELLER';
                     const isAdmin = member.memberType === 'ADMIN';
 
@@ -34,13 +44,16 @@ document.addEventListener('DOMContentLoaded', async function () {
                             '<span style="color:var(--color-gray-200);">|</span>';
                     }
 
-                    authArea.innerHTML =
-                        '<span style="font-size:13px; color:var(--color-gray-600);">' +
+                    // 환영메시지 + 로그아웃을 authArea 끝에 추가 (기존 로그인/회원가입 링크는 숨김 상태로 유지)
+                    const welcomeHtml =
+                        '<span id="welcomeText" style="font-size:13px; color:var(--color-gray-600);">' +
                         safeName + '님 환영합니다' +
                         '</span>' +
                         '<span style="color:var(--color-gray-200);">|</span>' +
                         sellerBadgeHtml +
                         '<a href="#" id="navLogoutLink" style="font-size:13px; color:var(--color-gray-600);">로그아웃</a>';
+
+                    authArea.insertAdjacentHTML('beforeend', welcomeHtml);
 
                     // 로그인 상태 -> 마이페이지 노출
                     if (memberOnlyArea) {
