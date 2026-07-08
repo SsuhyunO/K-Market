@@ -1,4 +1,5 @@
 ﻿
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -90,7 +91,11 @@
                             <td th:text="${member.email}">xxxxx@...</td>
                             <td th:text="${member.phone}">010...</td>
                             <td th:text="${member.createdAt}">0000-00-00 00:00:00</td>
-                            <td><span class="member-status active" th:text="${member.statusLabel}">정상</span></td>
+                            <td>
+                                <span class="member-status"
+                                      th:classappend="${member.status == 'ACTIVE'} ? 'active' : 'withdrawn'"
+                                      th:text="${member.statusLabel}">정상</span>
+                            </td>
                             <td><button class="member-action-button" type="button">[ 수정 ]</button></td>
                         </tr>
                     </th:block>

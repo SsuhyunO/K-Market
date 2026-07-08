@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
@@ -22,69 +23,90 @@
         <h1 class="media-title">미디어 속 케이마켓을 소개합니다 !</h1>
         <p class="media-desc">더 다양한 Kmarket 영상을 소개합니다.</p>
 
-        <!-- ② 유튜브 영상 목록: 회사를 홍보할 수 있는 영상, 유튜브 플랫폼 활용, 실시간 스트리밍 서비스 제공 -->
+        <!-- ===== 대표 영상: 클릭 없이 바로 재생되는 큰 임베드 영상 ===== -->
+        <div class="media-featured">
+            <div class="media-featured-player">
+                <!-- 여기 코드 넣어: 대표 영상 바꾸고 싶으면 src의 영상ID만 교체 -->
+                <iframe
+                        src="https://www.youtube.com/embed/8L0FXxEhJKw?autoplay=1&mute=1"
+                        title="케이마켓 대표 영상"
+                        frameborder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        allowfullscreen>
+                </iframe>
+            </div>
+            <div class="media-featured-info">
+                <!-- 여기 코드 넣어: 대표 영상 제목/부제목 -->
+                <div class="media-featured-title">K마켓 부산에 착륙하다!!</div>
+                <div class="media-featured-sub">다들 놀러와~</div>
+            </div>
+        </div>
+
+        <!-- ② 유튜브 영상 목록: 클릭하면 유튜브로 이동하는 썸네일 카드 -->
         <div class="media-list">
 
-            <!-- mediaList가 없을 때 placeholder 6개 (스크롤 가능한 분량) -->
+            <!-- mediaList가 없을 때 placeholder (스크롤 가능한 분량) -->
             <th:block th:if="${mediaList == null or #lists.isEmpty(mediaList)}">
 
-                <a href="#" class="media-item" target="_blank" rel="noopener">
+                <!-- 여기 코드 넣어: media-item 카드 1개당 영상 1개
+                     href = 유튜브 영상 주소
+                     media-item-title = 영상 제목
+                     media-item-sub = 영상 부제목/설명
+                     썸네일 이미지를 쓰고 싶으면 <span class="play-icon">▶</span> 위에
+                     <img src="썸네일주소" alt=""> 추가하면 됨 -->
+
+                <a href="https://youtu.be/Uc6MmGyLFls?si=FTP0T7GjKCc6OSpw" class="media-item" target="_blank" rel="noopener">
                     <div class="media-thumb">
+                        <img src="https://img.youtube.com/vi/Uc6MmGyLFls/hqdefault.jpg" alt="">
                         <span class="play-icon">▶</span>
                     </div>
                     <div class="media-info">
-                        <div class="media-item-title"># 영상제목 1</div>
-                        <div class="media-item-sub"># 케이마켓 신제품 언박싱 | EP.201 | 매주 화요일 업로드</div>
+                        <div class="media-item-title">K마켓 지점장님 인터뷰</div>
+                        <div class="media-item-sub">궁금하면 클릭 ㄱㄱ!!</div>
                     </div>
                 </a>
 
-                <a href="#" class="media-item" target="_blank" rel="noopener">
+                <a href="https://youtu.be/9XttLI0oH0I?si=6e5Pk6KE54wMWFI0" class="media-item" target="_blank" rel="noopener">
                     <div class="media-thumb">
+                        <img src="https://img.youtube.com/vi/9XttLI0oH0I/hqdefault.jpg" alt="">
                         <span class="play-icon">▶</span>
                     </div>
                     <div class="media-info">
-                        <div class="media-item-title"># 영상제목 2</div>
-                        <div class="media-item-sub"># 케이마켓 물류센터 24시 풀착장 브이로그 | EP.200</div>
+                        <div class="media-item-title">K마켓 팬싸인회 기간</div>
+                        <div class="media-item-sub">싸인 받고 싶으면 놀러와요</div>
                     </div>
                 </a>
 
-                <a href="#" class="media-item" target="_blank" rel="noopener">
+                <a href="https://youtu.be/sFK89gemgKM?si=W792g_INah_ADtk8" class="media-item" target="_blank" rel="noopener">
                     <div class="media-thumb">
+                        <img src="https://img.youtube.com/vi/sFK89gemgKM/hqdefault.jpg" alt="">
                         <span class="play-icon">▶</span>
                     </div>
                     <div class="media-info">
-                        <div class="media-item-title"># 영상제목 3</div>
-                        <div class="media-item-sub"># MD가 직접 고른 이번 주 인기상품 TOP 5 | EP.199</div>
+                        <div class="media-item-title">K마켓 임영웅 출몰</div>
+                        <div class="media-item-sub">아주머니들을 위한 임영웅 팬싸인회~!!</div>
                     </div>
                 </a>
 
-                <a href="#" class="media-item" target="_blank" rel="noopener">
+                <a href="https://youtu.be/0j3WjZr1pRE?si=UVA_tH8QbsyiZgOE" class="media-item" target="_blank" rel="noopener">
                     <div class="media-thumb">
+                        <img src="https://img.youtube.com/vi/0j3WjZr1pRE/hqdefault.jpg" alt="">
                         <span class="play-icon">▶</span>
                     </div>
                     <div class="media-info">
-                        <div class="media-item-title"># 영상제목 4</div>
-                        <div class="media-item-sub"># 케이마켓 라이브 커머스, 실시간 스트리밍 다시보기 | EP.198</div>
+                        <div class="media-item-title">K마켓 곰돌이 입양</div>
+                        <div class="media-item-sub">구경하고 싶으면 놀러와요</div>
                     </div>
                 </a>
 
-                <a href="#" class="media-item" target="_blank" rel="noopener">
+                <a href="https://youtu.be/jIoYsTESxr4?si=L2a7cLVQt8iebyt1" class="media-item" target="_blank" rel="noopener">
                     <div class="media-thumb">
+                        <img src="https://img.youtube.com/vi/jIoYsTESxr4/hqdefault.jpg" alt="">
                         <span class="play-icon">▶</span>
                     </div>
                     <div class="media-info">
-                        <div class="media-item-title"># 영상제목 5</div>
-                        <div class="media-item-sub"># 신입사원이 직접 체험하는 케이마켓 하루 일과 | EP.197</div>
-                    </div>
-                </a>
-
-                <a href="#" class="media-item" target="_blank" rel="noopener">
-                    <div class="media-thumb">
-                        <span class="play-icon">▶</span>
-                    </div>
-                    <div class="media-info">
-                        <div class="media-item-title"># 영상제목 6</div>
-                        <div class="media-item-sub"># 케이마켓 사옥 투어, 일하는 공간을 소개합니다 | EP.196</div>
+                        <div class="media-item-title">공습경보</div>
+                        <div class="media-item-sub">공습경보</div>
                     </div>
                 </a>
 

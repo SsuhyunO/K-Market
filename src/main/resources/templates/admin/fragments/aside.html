@@ -1,12 +1,15 @@
+
 <aside id="admin-aside" th:fragment="aside">
     <div class="aside-logo">
         <div class="logo-text">K<span>market</span></div>
         <div class="logo-sub">㈜케이마켓</div>
     </div>
-    
+
     <nav class="aside-nav">
-        
+
+        <!-- 환경설정: ADMIN 전용 -->
         <details class="nav-item" data-menu="setting"
+                 th:if="${loginMemberType == 'ADMIN'}"
                  th:attr="open=${category.name() == 'SITE_SETTINGS'
                      or category.name() == 'BANNER_MANAGEMENT'
                      or category.name() == 'TERMS_MANAGEMENT'
@@ -24,8 +27,10 @@
                 <li><a th:href="@{/admin/version-management}">버전관리</a></li>
             </ul>
         </details>
-        
+
+        <!-- 상점관리: ADMIN 전용 -->
         <details class="nav-item" data-menu="shop"
+                 th:if="${loginMemberType == 'ADMIN'}"
                  th:attr="open=${category.name() == 'SHOP_LIST'
                      or category.name() == 'SALES_STATUS'} ? 'open' : null">
             <summary class="nav-link">
@@ -37,8 +42,10 @@
                 <li><a th:href="@{/admin/sales-status}">매출현황</a></li>
             </ul>
         </details>
-        
+
+        <!-- 회원관리: ADMIN 전용 -->
         <details class="nav-item" data-menu="member"
+                 th:if="${loginMemberType == 'ADMIN'}"
                  th:attr="open=${category.name() == 'MEMBER_LIST'
                      or category.name() == 'MANAGEMENT_POINT'} ? 'open' : null">
             <summary class="nav-link">
@@ -50,8 +57,10 @@
                 <li><a th:href="@{/admin/management-point}">포인트관리</a></li>
             </ul>
         </details>
-        
+
+        <!-- 상품관리: ADMIN, SELLER -->
         <details class="nav-item" data-menu="product"
+                 th:if="${loginMemberType == 'ADMIN' or loginMemberType == 'SELLER'}"
                  th:attr="open=${category.name() == 'PRODUCT_LIST'
                      or category.name() == 'PRODUCT_REGISTER'
                      or category.name() == 'PRODUCT_EDIT'} ? 'open' : null">
@@ -64,9 +73,11 @@
                 <li><a th:href="@{/admin/product/register}">상품등록</a></li>
             </ul>
         </details>
-        
+
+        <!-- 주문관리: ADMIN, SELLER -->
         <details class="nav-item" data-menu="order"
-                th:attr="open=${category.name() == 'ORDER_STATUS'
+                 th:if="${loginMemberType == 'ADMIN' or loginMemberType == 'SELLER'}"
+                 th:attr="open=${category.name() == 'ORDER_STATUS'
                     or category.name() == 'DELIVERY_STATUS'} ? 'open' : null">
             <summary class="nav-link">
                 <span class="nav-icon">🛒</span>주문관리
@@ -77,8 +88,10 @@
                 <li><a th:href="@{/admin/order/delivery-list}">배송현황</a></li>
             </ul>
         </details>
-        
+
+        <!-- 쿠폰관리: ADMIN, SELLER -->
         <details class="nav-item" data-menu="coupon"
+                 th:if="${loginMemberType == 'ADMIN' or loginMemberType == 'SELLER'}"
                  th:attr="open=${category.name() == 'COUPON_LIST'
                     or category.name() == 'COUPON_ISSUED'} ? 'open' : null">
             <summary class="nav-link">
@@ -90,8 +103,10 @@
                 <li><a th:href="@{/admin/coupon/used}">쿠폰발급현황</a></li>
             </ul>
         </details>
-        
+
+        <!-- 고객센터: ADMIN 전용 -->
         <details class="nav-item" data-menu="cs"
+                 th:if="${loginMemberType == 'ADMIN'}"
                  th:attr="open=${#strings.startsWith(category.name(), 'CS_')} ? 'open' : null">
             <summary class="nav-link">
                 <span class="nav-icon">💬</span>고객센터

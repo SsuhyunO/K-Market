@@ -1,3 +1,4 @@
+
 <header id="admin-header" th:fragment="header">
     <div class="header-logo">
         <a th:href="@{/admin/main}">
@@ -10,10 +11,24 @@
             <span class="home-icon">🏠</span> 홈
         </a>
         <span class="sep">|</span>
-        <form th:action="@{/}" method="post">
-            <button type="submit" class="util-link">로그아웃</button>
-        </form>
+        <button type="button" id="adminLogoutBtn" class="util-link">로그아웃</button>
         <span class="sep">|</span>
         <a th:href="@{/admin/cs}" class="util-link">고객센터</a>
     </nav>
+
+    <!-- 여기 코드 넣어: 실제 세션을 지우는 로그아웃 API 호출 -->
+    <script th:inline="javascript">
+        document.getElementById('adminLogoutBtn').addEventListener('click', async function () {
+            try {
+                await fetch(/*[[@{/api/member/logout}]]*/ '/K_Market/api/member/logout', {
+                    method: 'POST',
+                    credentials: 'include'
+                });
+            } catch (err) {
+                console.error('로그아웃 실패', err);
+            }
+            alert('로그아웃 되었습니다.');
+            window.location.href = /*[[@{/}]]*/ '/K_Market/';
+        });
+    </script>
 </header>
