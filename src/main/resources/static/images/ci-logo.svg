@@ -1,0 +1,18 @@
+<svg width="160" height="50" viewBox="0 0 160 50" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="kmGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#4CAF50"/>
+      <stop offset="100%" stop-color="#2e7d32"/>
+    </linearGradient>
+  </defs>
+  <!-- 장바구니 아이콘 -->
+  <g transform="translate(6,10)">
+    <path d="M2 2h4l2.4 14.4a2 2 0 0 0 2 1.6h11.6a2 2 0 0 0 2-1.6L26 7H8"
+          fill="none" stroke="url(#kmGrad)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+    <circle cx="12" cy="24" r="2.2" fill="#4CAF50"/>
+    <circle cx="21" cy="24" r="2.2" fill="#4CAF50"/>
+  </g>
+  <!-- 텍스트 -->
+  <text x="40" y="24" font-family="'Malgun Gothic','맑은 고딕',sans-serif" font-size="17" font-weight="800" fill="#1e4620">K-Market</text>
+  <text x="40" y="37" font-family="'Malgun Gothic','맑은 고딕',sans-serif" font-size="9" fill="#4CAF50" letter-spacing="1">케이마켓</text>
+</svg>

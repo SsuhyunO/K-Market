@@ -1,0 +1,12 @@
+<svg width="140" height="56" viewBox="0 0 140 56" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="g" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#4CAF50"/>
+      <stop offset="100%" stop-color="#2e7d32"/>
+    </linearGradient>
+  </defs>
+  <circle cx="20" cy="28" r="16" fill="url(#g)"/>
+  <circle cx="20" cy="24" r="6.5" fill="none" stroke="#fff" stroke-width="1.8"/><path d="M17 29.5l-2.5 6 3.2-1.5 1.8 2.9 2-5.7" fill="none" stroke="#fff" stroke-width="1.5" stroke-linejoin="round"/><path d="M23 29.5l2.5 6-3.2-1.5-1.8 2.9-2-5.7" fill="none" stroke="#fff" stroke-width="1.5" stroke-linejoin="round"/>
+  <text x="44" y="24" font-family="'Malgun Gothic','맑은 고딕',sans-serif" font-size="8.5" fill="#7a8a7c">2026 고객만족</text>
+  <text x="44" y="37" font-family="'Malgun Gothic','맑은 고딕',sans-serif" font-size="12.5" font-weight="800" fill="#1e4620">대상 수상</text>
+</svg>

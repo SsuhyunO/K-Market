@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -5,17 +7,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>케이마켓 - 로그인</title>
     <link rel="stylesheet" th:href="@{/css/member/login.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 </head>
 <body>
 
 <header>
+    <div class="header-banner">🎈 여름 특가 세일 배너</div>
     <div class="header-inner">
-        <a th:href="@{/}" class="logo">CI ( 로고 )</a>
+        <a th:href="@{/}" class="logo">
+            <img th:src="@{/images/ci-logo.svg}" alt="케이마켓 로고">
+        </a>
         <nav class="header-nav">
             <a th:href="@{/member/login}">로그인</a>
             <a th:href="@{/member/join}">회원가입</a>
-            <a th:href="@{/my/home}">마이페이지</a>
-            <a th:href="@{/product/cart}">🛒 장바구니</a>
         </nav>
     </div>
 </header>
@@ -32,13 +36,9 @@
                     <div class="login-form-row">
                         <div class="input-area">
                             <div class="input-row">
-                                <label for="userId">아이디</label>
-                                <input type="text" id="userId" name="userId">
-                            </div>
+                                <label for="userId">아이디</label><div class="input-box"><i id="userIcon" class="fa-solid fa-user"></i><input type="text" id="userId" name="userId" placeholder="아이디를 입력하세요"></div></div>
                             <div class="input-row">
-                                <label for="userPw">비밀번호</label>
-                                <input type="password" id="userPw" name="userPw">
-                            </div>
+                                <label for="userPw">비밀번호</label><div class="input-box"><i id="pwIcon" class="fa-solid fa-lock"></i><input type="password" id="userPw" name="userPw" placeholder="비밀번호를 입력하세요"></div></div>
                         </div>
                         <button type="submit" class="btn-login">로그인</button>
                     </div>
@@ -64,21 +64,18 @@
             </div>
 
             <div class="banner-box">
-                <video autoplay muted loop playsinline class="banner-video">
-                    <source th:src="@{/images/login_banner.mp4}" type="video/mp4">
-                    브라우저가 비디오 태그를 지원하지 않습니다.
-                </video>
+                <img th:src="@{/images/promo-banner-70.svg}" alt="70% 할인중" class="banner-image">
             </div>
 
         </div>
 
         <div class="award-logos">
-            <div class="award-item">로고1</div>
-            <div class="award-item">로고2</div>
-            <div class="award-item">로고3</div>
-            <div class="award-item">로고4</div>
-            <div class="award-item">로고5</div>
-            <div class="award-item">로고6</div>
+            <div class="award-item"><img th:src="@{/images/award1.svg}" alt="베스트쇼핑몰"></div>
+            <div class="award-item"><img th:src="@{/images/award2.svg}" alt="안전거래인증"></div>
+            <div class="award-item"><img th:src="@{/images/award3.svg}" alt="고객만족대상"></div>
+            <div class="award-item"><img th:src="@{/images/award4.svg}" alt="구매만족도1위"></div>
+            <div class="award-item"><img th:src="@{/images/award5.svg}" alt="온라인쇼핑대상"></div>
+            <div class="award-item"><img th:src="@{/images/award6.svg}" alt="친환경경영"></div>
         </div>
 
     </div>
@@ -94,7 +91,9 @@
         </div>
 
         <div class="footer-info-inner">
-            <div class="footer-logo-box">로고</div>
+            <div class="footer-logo-box">
+                <img th:src="@{/images/ci-icon-animated-large.svg}" alt="케이마켓 로고">
+            </div>
             <div class="footer-company">
                 <strong>(주)케이마켓</strong>
                 부산광역시 부산진구 중앙대로 103<br>

@@ -22,46 +22,110 @@ ul {
     list-style: none;
 }
 
-/* ===== HEADER ===== */
-header {
-    border-bottom: 1px solid #ddd;
-    padding: 0 40px;
+/* ===== 공통 CSS 변수 (header.html에서 사용) ===== */
+:root {
+    --color-gray-600: #555555;
+    --color-gray-200: #dddddd;
 }
 
-.header-inner {
-    max-width: 1200px;
-    margin: 0 auto;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    height: 80px;
-}
-
-.logo {
-    width: 160px;
-    height: 50px;
-    border: 2px solid #4CAF50;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #4CAF50;
-    font-weight: bold;
-    font-size: 16px;
-}
-
-.header-nav {
-    display: flex;
-    gap: 20px;
+/* ===== HEADER (공통 header.html 프래그먼트용) ===== */
+.header-banner {
+    background: #fdece3;
+    text-align: center;
+    padding: 8px 0;
     font-size: 13px;
 }
 
-.header-nav a {
-    color: #555;
+.banner-placeholder {
+    color: #999;
 }
+
+.header-main {
+    padding: 16px 0;
+    border-bottom: 1px solid var(--color-gray-200);
+}
+
+#header .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+#header .logo-text {
+    font-size: 24px;
+    font-weight: 700;
+    color: #ff5a1f;
+    line-height: 1;
+}
+
+#header .logo-sub {
+    font-size: 11px;
+    color: #999;
+    margin-top: 2px;
+}
+
+.search-box {
+    flex: 1;
+    max-width: 480px;
+    display: flex;
+    align-items: center;
+    border: 1px solid var(--color-gray-200);
+    border-radius: 24px;
+    padding: 4px 4px 4px 16px;
+}
+
+.search-box input {
+    flex: 1;
+    border: none;
+    outline: none;
+    font-size: 13px;
+}
+
+.search-box button {
+    background: #ff5a1f;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.util-nav a {
+    color: var(--color-gray-600);
+}
+.util-nav a:hover {
+    color: #ff5a1f;
+}
+
+.header-nav {
+    border-top: 1px solid var(--color-gray-200);
+    border-bottom: 3px solid #ff5a1f;
+}
+
+.header-nav .container {
+    display: flex;
+    gap: 4px;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.header-nav a {
+    display: inline-block;
+    padding: 12px 20px;
+    color: #333;
+    border-bottom: 3px solid transparent;
+    margin-bottom: -3px;
+}
+
 .header-nav a:hover,
-.header-nav a.active {
-    color: #4CAF50;
-    font-weight: bold;
+.header-nav a[data-section].active {
+    color: #ff5a1f;
+    border-bottom-color: #ff5a1f;
 }
 
 /* ===== MAIN ===== */

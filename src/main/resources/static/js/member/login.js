@@ -44,5 +44,55 @@ document.addEventListener('DOMContentLoaded', function () {
     const loginForm = document.querySelector('form');
     if (loginForm) {
         loginForm.addEventListener('submit', submitLogin);
-    }
+
+
+        }
+});
+
+// ================================
+// 입력 아이콘 애니메이션
+// ================================
+
+document.addEventListener('DOMContentLoaded', function () {
+
+    const userInput = document.getElementById('userId');
+    const pwInput = document.getElementById('userPw');
+
+    const userIcon = document.getElementById('userIcon');
+    const pwIcon = document.getElementById('pwIcon');
+
+    // 아이디 입력
+    userInput.addEventListener('input', function () {
+
+        if (this.value.trim() !== '') {
+
+            userIcon.classList.remove('fa-user');
+            userIcon.classList.add('fa-circle-check');
+
+        } else {
+
+            userIcon.classList.remove('fa-circle-check');
+            userIcon.classList.add('fa-user');
+
+        }
+
+    });
+
+    // 비밀번호 입력
+    pwInput.addEventListener('input', function () {
+
+        if (this.value.trim() !== '') {
+
+            pwIcon.classList.remove('fa-lock');
+            pwIcon.classList.add('fa-lock-open');
+
+        } else {
+
+            pwIcon.classList.remove('fa-lock-open');
+            pwIcon.classList.add('fa-lock');
+
+        }
+
+    });
+
 });
