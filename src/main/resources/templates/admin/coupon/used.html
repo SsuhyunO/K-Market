@@ -10,6 +10,9 @@
     <link rel="stylesheet" th:href="@{/css/admin/global/section-table.css}">
     <link rel="stylesheet" th:href="@{/css/admin/coupon/coupon.css}">
     <script type="module" th:src="@{/js/admin/coupon/used.js}"></script>
+    <script th:inline="javascript">
+        const CONTEXT_PATH = /*[[@{/}]]*/ '';
+    </script>
 </head>
 <body class="coupon-issued-page">
 <header th:replace="~{admin/fragments/header::header}"></header>

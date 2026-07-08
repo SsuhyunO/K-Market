@@ -8,7 +8,6 @@ const COUPON_ISSUED_DETAIL_FIELDS = [
     "benefit",
     "period",
     "memberId",
-    "memberName",
     "issuedAt",
     "usedAt",
     "status",
@@ -25,15 +24,49 @@ function initIssuedCouponDetailModal() {
     const modal = document.getElementById("coupon-issued-detail-modal");
     if (!modal) return;
 
-    delegate(document, "click", "[data-coupon-issued-detail-button]", function (e, button) {
+    delegate(document, "click", "[data-issued-coupon-stop-button]", function (e, button) {
         const row = button.closest("tr");
         if (!row) return;
 
-        COUPON_ISSUED_DETAIL_FIELDS.forEach(field => {
-            setText(`coupon-issued-detail-${toKebabCase(field)}`, row.dataset[field]);
-        });
+        const issueNo = button.dataset.issueNo || row.querySelector("[data-coupon-issued-detail-button]")?.textContent?.trim() || "";
+        const message = issueNo
+            ? `${issueNo} 발급 쿠폰을 중단하시겠습니까?`
+            : "발급 쿠폰을 중단하시겠습니까?";
 
-        openModal(modal);
+        if (!window.confirm(message)) return;
+
+        fetch(`${CONTEXT_PATH}admin/coupon/issue/${issueNo}/stop`, {
+            method: "PATCH"
+        })
+            .then(res => {
+                if (res.status === 403) {
+                    alert("종료 권한이 없습니다.");
+                    throw new Error("FORBIDDEN");
+                }
+                if (res.status === 409) {
+                    alert("이미 처리된 쿠폰입니다.");
+                    throw new Error("CONFLICT");
+                }
+                if (!res.ok) throw new Error("서버 처리 실패");
+
+                row.dataset.status = "중단";
+                row.dataset.usedAt = "-"; // 필요하다면 유지
+
+                const status = row.querySelector(".coupon-status");
+                if (status) {
+                    status.textContent = "중단";
+                    status.classList.remove("ready", "used", "expired");
+                    status.classList.add("disabled");
+                }
+
+                button.disabled = true;
+            })
+            .catch(err => {
+                if (err.message !== "FORBIDDEN" && err.message !== "CONFLICT") {
+                    alert("쿠폰 중단 처리 중 오류가 발생했습니다.");
+                    console.error(err);
+                }
+            });
     });
 }
 

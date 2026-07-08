@@ -14,6 +14,7 @@ public class CouponIssueDTO {
     private String memberUid;
     private int status;
     private String createdAt;
+    private String updatedAt;
 
     // coupon join 컬럼
     private String couponType;
