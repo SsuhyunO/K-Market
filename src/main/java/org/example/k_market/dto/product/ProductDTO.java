@@ -14,6 +14,9 @@ public class ProductDTO {
     private int prodNo;
     private int cateId;
     private String prodName;
+    private String description;
+    private String maker;
+    private int deliveryFee;
     private int price;
     private int discount;
     private int point;
@@ -31,6 +34,9 @@ public class ProductDTO {
             .prodNo(prodNo)
             .category(category)
             .prodName(prodName)
+            .description(description)
+            .maker(maker)
+            .deliveryFee(deliveryFee)
             .price(price)
             .discount(discount)
             .point(point)

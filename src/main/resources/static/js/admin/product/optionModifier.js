@@ -10,6 +10,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const optionRowsContainer = firstOptionRow.parentElement;
 
     optionRowsContainer.querySelectorAll("[data-option-row]").forEach(ensureOptionRowKey);
+    initializeEditOptions(optionRowsContainer);
 
     if (optionStockBody) {
         optionStockBody.addEventListener("input", function (event) {
@@ -86,7 +87,7 @@ document.addEventListener("DOMContentLoaded", function () {
     updateProductOptions(optionRowsContainer, optionStockBody, optionItemFields, stockInput);
 });
 
-function createOptionRow(index) {
+function createOptionRow(index, group = null) {
     const row = document.createElement("tr");
     const optionHeader = document.createElement("th");
     const optionCell = document.createElement("td");
@@ -101,6 +102,9 @@ function createOptionRow(index) {
 
     row.dataset.optionRow = "";
     ensureOptionRowKey(row);
+    if (group?.clientKey) {
+        row.dataset.optionGroupKey = group.clientKey;
+    }
 
     optionLabel.dataset.optionLabel = "";
     optionLabel.htmlFor = `option${index}`;
@@ -110,12 +114,17 @@ function createOptionRow(index) {
     optionInput.id = `option${index}`;
     optionInput.type = "text";
     optionInput.maxLength = 50;
+    optionInput.value = group?.name || "";
     optionInput.dataset.optionNameInput = "";
     optionCell.append(optionInput);
 
     valueLabel.htmlFor = `option${index}-value`;
     valueLabel.textContent = `옵션${index} 항목`;
     valueHeader.append(valueLabel);
+    if (group?.items?.length > 0) {
+        const itemList = itemEditor.querySelector("[data-option-item-list]");
+        group.items.forEach(item => itemList?.append(createOptionItem(item.value, item.clientKey)));
+    }
     valueCell.append(itemEditor);
 
     deleteButton.className = "option-delete-button";
@@ -127,6 +136,25 @@ function createOptionRow(index) {
 
     row.append(optionHeader, optionCell, valueHeader, valueCell, actionCell);
     return row;
+}
+
+function initializeEditOptions(optionRowsContainer) {
+    const product = window.productEditData;
+    if (!product || !Array.isArray(product.optionGroups) || product.optionGroups.length === 0) return;
+
+    optionRowsContainer.innerHTML = "";
+    product.optionGroups
+        .map(group => ({
+            clientKey: `group-${group.id}`,
+            name: group.name || "",
+            items: (group.items || []).map(item => ({
+                clientKey: `item-${item.id}`,
+                value: item.value || ""
+            }))
+        }))
+        .forEach((group, index) => {
+            optionRowsContainer.append(createOptionRow(index + 1, group));
+        });
 }
 
 function createOptionItemEditor(index) {
@@ -209,14 +237,14 @@ function addOptionItem(row) {
     return true;
 }
 
-function createOptionItem(value) {
+function createOptionItem(value, clientKey = null) {
     const item = document.createElement("div");
     const input = document.createElement("input");
     const deleteButton = document.createElement("button");
 
     item.className = "option-item";
     item.dataset.optionItem = "";
-    item.dataset.optionItemKey = createClientKey("item");
+    item.dataset.optionItemKey = clientKey || createClientKey("item");
 
     input.type = "text";
     input.maxLength = 30;
@@ -413,6 +441,29 @@ function getPreviousVariantValues(optionStockBody) {
         values.set(key, {
             stock: row.querySelector("[data-option-stock-input]")?.value || "0",
             status: row.querySelector("[data-option-status-input]")?.value || "ON_SALE"
+        });
+    });
+
+    if (values.size === 0) {
+        getEditVariantValues().forEach((value, key) => values.set(key, value));
+    }
+
+    return values;
+}
+
+function getEditVariantValues() {
+    const values = new Map();
+    const variants = window.productEditData?.variants || [];
+
+    variants.forEach(variant => {
+        const items = variant.items || [];
+        const key = items.length === 0
+            ? "default"
+            : items.map(item => `item-${item.id}`).join("|");
+
+        values.set(key, {
+            stock: String(variant.stock ?? 0),
+            status: variant.status || "ON_SALE"
         });
     });
 

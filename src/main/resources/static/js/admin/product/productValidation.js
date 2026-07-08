@@ -139,8 +139,10 @@ function requireNumber(errors, form, selector, message, { min = null, max = null
 function requireFile(errors, form, selector, message, maxSize = null) {
     const element = form.querySelector(selector);
     const file = element?.files?.[0];
+    const hasExistingFile = Boolean(element?.dataset?.existingFileId);
 
     if (!file) {
+        if (hasExistingFile) return;
         errors.push({ element, message });
         return;
     }
