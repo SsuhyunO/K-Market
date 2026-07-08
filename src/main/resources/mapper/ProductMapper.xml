@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.example.k_market.dao.ProductDAO">
+
+    <select id="findProductsForPage" resultType="org.example.k_market.dto.product.ProductDTO">
+        SELECT * FROM product
+            ORDER BY prodNo DESC
+            LIMIT #{size}
+            OFFSET #{offset}
+    </select>
+
+    <select id="totalCount">
+        SELECT COUNT(prodNo) FROM product;
+    </select>
+</mapper>
