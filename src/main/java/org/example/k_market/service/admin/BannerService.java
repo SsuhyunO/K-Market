@@ -143,4 +143,42 @@ public class BannerService {
                 .endAt(banner.getEndAt())
                 .build();
     }
+
+
+    // 배너 선택 수정
+    public void modify(BannerDTO dto, MultipartFile bannerFile) {
+        // 1. 기존 배너 정보 조회
+        Banner banner = bannerRepository.findById(dto.getBannerId())
+                .orElseThrow(() -> new IllegalArgumentException("수정할 배너를 찾을 수 없습니다."));
+
+        int fileId = banner.getFileId();
+
+        // 2. 새로운 파일이 들어왔다면 기존 파일 처리 및 업로드
+        if (bannerFile != null && !bannerFile.isEmpty()) {
+            var fileDTO = fileService.uploadFile(bannerFile);
+            fileId = fileDTO.getId();
+        }
+
+        // 3. 엔티티 상태 업데이트
+        banner.changeInfo(
+                dto.getName(),
+                dto.getWidth(),
+                dto.getHeight(),
+                dto.getBgColor(),
+                dto.getLink(),
+                fileId,
+                dto.getStartAt(),
+                dto.getEndAt()
+        );
+
+    }
+
+    // 배너 단건 조회 (DTO 변환 포함)
+    @Transactional(readOnly = true)
+    public BannerDTO findById(Integer bannerId) {
+        return bannerRepository.findById(bannerId)
+                .map(this::toDTO)
+                .orElseThrow(() -> new IllegalArgumentException("배너를 찾을 수 없습니다."));
+    }
+
 }
