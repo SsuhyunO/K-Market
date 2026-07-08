@@ -12,9 +12,17 @@ public interface CouponDAO {
 
     void insert(CouponDTO dto);
 
-    int getTotalCount();
+    List<CouponDTO> getCouponList(@Param("searchType") String searchType,
+                                  @Param("keyword") String keyword,
+                                  @Param("offset") int offset,
+                                  @Param("pageSize") int pageSize);
 
-    List<CouponDTO> getCouponList(@Param("offset") int offset, @Param("pageSize") int pageSize);
+    int getTotalCount(@Param("searchType") String searchType,
+                      @Param("keyword") String keyword);
 
     void updateStatusToDisabled(@Param("couponNo") int couponNo);
+
+    void disableExpiredCoupons();
+
+    CouponDTO getCouponByNo(@Param("couponNo") int couponNo);
 }

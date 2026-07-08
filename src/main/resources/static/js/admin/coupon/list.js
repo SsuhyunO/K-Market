@@ -244,9 +244,13 @@ function initCouponEndButtons() {
             method: "PATCH"
         })
             .then(res => {
+                if (res.status === 403) {
+                    alert("종료 권한이 없습니다.");
+                    throw new Error("FORBIDDEN"); // catch로 넘겨서 아래 공통 alert는 안 뜨게
+                }
                 if (!res.ok) throw new Error("서버 처리 실패");
 
-                row.dataset.status = "DISABLED"; // 원본 상태값 유지 (한글 대신)
+                row.dataset.status = "DISABLED";
 
                 const status = row.querySelector(".coupon-status");
                 if (status) {
@@ -258,8 +262,10 @@ function initCouponEndButtons() {
                 button.disabled = true;
             })
             .catch(err => {
-                alert("쿠폰 종료 처리 중 오류가 발생했습니다.");
-                console.error(err);
+                if (err.message !== "FORBIDDEN") {
+                    alert("쿠폰 종료 처리 중 오류가 발생했습니다.");
+                    console.error(err);
+                }
             });
     });
 }

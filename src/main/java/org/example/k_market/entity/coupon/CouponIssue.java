@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 @Builder
 @Entity
 @Table(name = "coupon_issue")
-public class Coupon_issue {
+public class CouponIssue {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int issueNo;
@@ -24,6 +24,4 @@ public class Coupon_issue {
 
     @CreationTimestamp
     private LocalDateTime createdAt;
-
-    private String updatedAt;
 }

@@ -4,10 +4,13 @@ import lombok.RequiredArgsConstructor;
 import org.example.k_market.dao.CouponDAO;
 import org.example.k_market.dto.coupon.CouponDTO;
 import org.example.k_market.repository.coupon.CouponRepository;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RequiredArgsConstructor
 @Service
@@ -31,16 +34,25 @@ public class CouponService {
         couponDAO.insert(dto);
     }
 
-    public int getTotalCount() {
-        return couponDAO.getTotalCount();
+    public List<CouponDTO> getCouponList(String searchType, String keyword, int page, int pageSize) {
+        int offset = (page - 1) * pageSize;
+        return couponDAO.getCouponList(searchType, keyword, offset, pageSize);
     }
 
-    public List<CouponDTO> getCouponList(int page, int pageSize) {
-        int offset = (page - 1) * pageSize;
-        return couponDAO.getCouponList(offset, pageSize);
+    public int getTotalCount(String searchType, String keyword) {
+        return couponDAO.getTotalCount(searchType, keyword);
     }
 
     public void endCoupon(int couponNo) {
         couponDAO.updateStatusToDisabled(couponNo);
+    }
+
+    @Scheduled(cron = "0 0 0 * * *") // 매일 자정 실행
+    public void disableExpiredCoupons() {
+        couponDAO.disableExpiredCoupons();
+    }
+
+    public CouponDTO getCouponByNo(int couponNo) {
+        return couponDAO.getCouponByNo(couponNo);
     }
 }

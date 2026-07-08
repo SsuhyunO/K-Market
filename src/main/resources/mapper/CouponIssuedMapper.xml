@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.example.k_market.dao.CouponIssueDAO">
+
+    <sql id="issueSearchWhere">
+        <where>
+            <if test="keyword != null and keyword != ''">
+                <choose>
+                    <when test="searchType == '발급번호'">
+                        AND ci.issueNo LIKE CONCAT('%', #{keyword}, '%')
+                    </when>
+                    <when test="searchType == '쿠폰번호'">
+                        AND ci.couponNo LIKE CONCAT('%', #{keyword}, '%')
+                    </when>
+                    <when test="searchType == '쿠폰명'">
+                        AND c.name LIKE CONCAT('%', #{keyword}, '%')
+                    </when>
+                    <when test="searchType == '사용자'">
+                        AND ci.memberUid LIKE CONCAT('%', #{keyword}, '%')
+                    </when>
+                </choose>
+            </if>
+        </where>
+    </sql>
+
+    <select id="getTotalCount" resultType="int">
+        SELECT COUNT(*)
+        FROM coupon_issue ci
+        LEFT JOIN coupon c ON ci.couponNo = c.couponNo
+        <include refid="issueSearchWhere"/>
+    </select>
+
+    <select id="getCouponIssueList" resultType="org.example.k_market.dto.coupon.CouponIssueDTO">
+        SELECT
+        ci.issueNo      AS issueNo,
+        ci.couponNo     AS couponNo,
+        ci.memberUid    AS memberUid,
+        ci.status       AS status,
+        ci.createdAt    AS createdAt,
+        ci.updatedAt    AS updatedAt,
+        c.couponType    AS couponType,
+        c.sellerUid     AS sellerUid,
+        c.benefit       AS benefit,
+        c.name          AS couponName,
+        c.startDate     AS startDate,
+        c.expireDate    AS expireDate,
+        c.notice        AS notice
+        FROM coupon_issue ci
+        LEFT JOIN coupon c ON ci.couponNo = c.couponNo
+        <include refid="issueSearchWhere"/>
+        ORDER BY ci.issueNo DESC
+        LIMIT #{offset}, #{pageSize}
+    </select>
+
+    <select id="getCouponIssueByNo" resultType="org.example.k_market.dto.coupon.CouponIssueDTO">
+        SELECT
+        ci.issueNo, ci.couponNo, ci.memberUid, ci.status, ci.createdAt, ci.updatedAt,
+        c.couponType, c.sellerUid, c.benefit, c.name AS couponName, c.startDate, c.expireDate, c.notice
+        FROM coupon_issue ci
+        LEFT JOIN coupon c ON ci.couponNo = c.couponNo
+        WHERE ci.issueNo = #{issueNo}
+    </select>
+
+    <update id="stopCouponIssue">
+        UPDATE coupon_issue
+        SET status = #{status}
+        WHERE issueNo = #{issueNo}
+    </update>
+
+</mapper>
