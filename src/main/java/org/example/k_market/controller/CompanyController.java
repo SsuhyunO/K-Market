@@ -1,15 +1,24 @@
 package org.example.k_market.controller;
 
+import lombok.RequiredArgsConstructor;
+import org.example.k_market.dto.admin.RecruitDTO;
+import org.example.k_market.service.admin.RecruitService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.List;
+
+@RequiredArgsConstructor
 @Controller
 public class CompanyController {
+
+    private final RecruitService recruitService;
+
     @GetMapping("/company/index")
-    public String index(){
-        return "/company/index";
+    public String index() {
+        return "company/index";
     }
 
     @GetMapping("/company/culture")
@@ -23,17 +32,22 @@ public class CompanyController {
      */
     @GetMapping("/company/story")
     public String story(@RequestParam(required = false) String category, Model model) {
+
         model.addAttribute("category", category);
-        // model.addAttribute("storyList", storyService.findByCategory(category));
+
         return "company/story";
     }
 
     /**
-     * 채용 — 채용 목록만 출력 (지원하기 기능 없음, 와이어프레임 명시사항)
+     * 채용 — 관리자에서 등록한 채용공고 목록 출력
      */
     @GetMapping("/company/recruit")
     public String recruit(Model model) {
-        // model.addAttribute("recruitList", recruitService.findAll());
+
+        List<RecruitDTO> recruitList = recruitService.findAll();
+
+        model.addAttribute("recruitList", recruitList);
+
         return "company/recruit";
     }
 
@@ -42,7 +56,7 @@ public class CompanyController {
      */
     @GetMapping("/company/media")
     public String media(Model model) {
-        // model.addAttribute("mediaList", mediaService.findAll());
+
         return "company/media";
     }
 }

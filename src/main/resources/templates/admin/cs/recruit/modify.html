@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>KMarket 채용공고 수정</title>
+
+    <th:block th:replace="~{admin/fragments/head::head}"></th:block>
+
+    <link rel="stylesheet" th:href="@{/css/admin/global/section-table.css}">
+</head>
+
+<body>
+
+<header th:replace="~{admin/fragments/header::header}"></header>
+
+<div class="admin-layout">
+    <aside th:replace="~{admin/fragments/aside::aside}"></aside>
+
+    <main id="admin-main">
+
+        <div th:replace="~{admin/fragments/page-header::page-header}"></div>
+
+        <section style="background:#fff; border:1px solid #d8dee9; border-radius:6px; padding:20px; margin-top:20px;">
+
+            <h3 style="margin-bottom:20px;">채용공고 수정</h3>
+
+            <form th:action="@{/admin/cs/recruit/modify}" method="post">
+
+                <input type="hidden" name="id" th:value="${recruit.id}">
+
+                <table class="section-table">
+
+                    <tr>
+                        <th>
+                            <label for="title">제목</label>
+                        </th>
+                        <td>
+                            <input id="title"
+                                   type="text"
+                                   name="title"
+                                   th:value="${recruit.title}"
+                                   placeholder="채용공고 제목">
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <th>
+                            <label for="department">채용부서</label>
+                        </th>
+                        <td>
+                            <select id="department" name="department">
+                                <option value="">채용부서 선택</option>
+                                <option value="광고사업" th:selected="${recruit.department == '광고사업'}">광고사업</option>
+                                <option value="IT" th:selected="${recruit.department == 'IT'}">IT</option>
+                                <option value="운영" th:selected="${recruit.department == '운영'}">운영</option>
+                                <option value="경영" th:selected="${recruit.department == '경영'}">경영</option>
+                            </select>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <th>
+                            <label for="experience">경력사항</label>
+                        </th>
+                        <td>
+                            <select id="experience" name="experience">
+                                <option value="">경력사항 선택</option>
+                                <option value="신입" th:selected="${recruit.experience == '신입'}">신입</option>
+                                <option value="무관" th:selected="${recruit.experience == '무관'}">무관</option>
+                                <option value="경력 2 ~ 15년" th:selected="${recruit.experience == '경력 2 ~ 15년'}">경력 2 ~ 15년</option>
+                                <option value="경력 4 ~ 15년" th:selected="${recruit.experience == '경력 4 ~ 15년'}">경력 4 ~ 15년</option>
+                            </select>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <th>
+                            <label for="recruitCategory">채용형태</label>
+                        </th>
+                        <td>
+                            <select id="recruitCategory" name="recruitCategory">
+                                <option value="">채용형태 선택</option>
+                                <option value="정규직" th:selected="${recruit.recruitCategory == '정규직'}">정규직</option>
+                                <option value="계약직" th:selected="${recruit.recruitCategory == '계약직'}">계약직</option>
+                            </select>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <th>
+                            <label for="sellerUid">작성자</label>
+                        </th>
+                        <td>
+                            <input id="sellerUid"
+                                   type="text"
+                                   name="sellerUid"
+                                   th:value="${recruit.sellerUid}"
+                                   placeholder="관리자">
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <th>
+                            <label for="status">상태</label>
+                        </th>
+                        <td>
+                            <select id="status" name="status">
+                                <option value="모집중" th:selected="${recruit.status == '모집중'}">모집중</option>
+                                <option value="종료" th:selected="${recruit.status == '종료'}">종료</option>
+                            </select>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <th>모집기간</th>
+                        <td>
+                            <input id="startDate"
+                                   type="date"
+                                   name="startDate"
+                                   th:value="${recruit.recruitStartAt != null ? #temporals.format(recruit.recruitStartAt, 'yyyy-MM-dd') : ''}">
+
+                            <span>~</span>
+
+                            <input id="endDate"
+                                   type="date"
+                                   name="endDate"
+                                   th:value="${recruit.recruitEndAt != null ? #temporals.format(recruit.recruitEndAt, 'yyyy-MM-dd') : ''}">
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <th>
+                            <label for="content">내용</label>
+                        </th>
+                        <td>
+                            <textarea id="content"
+                                      name="content"
+                                      style="width:100%; height:220px;"
+                                      th:text="${recruit.content}"></textarea>
+                        </td>
+                    </tr>
+
+                </table>
+
+                <div style="margin-top:20px; display:flex; gap:8px; justify-content:flex-end;">
+                    <button type="button"
+                            onclick="history.back()"
+                            style="border:1px solid #ccc; padding:8px 14px; border-radius:4px; background:#fff;">
+                        취소
+                    </button>
+
+                    <button type="submit"
+                            style="border:1px solid #315efb; padding:8px 14px; border-radius:4px; background:#315efb; color:#fff;">
+                        수정완료
+                    </button>
+                </div>
+
+            </form>
+
+        </section>
+    </main>
+</div>
