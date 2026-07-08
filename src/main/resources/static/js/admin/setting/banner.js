@@ -18,7 +18,38 @@ document.addEventListener("DOMContentLoaded", function () {
     ManagementTableForm.init();
     initBannerCategoryNav();
     initBannerRegisterValidation();
+    initBannerEditButton(); // 선택수정 버튼 실행
 });
+
+// 선택수정 버튼 동작 로직
+function initBannerEditButton() {
+    const btnSelectEdit = document.getElementById("btn-select-edit");
+    if (!btnSelectEdit) return;
+
+    btnSelectEdit.addEventListener("click", function () {
+
+        const checkedBoxes = document.querySelectorAll('input[name="bannerNo"]:checked');
+
+        if (checkedBoxes.length === 0) {
+            alert("수정할 배너를 선택해주세요.");
+            return;
+        }
+
+        if (checkedBoxes.length > 1) {
+            alert("수정은 한 번에 하나의 배너만 가능합니다.");
+            return;
+        }
+
+        const bannerId = checkedBoxes[0].value;
+
+        const categoryField = document.querySelector('input[name="bannerCategory"]');
+        const category = categoryField ? categoryField.value : "mainTop";
+
+        const contextPath = window.location.pathname.startsWith("/K_Market") ? "/K_Market" : "";
+
+        location.href = `${contextPath}/admin/banner/modify?bannerId=${bannerId}&bannerCategory=${category}`;
+    });
+}
 
 function initBannerCategoryNav() {
     const nav = document.querySelector(".banner-nav");
@@ -39,24 +70,6 @@ function initBannerCategoryNav() {
     updateBannerTableHeader(currentCategory);
     moveBannerNavIndicator(nav, indicator);
 
-    delegate(nav, "click", "[data-banner-category]", function (e, link) {
-        e.preventDefault();
-
-        const category = link.dataset.bannerCategory;
-        if (!category) return;
-        if (link.closest("li")?.classList.contains("current")) return;
-
-        setCurrentBannerCategory(links, category);
-        updateBannerCategoryUrl(category);
-        updateBannerTableHeader(category);
-        moveBannerNavIndicator(nav, indicator);
-
-        nav.dispatchEvent(new CustomEvent("banner-category:change", {
-            bubbles: true,
-            detail: { category }
-        }));
-    });
-
     window.addEventListener("resize", function () {
         moveBannerNavIndicator(nav, indicator);
     });
@@ -72,6 +85,7 @@ function initBannerCategoryNav() {
 function getCurrentBannerCategory(links) {
     const params = new URLSearchParams(window.location.search);
     const category = params.get("bannerCategory");
+
     if (links.some(link => link.dataset.bannerCategory === category)) {
         return category;
     }
@@ -158,8 +172,19 @@ function validateBannerSize(form, errors) {
     const heightField = form.querySelector("#banner-height");
     if (!widthField || !heightField) return;
 
-    validateBannerSizeField(widthField, "배너 너비를 입력해주세요.", "배너 너비는 1 이상의 숫자로 입력해주세요.", errors);
-    validateBannerSizeField(heightField, "배너 높이를 입력해주세요.", "배너 높이는 1 이상의 숫자로 입력해주세요.", errors);
+    validateBannerSizeField(
+        widthField,
+        "배너 너비를 입력해주세요.",
+        "배너 너비는 1 이상의 숫자로 입력해주세요.",
+        errors
+    );
+
+    validateBannerSizeField(
+        heightField,
+        "배너 높이를 입력해주세요.",
+        "배너 높이는 1 이상의 숫자로 입력해주세요.",
+        errors
+    );
 }
 
 function validateBannerSizeField(field, requiredMessage, numberMessage, errors) {
@@ -178,6 +203,7 @@ function validateBackgroundColor(form, errors) {
     if (!field) return;
 
     const value = field.value;
+
     if (!Validation.required(value).valid) {
         errors.push({ fieldId: field.id, message: "배경색을 입력해주세요." });
         return;
@@ -193,6 +219,7 @@ function validateBannerLink(form, errors) {
     if (!field) return;
 
     const value = field.value;
+
     if (!Validation.required(value).valid) {
         errors.push({ fieldId: field.id, message: "배너링크를 입력해주세요." });
         return;
@@ -216,7 +243,11 @@ function validateBannerDateRange(form, errors) {
         errors.push({ fieldId: endDate.id, message: "노출 종료일을 선택해주세요." });
     }
 
-    if (startDate.value !== "" && endDate.value !== "" && !Validation.greaterThanOrEqual(startDate.value, endDate.value).valid) {
+    if (
+        startDate.value !== "" &&
+        endDate.value !== "" &&
+        !Validation.greaterThanOrEqual(startDate.value, endDate.value).valid
+    ) {
         errors.push({ fieldId: endDate.id, message: "노출 종료일은 시작일 이후로 선택해주세요." });
     }
 }
@@ -234,7 +265,11 @@ function validateBannerTimeRange(form, errors) {
         errors.push({ fieldId: endTime.id, message: "노출 종료시간을 선택해주세요." });
     }
 
-    if (startTime.value !== "" && endTime.value !== "" && !Validation.greaterThan(startTime.value, endTime.value).valid) {
+    if (
+        startTime.value !== "" &&
+        endTime.value !== "" &&
+        !Validation.greaterThan(startTime.value, endTime.value).valid
+    ) {
         errors.push({ fieldId: endTime.id, message: "노출 종료시간은 시작시간 이후로 선택해주세요." });
     }
 }
@@ -244,6 +279,7 @@ function validateBannerFile(form, errors) {
     if (!field) return;
 
     const file = field.files[0];
+
     if (!file) {
         errors.push({ fieldId: field.id, message: "배너이미지를 선택해주세요." });
         return;

@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>KMarket 배너수정</title>
+
+    <th:block th:replace="~{admin/fragments/head::head}"></th:block>
+
+    <link rel="stylesheet" th:href="@{/css/admin/global/management-table-form.css}">
+    <link rel="stylesheet" th:href="@{/css/admin/global/action-bar.css}">
+    <link rel="stylesheet" th:href="@{/css/admin/global/modal-form.css}">
+    <link rel="stylesheet" th:href="@{/css/admin/setting/banner.css}">
+    <link rel="stylesheet" th:href="@{/css/admin/global/section-table.css}">
+</head>
+
+<body>
+
+<header th:replace="~{admin/fragments/header::header}"></header>
+
+<div class="admin-layout">
+    <aside th:replace="~{admin/fragments/aside::aside}"></aside>
+
+    <main id="admin-main">
+
+        <div th:replace="~{admin/fragments/page-header::page-header}"></div>
+
+        <section style="background:#fff; border:1px solid #d8dee9; border-radius:6px; padding:20px; margin-top:20px;">
+
+            <h3 style="margin-bottom:20px;">배너 수정</h3>
+
+            <form th:action="@{/admin/banner/modify}"
+                  method="post"
+                  enctype="multipart/form-data">
+
+                <input type="hidden" name="bannerId" th:value="${banner.bannerId}">
+                <input type="hidden" name="bannerCategory" th:value="${bannerCategory}">
+                <input type="hidden" name="bannerType" th:value="${banner.bannerType}">
+
+                <table class="section-table banner-modal-table">
+
+                    <tr>
+                        <th>현재 이미지</th>
+                        <td>
+                            <img th:if="${banner.fileId != 0}"
+                                 th:src="@{/files/{id}(id=${banner.fileId})}"
+                                 alt="현재 배너 이미지"
+                                 style="width:300px; height:100px; object-fit:cover; border:1px solid #ddd;">
+
+                            <span th:if="${banner.fileId == 0}">이미지 없음</span>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <th>
+                            <label for="banner-file">새 이미지</label>
+                        </th>
+                        <td>
+                            <input id="banner-file"
+                                   type="file"
+                                   name="bannerFile">
+                            <p style="font-size:12px; color:#777; margin-top:5px;">
+                                새 이미지를 선택하지 않으면 기존 이미지가 유지됩니다.
+                            </p>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <th>
+                            <label for="banner-name">배너명</label>
+                        </th>
+                        <td>
+                            <input id="banner-name"
+                                   type="text"
+                                   name="name"
+                                   th:value="${banner.name}"
+                                   placeholder="배너명">
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <th>
+                            <label for="banner-width">배너크기</label>
+                        </th>
+                        <td>
+                            <div class="banner-size-field-group">
+                                <input id="banner-width"
+                                       type="number"
+                                       name="width"
+                                       min="1"
+                                       th:value="${banner.width}"
+                                       placeholder="너비">
+
+                                <span>x</span>
+
+                                <input id="banner-height"
+                                       type="number"
+                                       name="height"
+                                       min="1"
+                                       th:value="${banner.height}"
+                                       placeholder="높이">
+                            </div>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <th>
+                            <label for="banner-background-color">배경색</label>
+                        </th>
+                        <td>
+                            <input id="banner-background-color"
+                                   type="text"
+                                   name="backgroundColor"
+                                   th:value="${banner.bgColor}"
+                                   placeholder="예: #ffffff">
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <th>
+                            <label for="banner-link">배너링크</label>
+                        </th>
+                        <td>
+                            <input id="banner-link"
+                                   type="url"
+                                   name="link"
+                                   th:value="${banner.link}"
+                                   placeholder="https://">
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <th>
+                            <label for="banner-start-date">노출기간</label>
+                        </th>
+                        <td>
+                            <div class="banner-modal-field-group">
+                                <input id="banner-start-date"
+                                       type="date"
+                                       name="startDate"
+                                       th:value="${banner.startAt != null ? #temporals.format(banner.startAt, 'yyyy-MM-dd') : ''}">
+
+                                <span>~</span>
+
+                                <input id="banner-end-date"
+                                       type="date"
+                                       name="endDate"
+                                       th:value="${banner.endAt != null ? #temporals.format(banner.endAt, 'yyyy-MM-dd') : ''}">
+                            </div>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <th>
+                            <label for="banner-start-time">노출시간</label>
+                        </th>
+                        <td>
+                            <div class="banner-modal-field-group">
+                                <input id="banner-start-time"
+                                       type="time"
+                                       name="startTime"
+                                       th:value="${banner.startAt != null ? #temporals.format(banner.startAt, 'HH:mm') : ''}">
+
+                                <span>~</span>
+
+                                <input id="banner-end-time"
+                                       type="time"
+                                       name="endTime"
+                                       th:value="${banner.endAt != null ? #temporals.format(banner.endAt, 'HH:mm') : ''}">
+                            </div>
+                        </td>
+                    </tr>
+
+                </table>
+
+                <div style="margin-top:20px; display:flex; gap:8px; justify-content:flex-end;">
+                    <button type="button"
+                            onclick="history.back()"
+                            style="border:1px solid #ccc; padding:8px 14px; border-radius:4px; background:#fff;">
+                        취소
+                    </button>
+
+                    <button type="submit"
+                            style="border:1px solid #315efb; padding:8px 14px; border-radius:4px; background:#315efb; color:#fff;">
+                        수정완료
+                    </button>
+                </div>
+
+            </form>
+
+        </section>
+    </main>
+</div>
+
+<footer th:replace="~{admin/fragments/footer::footer}"></footer>
+
+</body>
+</html>

@@ -12,8 +12,6 @@ import java.time.LocalDateTime;
 @Builder
 public class RecruitDTO {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String sellerUid;
     private String department;
