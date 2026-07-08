@@ -16,5 +16,7 @@ public class PaginationService {
         int lastPageNum; // 현재 페이지 그룹의 마지막 페이지 번호
         boolean hasNext; // 이전 페이지 그룹이 있는가?
         boolean hasPrev; // 다음 페이지 그룹이 있는가?
+
+        return null;
     }
 }
