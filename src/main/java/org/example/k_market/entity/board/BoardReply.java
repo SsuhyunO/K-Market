@@ -26,7 +26,7 @@ public class BoardReply {
     private String content;
 
     @CreationTimestamp
-    private LocalDateTime rdate;
+    private LocalDateTime createdAt;
 
     public void updateReply(String content) {
         this.content = content;

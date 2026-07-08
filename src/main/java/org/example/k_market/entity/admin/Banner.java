@@ -43,17 +43,10 @@ public class Banner {
     // 배너 노출 종료일시
     private LocalDateTime endAt;
 
-    // 배너 수정
-    public void updateBanner(String bannerType,
-                             int fileId,
-                             String name,
-                             int width,
-                             int height,
-                             String bgColor,
-                             String link,
-                             Boolean enabled,
-                             LocalDateTime startAt,
-                             LocalDateTime endAt) {
+    // 배너 전체 정보 수정
+    public void updateBanner(String bannerType, int fileId, String name, int width, int height,
+                             String bgColor, String link, Boolean enabled,
+                             LocalDateTime startAt, LocalDateTime endAt) {
         this.bannerType = bannerType;
         this.fileId = fileId;
         this.name = name;
@@ -62,6 +55,25 @@ public class Banner {
         this.bgColor = bgColor;
         this.link = link;
         this.enabled = enabled;
+        this.startAt = startAt;
+        this.endAt = endAt;
+    }
+
+    // 배너 선택 수정
+    public void changeInfo(String name,
+                           int width,
+                           int height,
+                           String bgColor,
+                           String link,
+                           int fileId,
+                           LocalDateTime startAt,
+                           LocalDateTime endAt) {
+        this.name = name;
+        this.width = width;
+        this.height = height;
+        this.bgColor = bgColor;
+        this.link = link;
+        this.fileId = fileId;
         this.startAt = startAt;
         this.endAt = endAt;
     }

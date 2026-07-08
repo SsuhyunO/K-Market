@@ -62,9 +62,4 @@ public class CsController {
     public String qnaReply() {
         return "admin/cs/qna/reply";
     }
-
-    @GetMapping("/recruit/list")
-    public String recruitList() {
-        return "admin/cs/recruit/list";
-    }
 }

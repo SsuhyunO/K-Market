@@ -3,7 +3,6 @@ package org.example.k_market.entity.admin;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
-
 import java.time.LocalDateTime;
 
 @Getter
@@ -30,5 +29,27 @@ public class Recruit {
     private LocalDateTime recruitStartAt;
     private LocalDateTime recruitEndAt;
     private LocalDateTime createdAt;
+
+    // 채용 공고 수정
+    public void changeInfo(String sellerUid,
+                           String department,
+                           String experience,
+                           String recruitCategory,
+                           String title,
+                           String status,
+                           String content,
+                           LocalDateTime recruitStartAt,
+                           LocalDateTime recruitEndAt) {
+
+        this.sellerUid = sellerUid;
+        this.department = department;
+        this.experience = experience;
+        this.recruitCategory = recruitCategory;
+        this.title = title;
+        this.status = status;
+        this.content = content;
+        this.recruitStartAt = recruitStartAt;
+        this.recruitEndAt = recruitEndAt;
+    }
 
 }

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>KMarket 약관관리</title>
     <th:block th:replace="~{admin/fragments/head::head}"></th:block>
@@ -7,13 +7,20 @@
     <script type="module" th:src="@{/js/admin/setting/terms.js}"></script>
 </head>
 <body>
+
+<!-- 수정 완료 메시지 -->
+<script th:if="${message != null}" th:inline="javascript">
+    alert([[${message}]]);
+</script>
+
 <header th:replace="~{admin/fragments/header::header}"></header>
+
 <div class="admin-layout">
     <aside th:replace="~{admin/fragments/aside::aside}"></aside>
-    
+
     <main id="admin-main">
         <div th:replace="~{admin/fragments/page-header::page-header}"></div>
-        
+
         <section th:replace="~{admin/fragments/dash-section::dash-section(null, '구매회원 약관', '회원가입 및 정책 페이지 노출 약관 입니다.', ~{::buyer_terms_content})}">
             <th:block th:fragment="buyer_terms_content">
                 <th:block th:replace="~{admin/fragments/section-form::section-form('/admin/terms-management', false, ~{::buyer_terms_rows})}">
@@ -29,7 +36,7 @@
                 </th:block>
             </th:block>
         </section>
-        
+
         <section th:replace="~{admin/fragments/dash-section::dash-section(null, '판매회원 약관', '회원가입 및 정책 페이지 노출 약관 입니다.', ~{::seller_terms_content})}">
             <th:block th:fragment="seller_terms_content">
                 <th:block th:replace="~{admin/fragments/section-form::section-form('/admin/terms-management', false, ~{::seller_terms_rows})}">
@@ -45,7 +52,7 @@
                 </th:block>
             </th:block>
         </section>
-        
+
         <section th:replace="~{admin/fragments/dash-section::dash-section(null, '전자금융거래 약관', '회원가입 및 정책 페이지 노출 약관 입니다.', ~{::finance_terms_content})}">
             <th:block th:fragment="finance_terms_content">
                 <th:block th:replace="~{admin/fragments/section-form::section-form('/admin/terms-management', false, ~{::finance_terms_rows})}">
@@ -61,7 +68,7 @@
                 </th:block>
             </th:block>
         </section>
-        
+
         <section th:replace="~{admin/fragments/dash-section::dash-section(null, '위치정보 이용약관', '회원가입 및 정책 페이지 노출 약관 입니다.', ~{::location_terms_content})}">
             <th:block th:fragment="location_terms_content">
                 <th:block th:replace="~{admin/fragments/section-form::section-form('/admin/terms-management', false, ~{::location_terms_rows})}">
@@ -77,7 +84,7 @@
                 </th:block>
             </th:block>
         </section>
-        
+
         <section th:replace="~{admin/fragments/dash-section::dash-section(null, '개인정보처리방침', '회원가입 및 정책 페이지 노출 약관 입니다.', ~{::privacy_terms_content})}">
             <th:block th:fragment="privacy_terms_content">
                 <th:block th:replace="~{admin/fragments/section-form::section-form('/admin/terms-management', false, ~{::privacy_terms_rows})}">

@@ -63,7 +63,7 @@
 
         <section th:replace="~{admin/fragments/dash-section::dash-section(
                     'banner-management-section',
-                    '배너관리',
+                    ${bannerTitle},
                     null,
                     ~{::content})}">
 
@@ -110,11 +110,11 @@
                                     <input class="checkboxes"
                                            type="checkbox"
                                            name="bannerNo"
-                                           th:value="${banner.no}"/>
+                                           th:value="${banner.bannerId}"/>
                                 </label>
                             </td>
 
-                            <td th:text="${banner.no}"></td>
+                            <td th:text="${banner.bannerId}"></td>
 
                             <!-- 이미지 출력 -->
                             <td>
@@ -133,32 +133,37 @@
                                 <br>
 
                                 크기 :
-                                <span th:text="${banner.size}"></span>
+                                <span th:text="${banner.width + ' x ' + banner.height}"></span>
                                 <br>
 
                                 배경색 :
-                                <span th:text="${banner.color}"></span>
+                                <span th:text="${banner.bgColor}"></span>
                                 <br>
 
                                 배너링크 :
-                                <span th:text="${banner.url}"></span>
+                                <span th:text="${banner.link}"></span>
                             </td>
 
-                            <td th:text="${banner.location}"></td>
+                            <!-- 배너 위치 -->
+                            <td th:text="${banner.bannerType}"></td>
 
-                            <td th:text="${banner.createAt != null && #strings.length(banner.createAt) >= 10 ? #strings.substring(banner.createAt, 0, 10) : banner.createAt}"></td>
+                            <!-- 시작일 -->
+                            <td th:text="${banner.startAt != null ? #temporals.format(banner.startAt, 'yyyy-MM-dd') : ''}"></td>
 
-                            <td th:text="${banner.leaveAt != null && #strings.length(banner.leaveAt) >= 10 ? #strings.substring(banner.leaveAt, 0, 10) : banner.leaveAt}"></td>
+                            <!-- 종료일 -->
+                            <td th:text="${banner.endAt != null ? #temporals.format(banner.endAt, 'yyyy-MM-dd') : ''}"></td>
 
-                            <td th:text="${banner.createAt != null && #strings.length(banner.createAt) >= 16 ? #strings.substring(banner.createAt, 11, 16) : ''}"></td>
+                            <!-- 시작시간 -->
+                            <td th:text="${banner.startAt != null ? #temporals.format(banner.startAt, 'HH:mm') : ''}"></td>
 
-                            <td th:text="${banner.leaveAt != null && #strings.length(banner.leaveAt) >= 16 ? #strings.substring(banner.leaveAt, 11, 16) : ''}"></td>
+                            <!-- 종료시간 -->
+                            <td th:text="${banner.endAt != null ? #temporals.format(banner.endAt, 'HH:mm') : ''}"></td>
 
                             <!-- 활성 / 비활성 -->
                             <td>
                                 <a class="banner-state-button"
                                    th:href="@{/admin/banner/toggle(bannerId=${banner.bannerId}, bannerCategory=${bannerCategory})}"
-                                   th:text="${banner.active == 'ACTIVE' ? '[비활성]' : '[활성]'}"
+                                   th:text="${banner.enabled == true ? '[비활성]' : '[활성]'}"
                                    style="display:inline-block; padding:4px 8px; border:1px solid #ccc; background:#f5f5f5; color:#333; text-decoration:none;">
                                 </a>
                             </td>
@@ -169,18 +174,25 @@
                     <th:block th:fragment="banner-table-footer">
 
                         <input type="hidden" name="bannerCategory" th:value="${bannerCategory}">
+                        <div style="display: flex; gap: 8px; border: 1px solid #ddd; padding: 5px; border-radius: 4px; background-color: #f9f9f9;">
 
-                        <button type="submit"
-                                data-management-action="bulk-submit"
-                                data-empty-message="삭제할 배너를 선택해주세요."
-                                data-confirm-message="선택한 배너를 삭제하시겠습니까?"
-                                data-action-variant="secondary"
-                                th:formaction="@{/admin/banner/delete}"
-                                formmethod="post">
-                            선택삭제
-                        </button>
+                            <button type="submit"
+                                    data-management-action="bulk-submit"
+                                    data-empty-message="삭제할 배너를 선택해주세요."
+                                    data-confirm-message="선택한 배너를 삭제하시겠습니까?"
+                                    data-action-variant="secondary"
+                                    th:formaction="@{/admin/banner/delete}"
+                                    formmethod="post"
+                                    style="border: 1px solid #ccc; padding: 5px 10px; border-radius: 3px;"> 선택삭제
+                            </button>
 
-                        <nav th:replace="~{admin/fragments/admin-pagination::admin-pagination}"></nav>
+                            <button type="button"
+                                    id="btn-select-edit"
+                                    data-action-variant="secondary"
+                                    style="border: 1px solid #ccc; padding: 5px 10px; border-radius: 3px;"> 선택수정
+                            </button>
+
+                        </div> <nav th:replace="~{admin/fragments/admin-pagination::admin-pagination}"></nav>
 
                         <button type="button"
                                 data-modal-target="banner-modal"
@@ -201,6 +213,7 @@
                               novalidate
                               enctype="multipart/form-data">
 
+                            <!-- 현재 선택된 탭의 카테고리값을 Controller로 전달 -->
                             <input type="hidden" name="bannerCategory" th:value="${bannerCategory}">
 
                             <table class="section-table banner-modal-table">
@@ -266,24 +279,6 @@
                                                name="link"
                                                placeholder="https://">
                                         <p class="field-error" data-error-for="banner-link"></p>
-                                    </td>
-                                </tr>
-
-                                <tr>
-                                    <th>
-                                        <label for="banner-position">배너위치</label>
-                                        <span class="row-description">배너가 노출될 위치를 선택하세요.</span>
-                                    </th>
-                                    <td>
-                                        <select id="banner-position" name="position">
-                                            <option value="">현재 선택된 카테고리 사용</option>
-                                            <option value="mainTop">메인상단 배너</option>
-                                            <option value="mainSlider">메인슬라이더 배너</option>
-                                            <option value="productDetailView">상품 상세보기 배너</option>
-                                            <option value="userLogin">회원로그인 배너</option>
-                                            <option value="myPage">마이페이지 배너</option>
-                                        </select>
-                                        <p class="field-error" data-error-for="banner-position"></p>
                                     </td>
                                 </tr>
 

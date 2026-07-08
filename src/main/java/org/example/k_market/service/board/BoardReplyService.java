@@ -34,7 +34,7 @@ public class BoardReplyService {
                         .replyNo(reply.getReplyNo())
                         .boardNo(reply.getBoardNo())
                         .content(reply.getContent())
-                        .rdate(reply.getRdate())
+                        .rdate(reply.getCreatedAt())
                         .build())
                 .orElse(null);
     }

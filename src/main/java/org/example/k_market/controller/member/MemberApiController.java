@@ -63,14 +63,16 @@ public class MemberApiController {
             throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
         }
 
-        // ===== 추가된 부분: 탈퇴한 계정은 로그인 자체를 차단 =====
+        // 탈퇴한 계정은 로그인 자체를 차단
         if (member.isWithdrawn()) {
             throw new IllegalStateException("탈퇴한 계정입니다. 재로그인이 불가능합니다.");
         }
 
         session.setAttribute("loginMember", member.getUid());
+        // ===== 추가된 부분: 역할(권한) 기반 화면/접근 제어를 위해 memberType도 세션에 저장 =====
+        session.setAttribute("loginMemberType", member.getMemberType()); // "MEMBER" / "SELLER" / "ADMIN"
 
-        // ===== 추가된 부분: 자동로그인 체크 시 토큰 발급 + 쿠키 저장 (7일) =====
+        // 자동로그인 체크 시 토큰 발급 + 쿠키 저장 (7일)
         if (request.isAutoLogin()) {
             String token = memberService.issueAutoLoginToken(member.getUid());
             Cookie cookie = new Cookie(AUTO_LOGIN_COOKIE, token);
@@ -86,7 +88,7 @@ public class MemberApiController {
     // 로그아웃
     @PostMapping("/logout")
     public String logout(HttpSession session, HttpServletRequest request, HttpServletResponse response) {
-        // ===== 추가된 부분: 자동로그인 토큰도 같이 제거 (안 하면 로그아웃해도 다시 자동 로그인됨) =====
+        // 자동로그인 토큰도 같이 제거 (안 하면 로그아웃해도 다시 자동 로그인됨)
         String uid = (String) session.getAttribute("loginMember");
         if (uid != null) {
             memberService.clearAutoLoginToken(uid);
@@ -127,7 +129,7 @@ public class MemberApiController {
         return "비밀번호가 변경되었습니다.";
     }
 
-    // ===== 추가된 부분: 마이페이지 - 현재 비밀번호 확인 (팝업 1단계) =====
+    // 마이페이지 - 현재 비밀번호 확인 (팝업 1단계)
     @PostMapping("/mypage/password/verify")
     public Map<String, Object> verifyCurrentPassword(@RequestParam String password, HttpSession session) {
         String uid = (String) session.getAttribute("loginMember");
@@ -138,7 +140,7 @@ public class MemberApiController {
         return Map.of("success", matched);
     }
 
-    // ===== 추가된 부분: 마이페이지 - 비밀번호 변경 (팝업 2단계) =====
+    // 마이페이지 - 비밀번호 변경 (팝업 2단계)
     @PostMapping("/mypage/password/change")
     public Map<String, Object> changeMyPassword(@RequestParam String newPassword,
                                                 @RequestParam String newPasswordConfirm,
@@ -154,7 +156,7 @@ public class MemberApiController {
         return Map.of("success", true);
     }
 
-    // ===== 추가된 부분: 마이페이지 정보수정 (휴대폰/주소) - 이메일은 여기서도 무시됨 =====
+    // 마이페이지 정보수정 (휴대폰/주소) - 이메일은 여기서도 무시됨
     @PostMapping("/mypage/update")
     public String updateProfile(@RequestBody MemberDto.UpdateRequest request, HttpSession session) {
         String uid = (String) session.getAttribute("loginMember");
@@ -165,7 +167,7 @@ public class MemberApiController {
         return "수정이 완료되었습니다.";
     }
 
-    // ===== 추가된 부분: 탈퇴 =====
+    // 탈퇴
     @PostMapping("/withdraw")
     public String withdraw(HttpSession session, HttpServletResponse response) {
         String uid = (String) session.getAttribute("loginMember");
@@ -173,7 +175,7 @@ public class MemberApiController {
             throw new IllegalStateException("로그인이 필요합니다.");
         }
         memberService.withdraw(uid);
-        // ===== 추가된 부분: 탈퇴 시 자동로그인 토큰/쿠키도 정리 =====
+        // 탈퇴 시 자동로그인 토큰/쿠키도 정리
         memberService.clearAutoLoginToken(uid);
         clearAutoLoginCookie(response);
 
@@ -181,7 +183,7 @@ public class MemberApiController {
         return "탈퇴가 완료되었습니다.";
     }
 
-    // ===== 추가된 부분: 자동로그인 쿠키 삭제 헬퍼 =====
+    // 자동로그인 쿠키 삭제 헬퍼
     private void clearAutoLoginCookie(HttpServletResponse response) {
         Cookie cookie = new Cookie(AUTO_LOGIN_COOKIE, null);
         cookie.setHttpOnly(true);
