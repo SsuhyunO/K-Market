@@ -1,9 +1,18 @@
-<nav class="admin-pagination" aria-label="목록 페이지" th:fragment="admin-pagination">
-	<a href="#">이전</a>
-	<span class="current">1</span>
-	<a href="#">2</a>
-	<a href="#">3</a>
-	<a href="#">4</a>
-	<a href="#">5</a>
-	<a href="#">다음</a>
+<nav class="admin-pagination" aria-label="목록 페이지"
+     th:fragment="admin-pagination(pageInfo, baseUrl)">
+
+	<a th:if="${pageInfo.currentPage > 1}"
+	   th:href="@{${baseUrl}(page=${pageInfo.currentPage - 1})}">이전</a>
+	<span th:unless="${pageInfo.currentPage > 1}" class="disabled">이전</span>
+
+	<th:block th:each="i : ${#numbers.sequence(pageInfo.startPage, pageInfo.endPage)}">
+		<span th:if="${i == pageInfo.currentPage}" class="current" th:text="${i}"></span>
+		<a th:unless="${i == pageInfo.currentPage}"
+		   th:href="@{${baseUrl}(page=${i})}"
+		   th:text="${i}"></a>
+	</th:block>
+
+	<a th:if="${pageInfo.currentPage < pageInfo.totalPages}"
+	   th:href="@{${baseUrl}(page=${pageInfo.currentPage + 1})}">다음</a>
+	<span th:unless="${pageInfo.currentPage < pageInfo.totalPages}" class="disabled">다음</span>
 </nav>

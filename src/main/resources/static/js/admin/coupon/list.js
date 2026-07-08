@@ -17,6 +17,17 @@ const COUPON_DETAIL_FIELDS = [
     "description"
 ];
 
+const COUPON_TYPE_LABELS = {
+    PRODUCT: "개별상품 할인",
+    ORDER: "주문상품 할인",
+    DELIVERY: "배송비 무료"
+};
+
+const COUPON_STATUS_LABELS = {
+    ACTIVE: "발급중",
+    DISABLED: "종료"
+};
+
 document.addEventListener("DOMContentLoaded", function () {
     initModals();
     initCouponRegisterValidation();
@@ -202,7 +213,15 @@ function initCouponDetailModal() {
         if (!row) return;
 
         COUPON_DETAIL_FIELDS.forEach(field => {
-            setText(`coupon-detail-${toKebabCase(field)}`, row.dataset[field]);
+            let value = row.dataset[field];
+
+            if (field === "couponType") {
+                value = COUPON_TYPE_LABELS[value] || value;
+            } else if (field === "status") {
+                value = COUPON_STATUS_LABELS[value] || value;
+            }
+
+            setText(`coupon-detail-${toKebabCase(field)}`, value);
         });
 
         openModal(modal);
@@ -221,15 +240,27 @@ function initCouponEndButtons() {
 
         if (!window.confirm(message)) return;
 
-        row.dataset.status = "종료";
-        const status = row.querySelector(".coupon-status");
-        if (status) {
-            status.textContent = "종료";
-            status.classList.remove("active");
-            status.classList.add("disabled");
-        }
+        fetch(`${CONTEXT_PATH}admin/coupon/${couponNo}/end`, {
+            method: "PATCH"
+        })
+            .then(res => {
+                if (!res.ok) throw new Error("서버 처리 실패");
 
-        button.disabled = true;
+                row.dataset.status = "DISABLED"; // 원본 상태값 유지 (한글 대신)
+
+                const status = row.querySelector(".coupon-status");
+                if (status) {
+                    status.textContent = "종료";
+                    status.classList.remove("active");
+                    status.classList.add("disabled");
+                }
+
+                button.disabled = true;
+            })
+            .catch(err => {
+                alert("쿠폰 종료 처리 중 오류가 발생했습니다.");
+                console.error(err);
+            });
     });
 }
 

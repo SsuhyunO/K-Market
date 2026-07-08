@@ -10,6 +10,9 @@
     <link rel="stylesheet" th:href="@{/css/admin/global/section-table.css}">
     <link rel="stylesheet" th:href="@{/css/admin/coupon/coupon.css}">
     <script type="module" th:src="@{/js/admin/coupon/list.js}"></script>
+    <script th:inline="javascript">
+        const CONTEXT_PATH = /*[[@{/}]]*/ '';
+    </script>
 </head>
 <body class="coupon-list-page">
 <header th:replace="~{admin/fragments/header::header}"></header>
@@ -26,7 +29,7 @@
                         <option value="쿠폰번호">쿠폰번호</option>
                         <option value="쿠폰명">쿠폰명</option>
                         <option value="쿠폰종류">쿠폰종류</option>
-                        <option value="상태">상태</option>
+                        <option value="발급자">발급자</option>
                     </th:block>
                 </th:block>
 
@@ -44,15 +47,36 @@
                             <th>관리</th>
                         </tr>
                         <tr th:each="coupon : ${couponList}"
+                            th:with="benefitDisplay=${
+                                        coupon.benefit == '1000' ? '1,000 할인' :
+                                        (coupon.benefit == '2000' ? '2,000 할인' :
+                                        (coupon.benefit == '3000' ? '3,000 할인' :
+                                        (coupon.benefit == '4000' ? '4,000 할인' :
+                                        (coupon.benefit == '5000' ? '5,000 할인' :
+                                        (coupon.benefit == '10' ? '10% 할인' :
+                                        (coupon.benefit == '20' ? '20% 할인' :
+                                        (coupon.benefit == '30' ? '30% 할인' :
+                                        (coupon.benefit == '40' ? '40% 할인' :
+                                        (coupon.benefit == '50' ? '50% 할인' :
+                                        (coupon.benefit == 'DELIVERY_FREE' ? '배송비 무료' : coupon.benefit)
+                                        )))))))))
+                                     },
+                                     couponTypeDisplay=${
+                                        coupon.couponType == 'PRODUCT' ? '개별상품 할인' :
+                                        (coupon.couponType == 'ORDER' ? '주문상품 할인' :
+                                        (coupon.couponType == 'DELIVERY' ? '배송비 무료' : coupon.couponType))
+                                     },
+                                     statusDisplay=${coupon.status == 'ACTIVE' ? '발급중' : '종료'},
+                                     issuerDisplay=${coupon.companyName != null ? coupon.companyName : '최고관리자'}"
                             th:attr="data-coupon-no=${coupon.couponNo},
-                                     data-coupon-type=${coupon.couponType},
+                                     data-coupon-type=${couponTypeDisplay},
                                      data-coupon-name=${coupon.name},
-                                     data-benefit=${coupon.benefit},
+                                     data-benefit=${benefitDisplay},
                                      data-period=${coupon.startDate + ' ~ ' + coupon.expireDate},
-                                     data-issuer=${coupon.companyName},
+                                     data-issuer=${issuerDisplay},
                                      data-issue-count=${coupon.issuedCnt},
                                      data-used-count=${coupon.usedCnt},
-                                     data-status=${coupon.status},
+                                     data-status=${statusDisplay},
                                      data-description=${coupon.notice}">
 
                             <td>
@@ -60,14 +84,10 @@
                                         th:text="${coupon.couponNo}"></button>
                             </td>
 
-                            <td th:switch="${coupon.couponType}">
-                                <span th:case="'PRODUCT'">개별상품 할인</span>
-                                <span th:case="'ORDER'">주문상품 할인</span>
-                                <span th:case="'DELIVERY'">배송비 무료</span>
-                            </td>
+                            <td th:switch="${couponTypeDisplay}"></td>
 
                             <td th:text="${coupon.name}"></td>
-                            <td th:text="${coupon.benefit}"></td>
+                            <td th:text="${benefitDisplay}"></td>
                             <td th:text="${coupon.startDate + ' ~ ' + coupon.expireDate}"></td>
                             <td th:text="${coupon.issuedCnt}"></td>
                             <td th:text="${coupon.usedCnt}"></td>
@@ -75,7 +95,7 @@
                             <td>
                                 <span class="coupon-status"
                                       th:classappend="${coupon.status == 'ACTIVE'} ? 'active' : 'disabled'"
-                                      th:text="${coupon.status == 'ACTIVE'} ? '발급중' : '종료'"></span>
+                                      th:text="${statusDisplay}"></span>
                             </td>
 
                             <td>
@@ -89,7 +109,9 @@
                 <div th:replace="~{admin/fragments/action-bar::action-bar(~{::coupon_table_footer})}">
                     <th:block th:fragment="coupon_table_footer">
                         <span class="btn-area-spacer"></span>
-                        <nav th:replace="~{admin/fragments/admin-pagination::admin-pagination}"></nav>
+                        <nav th:replace="~{admin/fragments/admin-pagination::admin-pagination(
+                                pageInfo=${pageInfo},
+                                baseUrl='/admin/coupon/list')}"></nav>
                         <button type="button"
                                 data-modal-target="coupon-register-modal"
                                 data-action-variant="primary">쿠폰등록</button>
