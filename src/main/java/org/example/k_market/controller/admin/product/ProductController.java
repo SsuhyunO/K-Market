@@ -11,8 +11,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.util.List;
 
 @Controller("adminProductController")
 @RequestMapping("/admin/product")
@@ -34,8 +37,9 @@ public class ProductController {
     }
 
     @GetMapping("/edit")
-    public String edit(Model model) {
+    public String edit(@RequestParam("prodNo") int prodNo, Model model) {
         addProductFormModel(model);
+        model.addAttribute("product", productService.getProductDetail(prodNo));
         return "admin/product/edit";
     }
 
@@ -45,6 +49,14 @@ public class ProductController {
 
         productService.register(request, sellerUid);
         return "redirect:/admin/product/list?register=success";
+    }
+
+    @PostMapping("/remove")
+    public String remove(@RequestParam(value = "productNo", required = false) List<Integer> productNos,
+                         RedirectAttributes redirectAttributes) {
+        productService.remove(productNos);
+        redirectAttributes.addFlashAttribute("productMessage", "선택한 상품이 삭제되었습니다.");
+        return "redirect:/admin/product/list";
     }
 
     private void addProductFormModel(Model model) {

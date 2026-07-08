@@ -1,5 +1,6 @@
 package org.example.k_market.controller.admin.file;
 
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.example.k_market.service.admin.AdminConfigService;
 import org.example.k_market.service.admin.BannerService;
@@ -15,13 +16,21 @@ public class GlobalModelController {
     private final BannerService bannerService;
 
     @ModelAttribute
-    public void addGlobalAttributes(Model model) {
+    public void addGlobalAttributes(HttpServletRequest request, Model model) {
+        String path = getRequestPath(request);
+        if (path.startsWith("/api/") || path.startsWith("/files/")) {
+            return;
+        }
 
         // 사이트 기본설정 정보
         try {
             model.addAttribute("siteConfig", adminConfigService.findById(1));
         } catch (Exception e) {
             model.addAttribute("siteConfig", null);
+        }
+
+        if (path.startsWith("/admin/")) {
+            return;
         }
 
         // 메인 상단 배너
@@ -34,44 +43,27 @@ public class GlobalModelController {
             model.addAttribute("mainTopBanners", null);
         }
 
-        // 메인 슬라이더 배너
-        try {
-            model.addAttribute(
-                    "mainSliderBanners",
-                    bannerService.findEnabledBannersByType("mainSlider")
-            );
-        } catch (Exception e) {
-            model.addAttribute("mainSliderBanners", null);
+        if ("/".equals(path) || "/index".equals(path)) {
+            // 메인 슬라이더 배너
+            try {
+                model.addAttribute(
+                        "mainSliderBanners",
+                        bannerService.findEnabledBannersByType("mainSlider")
+                );
+            } catch (Exception e) {
+                model.addAttribute("mainSliderBanners", null);
+            }
+        }
+    }
+
+    private String getRequestPath(HttpServletRequest request) {
+        String requestUri = request.getRequestURI();
+        String contextPath = request.getContextPath();
+
+        if (!contextPath.isBlank() && requestUri.startsWith(contextPath)) {
+            return requestUri.substring(contextPath.length());
         }
 
-        // 상품 상세보기 배너
-        try {
-            model.addAttribute(
-                    "productDetailViewBanners",
-                    bannerService.findEnabledBannersByType("productDetailView")
-            );
-        } catch (Exception e) {
-            model.addAttribute("productDetailViewBanners", null);
-        }
-
-        // 회원 로그인 배너
-        try {
-            model.addAttribute(
-                    "userLoginBanners",
-                    bannerService.findEnabledBannersByType("userLogin")
-            );
-        } catch (Exception e) {
-            model.addAttribute("userLoginBanners", null);
-        }
-
-        // 마이페이지 배너
-        try {
-            model.addAttribute(
-                    "myPageBanners",
-                    bannerService.findEnabledBannersByType("myPage")
-            );
-        } catch (Exception e) {
-            model.addAttribute("myPageBanners", null);
-        }
+        return requestUri;
     }
 }

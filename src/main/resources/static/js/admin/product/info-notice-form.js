@@ -2,6 +2,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const selector = document.getElementById("product-info-notice-type");
     const fieldsBody = document.getElementById("product-info-notice-fields");
     const templates = window.productInfoNoticeTemplates || {};
+    const editNoticeValues = getEditNoticeValues();
 
     if (!selector || !fieldsBody || Object.keys(templates).length === 0) return;
 
@@ -14,11 +15,11 @@ document.addEventListener("DOMContentLoaded", function () {
             hiddenValue.value = selector.value;
         }
 
-        fieldsBody.replaceChildren(...selectedTemplate.fields.map(createFieldRow));
+        fieldsBody.replaceChildren(...selectedTemplate.fields.map(field => createFieldRow(field, editNoticeValues)));
     });
 });
 
-function createFieldRow(field) {
+function createFieldRow(field, values = {}) {
     const row = document.createElement("tr");
     const header = document.createElement("th");
     const cell = document.createElement("td");
@@ -40,9 +41,23 @@ function createFieldRow(field) {
     input.type = "text";
     input.name = `informationNoticeValues[${field.key}]`;
     input.placeholder = field.placeholder || "";
+    input.value = values[field.key] || "";
     input.required = Boolean(field.required);
     cell.append(input);
 
     row.append(header, cell);
     return row;
+}
+
+function getEditNoticeValues() {
+    const values = {};
+    const noticeValues = window.productEditData?.noticeValues || [];
+
+    noticeValues.forEach(notice => {
+        if (notice.key) {
+            values[notice.key] = notice.value || "";
+        }
+    });
+
+    return values;
 }

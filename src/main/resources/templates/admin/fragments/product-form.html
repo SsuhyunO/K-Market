@@ -3,6 +3,7 @@
       th:name="${formName}"
       method="post"
       enctype="multipart/form-data">
+	<input type="hidden" name="prodNo" th:if="${product != null}" th:value="${product.prodNo}">
 	<p class="product-form-error"
 	   th:if="${productErrorMessage != null}"
 	   th:text="${productErrorMessage}">상품 등록에 실패했습니다.</p>
@@ -18,6 +19,7 @@
 									<option value="">1차 카테고리 선택</option>
 									<option th:each="rootCategory : ${categoryTree}"
 									        th:value="${rootCategory.cateId}"
+									        th:selected="${product != null and product.rootCategoryId == rootCategory.cateId}"
 									        th:text="${rootCategory.name}">1차 카테고리</option>
 								</select>
 							</td>
@@ -32,6 +34,7 @@
 										        th:value="${childCategory.cateId}"
 										        th:data-parent="${rootCategory.cateId}"
 										        th:data-info-notice-type="${childCategory.infoNoticeType}"
+										        th:selected="${product != null and product.cateId == childCategory.cateId}"
 										        th:text="${childCategory.name}">2차 카테고리</option>
 									</th:block>
 								</select>
@@ -48,54 +51,57 @@
 				<th:block th:fragment="product_default_info_rows">
 					<tr>
 						<th><label for="name-id">상품명</label></th>
-						<td><input id="name-id" type="text" name="prodName" maxlength="255" required/></td>
+						<td><input id="name-id" type="text" name="prodName" maxlength="255" th:value="${product?.prodName}" required/></td>
 					</tr>
 					<tr>
 						<th><label for="description-id">기본설명</label></th>
-						<td><input id="description-id" type="text" name="description" required/></td>
+						<td><input id="description-id" type="text" name="description" th:value="${product?.description}" required/></td>
 					</tr>
 					<tr>
 						<th><label for="maker-id">제조사</label></th>
-						<td><input id="maker-id" type="text" name="maker" required/></td>
+						<td><input id="maker-id" type="text" name="maker" th:value="${product?.maker}" required/></td>
 					</tr>
 					<tr>
 						<th><label for="price-id">상품금액</label></th>
-						<td><input id="price-id" type="number" name="price" min="0" required/>원</td>
+						<td><input id="price-id" type="number" name="price" min="0" th:value="${product?.price}" required/>원</td>
 					</tr>
 					<tr>
 						<th><label for="discount-id">할인율</label></th>
-						<td><input id="discount-id" type="number" name="discount" min="0" max="100" required/>%</td>
+						<td><input id="discount-id" type="number" name="discount" min="0" max="100" th:value="${product?.discount}" required/>%</td>
 					</tr>
 					<tr>
 						<th><label for="point-id">포인트</label></th>
-						<td><input id="point-id" type="number" name="point" min="0" required/>원</td>
+						<td><input id="point-id" type="number" name="point" min="0" th:value="${product?.point}" required/>원</td>
 					</tr>
 					<tr>
 						<th><label for="stock">재고수량</label></th>
 						<td>
-							<input id="stock" type="number" value="0" readonly required/>개
+							<input id="stock" type="number" th:value="${product != null ? product.stock : 0}" readonly required/>개
 							<span class="row-description">옵션 조합별 재고수량 합계가 자동 반영됩니다.</span>
 						</td>
 					</tr>
 					<tr>
 						<th><label for="delivery-fee-id">배송비</label></th>
-						<td><input id="delivery-fee-id" type="number" name="deliveryFee" required/>원</td>
+						<td><input id="delivery-fee-id" type="number" name="deliveryFee" th:value="${product?.deliveryFee}" required/>원</td>
 					</tr>
 					<tr>
 						<th>상품 이미지</th>
 						<td class="image-upload-section">
 							<div>
-								<input type="file" name="thumb1" accept="image/*" required/>
+								<div th:replace="~{admin/fragments/product-form::current_file(${product?.thumb1File})}"></div>
+								<input type="file" name="thumb1" accept="image/*" th:attr="data-existing-file-id=${product?.thumb1FileId}" th:required="${product == null}"/>
 								<label>크기 190 x 190, 상품 목록에 출력 될 이미지 입니다.</label>
 							</div>
 							
 							<div>
-								<input type="file" name="thumb2" accept="image/*" required/>
+								<div th:replace="~{admin/fragments/product-form::current_file(${product?.thumb2File})}"></div>
+								<input type="file" name="thumb2" accept="image/*" th:attr="data-existing-file-id=${product?.thumb2FileId}" th:required="${product == null}"/>
 								<label>크기 230 x 230, 상품 목록에 출력 될 이미지 입니다.</label>
 							</div>
 							
 							<div>
-								<input type="file" name="thumb3" accept="image/*" required/>
+								<div th:replace="~{admin/fragments/product-form::current_file(${product?.thumb3File})}"></div>
+								<input type="file" name="thumb3" accept="image/*" th:attr="data-existing-file-id=${product?.thumb3FileId}" th:required="${product == null}"/>
 								<label>크기 456 x 456, 상품 목록에 출력 될 이미지 입니다.</label>
 							</div>
 						</td>
@@ -103,7 +109,8 @@
 					<tr>
 						<th>상품 상세정보</th>
 						<td>
-							<input type="file" name="detailInfoFile" accept="image/*" required/>
+							<div th:replace="~{admin/fragments/product-form::current_file(${product?.detailInfoFile})}"></div>
+							<input type="file" name="detailInfoFile" accept="image/*" th:attr="data-existing-file-id=${product?.detailInfoFileId}" th:required="${product == null}"/>
 							<label>크기 가로 940px, 높이 제약없음, 크기 최대 1MB</label>
 						</td>
 					</tr>
@@ -168,18 +175,18 @@
 				<div class="product-info-notice-toolbar">
 					<label for="product-info-notice-type">상품군</label>
 					<input id="product-info-notice-type-value" type="hidden" name="infoNoticeType"
-					       th:value="${productInfoNoticeTemplates.values().iterator().next().code}">
+					       th:value="${product != null ? product.infoNoticeType : productInfoNoticeTemplates.values().iterator().next().code}">
 					<select id="product-info-notice-type" disabled>
 						<option th:each="template, stat : ${productInfoNoticeTemplates.values()}"
 						        th:value="${template.code}"
 						        th:text="${template.name}"
-					        th:selected="${stat.first}">
+					        th:selected="${product != null ? product.infoNoticeType == template.code : stat.first}">
 						의류
 					</option>
 				</select>
 			</div>
 			
-			<th:block th:with="selectedTemplate=${productInfoNoticeTemplates.values().iterator().next()}">
+			<th:block th:with="selectedTemplate=${product != null and productInfoNoticeTemplates[product.infoNoticeType] != null ? productInfoNoticeTemplates[product.infoNoticeType] : productInfoNoticeTemplates.values().iterator().next()}">
 				<th:block th:replace="~{admin/fragments/section-table::section-table(~{::prod_info_notice_rows})}">
 					<th:block th:fragment="prod_info_notice_rows">
 						<tbody id="product-info-notice-fields">
@@ -207,6 +214,7 @@
 			
 			<script th:inline="javascript">
                 window.productInfoNoticeTemplates = /*[[${productInfoNoticeTemplates}]]*/ {};
+                window.productEditData = /*[[${product}]]*/ null;
 			</script>
 		</th:block>
 	</section>
@@ -220,3 +228,8 @@
 		</th:block>
 	</section>
 </form>
+
+<div th:fragment="current_file(file)" th:if="${file != null}" class="current-file-info">
+	<span class="current-file-name" th:text="${file.originalName}">sample.jpg</span>
+	<span class="current-file-meta" th:text="|${file.extension} · ${file.fileSize} bytes|">jpg · 1024 bytes</span>
+</div>

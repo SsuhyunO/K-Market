@@ -2,14 +2,85 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.example.k_market.dao.ProductDAO">
 
-    <select id="findProductsForPage" resultType="org.example.k_market.dto.product.ProductDTO">
-        SELECT * FROM product
-            ORDER BY prodNo DESC
-            LIMIT #{size}
-            OFFSET #{offset}
+    <select id="findProductsForPage" resultType="org.example.k_market.dto.product.response.ProductListResponse">
+        SELECT
+            p.prodNo,
+            p.prodName,
+            p.price,
+            p.discount,
+            p.point,
+            p.sold,
+            COALESCE(SUM(pv.stock), 0) AS stock,
+            p.thumb1FileId,
+            p.sellerUid
+        FROM product p
+        LEFT JOIN product_variant pv ON pv.prodNo = p.prodNo
+        GROUP BY
+            p.prodNo,
+            p.prodName,
+            p.price,
+            p.discount,
+            p.point,
+            p.sold,
+            p.thumb1FileId,
+            p.sellerUid
+        ORDER BY p.prodNo DESC
+        LIMIT #{size}
+        OFFSET #{offset}
     </select>
 
-    <select id="totalCount">
+    <select id="findProductDetail" resultType="org.example.k_market.dto.product.response.ProductDetailResponse">
+        SELECT
+            p.prodNo,
+            p.cateId,
+            p.prodName,
+            p.description,
+            p.maker,
+            p.deliveryFee,
+            p.price,
+            p.discount,
+            p.point,
+            p.sold,
+            COALESCE(SUM(pv.stock), 0) AS stock,
+            parent.cateId AS rootCategoryId,
+            parent.name AS rootCategoryName,
+            c.name AS subCategoryName,
+            p.thumb1FileId,
+            p.thumb2FileId,
+            p.thumb3FileId,
+            p.detailInfoFileId,
+            p.sellerUid,
+            p.infoNoticeType,
+            p.createdAt
+        FROM product p
+        LEFT JOIN category c ON c.cateId = p.cateId
+        LEFT JOIN category parent ON parent.cateId = c.parentId
+        LEFT JOIN product_variant pv ON pv.prodNo = p.prodNo
+        WHERE p.prodNo = #{prodNo}
+        GROUP BY
+            p.prodNo,
+            p.cateId,
+            p.prodName,
+            p.description,
+            p.maker,
+            p.deliveryFee,
+            p.price,
+            p.discount,
+            p.point,
+            p.sold,
+            parent.cateId,
+            parent.name,
+            c.name,
+            p.thumb1FileId,
+            p.thumb2FileId,
+            p.thumb3FileId,
+            p.detailInfoFileId,
+            p.sellerUid,
+            p.infoNoticeType,
+            p.createdAt
+    </select>
+
+    <select id="totalCount" resultType="int">
         SELECT COUNT(prodNo) FROM product;
     </select>
 </mapper>

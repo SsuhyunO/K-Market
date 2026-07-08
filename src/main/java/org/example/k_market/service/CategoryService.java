@@ -19,6 +19,20 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class CategoryService {
+    /*
+     * 카테고리 삭제 정책
+     *
+     * 1. 카테고리를 삭제하더라도 해당 카테고리로 분류되어 있던 상품은 삭제하지 않는다.
+     *    상품 데이터는 유지하고, 상품의 카테고리만 시스템 미분류 카테고리로 이동한다.
+     *
+     * 2. 2차 카테고리를 삭제하는 경우에는 해당 2차 카테고리에 속한 상품만 미분류로 이동한 뒤
+     *    대상 카테고리를 삭제한다.
+     *
+     * 3. 1차 카테고리를 삭제하는 경우에는 하위 2차 카테고리에 속한 상품을 모두 미분류로 이동한 뒤
+     *    하위 2차 카테고리와 대상 1차 카테고리를 삭제한다.
+     *
+     * 4. 미분류 카테고리는 상품 보존을 위한 시스템 카테고리이므로 수정하거나 삭제할 수 없다.
+     */
     private static final String UNCATEGORIZED_CODE = "UNCATEGORIZED";
     private final CategoryRepository categoryRepository;
     private final ProductRepository productRepository;

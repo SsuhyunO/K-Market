@@ -4,6 +4,29 @@
     gap: 10px;
 }
 
+.current-file-info {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 6px;
+    padding: 7px 9px;
+    border: 1px solid var(--adm-gray-300);
+    border-radius: 4px;
+    background: var(--adm-gray-100);
+    color: var(--adm-gray-700);
+    font-size: 12px;
+}
+
+.current-file-name {
+    color: var(--adm-gray-900);
+    font-weight: 800;
+}
+
+.current-file-meta {
+    color: var(--adm-gray-500);
+}
+
 .product-form-error {
     margin: 0 0 12px;
     padding: 10px 12px;

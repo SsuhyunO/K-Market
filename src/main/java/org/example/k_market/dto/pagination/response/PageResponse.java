@@ -1,4 +1,4 @@
-package org.example.k_market.dto.response;
+package org.example.k_market.dto.pagination.response;
 
 import lombok.*;
 
@@ -14,8 +14,12 @@ public class PageResponse<T> {
     private List<T> list;
 
     private int page; // 현재 페이지
-    private int sizeLimit; // 오프셋
-    private int pageLimit; // 오프셋
+    private int startNo;
+    private int size;
+    private int totalPage;
+    private int totalElements;
+    private int startPage;
+    private int lastPage;
     private boolean hasNext; // 이전 페이지 그룹이 있는가?
     private boolean hasPrev; // 다음 페이지 그룹이 있는가?
 }

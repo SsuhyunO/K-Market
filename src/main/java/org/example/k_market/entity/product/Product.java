@@ -24,6 +24,9 @@ public class Product {
     @JoinColumn(name = "cateId")
     private Category category;
     private String prodName;
+    private String description;
+    private String maker;
+    private int deliveryFee;
     private int price;
     private int discount;
     private int point;
@@ -43,6 +46,9 @@ public class Product {
             .prodNo(prodNo)
             .cateId(category.getCateId())
             .prodName(prodName)
+            .description(description)
+            .maker(maker)
+            .deliveryFee(deliveryFee)
             .price(price)
             .discount(discount)
             .point(point)
