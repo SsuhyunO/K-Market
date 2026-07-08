@@ -25,7 +25,7 @@ public class Recruit {
     private String status;
     private String content;
 
-    @CreationTimestamp
+    //@CreationTimestamp
     private LocalDateTime recruitStartAt;
     private LocalDateTime recruitEndAt;
     private LocalDateTime createdAt;

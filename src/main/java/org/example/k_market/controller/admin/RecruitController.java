@@ -90,12 +90,10 @@ public class RecruitController {
     public String modify(RecruitDTO dto,
                          @RequestParam(required = false) String startDate,
                          @RequestParam(required = false) String endDate,
-                         @RequestParam(required = false) String startTime,
-                         @RequestParam(required = false) String endTime,
                          RedirectAttributes redirectAttributes) {
 
-        dto.setRecruitStartAt(toLocalDateTime(startDate, startTime));
-        dto.setRecruitEndAt(toLocalDateTime(endDate, endTime));
+        dto.setRecruitStartAt(toLocalDateTime(startDate, null));
+        dto.setRecruitEndAt(toLocalDateTime(endDate, null));
 
         if (dto.getSellerUid() == null || dto.getSellerUid().isBlank()) {
             dto.setSellerUid("관리자");
@@ -113,21 +111,22 @@ public class RecruitController {
     }
 
     private LocalDateTime toLocalDateTime(String date, String time) {
-
+        // 1. date가 아예 없으면 null 반환 (안전하게 처리)
         if (date == null || date.isBlank()) {
             return null;
         }
 
-        LocalDate localDate = LocalDate.parse(date);
+        try {
+            // 2. 날짜 파싱
+            LocalDate localDate = LocalDate.parse(date);
+            LocalTime localTime = (time == null || time.isBlank()) ? LocalTime.of(0, 0) : LocalTime.parse(time);
 
-        LocalTime localTime;
-
-        if (time == null || time.isBlank()) {
-            localTime = LocalTime.of(0, 0);
-        } else {
-            localTime = LocalTime.parse(time);
+            return LocalDateTime.of(localDate, localTime);
+        } catch (Exception e) {
+            // 3. 에러 발생 시 로그를 남기고 null을 반환하여 500 에러 방지
+            System.out.println("날짜 파싱 중 에러 발생: " + e.getMessage());
+            return null;
         }
-
-        return LocalDateTime.of(localDate, localTime);
     }
-}
+
+    }

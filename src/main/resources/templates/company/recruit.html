@@ -43,60 +43,40 @@
                 <th>모집기간</th>
             </tr>
             </thead>
-            <tbody id="recruitTableBody">
 
-            <!-- recruitList가 없을 때: 1페이지 기본 표시용 (JS가 페이지 전환 시 이 영역을 갈아끼움) -->
-            <th:block th:if="${recruitList == null or #lists.isEmpty(recruitList)}">
-                <tr>
-                    <td>20</td>
-                    <td>광고사업</td>
-                    <td>경력 4 ~ 15년</td>
-                    <td>정규직</td>
-                    <td>광고 플랫폼 기획</td>
-                    <td><span class="status open">모집중</span></td>
-                    <td>0000-00-00 ~ 0000-00-00</td>
-                </tr>
-                <tr>
-                    <td>19</td>
-                    <td>IT</td>
-                    <td>경력 2 ~ 15년</td>
-                    <td>정규직</td>
-                    <td>IT 인재 상시 영입(경력)</td>
-                    <td><span class="status open">모집중</span></td>
-                    <td>0000-00-00 ~ 0000-00-00</td>
-                </tr>
-                <tr>
-                    <td>18</td>
-                    <td>운영</td>
-                    <td>무관</td>
-                    <td>계약직</td>
-                    <td>단기 아르바이트 모집</td>
-                    <td><span class="status closed">종료</span></td>
-                    <td>0000-00-00 ~ 0000-00-00</td>
-                </tr>
-                <tr>
-                    <td>17</td>
-                    <td>경영</td>
-                    <td>신입</td>
-                    <td>계약직</td>
-                    <td>경영지원 직원 채용 공고</td>
-                    <td><span class="status closed">종료</span></td>
-                    <td>0000-00-00 ~ 0000-00-00</td>
-                </tr>
-            </th:block>
+            <tbody>
 
-            <!-- 실제 데이터: 채용 목록만 출력, 지원하기 기능은 없음 -->
-            <tr th:each="job : ${recruitList}">
-                <td th:text="${job.id}">1</td>
-                <td th:text="${job.department}">부서</td>
-                <td th:text="${job.experience}">경력사항</td>
-                <td th:text="${job.employmentType}">채용형태</td>
-                <td th:text="${job.title}">제목</td>
-                <td>
-            <span class="status" th:classappend="${job.open} ? 'open' : 'closed'"
-                  th:text="${job.open} ? '모집중' : '종료'">모집중</span>
+            <!-- 등록된 공고 없을 때 -->
+            <tr th:if="${recruitList == null or #lists.isEmpty(recruitList)}">
+                <td colspan="7" style="text-align:center; padding:30px 0;">
+                    등록된 채용공고가 없습니다.
                 </td>
-                <td th:text="${job.period}">0000-00-00 ~ 0000-00-00</td>
+            </tr>
+
+            <!-- DB 채용공고 출력 -->
+            <tr th:each="recruit, stat : ${recruitList}">
+                <td th:text="${recruit.id}">1</td>
+
+                <td th:text="${recruit.department}">IT</td>
+
+                <td th:text="${recruit.experience}">신입</td>
+
+                <td th:text="${recruit.recruitCategory}">정규직</td>
+
+                <td th:text="${recruit.title}">밥 잘먹는 개발자 뽑읍니다.</td>
+
+                <td>
+            <span th:text="${recruit.status}"
+                  th:class="${recruit.status == '모집중' ? 'status active' : 'status ended'}">
+                모집중
+            </span>
+                </td>
+
+                <td>
+                    <span th:text="${recruit.recruitStartAt != null ? #temporals.format(recruit.recruitStartAt, 'yyyy-MM-dd') : '0000-00-00'}"></span>
+                    ~
+                    <span th:text="${recruit.recruitEndAt != null ? #temporals.format(recruit.recruitEndAt, 'yyyy-MM-dd') : '0000-00-00'}"></span>
+                </td>
             </tr>
 
             </tbody>
