@@ -26,10 +26,9 @@
             <th:block th:fragment="main_content">
                 <th:block th:replace="~{admin/fragments/search-form(~{::options})}">
                     <th:block th:fragment="options">
-                        <option value="쿠폰번호">쿠폰번호</option>
-                        <option value="쿠폰명">쿠폰명</option>
-                        <option value="쿠폰종류">쿠폰종류</option>
-                        <option value="발급자">발급자</option>
+                        <option value="쿠폰번호" th:selected="${searchType == '쿠폰번호'}">쿠폰번호</option>
+                        <option value="쿠폰명" th:selected="${searchType == '쿠폰명'}">쿠폰명</option>
+                        <option value="발급자" th:selected="${searchType == '발급자'}">발급자</option>
                     </th:block>
                 </th:block>
 
@@ -84,7 +83,7 @@
                                         th:text="${coupon.couponNo}"></button>
                             </td>
 
-                            <td th:switch="${couponTypeDisplay}"></td>
+                            <td th:text="${couponTypeDisplay}"></td>
 
                             <td th:text="${coupon.name}"></td>
                             <td th:text="${benefitDisplay}"></td>
@@ -100,6 +99,7 @@
 
                             <td>
                                 <button class="coupon-action-button" type="button" data-coupon-end-button
+                                        th:if="${memberType == 'ADMIN' or (memberType == 'SELLER' and coupon.sellerUid == loginUid)}"
                                         th:disabled="${coupon.status != 'ACTIVE'}">종료</button>
                             </td>
                         </tr>
@@ -131,12 +131,19 @@
                                 <tr>
                                     <th><label for="coupon-register-type">쿠폰종류</label></th>
                                     <td>
-                                        <select id="coupon-register-type" name="couponType">
+                                        <!-- ADMIN: 3개 다 선택 가능 -->
+                                        <select id="coupon-register-type" name="couponType" th:if="${memberType == 'ADMIN'}">
                                             <option value="">종류선택</option>
                                             <option value="PRODUCT">개별상품 할인</option>
                                             <option value="ORDER">주문상품 할인</option>
                                             <option value="DELIVERY">배송비 무료</option>
                                         </select>
+
+                                        <!-- SELLER: 개별상품 할인만 표시, 값은 고정으로 넘어감 -->
+                                        <div th:if="${memberType == 'SELLER'}">
+                                            <input type="text" value="개별상품 할인" readonly>
+                                            <input type="hidden" name="couponType" value="PRODUCT">
+                                        </div>
                                     </td>
                                 </tr>
                                 <tr>

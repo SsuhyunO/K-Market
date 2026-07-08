@@ -30,31 +30,51 @@
             (#{couponType}, #{sellerUid}, #{benefit},  #{issuedCnt}, 0, 'ACTIVE', #{notice}, #{name}, #{expireDate}, #{startDate})
     </insert>
 
+    <sql id="couponSearchWhere">
+        <where>
+            <if test="keyword != null and keyword != ''">
+                <choose>
+                    <when test="searchType == '쿠폰번호'">
+                        AND c.couponNo LIKE CONCAT('%', #{keyword}, '%')
+                    </when>
+                    <when test="searchType == '쿠폰명'">
+                        AND c.name LIKE CONCAT('%', #{keyword}, '%')
+                    </when>
+                    <when test="searchType == '발급자'">
+                        AND s.companyName LIKE CONCAT('%', #{keyword}, '%')
+                    </when>
+                </choose>
+            </if>
+        </where>
+    </sql>
+
     <select id="getTotalCount" resultType="int">
         SELECT COUNT(*)
         FROM coupon c
-                 LEFT JOIN seller s ON c.sellerUid = s.uid
+        LEFT JOIN seller s ON c.sellerUid = s.uid
+        <include refid="couponSearchWhere"/>
     </select>
 
     <select id="getCouponList" resultType="org.example.k_market.dto.coupon.CouponDTO">
         SELECT
-            c.couponNo      AS couponNo,
-            c.couponType    AS couponType,
-            c.sellerUid     AS sellerUid,
-            s.companyName   AS companyName,
-            c.benefit       AS benefit,
-            c.issuedCnt     AS issuedCnt,
-            c.usedCnt       AS usedCnt,
-            c.status        AS status,
-            c.notice        AS notice,
-            c.name          AS name,
-            c.expireDate    AS expireDate,
-            c.startDate     AS startDate,
-            c.createdAt     AS createdAt
+        c.couponNo      AS couponNo,
+        c.couponType    AS couponType,
+        c.sellerUid     AS sellerUid,
+        s.companyName   AS companyName,
+        c.benefit       AS benefit,
+        c.issuedCnt     AS issuedCnt,
+        c.usedCnt       AS usedCnt,
+        c.status        AS status,
+        c.notice        AS notice,
+        c.name          AS name,
+        c.expireDate    AS expireDate,
+        c.startDate     AS startDate,
+        c.createdAt     AS createdAt
         FROM coupon c
-                 LEFT JOIN seller s ON c.sellerUid = s.uid
+        LEFT JOIN seller s ON c.sellerUid = s.uid
+        <include refid="couponSearchWhere"/>
         ORDER BY c.couponNo DESC
-            LIMIT #{offset}, #{pageSize}
+        LIMIT #{offset}, #{pageSize}
     </select>
 
     <update id="updateStatusToDisabled">
@@ -62,4 +82,18 @@
         SET status = 'DISABLED'
         WHERE couponNo = #{couponNo}
     </update>
+
+    <update id="disableExpiredCoupons">
+        UPDATE coupon
+        SET status = 'DISABLED'
+        WHERE status = 'ACTIVE'
+          AND expireDate &lt; CURDATE()
+    </update>
+
+    <select id="getCouponByNo" resultType="org.example.k_market.dto.coupon.CouponDTO">
+        SELECT c.*, s.companyName
+        FROM coupon c
+                 LEFT JOIN seller s ON c.sellerUid = s.uid
+        WHERE c.couponNo = #{couponNo}
+    </select>
 </mapper>
