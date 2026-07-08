@@ -31,4 +31,16 @@ public class CouponService {
         couponDAO.insert(dto);
     }
 
+    public int getTotalCount() {
+        return couponDAO.getTotalCount();
+    }
+
+    public List<CouponDTO> getCouponList(int page, int pageSize) {
+        int offset = (page - 1) * pageSize;
+        return couponDAO.getCouponList(offset, pageSize);
+    }
+
+    public void endCoupon(int couponNo) {
+        couponDAO.updateStatusToDisabled(couponNo);
+    }
 }

@@ -26,7 +26,7 @@ public class CouponDTO {
     private String startDate;
 
     // 추가 필드
-    private int validDays;
+    private Integer validDays;
     private String companyName;
 
     public Coupon toEntity(){

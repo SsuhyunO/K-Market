@@ -30,4 +30,36 @@
             (#{couponType}, #{sellerUid}, #{benefit},  #{issuedCnt}, 0, 'ACTIVE', #{notice}, #{name}, #{expireDate}, #{startDate})
     </insert>
 
+    <select id="getTotalCount" resultType="int">
+        SELECT COUNT(*)
+        FROM coupon c
+                 LEFT JOIN seller s ON c.sellerUid = s.uid
+    </select>
+
+    <select id="getCouponList" resultType="org.example.k_market.dto.coupon.CouponDTO">
+        SELECT
+            c.couponNo      AS couponNo,
+            c.couponType    AS couponType,
+            c.sellerUid     AS sellerUid,
+            s.companyName   AS companyName,
+            c.benefit       AS benefit,
+            c.issuedCnt     AS issuedCnt,
+            c.usedCnt       AS usedCnt,
+            c.status        AS status,
+            c.notice        AS notice,
+            c.name          AS name,
+            c.expireDate    AS expireDate,
+            c.startDate     AS startDate,
+            c.createdAt     AS createdAt
+        FROM coupon c
+                 LEFT JOIN seller s ON c.sellerUid = s.uid
+        ORDER BY c.couponNo DESC
+            LIMIT #{offset}, #{pageSize}
+    </select>
+
+    <update id="updateStatusToDisabled">
+        UPDATE coupon
+        SET status = 'DISABLED'
+        WHERE couponNo = #{couponNo}
+    </update>
 </mapper>
