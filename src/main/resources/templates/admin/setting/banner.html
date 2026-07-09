@@ -174,33 +174,33 @@
                     <th:block th:fragment="banner-table-footer">
 
                         <input type="hidden" name="bannerCategory" th:value="${bannerCategory}">
-                        <div style="display: flex; gap: 8px; border: 1px solid #ddd; padding: 5px; border-radius: 4px; background-color: #f9f9f9;">
 
-                            <button type="submit"
-                                    data-management-action="bulk-submit"
-                                    data-empty-message="삭제할 배너를 선택해주세요."
-                                    data-confirm-message="선택한 배너를 삭제하시겠습니까?"
-                                    data-action-variant="secondary"
-                                    th:formaction="@{/admin/banner/delete}"
-                                    formmethod="post"
-                                    style="border: 1px solid #ccc; padding: 5px 10px; border-radius: 3px;"> 선택삭제
-                            </button>
-
-                            <button type="button"
-                                    id="btn-select-edit"
-                                    data-action-variant="secondary"
-                                    style="border: 1px solid #ccc; padding: 5px 10px; border-radius: 3px;"> 선택수정
-                            </button>
-
-                        </div> <nav th:replace="~{admin/fragments/admin-pagination::admin-pagination}"></nav>
+                        <button type="submit"
+                                class="banner-btn-delete"
+                                data-management-action="bulk-submit"
+                                data-empty-message="삭제할 배너를 선택해주세요."
+                                data-confirm-message="선택한 배너를 삭제하시겠습니까?"
+                                data-action-variant="secondary"
+                                th:formaction="@{/admin/banner/delete}"
+                                formmethod="post">
+                            선택삭제
+                        </button>
 
                         <button type="button"
+                                id="btn-select-edit"
+                                class="banner-btn-edit"
+                                data-action-variant="secondary">
+                            선택수정
+                        </button>
+
+                        <button type="button"
+                                class="banner-btn-register"
                                 data-modal-target="banner-modal"
                                 data-action-variant="primary">
                             배너등록
                         </button>
+
                     </th:block>
-                </form>
 
                 <!-- 배너 등록 모달 -->
                 <div th:replace="~{admin/fragments/modal::modal('banner-modal', '배너등록', ~{::banner_register_modal_content})}">

@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller("adminCsController")
 @RequestMapping("/admin/cs")
-public class CsController {
+public class AdminCsController {
 
     @GetMapping({"/notice/list", "", "/", "/notice"})
     public String noticeList() {
