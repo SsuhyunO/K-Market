@@ -1,4 +1,4 @@
-package org.example.k_market.controller.CS;
+package org.example.k_market.controller.cs;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
