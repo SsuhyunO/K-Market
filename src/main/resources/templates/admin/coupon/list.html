@@ -24,7 +24,7 @@
 
         <section th:replace="~{admin/fragments/dash-section::dash-section(null, null, null, ~{::main_content})}">
             <th:block th:fragment="main_content">
-                <th:block th:replace="~{admin/fragments/search-form(~{::options})}">
+                <th:block th:replace="~{admin/fragments/search-form::search-form(~{::options})}">
                     <th:block th:fragment="options">
                         <option value="쿠폰번호" th:selected="${searchType == '쿠폰번호'}">쿠폰번호</option>
                         <option value="쿠폰명" th:selected="${searchType == '쿠폰명'}">쿠폰명</option>
@@ -65,7 +65,10 @@
                                         (coupon.couponType == 'ORDER' ? '주문상품 할인' :
                                         (coupon.couponType == 'DELIVERY' ? '배송비 무료' : coupon.couponType))
                                      },
-                                     statusDisplay=${coupon.status == 'ACTIVE' ? '발급중' : '종료'},
+                                     statusDisplay=${
+                                            coupon.status == 'ACTIVE' ? '발급중' :
+                                            (coupon.status == 'EXPIRED' ? '기간만료' : '강제종료')
+                                        },
                                      issuerDisplay=${coupon.companyName != null ? coupon.companyName : '최고관리자'}"
                             th:attr="data-coupon-no=${coupon.couponNo},
                                      data-coupon-type=${couponTypeDisplay},
@@ -93,7 +96,8 @@
 
                             <td>
                                 <span class="coupon-status"
-                                      th:classappend="${coupon.status == 'ACTIVE'} ? 'active' : 'disabled'"
+                                      th:classappend="${coupon.status == 'ACTIVE'} ? 'active' :
+                                                        (${coupon.status == 'EXPIRED'} ? 'expired' : 'disabled')"
                                       th:text="${statusDisplay}"></span>
                             </td>
 

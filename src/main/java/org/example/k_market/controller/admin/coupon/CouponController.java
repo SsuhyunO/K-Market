@@ -74,7 +74,7 @@ public class CouponController {
     @ResponseBody
     public ResponseEntity<Void> endCoupon(@PathVariable int couponNo, HttpSession session) {
         String loginUid = (String) session.getAttribute("loginMember");
-        String memberType = (String) session.getAttribute("memberType");
+        String memberType = (String) session.getAttribute("loginMemberType");
 
         CouponDTO coupon = couponService.getCouponByNo(couponNo);
         if (coupon == null) {

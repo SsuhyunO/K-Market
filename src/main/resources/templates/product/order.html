@@ -166,9 +166,13 @@
                             <option value="">쿠폰 선택</option>
                             <option th:each="coupon : ${availableCoupons}"
                                     th:value="${coupon.issueNo}"
-                                    th:text="${coupon.couponName}">쿠폰명</option>
-                            <option th:if="${availableCoupons == null or #lists.isEmpty(availableCoupons)}" value="dummy1">신규가입 1,000원 할인 쿠폰</option>
-                            <option th:if="${availableCoupons == null or #lists.isEmpty(availableCoupons)}" value="dummy2">전상품 5% 할인 쿠폰</option>
+                                    th:attr="data-benefit=${coupon.benefit}"
+                                    th:text="${coupon.couponName} + ' - ' +
+                                              (${coupon.benefit == 'DELIVERY_FREE'} ? '배송비 무료' :
+                                               (${#strings.length(coupon.benefit)} <= 2 ? ${coupon.benefit} + '% 할인' :
+                                                ${#numbers.formatInteger(coupon.benefit, 1, 'COMMA')} + '원 할인'))">
+                                쿠폰명 - 혜택
+                            </option>
                         </select>
                         <button type="button" class="btn-apply" id="btnApplyCoupon">사용하기</button>
                     </div>
@@ -218,15 +222,21 @@
                     </div>
                     <div class="summary-row">
                         <span class="label">상품금액</span>
-                        <span class="value" id="summaryProductPrice" th:text="(${productTotal} != null ? ${productTotal} : 167+',000') + '원'">167,000원</span>
+                        <span class="value" id="summaryProductPrice"
+                              th:attr="data-raw=${productTotal != null ? productTotal : 167000}"
+                              th:text="(${productTotal} != null ? ${productTotal} : 167000) + '원'">167,000원</span>
                     </div>
                     <div class="summary-row">
                         <span class="label">할인금액</span>
-                        <span class="value minus" id="summaryDiscount" th:text="'-' + (${discountTotal} != null ? ${discountTotal} : 34+','+500) + '원'">-34,500원</span>
+                        <span class="value minus" id="summaryDiscount"
+                              th:attr="data-raw=${discountTotal != null ? discountTotal : 34500}"
+                              th:text="'-' + (${discountTotal} != null ? ${discountTotal} : 34500) + '원'">-34,500원</span>
                     </div>
                     <div class="summary-row">
                         <span class="label">배송비</span>
-                        <span class="value" id="summaryShipping" th:text="(${shippingTotal} != null ? ${shippingTotal} : 3+',000') + '원'">3,000원</span>
+                        <span class="value" id="summaryShipping"
+                              th:attr="data-raw=${shippingTotal != null ? shippingTotal : 3000}"
+                              th:text="(${shippingTotal} != null ? ${shippingTotal} : 3000) + '원'">3,000원</span>
                     </div>
 
                     <hr class="summary-divider">
