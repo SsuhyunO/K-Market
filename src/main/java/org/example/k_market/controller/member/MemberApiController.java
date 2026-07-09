@@ -72,6 +72,9 @@ public class MemberApiController {
         // ===== 추가된 부분: 역할(권한) 기반 화면/접근 제어를 위해 memberType도 세션에 저장 =====
         session.setAttribute("loginMemberType", member.getMemberType()); // "MEMBER" / "SELLER" / "ADMIN"
 
+        // ===== 추가된 부분: 최근 로그인 시각 갱신 =====
+        memberService.updateLastLoginAt(member.getUid());
+
         // 자동로그인 체크 시 토큰 발급 + 쿠키 저장 (7일)
         if (request.isAutoLogin()) {
             String token = memberService.issueAutoLoginToken(member.getUid());

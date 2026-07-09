@@ -6,12 +6,14 @@ import org.example.k_market.entity.Member;
 import org.example.k_market.repository.MemberRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class MemberService {
 
     private final MemberRepository memberRepository;
@@ -23,6 +25,7 @@ public class MemberService {
     }
 
     // 회원가입
+    @Transactional
     public void signUp(MemberDto.SignUpRequest request, String regIp) {
 
         // 1) 아이디 중복 체크
@@ -55,6 +58,7 @@ public class MemberService {
     }
 
     // 비밀번호 재설정
+    @Transactional
     public void resetPassword(MemberDto.ResetPasswordRequest request) {
         Member member = memberRepository.findById(request.getUid())
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다."));
@@ -77,6 +81,7 @@ public class MemberService {
     }
 
     // ===== 추가된 부분: 마이페이지에서 비밀번호 변경 (uid + 새 비밀번호) =====
+    @Transactional
     public void changePasswordByUid(String uid, String newRawPassword) {
         Member member = findByUid(uid);
         member.changePassword(passwordEncoder.encode(newRawPassword));
@@ -84,6 +89,7 @@ public class MemberService {
     }
 
     // ===== 추가된 부분: 탈퇴 처리 (soft delete - 상태값만 변경) =====
+    @Transactional
     public void withdraw(String uid) {
         Member member = findByUid(uid);
         member.withdraw();
@@ -92,6 +98,7 @@ public class MemberService {
 
     // ===== 추가된 부분: 마이페이지 정보수정(휴대폰/주소) =====
     // 이메일은 정책상 수정 금지이므로 request.getEmail()은 의도적으로 사용하지 않음
+    @Transactional
     public void updateProfile(String uid, MemberDto.UpdateRequest request) {
         Member member = findByUid(uid);
         member.updateProfile(request.getPhone(), request.getZipCode(), request.getAddr1(), request.getAddr2());
@@ -99,6 +106,7 @@ public class MemberService {
     }
 
     // ===== 추가된 부분: 자동로그인 토큰 발급 (7일 유지) =====
+    @Transactional
     public String issueAutoLoginToken(String uid) {
         Member member = findByUid(uid);
         String token = UUID.randomUUID().toString();
@@ -116,9 +124,19 @@ public class MemberService {
     }
 
     // ===== 추가된 부분: 자동로그인 토큰 삭제 (로그아웃/탈퇴 시) =====
+    @Transactional
     public void clearAutoLoginToken(String uid) {
         Member member = findByUid(uid);
         member.clearAutoLoginToken();
+        memberRepository.save(member);
+    }
+
+    // ===== 추가된 부분: 로그인 성공 시 최근 로그인 시각 갱신 =====
+    // 일반 로그인 성공 시, 자동로그인 토큰으로 로그인 성공 시 모두 이 메서드를 호출해야 함
+    @Transactional
+    public void updateLastLoginAt(String uid) {
+        Member member = findByUid(uid);
+        member.updateLastLoginAt();
         memberRepository.save(member);
     }
 }
