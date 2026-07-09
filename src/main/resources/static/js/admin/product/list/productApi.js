@@ -1,10 +1,21 @@
-import { getContextPath } from "../../../global/pathUtils.js";
+import { getContextPath } from '../../../global/pathUtils.js';
 
-export async function getProductList(page) {
+export async function getProductList(page, searchType = null, keyword = null) {
+    const params = new URLSearchParams();
+
+    params.set('page', page);
+    if (type) {
+        params.set('type', type)
+    }
+
+    if (keyword) {
+        params.set('keyword', keyword)
+    }
+
     const response = await fetch(
-        `${getContextPath()}api/admin/product/list?page=${page}`,
+        `${getContextPath()}api/admin/product/list?page=${params.toString()}`,
         {
-            headers: { Accept: "application/json" }
+            headers: { Accept: 'application/json' }
         }
     );
 
@@ -19,7 +30,7 @@ export async function getProductDetail(prodNo) {
     const response = await fetch(
         `${getContextPath()}api/admin/product/${encodeURIComponent(prodNo)}`,
         {
-            headers: { Accept: "application/json" }
+            headers: { Accept: 'application/json' }
         }
     );
 
@@ -27,5 +38,7 @@ export async function getProductDetail(prodNo) {
         throw new Error(`상품 상세 조회 실패: ${response.status}`);
     }
 
-    return response.json();
+    const json = await response.json();
+    console.log(JSON.stringify(json));
+    return json;
 }

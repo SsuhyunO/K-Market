@@ -29,9 +29,9 @@
 
                 <th:block th:replace="~{admin/fragments/search-form::search-form(~{::search_options})}">
                     <th:block th:fragment="search_options">
-                        <option value="상품명">상품명</option>
-                        <option value="상품코드">상품코드</option>
-                        <option value="판매자">판매자</option>
+                        <option value="NAME">상품명</option>
+                        <option value="CODE">상품코드</option>
+                        <option th:if="${session.loginMemberType eq 'ADMIN'}" value="SELLER">판매자</option>
                     </th:block>
                 </th:block>
 

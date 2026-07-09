@@ -2,15 +2,12 @@ package org.example.k_market.service;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.example.k_market.dto.pagination.request.PageRequest;
 import org.example.k_market.dto.pagination.response.PageResponse;
+import org.example.k_market.dto.product.command.ProductSearchCommand;
 import org.example.k_market.dto.product.request.ProductRegisterRequest;
 import org.example.k_market.dto.product.response.ProductDetailResponse;
 import org.example.k_market.dto.product.response.ProductListResponse;
-import org.example.k_market.service.product.ProductDetailViewer;
-import org.example.k_market.service.product.ProductListViewer;
-import org.example.k_market.service.product.ProductRegister;
-import org.example.k_market.service.product.ProductRemover;
+import org.example.k_market.service.product.*;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -52,8 +49,8 @@ public class ProductService {
     }
 
     @Transactional
-    public PageResponse<ProductListResponse> getProductPageInfo(PageRequest request) {
-        return productListViewer.getProductPageInfo(request);
+    public PageResponse<ProductListResponse> getProductPageInfo(ProductSearchCommand command) {
+        return productListViewer.getProductPageInfo(command);
     }
 
     @Transactional

@@ -1,8 +1,11 @@
 package org.example.k_market.controller.admin.product;
 
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.example.k_market.dto.pagination.request.PageRequest;
 import org.example.k_market.dto.pagination.response.PageResponse;
+import org.example.k_market.dto.product.command.ProductSearchCommand;
+import org.example.k_market.dto.product.request.ProductSearchRequest;
 import org.example.k_market.dto.product.response.ProductDetailResponse;
 import org.example.k_market.dto.product.response.ProductListResponse;
 import org.example.k_market.service.ProductService;
@@ -21,9 +24,17 @@ public class ProductApiController {
     private final ProductService productService;
 
     @GetMapping("/list")
-    public ResponseEntity<PageResponse<ProductListResponse>> getProductPageInfo(@ModelAttribute PageRequest pageRequest) {
-        return ResponseEntity
-            .ok(productService.getProductPageInfo(pageRequest));
+    public ResponseEntity<PageResponse<ProductListResponse>> getProductPageInfo(@ModelAttribute ProductSearchRequest pageRequest, HttpSession session) {
+        return ResponseEntity.ok(
+            productService.getProductPageInfo(
+                ProductSearchCommand
+                    .builder()
+                    .request(pageRequest)
+                    .sellerUid((String)session.getAttribute("sellerUid"))
+                    .role((String)session.getAttribute("memberType"))
+                    .build()
+                )
+            );
     }
 
     @GetMapping("/{prodNo}")
