@@ -149,6 +149,135 @@ function initReviewPagination() {
 }
 
 /* ─────────────────────────────────────────────
+   상품 결제(order.html)
+───────────────────────────────────────────── */
+
+// ===== 상태 저장 =====
+let appliedPoint = 0;
+let appliedCouponDiscount = 0;
+let appliedCouponFreeShipping = false;
+
+// ===== 유틸: 콤마 포맷 =====
+function formatWon(num) {
+    return num.toLocaleString('ko-KR') + '원';
+}
+
+// ===== 기준 금액 읽기 (서버가 내려준 raw 값) =====
+function getBaseAmounts() {
+    const productTotal = parseInt(document.getElementById('summaryProductPrice').dataset.raw, 10);
+    const discountTotal = parseInt(document.getElementById('summaryDiscount').dataset.raw, 10);
+    const shippingTotal = parseInt(document.getElementById('summaryShipping').dataset.raw, 10);
+    return { productTotal, discountTotal, shippingTotal };
+}
+
+// ===== 포인트 사용하기 =====
+document.getElementById('btnApplyPoint').addEventListener('click', () => {
+    const usePointInput = document.getElementById('usePoint');
+    const availablePoint = parseInt(usePointInput.dataset.availablePoint, 10);
+    const inputValue = parseInt(usePointInput.value, 10) || 0;
+
+    if (inputValue < 0) {
+        alert('포인트는 0 이상 입력해주세요.');
+        return;
+    }
+    if (inputValue > availablePoint) {
+        alert('보유 포인트를 초과했습니다.');
+        return;
+    }
+
+    const { productTotal, discountTotal, shippingTotal } = getBaseAmounts();
+    const priceBeforePoint = productTotal - discountTotal + shippingTotal - appliedCouponDiscount;
+
+    if (inputValue > 0 && priceBeforePoint < 5000) {
+        alert('5,000원 이상 결제 시 포인트를 사용할 수 있습니다.');
+        return;
+    }
+    if (inputValue > priceBeforePoint) {
+        alert('결제금액을 초과하여 포인트를 사용할 수 없습니다.');
+        return;
+    }
+
+    appliedPoint = inputValue;
+    recalculateSummary();
+});
+
+// ===== 쿠폰 사용하기 =====
+document.getElementById('btnApplyCoupon').addEventListener('click', () => {
+    const select = document.getElementById('couponSelect');
+    const selected = select.options[select.selectedIndex];
+
+    if (!selected.value) {
+        appliedCouponDiscount = 0;
+        appliedCouponFreeShipping = false;
+        recalculateSummary();
+        return;
+    }
+
+    const benefit = selected.dataset.benefit; // "1000", "10", "DELIVERY_FREE"
+    const { productTotal, discountTotal } = getBaseAmounts();
+    const priceAfterProductDiscount = productTotal - discountTotal;
+
+    if (benefit === 'DELIVERY_FREE') {
+        appliedCouponDiscount = 0;
+        appliedCouponFreeShipping = true;
+    } else if (benefit.length <= 2) {
+        // 정률 (10, 20, 30...)
+        const rate = parseInt(benefit, 10);
+        appliedCouponDiscount = Math.floor(priceAfterProductDiscount * rate / 100);
+        appliedCouponFreeShipping = false;
+    } else {
+        // 정액 (1000, 2000...)
+        appliedCouponDiscount = parseInt(benefit, 10);
+        appliedCouponFreeShipping = false;
+    }
+
+    recalculateSummary();
+});
+
+// ===== 최종 합계 재계산 =====
+function recalculateSummary() {
+    const { productTotal, discountTotal, shippingTotal } = getBaseAmounts();
+
+    const effectiveShipping = appliedCouponFreeShipping ? 0 : shippingTotal;
+    const orderTotal = productTotal - discountTotal + effectiveShipping;
+
+    const totalUsedDiscount = appliedCouponDiscount + appliedPoint;
+    let finalPrice = orderTotal - totalUsedDiscount;
+    if (finalPrice < 0) finalPrice = 0;
+
+    document.getElementById('summaryShipping').textContent = formatWon(effectiveShipping);
+    document.getElementById('summaryOrderTotal').textContent = formatWon(orderTotal);
+    document.getElementById('summaryUsedPoint').textContent = '-' + formatWon(totalUsedDiscount);
+    document.getElementById('summaryFinalPrice').textContent = formatWon(finalPrice);
+
+    // 적립포인트는 상품 자체 point 합계라 여기선 안 바뀜 (그대로 둠)
+}
+
+document.getElementById('btnPay').addEventListener('click', () => {
+    const select = document.getElementById('couponSelect');
+    const couponIssueNo = select.value || null;
+    const usedPoints = appliedPoint;
+
+    const payMethod = document.querySelector('input[name="payMethod"]:checked').value;
+
+    const orderData = {
+        recvName: document.getElementById('recvName').value,
+        recvPhone: document.getElementById('recvPhone').value,
+        zipCode: document.getElementById('recvZip').value,
+        addr1: document.getElementById('recvAddr1').value,
+        addr2: document.getElementById('recvAddr2').value,
+        orderNote: document.getElementById('recvMemo').value,
+        couponIssueNo: couponIssueNo,
+        usedPoints: usedPoints,
+        payMethod: payMethod
+        // items는 hidden input이나 별도 배열로 서버에 이미 넘어가 있는 prodVariantId 기준으로 구성
+    };
+
+    // TODO: fetch로 POST 요청 보내기
+    console.log(orderData);
+});
+
+/* ─────────────────────────────────────────────
    상품 상세(view.html) 장바구니/바로구매 버튼 이동
 ───────────────────────────────────────────── */
 function initCartAndBuyButtons() {

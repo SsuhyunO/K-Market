@@ -1,7 +1,9 @@
 package org.example.k_market.service.admin;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.example.k_market.dao.CouponDAO;
+import org.example.k_market.dao.CouponIssueDAO;
 import org.example.k_market.dto.coupon.CouponDTO;
 import org.example.k_market.repository.coupon.CouponRepository;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -16,6 +18,7 @@ import java.util.Map;
 @Service
 public class CouponService {
     private final CouponDAO couponDAO;
+    private final CouponIssueDAO couponIssueDAO;
 
     public List<CouponDTO> findAll() {
         return couponDAO.findAll();
@@ -43,13 +46,17 @@ public class CouponService {
         return couponDAO.getTotalCount(searchType, keyword);
     }
 
+    @Transactional
     public void endCoupon(int couponNo) {
         couponDAO.updateStatusToDisabled(couponNo);
+        couponIssueDAO.stopIssuesByCouponNo(couponNo);
     }
 
     @Scheduled(cron = "0 0 0 * * *") // 매일 자정 실행
+    @Transactional
     public void disableExpiredCoupons() {
         couponDAO.disableExpiredCoupons();
+        couponIssueDAO.expireIssuesByExpiredCoupons();
     }
 
     public CouponDTO getCouponByNo(int couponNo) {

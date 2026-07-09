@@ -25,7 +25,8 @@ const COUPON_TYPE_LABELS = {
 
 const COUPON_STATUS_LABELS = {
     ACTIVE: "발급중",
-    DISABLED: "종료"
+    FORCE_ENDED: "강제종료",
+    EXPIRED: "기간만료"
 };
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -250,11 +251,11 @@ function initCouponEndButtons() {
                 }
                 if (!res.ok) throw new Error("서버 처리 실패");
 
-                row.dataset.status = "DISABLED";
+                row.dataset.status = "FORCE_ENDED";
 
                 const status = row.querySelector(".coupon-status");
                 if (status) {
-                    status.textContent = "종료";
+                    status.textContent = "강제종료";
                     status.classList.remove("active");
                     status.classList.add("disabled");
                 }

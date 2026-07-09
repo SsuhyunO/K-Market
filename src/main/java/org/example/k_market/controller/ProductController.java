@@ -2,12 +2,10 @@ package org.example.k_market.controller;
 
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
-import org.example.k_market.dto.order.OrderItemViewDTO;
 import org.example.k_market.entity.Member;
 import org.example.k_market.service.MemberService;
-import org.example.k_market.service.OrderService;
+import org.example.k_market.service.order.OrderService;
 import org.example.k_market.service.admin.CouponIssueService;
-import org.example.k_market.service.admin.CouponService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;

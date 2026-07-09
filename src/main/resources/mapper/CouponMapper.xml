@@ -79,8 +79,9 @@
 
     <update id="updateStatusToDisabled">
         UPDATE coupon
-        SET status = 'DISABLED'
+        SET status = 'FORCE_ENDED'
         WHERE couponNo = #{couponNo}
+          AND status = 'ACTIVE'
     </update>
 
     <update id="disableExpiredCoupons">

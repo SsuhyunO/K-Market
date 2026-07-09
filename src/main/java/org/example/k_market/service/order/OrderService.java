@@ -1,8 +1,7 @@
-package org.example.k_market.service;
+package org.example.k_market.service.order;
 
 import lombok.RequiredArgsConstructor;
 import org.example.k_market.dto.order.OrderItemViewDTO;
-import org.example.k_market.repository.order.OrderRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
