@@ -29,4 +29,19 @@ public class Seller {
 
     @Column(name = "fax", length = 20)
     private String fax;
+
+    @Column(name = "status", length = 20, nullable = false)
+    private String status; // PENDING(준비) / ACTIVE(운영중) / SUSPENDED(중단)
+
+    @PrePersist
+    protected void onCreate() {
+        if (this.status == null) {
+            this.status = "PENDING";
+        }
+    }
+
+    // 상태 즉시변경용 (승인/중단/재개)
+    public void changeStatus(String status) {
+        this.status = status;
+    }
 }

@@ -117,14 +117,15 @@
     font-weight: 800;
     line-height: 1.5;
     margin-bottom: 24px;
+    color: var(--color-white);
     opacity: 0;
     transform: translateY(20px);
     animation: heroAppear 0.8s ease forwards;
     animation-delay: 0.2s;
 }
 .hero-slogan .highlight {
-    background: var(--color-dark);
-    color: var(--color-white);
+    background: var(--color-white);
+    color: var(--color-dark);
     padding: 2px 8px;
     border-radius: 3px;
 }
@@ -135,7 +136,7 @@
 
 .hero-desc {
     font-size: 15px;
-    color: var(--color-gray-700, var(--color-gray-900));
+    color: var(--color-gray-200, #e5e5e5);
     line-height: 1.9;
     max-width: 640px;
     opacity: 0;
@@ -148,6 +149,7 @@
     font-size: 22px;
     font-weight: 700;
     margin-top: 28px;
+    color: var(--color-white);
     opacity: 0;
     transform: translateY(20px);
     animation: heroAppear 0.8s ease forwards;
@@ -394,4 +396,20 @@
     .company-nav a { font-size: 13px; }
     .news-item { gap: 12px; }
     .news-date { width: 60px; }
+}
+
+/* culture.css */
+.sub-hero-image-placeholder img,
+.culture-block-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: inherit;
+}
+/* company-index.css */
+.hero-image-placeholder img,
+.slogan-slide-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
