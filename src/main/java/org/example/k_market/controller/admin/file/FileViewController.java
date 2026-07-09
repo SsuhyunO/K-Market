@@ -3,6 +3,7 @@ package org.example.k_market.controller.admin.file;
 import lombok.RequiredArgsConstructor;
 import org.example.k_market.dto.admin.FileDTO;
 import org.example.k_market.service.admin.FileService;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.http.MediaType;
@@ -20,13 +21,17 @@ public class FileViewController {
 
     private final FileService fileService;
 
+    @Value("${file.upload.path}")
+    private String uploadPath;
+
     @GetMapping("/files/{id}")
     public ResponseEntity<Resource> viewFile(@PathVariable Integer id) {
 
         try {
             FileDTO fileDTO = fileService.findById(id);
 
-            Path path = Paths.get(fileDTO.getPath());
+            Path uploadDir = Paths.get(uploadPath).toAbsolutePath().normalize();
+            Path path = uploadDir.resolve(fileDTO.getStoredName()).normalize();
             Resource resource = new UrlResource(path.toUri());
 
             if (!resource.exists()) {
