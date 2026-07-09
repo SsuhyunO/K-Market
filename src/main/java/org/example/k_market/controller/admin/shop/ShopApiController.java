@@ -14,6 +14,12 @@ public class ShopApiController {
 
     private final ShopService shopService;
 
+    // 아이디 중복확인 -> true면 이미 사용중(중복), false면 사용가능
+    @GetMapping("/check-userid")
+    public boolean checkUserId(@RequestParam String userId) {
+        return shopService.isUserIdDuplicate(userId);
+    }
+
     // 상점등록 (팝업에서 등록하기 클릭 시)
     @PostMapping
     public String register(@Valid @RequestBody ShopDto.RegisterRequest request, HttpServletRequest httpRequest) {

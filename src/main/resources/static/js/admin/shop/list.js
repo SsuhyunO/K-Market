@@ -14,7 +14,73 @@ document.addEventListener("DOMContentLoaded", function () {
     initShopPostcode();
     initShopRegisterSubmit();
     initShopStatusButtons();
+    initShopPasswordMatchIndicator();
+    initShopUserIdCheck();
 });
+
+// 비밀번호 / 비밀번호확인 입력 중 실시간 일치여부 표시 (전용 영역 사용, 폼 검증 프레임워크와 분리)
+function initShopPasswordMatchIndicator() {
+    const pass = document.getElementById("shop-register-pass");
+    const confirm = document.getElementById("shop-register-pass-confirm");
+    const msgEl = document.getElementById("shop-register-pass-match-msg");
+    if (!pass || !confirm || !msgEl) return;
+
+    const showMatch = () => {
+        if (confirm.value === "") {
+            msgEl.textContent = "";
+            msgEl.className = "live-check-msg";
+            return;
+        }
+
+        if (pass.value === confirm.value) {
+            msgEl.textContent = "비밀번호가 일치합니다.";
+            msgEl.className = "live-check-msg success";
+        } else {
+            msgEl.textContent = "비밀번호가 일치하지 않습니다.";
+            msgEl.className = "live-check-msg error";
+        }
+    };
+
+    pass.addEventListener("input", showMatch);
+    confirm.addEventListener("input", showMatch);
+}
+
+// 아이디 입력란 벗어날 때 중복확인 (전용 영역 사용)
+function initShopUserIdCheck() {
+    const userIdField = document.getElementById("shop-register-userid");
+    const msgEl = document.getElementById("shop-register-userid-msg");
+    if (!userIdField || !msgEl) return;
+
+    userIdField.addEventListener("focusout", async function () {
+        const userId = userIdField.value.trim();
+
+        if (!Validation.pattern(userId, /^[A-Za-z0-9]{4,12}$/).valid) {
+            msgEl.textContent = "";
+            msgEl.className = "live-check-msg";
+            return;
+        }
+
+        try {
+            const response = await fetch(`${CTX}/api/admin/shop/check-userid?userId=${encodeURIComponent(userId)}`);
+            const isDuplicate = await response.json();
+
+            if (isDuplicate) {
+                msgEl.textContent = "이미 사용 중인 아이디입니다.";
+                msgEl.className = "live-check-msg error";
+            } else {
+                msgEl.textContent = "사용 가능한 아이디입니다.";
+                msgEl.className = "live-check-msg success";
+            }
+        } catch (error) {
+            console.error(error);
+        }
+    });
+
+    userIdField.addEventListener("input", function () {
+        msgEl.textContent = "";
+        msgEl.className = "live-check-msg";
+    });
+}
 
 function initShopRegisterValidation() {
     const form = document.getElementById("shop-register-form");
@@ -34,6 +100,7 @@ function ensureShopRegisterErrors(form) {
         form,
         `#shop-register-userid,
         #shop-register-pass,
+        #shop-register-pass-confirm,
         #shop-register-business-name,
         #shop-register-ceo,
         #shop-register-business-reg-num,
@@ -51,6 +118,7 @@ function validateShopRegisterForm(form) {
 
     validatePatternField(form, "shop-register-userid", /^[A-Za-z0-9]{4,12}$/, "아이디는 영문, 숫자 4~12자로 입력해주세요.", errors);
     validatePatternField(form, "shop-register-pass", /^(?=.*[A-Za-z])(?=.*\d)(?=.*[^A-Za-z0-9]).{8,12}$/, "비밀번호는 영문, 숫자, 특수문자를 포함한 8~12자로 입력해주세요.", errors);
+    validatePasswordConfirm(form, errors);
     FormValidation.addRequiredError(form, "shop-register-business-name", "상호명을 입력해주세요.", errors);
     FormValidation.addRequiredError(form, "shop-register-ceo", "대표자명을 입력해주세요.", errors);
     validatePatternField(form, "shop-register-business-reg-num", /^\d{3}-\d{2}-\d{5}$/, "사업자등록번호는 000-00-00000 형식으로 입력해주세요.", errors);
@@ -62,6 +130,21 @@ function validateShopRegisterForm(form) {
     FormValidation.addRequiredError(form, "shop-register-detail-address", "상세주소를 입력해주세요.", errors);
 
     return errors;
+}
+
+function validatePasswordConfirm(form, errors) {
+    const pass = form.querySelector("#shop-register-pass");
+    const confirm = form.querySelector("#shop-register-pass-confirm");
+    if (!pass || !confirm) return;
+
+    if (!Validation.required(confirm.value).valid) {
+        errors.push({ fieldId: "shop-register-pass-confirm", message: "비밀번호를 다시 입력해주세요." });
+        return;
+    }
+
+    if (pass.value !== confirm.value) {
+        errors.push({ fieldId: "shop-register-pass-confirm", message: "비밀번호가 일치하지 않습니다." });
+    }
 }
 
 function validatePatternField(form, fieldId, pattern, message, errors) {
@@ -173,6 +256,20 @@ function initShopStatusButtons() {
         const status = button.dataset.status;
         if (!uid || !status) return;
 
+        const confirmMessage = button.classList.contains("suspend")
+            ? "중단하시겠습니까?"
+            : button.classList.contains("approve")
+                ? "승인하시겠습니까?"
+                : "변경하시겠습니까?";
+
+        const successMessage = button.classList.contains("suspend")
+            ? "중단이 완료되었습니다."
+            : button.classList.contains("approve")
+                ? "승인이 완료되었습니다."
+                : "변경이 완료되었습니다.";
+
+        if (!confirm(confirmMessage)) return;
+
         try {
             const response = await fetch(`${CTX}/api/admin/shop/${uid}/status`, {
                 method: "PATCH",
@@ -186,6 +283,7 @@ function initShopStatusButtons() {
                 return;
             }
 
+            alert(successMessage);
             location.reload();
         } catch (error) {
             console.error(error);

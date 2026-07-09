@@ -148,22 +148,62 @@
         <div class="news-list">
 
             <!-- newsList가 없을 때 보여줄 placeholder 4개 -->
+
             <th:block th:if="${newsList == null or #lists.isEmpty(newsList)}">
-                <a href="#" class="news-item" th:each="i : ${#numbers.sequence(1, 4)}">
-                    <span class="news-date">2025.03</span>
+
+                <a th:href="@{/company/story(newsId=1)}" class="news-item">
+                    <span class="news-date">2026.07</span>
                     <span class="news-title">
-            '월간 케이마켓 3월호'에서 만나는
-            <span class="news-highlight">5천 원 도넛, 1천 원 양념감자!</span>
-          </span>
+            '월간 케이마켓 7월호'에서 만나는
+            <span class="news-highlight">봄 스타일링을 완성시킬 데님 브랜드 '와르' 75% 할인</span>
+        </span>
                     <span class="news-arrow">›</span>
                 </a>
+
+                <a th:href="@{/company/story(newsId=2)}" class="news-item">
+                    <span class="news-date">2026.03</span>
+                    <span class="news-title">
+            신입 MD가 말하는
+            <span class="news-highlight">케이마켓 입사 6개월의 기록</span>
+        </span>
+                    <span class="news-arrow">›</span>
+                </a>
+
+                <a th:href="@{/company/story(newsId=3)}" class="news-item">
+                    <span class="news-date">2025.12</span>
+                    <span class="news-title">
+            케이마켓,
+            <span class="news-highlight">친환경 포장재 도입으로 탄소배출 30% 감축</span>
+        </span>
+                    <span class="news-arrow">›</span>
+                </a>
+
+                <a th:href="@{/company/story(newsId=4)}" class="news-item">
+                    <span class="news-date">2025.05</span>
+                    <span class="news-title">
+            개발팀 인터뷰:
+            <span class="news-highlight">추천 알고리즘은 어떻게 만들어질까</span>
+        </span>
+                    <span class="news-arrow">›</span>
+                </a>
+
+                <a th:href="@{/company/story(newsId=5)}" class="news-item">
+                    <span class="news-date">2025.02</span>
+                    <span class="news-title">
+            여름 휴가철 대비,
+            <span class="news-highlight">인기 여행용품 모음전</span>
+        </span>
+                    <span class="news-arrow">›</span>
+                </a>
+
             </th:block>
+
 
             <!-- 실제 데이터 -->
             <a th:each="news : ${newsList}"
                th:href="@{/company/news/{id}(id=${news.id})}"
                class="news-item">
-                <span class="news-date" th:text="${news.date}">2025.03</span>
+                <span class="news-date" th:text="${news.date}">2025.01</span>
                 <span class="news-title" th:utext="${news.title}">소식 제목</span>
                 <span class="news-arrow">›</span>
             </a>

@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
@@ -41,78 +42,96 @@
                th:class="${category == 'esg'} ? 'active' : ''">ESG</a>
         </nav>
 
-        <!-- ③ 블로그 포스팅 카드 (UI 형식) -->
-        <div class="story-grid">
+        <!-- ③ 전체보기: 블로그 포스팅 카드 그리드 -->
+        <div class="story-grid" th:if="${category == null or category == 'all'}">
 
-            <!-- storyList가 없거나 비어있을 때 placeholder 9개 (스크롤 가능한 분량) -->
+            <!-- storyList가 없거나 비어있을 때 placeholder 9개 -->
             <th:block th:if="${storyList == null or #lists.isEmpty(storyList)}">
 
-                <a href="#" class="story-card">
-                    <div class="story-card-thumb">🖼️</div>
+                <a href="https://blog.naver.com/berronica1000/224335020165" target="_blank" class="story-card">
+                    <div class="story-card-thumb">
+                        <img th:src="@{/images/story/q.jpg}" alt="케이마켓 q번째 이미지">
+                    </div>
                     <div class="story-card-body">
                         <div class="story-card-title">봄 스타일링 완성시킬 데님 브랜드 '와르' 75% 할인</div>
                         <div class="story-card-desc">케이마켓에서 선보이는 인기 브랜드는?</div>
                     </div>
                 </a>
 
-                <a href="#" class="story-card">
-                    <div class="story-card-thumb">🖼️</div>
+                <a href="https://blog.naver.com/jungwon2468/223318658299" target="_blank" class="story-card">
+                    <div class="story-card-thumb">
+                        <img th:src="@{/images/story/w.jpg}" alt="케이마켓 w번째 이미지">
+                    </div>
                     <div class="story-card-body">
                         <div class="story-card-title">신입 MD가 말하는 케이마켓 입사 6개월의 기록</div>
                         <div class="story-card-desc">현직 MD가 직접 전하는 솔직한 적응기</div>
                     </div>
                 </a>
 
-                <a href="#" class="story-card">
-                    <div class="story-card-thumb">🖼️</div>
+                <a href="https://packative.com/blog/%EC%B9%9C%ED%99%98%EA%B2%BD%ED%8C%A8%ED%82%A4%EC%A7%80%EB%A1%9C-%EA%B0%80%EB%8A%94-%EC%B2%AB%EA%B1%B8%EC%9D%8C-%EC%B9%9C%ED%99%98%EA%B2%BD%EC%A2%85%EC%9D%B4%EC%99%80-%EC%9E%AC%EC%A7%88%EC%9D%98?email=" target="_blank" class="story-card">
+                    <div class="story-card-thumb">
+                        <img th:src="@{/images/story/e.jpg}" alt="케이마켓 e번째 이미지">
+                    </div>
                     <div class="story-card-body">
                         <div class="story-card-title">케이마켓, 친환경 포장재 도입으로 탄소배출 30% 감축</div>
                         <div class="story-card-desc">지속가능한 유통을 위한 케이마켓의 노력</div>
                     </div>
                 </a>
 
-                <a href="#" class="story-card">
-                    <div class="story-card-thumb">🖼️</div>
+                <a href="https://blog.datepop.co.kr/ios-interview-2024-1/" target="_blank" class="story-card">
+                    <div class="story-card-thumb">
+                        <img th:src="@{/images/story/r.jpg}" alt="케이마켓 r번째 이미지">
+                    </div>
                     <div class="story-card-body">
                         <div class="story-card-title">개발팀 인터뷰: 추천 알고리즘은 어떻게 만들어질까</div>
                         <div class="story-card-desc">데이터로 고객을 이해하는 케이마켓의 방법</div>
                     </div>
                 </a>
 
-                <a href="#" class="story-card">
-                    <div class="story-card-thumb">🖼️</div>
+                <a href="https://blog.naver.com/healyou_/224329570817" target="_blank" class="story-card">
+                    <div class="story-card-thumb">
+                        <img th:src="@{/images/story/t.jpg}" alt="케이마켓 t번째 이미지">
+                    </div>
                     <div class="story-card-body">
                         <div class="story-card-title">여름 휴가철 대비, 인기 여행용품 모음전 오픈</div>
                         <div class="story-card-desc">7월 한 달, 휴가 준비 끝내는 특가전</div>
                     </div>
                 </a>
 
-                <a href="#" class="story-card">
-                    <div class="story-card-thumb">🖼️</div>
+                <a href="https://blog.naver.com/first_792/224330629583" target="_blank" class="story-card">
+                    <div class="story-card-thumb">
+                        <img th:src="@{/images/story/y.jpg}" alt="케이마켓 y번째 이미지">
+                    </div>
                     <div class="story-card-body">
                         <div class="story-card-title">케이마켓, 중소상공인 입점 지원 프로그램 확대</div>
                         <div class="story-card-desc">함께 성장하는 상생 플랫폼을 위한 발걸음</div>
                     </div>
                 </a>
 
-                <a href="#" class="story-card">
-                    <div class="story-card-thumb">🖼️</div>
+                <a href="https://blog.naver.com/bachhj/224327232466" target="_blank" class="story-card">
+                    <div class="story-card-thumb">
+                        <img th:src="@{/images/story/a.jpg}" alt="케이마켓 a번째 이미지">
+                    </div>
                     <div class="story-card-body">
                         <div class="story-card-title">물류센터 견학기: 주문부터 배송까지 24시간</div>
                         <div class="story-card-desc">눈으로 직접 본 케이마켓의 빠른 배송 비밀</div>
                     </div>
                 </a>
 
-                <a href="#" class="story-card">
-                    <div class="story-card-thumb">🖼️</div>
+                <a href="https://blog.naver.com/yks1186/224287830295" target="_blank" class="story-card">
+                    <div class="story-card-thumb">
+                        <img th:src="@{/images/story/s.jpg}" alt="케이마켓 s번째 이미지">
+                    </div>
                     <div class="story-card-body">
                         <div class="story-card-title">[보도자료] 케이마켓, 2025년 거래액 전년 대비 32% 증가</div>
                         <div class="story-card-desc">온라인 종합쇼핑몰 시장 내 성장세 지속</div>
                     </div>
                 </a>
 
-                <a href="#" class="story-card">
-                    <div class="story-card-thumb">🖼️</div>
+                <a href="https://blog.naver.com/maru970304/224327257350" target="_blank" class="story-card">
+                    <div class="story-card-thumb">
+                        <img th:src="@{/images/story/d.jpg}" alt="케이마켓 d번째 이미지">
+                    </div>
                     <div class="story-card-body">
                         <div class="story-card-title">디자이너가 직접 소개하는 케이마켓 UI 개편 이야기</div>
                         <div class="story-card-desc">더 쉽고 빠른 쇼핑 경험을 위한 고민들</div>
@@ -135,6 +154,110 @@
                 </div>
             </a>
 
+        </div>
+
+
+        <!-- ④ 카테고리별 피처 레이아웃: 사진 2장 세로 + 오른쪽 텍스트 -->
+
+        <!-- 기업문화 -->
+        <div class="story-feature" th:if="${category == 'culture'}">
+            <div class="story-feature-images">
+                <a href="#" target="_blank" class="story-feature-img">
+                    <img th:src="@{/images/story/abjpg.jpg}" alt="기업문화 이미지 1">
+                </a>
+                <a href="#" target="_blank" class="story-feature-img">
+                    <img th:src="@{/images/story/ap.jpg}" alt="기업문화 이미지 2">
+                </a>
+            </div>
+            <div class="story-feature-content">
+                <div class="story-feature-tag">기업문화</div>
+                <div class="story-feature-title">고객 만족을 최우선으로 합니다</div>
+                <div class="story-feature-desc">
+                    우리는 고객의 만족을 가장 중요한 가치로 생각합니다.
+                    <br>좋은 품질의 의류와 빠르고 정확한 서비스를 제공하여 고객이 믿고 찾을 수 있는 쇼핑 경험을 만들어가며, <br>
+                    외국과 소통도 활발하게 이루어집니다.
+                </div>
+            </div>
+        </div>
+
+        <!-- 인터뷰 -->
+        <div class="story-feature" th:if="${category == 'interview'}">
+            <div class="story-feature-images">
+                <a href="#" target="_blank" class="story-feature-img">
+                    <img th:src="@{/images/story/inter2.jpg}" alt="인터뷰 이미지 1">
+                </a>
+                <a href="#" target="_blank" class="story-feature-img">
+                    <img th:src="@{/images/story/inter.jpg}" alt="인터뷰 이미지 2">
+                </a>
+            </div>
+            <div class="story-feature-content">
+                <div class="story-feature-tag">인터뷰</div>
+                <div class="story-feature-title">세계로 뻗어가는 K-Market</div>
+                <div class="story-feature-desc">
+                    다양한 국가의 고객과 소통하며 한국의 패션을 소개하는 것이 저의 역할입니다. <br>
+                    문화와 트렌드를 이해하고 신뢰를 바탕으로 글로벌 시장에서 K-Market의 가치를 널리 알리겠습니다.
+                </div>
+            </div>
+        </div>
+
+        <!-- 채용 -->
+        <div class="story-feature" th:if="${category == 'career'}">
+            <div class="story-feature-images">
+                <a href="#" target="_blank" class="story-feature-img">
+                    <img th:src="@{/images/story/love.jpg}" alt="채용 이미지 1">
+                </a>
+                <a href="#" target="_blank" class="story-feature-img">
+                    <img th:src="@{/images/story/love2.jpg}" alt="채용 이미지 2">
+                </a>
+            </div>
+            <div class="story-feature-content">
+                <div class="story-feature-tag">채용</div>
+                <div class="story-feature-title">인재를 기다립니다</div>
+                <div class="story-feature-desc">
+                    K-Market은 글로벌 패션 시장을 함께 이끌어갈 열정과 책임감을 갖춘 인재를 기다립니다. <br>
+                    고객 중심의 사고와 협업 능력을 바탕으로 새로운 가치와 서비스를 만들어갈 분들의 지원을 환영합니다.
+                </div>
+            </div>
+        </div>
+
+        <!-- 보도자료 -->
+        <div class="story-feature" th:if="${category == 'press'}">
+            <div class="story-feature-images">
+                <a href="#" target="_blank" class="story-feature-img">
+                    <img th:src="@{/images/story/ido.jpg}" alt="보도자료 이미지 1">
+                </a>
+                <a href="#" target="_blank" class="story-feature-img">
+                    <img th:src="@{/images/story/ido1.jpg}" alt="보도자료 이미지 2">
+                </a>
+            </div>
+            <div class="story-feature-content">
+                <div class="story-feature-tag">보도자료</div>
+                <div class="story-feature-title">K-Market, 글로벌 의류 수출 확대 본격화</div>
+                <div class="story-feature-desc">
+                    K-Market은 해외 시장 진출을 확대하기 위해 글로벌 물류 및 판매 시스템을 강화하고 있습니다.<br>
+                    다양한 국가의 고객에게 우수한 품질의 패션 상품을 제공하며 글로벌 브랜드로 성장해 나갈 계획입니다.
+                </div>
+            </div>
+        </div>
+
+        <!-- ESG -->
+        <div class="story-feature" th:if="${category == 'esg'}">
+            <div class="story-feature-images">
+                <a href="#" target="_blank" class="story-feature-img">
+                    <img th:src="@{/images/story/esg.jpg}" alt="ESG 이미지 1">
+                </a>
+                <a href="#" target="_blank" class="story-feature-img">
+                    <img th:src="@{/images/story/esgg.jpg}" alt="ESG 이미지 2">
+                </a>
+            </div>
+            <div class="story-feature-content">
+                <div class="story-feature-tag">ESG</div>
+                <div class="story-feature-title">지속 가능한 미래를 위한 ESG 경영</div>
+                <div class="story-feature-desc">
+                    K-Market은 환경(Environment), 사회(Social), 지배구조(Governance)를 핵심 가치로 삼아 지속 가능한 성장을 실천하고 있습니다. <br>
+                    친환경 포장재 사용, 윤리적인 경영, 임직원과 지역사회가 함께 성장하는 기업 문화를 통해 고객에게 신뢰받는 글로벌 패션 기업이 되고자 합니다. <br>
+                </div>
+            </div>
         </div>
 
     </div>
