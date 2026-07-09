@@ -6,7 +6,6 @@ import org.example.k_market.common.product.ProductInfoNoticeTemplates;
 import org.example.k_market.dto.product.request.ProductRegisterRequest;
 import org.example.k_market.service.CategoryService;
 import org.example.k_market.service.ProductService;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -43,6 +42,12 @@ public class ProductController {
         return "admin/product/edit";
     }
 
+    @PostMapping("/edit")
+    public String edit(@RequestParam("prodNo") int prodNo, ProductRegisterRequest request, RedirectAttributes redirectAttributes) {
+        productService.modify();
+        return "redirect:/admin/product/list?edit=success";
+    }
+
     @PostMapping("/register")
     public String register(ProductRegisterRequest request, HttpSession session) {
         String sellerUid = (String) session.getAttribute("loginMember");
@@ -56,7 +61,7 @@ public class ProductController {
                          RedirectAttributes redirectAttributes) {
         productService.remove(productNos);
         redirectAttributes.addFlashAttribute("productMessage", "선택한 상품이 삭제되었습니다.");
-        return "redirect:/admin/product/list";
+        return "redirect:/admin/product/list?remove=success";
     }
 
     private void addProductFormModel(Model model) {

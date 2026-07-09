@@ -3,6 +3,10 @@ package org.example.k_market.interceptor;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import lombok.RequiredArgsConstructor;
+import org.example.k_market.entity.Member;
+import org.example.k_market.service.MemberService;
+import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 import java.util.Set;
@@ -18,7 +22,11 @@ import java.util.Set;
  * 기존 LoginCheckInterceptor(단순 로그인 여부 체크)는 그대로 두고,
  * admin 전용 권한 체크만 이 인터셉터에서 별도로 처리합니다.
  */
+@Component
+@RequiredArgsConstructor
 public class AdminRoleInterceptor implements HandlerInterceptor {
+
+    private final MemberService memberService;
 
     // 판매자(SELLER)에게 허용되는 admin 경로 prefix
     // aside.html 의 "상점관리 / 상품관리 / 주문관리 / 쿠폰관리" 메뉴와 동일하게 맞춤
@@ -31,7 +39,7 @@ public class AdminRoleInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         HttpSession session = request.getSession(false);
-        String memberType = (session != null) ? (String) session.getAttribute("loginMemberType") : null;
+        String memberType = resolveMemberType(session);
 
         // 비로그인 상태
         if (memberType == null) {
@@ -58,5 +66,30 @@ public class AdminRoleInterceptor implements HandlerInterceptor {
         // 일반 회원(MEMBER)은 admin 접근 자체 차단
         response.sendRedirect(request.getContextPath() + "/?accessDenied=true");
         return false;
+    }
+
+    private String resolveMemberType(HttpSession session) {
+        if (session == null) {
+            return null;
+        }
+
+        String memberType = (String) session.getAttribute("loginMemberType");
+        if (memberType != null) {
+            return memberType;
+        }
+
+        String uid = (String) session.getAttribute("loginMember");
+        if (uid == null) {
+            return null;
+        }
+
+        try {
+            Member member = memberService.findByUid(uid);
+            memberType = member.getMemberType();
+            session.setAttribute("loginMemberType", memberType);
+            return memberType;
+        } catch (IllegalArgumentException e) {
+            return null;
+        }
     }
 }

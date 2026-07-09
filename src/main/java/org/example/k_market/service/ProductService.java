@@ -65,4 +65,8 @@ public class ProductService {
     public void remove(List<Integer> prodNos) {
         productRemover.removeAll(prodNos);
     }
+
+    @Transactional
+    public void modify() {
+    }
 }
