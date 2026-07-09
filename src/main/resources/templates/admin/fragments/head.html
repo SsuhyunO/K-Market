@@ -1,5 +1,6 @@
 <th:block th:fragment="head">
     <meta charset="UTF-8">
+	<meta name="context-path" th:content="@{/}">
 
     <!-- 파비콘 -->
     <link th:if="${siteConfig != null and siteConfig.faviconFiled != 0}"

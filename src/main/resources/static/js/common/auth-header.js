@@ -39,7 +39,7 @@ document.addEventListener('DOMContentLoaded', async function () {
                             '<span style="color:var(--color-gray-200);">|</span>';
                     } else if (isSeller) {
                         sellerBadgeHtml =
-                            '<a href="/K_Market/admin/main" id="sellerAdminLink" ' +
+                            '<a href="/K_Market/admin/product/list" id="sellerAdminLink" ' +
                             'style="font-size:13px; color:#1a6fd3; font-weight:700;">판매자</a>' +
                             '<span style="color:var(--color-gray-200);">|</span>';
                     }

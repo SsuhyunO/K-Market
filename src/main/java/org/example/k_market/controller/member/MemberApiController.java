@@ -107,6 +107,7 @@ public class MemberApiController {
             return null;
         }
         Member member = memberService.findByUid(uid);
+        session.setAttribute("loginMemberType", member.getMemberType());
         return MemberDto.Response.from(member);
     }
 

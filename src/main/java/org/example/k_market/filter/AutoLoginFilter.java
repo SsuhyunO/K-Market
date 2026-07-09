@@ -37,7 +37,9 @@ public class AutoLoginFilter extends OncePerRequestFilter {
             if (token != null) {
                 Member member = memberService.findByValidAutoLoginToken(token);
                 if (member != null && !member.isWithdrawn()) {
-                    request.getSession(true).setAttribute("loginMember", member.getUid());
+                    HttpSession newSession = request.getSession(true);
+                    newSession.setAttribute("loginMember", member.getUid());
+                    newSession.setAttribute("loginMemberType", member.getMemberType());
                 }
             }
         }

@@ -8,9 +8,9 @@
     <link rel="stylesheet" th:href="@{/css/admin/global/modal-form.css}">
     <link rel="stylesheet" th:href="@{/css/admin/global/search-form.css}">
     <link rel="stylesheet" th:href="@{/css/admin/product/list.css}">
-    <script type="module" th:src="@{/js/admin/product/list.js}"></script>
+    <script type="module" th:src="@{/js/admin/product/list/list.js}"></script>
 </head>
-<body th:data-context-path="@{/}">
+<body>
 <header th:replace="~{admin/fragments/header::header}"></header>
 <div class="admin-layout">
     <aside th:replace="~{admin/fragments/aside::aside}"></aside>
@@ -27,7 +27,7 @@
                    th:if="${productListErrorMessage != null}"
                    th:text="${productListErrorMessage}">상품 처리에 실패했습니다.</p>
 
-                <th:block th:replace="~{admin/fragments/search-form(~{::search_options})}">
+                <th:block th:replace="~{admin/fragments/search-form::search-form(~{::search_options})}">
                     <th:block th:fragment="search_options">
                         <option value="상품명">상품명</option>
                         <option value="상품코드">상품코드</option>
@@ -62,7 +62,7 @@
                                 data-empty-message="삭제할 상품을 선택해주세요."
                                 data-confirm-message="선택한 상품을 삭제하시겠습니까?"
                                 data-action-variant="secondary">선택삭제</button>
-                        <nav th:replace="~{admin/fragments/admin-pagination::admin-pagination}"></nav>
+                        <nav class="admin-pagination"></nav>
                         <button type="button"
                                 th:onclick="|location.href='@{/admin/product/register}'|"
                                 data-action-variant="primary">상품등록</button>
