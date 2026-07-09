@@ -1,3 +1,4 @@
+/* ===== 기존 테이블 및 레이아웃 설정 ===== */
 .shop-register-modal-table tr:nth-child(7) > td {
     display: flex;
     flex-direction: column;
@@ -17,48 +18,146 @@
     white-space: nowrap;
 }
 
-.management-table th:nth-child(1),
-.management-table td:nth-child(1) {
-    width: 42px;
+.management-table th:nth-child(1), .management-table td:nth-child(1) { width: 42px; }
+.management-table th:nth-child(2), .management-table td:nth-child(2) { width: 64px; }
+.management-table th:nth-child(3), .management-table td:nth-child(3) { width: 120px; }
+.management-table th:nth-child(4), .management-table td:nth-child(4) { width: 80px; }
+.management-table th:nth-child(5), .management-table td:nth-child(5) { width: 130px; }
+.management-table th:nth-child(6), .management-table td:nth-child(6) { width: 130px; }
+.management-table th:nth-child(7), .management-table td:nth-child(7) { width: 100px; }
+.management-table th:nth-child(8), .management-table td:nth-child(8) { width: 42px; }
+.management-table th:nth-child(9), .management-table td:nth-child(9) { width: 60px; }
+
+/* ===== 상점 운영상태 배지 ===== */
+.shop-status {
+    display: inline-block;
+    padding: 2px 10px;
+    border-radius: 12px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #fff;
+}
+.shop-status.ACTIVE { background-color: #2e9e44; }
+.shop-status.SUSPENDED { background-color: #e0332f; }
+.shop-status.PENDING { background-color: #3b6fe0; }
+
+/* ===== 승인/중단/재개 버튼 ===== */
+.shop-action-approve, .shop-action-suspend, .shop-action-resume {
+    border: none;
+    background: none;
+    cursor: pointer;
+    font-size: 13px;
+    padding: 2px 6px;
+}
+.shop-action-approve { color: #2e9e44; }
+.shop-action-suspend { color: #e0332f; }
+.shop-action-resume { color: #3b6fe0; }
+
+/* ===== 운영상태 원형 dot ===== */
+.shop-status-dot {
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+}
+.shop-status-dot.ACTIVE { background-color: #2e9e44; }
+.shop-status-dot.SUSPENDED { background-color: #e0332f; }
+.shop-status-dot.PENDING { background-color: #3b6fe0; }
+
+/* ===== 관리 버튼: 빨간 하트 아이콘 ===== */
+.shop-dot-btn {
+    width: 20px;
+    height: 20px;
+    position: relative;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    padding: 0;
+    display: inline-block;
 }
 
-.management-table th:nth-child(2),
-.management-table td:nth-child(2) {
-    width: 64px;
+.shop-dot-btn::before,
+.shop-dot-btn::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    width: 10px;
+    height: 16px;
+    border-radius: 10px 10px 0 0;
+    background: #ccc; /* 기본 색상 */
+    transition: background 0.3s;
 }
 
-.management-table th:nth-child(3),
-.management-table td:nth-child(3) {
-    width: 120px;
+.shop-dot-btn::before {
+    left: 10px;
+    transform: rotate(-45deg);
+    transform-origin: 0 100%;
 }
 
-.management-table th:nth-child(4),
-.management-table td:nth-child(4) {
-    width: 80px;
+.shop-dot-btn::after {
+    left: 0;
+    transform: rotate(45deg);
+    transform-origin: 100% 100%;
 }
 
-.management-table th:nth-child(5),
-.management-table td:nth-child(5) {
-    width: 130px;
+/* 상태별 하트 색상 변경 */
+.shop-dot-btn.shop-action-approve::before,
+.shop-dot-btn.shop-action-approve::after { background-color: #2e9e44; }
+
+.shop-dot-btn.shop-action-suspend::before,
+.shop-dot-btn.shop-action-suspend::after { background-color: #e0332f; }
+
+.shop-dot-btn.shop-action-resume::before,
+.shop-dot-btn.shop-action-resume::after { background-color: #3b6fe0; }
+
+/* ===== 관리 버튼: 빨간 하트(모달 오픈용) ===== */
+.shop-manage-btn {
+    width: 16px;
+    height: 16px;
+    position: relative;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    padding: 0;
+    display: inline-block;
 }
 
-.management-table th:nth-child(6),
-.management-table td:nth-child(6) {
-    width: 130px;
+.shop-manage-btn::before,
+.shop-manage-btn::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    width: 8px;
+    height: 13px;
+    border-radius: 8px 8px 0 0;
+    background-color: #e0332f;
+    transition: background 0.3s;
 }
 
-.management-table th:nth-child(7),
-.management-table td:nth-child(7) {
-    width: 100px;
+.shop-manage-btn::before {
+    left: 8px;
+    transform: rotate(-45deg);
+    transform-origin: 0 100%;
 }
 
-.management-table th:nth-child(8),
-.management-table td:nth-child(8) {
-    width: 42px;
+.shop-manage-btn::after {
+    left: 0;
+    transform: rotate(45deg);
+    transform-origin: 100% 100%;
 }
 
-
-.management-table th:nth-child(9),
-.management-table td:nth-child(9) {
-    width: 60px;
+/* ===== 운영상태 변경 모달 ===== */
+.shop-status-modal-body { padding: 8px 4px; }
+.shop-status-modal-actions { display: flex; gap: 10px; margin-top: 16px; }
+.shop-status-choice {
+    flex: 1;
+    padding: 10px 0;
+    border: none;
+    border-radius: 6px;
+    color: #fff;
+    font-weight: 600;
+    cursor: pointer;
 }
+.shop-status-choice.approve { background-color: #2e9e44; }
+.shop-status-choice.suspend { background-color: #e0332f; }
+.shop-status-choice.resume { background-color: #3b6fe0; }

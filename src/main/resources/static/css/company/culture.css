@@ -40,14 +40,15 @@
     font-weight: 800;
     line-height: 1.5;
     margin-bottom: 20px;
+    color: var(--color-white);
     opacity: 0;
     transform: translateY(20px);
     animation: heroAppear 0.8s ease forwards;
     animation-delay: 0.2s;
 }
 .sub-hero-slogan .highlight {
-    background: var(--color-dark);
-    color: var(--color-white);
+    background: var(--color-white);
+    color: var(--color-dark);
     padding: 2px 8px;
     border-radius: 3px;
 }
@@ -144,4 +145,20 @@
         flex: none;
         width: 100%;
     }
+}
+
+/* culture.css */
+.sub-hero-image-placeholder img,
+.culture-block-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: inherit;
+}
+/* company-index.css */
+.hero-image-placeholder img,
+.slogan-slide-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }

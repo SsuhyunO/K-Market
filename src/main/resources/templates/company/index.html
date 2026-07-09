@@ -22,22 +22,24 @@
      - 마우스 스크롤 휠 아래로 이동 아이콘
      ============================================= -->
 <section class="hero-section">
-    <div class="hero-image-placeholder">🖼️</div>
+    <div class="hero-image-placeholder">
+        <img th:src="@{/images/index/Main.jpg}" alt="케이마켓 메인 이미지">
+    </div>
 
     <div class="hero-content">
         <div class="container">
-            <p class="hero-slogan">
-                <span class="highlight">취향을</span>,
-                <span class="highlight">브랜드를</span>,
-                <span class="highlight">혜택을</span> 발견하는 즐거움<br>
-                지금 케이마켓에서 만나요
-            </p>
-            <p class="hero-desc">
-                쇼핑 좀 해본 사람들이 만든 플랫폼,<br>
-                케이마켓은 풍부한 오프라인 쇼핑 인프라, 온라인 쇼핑 노하우,<br>
-                IT 기술로 세상에 없던 새로운 쇼핑 경험을 제공하고<br>
-                꼭 이용하고 싶은 온라인 쇼핑 플랫폼으로 발전하고 있어요.
-            </p>
+                <p class="hero-slogan">
+                    <span class="highlight">취향을</span>,
+                    <span class="highlight">브랜드를</span>,
+                    <span class="highlight">혜택을</span> 발견하는 즐거움<br>
+                    지금 케이마켓에서 만나요
+                </p>
+                <p class="hero-desc">
+                    쇼핑 좀 해본 사람들이 만든 플랫폼,<br>
+                    케이마켓은 풍부한 오프라인 쇼핑 인프라, 온라인 쇼핑 노하우,<br>
+                    IT 기술로 세상에 없던 새로운 쇼핑 경험을 제공하고<br>
+                    꼭 이용하고 싶은 온라인 쇼핑 플랫폼으로 발전하고 있어요.
+                </p>
             <p class="hero-tagline">쇼핑을 새롭게, 세상을이 롭게 만들어나가요.</p>
         </div>
     </div>
@@ -66,7 +68,9 @@
             <div class="slogan-slider-track">
 
                 <div class="slogan-slide">
-                    <div class="slogan-slide-image">🖼️</div>
+                    <div class="slogan-slide-image">
+                        <img th:src="@{/images/index/love.jpg}" alt="케이마켓 1번째 이미지">
+                    </div>
                     <div class="slogan-slide-title">고객이 원하고 만족하는<br>서비스를 만들어요</div>
                     <div class="slogan-slide-desc">
                         케이마켓은 단순히 상품을 판매하는<br>
@@ -77,18 +81,19 @@
                 </div>
 
                 <div class="slogan-slide">
-                    <div class="slogan-slide-image">🖼️</div>
-                    <div class="slogan-slide-title">고객이 원하고 만족하는<br>서비스를 만들어요</div>
+                    <div class="slogan-slide-image">
+                        <img th:src="@{/images/index/category.jpg}" alt="케이마켓 2번째 이미지">
+                    </div>
+                    <div class="slogan-slide-title">다양한 카테고리,<br>폭넓은 상품을 만나요</div>
                     <div class="slogan-slide-desc">
-                        케이마켓은 단순히 상품을 판매하는<br>
-                        플랫폼이 아니라, 상품에 대한 경험을<br>
-                        함께 제공할 수 있는 플랫폼을 목표로 하고<br>
-                        있어요. 해외직구, 뷰티, 그로서리 ...
+                        케케이마켓은 해외직구부터 뷰티, 그로서리,<br>리빙까지 한 곳에서 만날 수 있는<br>폭넓은 상품 구성을 갖추고 있어요.<br>필요한 모든 걸 케이마켓에서 ...
                     </div>
                 </div>
 
                 <div class="slogan-slide">
-                    <div class="slogan-slide-image">🖼️</div>
+                    <div class="slogan-slide-image">
+                        <img th:src="@{/images/index/3.jpg}" alt="케이마켓 3번째 이미지">
+                    </div>
                     <div class="slogan-slide-title">빠르고 안전한<br>배송을 약속해요</div>
                     <div class="slogan-slide-desc">
                         케이마켓은 자체 물류 네트워크를 통해<br>
@@ -99,7 +104,9 @@
                 </div>
 
                 <div class="slogan-slide">
-                    <div class="slogan-slide-image">🖼️</div>
+                    <div class="slogan-slide-image">
+                        <img th:src="@{/images/index/4.jpg}" alt="케이마켓 4번째 이미지">
+                    </div>
                     <div class="slogan-slide-title">함께 성장하는<br>파트너십을 지향해요</div>
                     <div class="slogan-slide-desc">
                         케이마켓은 입점 판매자와 함께 성장하는<br>
@@ -188,7 +195,9 @@
                 <div class="history-year">2025</div>
 
                 <div class="history-item" th:each="i : ${#numbers.sequence(1, 3)}">
-                    <div class="history-thumb">🖼️</div>
+                    <div class="history-thumb">
+                        <img th:src="@{/images/index/good.jpg}" alt="케이마켓  이미지">
+                    </div>
                     <div class="history-info">
                         <div class="history-date">2025년 03월</div>
                         <div class="history-title">동반성장주간기념식</div>
@@ -206,7 +215,9 @@
                 <div class="history-item" th:each="item : ${yearGroup.items}">
                     <div class="history-thumb">
                         <img th:if="${item.thumbnailUrl}" th:src="${item.thumbnailUrl}" alt="">
-                        <span th:unless="${item.thumbnailUrl}">🖼️</span>
+                        <span th:unless="${item.thumbnailUrl}">
+                            <img th:src="@{/images/index/good.jpg}" alt="케이마켓  이미지">
+                        </span>
                     </div>
                     <div class="history-info">
                         <div class="history-date" th:text="${item.date}">2025년 03월</div>

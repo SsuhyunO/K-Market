@@ -5,11 +5,15 @@ import { FormValidation } from '../global/form-validation.js';
 import { ModalFormValidation } from '../global/modal-form-validation.js';
 import { isDaumPostcodeCanceled, openDaumPostcode } from '../../global/daumpostcode.js';
 
+const CTX = (document.querySelector('meta[id="ctxPath"]')?.getAttribute('content') || '').replace(/\/$/, '');
+
 document.addEventListener("DOMContentLoaded", function () {
     initModals();
     ManagementTableForm.init();
     initShopRegisterValidation();
     initShopPostcode();
+    initShopRegisterSubmit();
+    initShopStatusButtons();
 });
 
 function initShopRegisterValidation() {
@@ -94,6 +98,98 @@ function initShopPostcode() {
 
             console.error(error);
             alert("우편번호 서비스를 불러오지 못했습니다.");
+        }
+    });
+}
+
+// 상점등록 폼 제출 -> API 호출 -> 성공 시 즉시 목록 새로고침
+function initShopRegisterSubmit() {
+    const form = document.getElementById("shop-register-form");
+    if (!form) return;
+
+    form.addEventListener("submit", async function (e) {
+        const errors = validateShopRegisterForm(form);
+        if (errors.length > 0) return; // FormValidation.bind가 이미 막고 메시지 표시함
+
+        e.preventDefault();
+
+        const payload = {
+            userId: form.querySelector("#shop-register-userid").value,
+            password: form.querySelector("#shop-register-pass").value,
+            businessName: form.querySelector("#shop-register-business-name").value,
+            ceo: form.querySelector("#shop-register-ceo").value,
+            businessRegistrationNumber: form.querySelector("#shop-register-business-reg-num").value,
+            mailOrderBusinessNumber: form.querySelector("#shop-register-mail-order-business-num").value,
+            phone: form.querySelector("#shop-register-phone").value,
+            fax: form.querySelector("#shop-register-fax").value,
+            zipCode: form.querySelector("#shop-register-zip-code").value,
+            defaultAddress: form.querySelector("#shop-register-default-address").value,
+            detailAddress: form.querySelector("#shop-register-detail-address").value
+        };
+
+        try {
+            const response = await fetch(`${CTX}/api/admin/shop`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(payload)
+            });
+
+            if (!response.ok) {
+                const message = await response.text();
+                alert(message || "상점 등록에 실패했습니다.");
+                return;
+            }
+
+            alert("상점이 등록되었습니다.");
+            location.reload();
+        } catch (error) {
+            console.error(error);
+            alert("상점 등록 중 오류가 발생했습니다.");
+        }
+    });
+}
+
+// 관리 버튼 클릭 -> 모달에 대상 상점 표시
+document.addEventListener("click", function (e) {
+    const manageBtn = e.target.closest(".shop-manage-btn");
+    if (!manageBtn) return;
+
+    const modal = document.getElementById("shop-status-modal");
+    if (!modal) return;
+
+    modal.dataset.targetUid = manageBtn.dataset.uid;
+    const nameEl = document.getElementById("shop-status-modal-name");
+    if (nameEl) nameEl.textContent = manageBtn.dataset.name || "";
+});
+
+// 모달 안 승인/중단/재개 버튼 클릭 -> 즉시 DB 반영 후 새로고침
+function initShopStatusButtons() {
+    document.addEventListener("click", async function (e) {
+        const button = e.target.closest(".shop-status-choice");
+        if (!button) return;
+
+        const modal = document.getElementById("shop-status-modal");
+        const uid = modal?.dataset.targetUid;
+        const status = button.dataset.status;
+        if (!uid || !status) return;
+
+        try {
+            const response = await fetch(`${CTX}/api/admin/shop/${uid}/status`, {
+                method: "PATCH",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ status })
+            });
+
+            if (!response.ok) {
+                const message = await response.text();
+                alert(message || "상태 변경에 실패했습니다.");
+                return;
+            }
+
+            location.reload();
+        } catch (error) {
+            console.error(error);
+            alert("상태 변경 중 오류가 발생했습니다.");
         }
     });
 }
