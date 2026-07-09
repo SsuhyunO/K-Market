@@ -5,7 +5,7 @@ plugins {
 }
 
 group = 'org.example'
-version = '0.0.6-SNAPSHOT'
+version = '0.0.7-SNAPSHOT'
 description = 'K_Market'
 
 // Gradle version값을 application.properties 파일에서 참조하기 위한 Gradle 스크립트 코드
