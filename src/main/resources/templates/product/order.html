@@ -130,12 +130,12 @@
 
                         <label for="recvZip">우편번호</label>
                         <div class="addr-row">
-                            <input type="text" id="recvZip" name="recvZip" placeholder="우편번호" readonly>
+                            <input type="text" id="recvZip" name="recvZip" th:value="${recvZip}" placeholder="우편번호" readonly>
                             <button type="button" class="btn-search-addr" id="btnSearchAddr" onclick="postcode()">검색</button>
                         </div>
 
                         <label for="recvAddr1">기본주소</label>
-                        <input type="text" id="recvAddr1" name="recvAddr1" placeholder="기본주소" readonly>
+                        <input type="text" id="recvAddr1" name="recvAddr1" th:value="${recvAddr1}" placeholder="기본주소" readonly>
 
                         <label for="recvAddr2">상세주소</label>
                         <input type="text" id="recvAddr2" name="recvAddr2" th:value="${recvAddr2}" placeholder="상세주소를 입력하세요">
@@ -165,9 +165,8 @@
                         <select id="couponSelect" name="couponSelect">
                             <option value="">쿠폰 선택</option>
                             <option th:each="coupon : ${availableCoupons}"
-                                    th:value="${coupon.id}"
-                                    th:text="${coupon.name}">쿠폰명</option>
-                            <!-- availableCoupons가 없을 때 placeholder -->
+                                    th:value="${coupon.issueNo}"
+                                    th:text="${coupon.couponName}">쿠폰명</option>
                             <option th:if="${availableCoupons == null or #lists.isEmpty(availableCoupons)}" value="dummy1">신규가입 1,000원 할인 쿠폰</option>
                             <option th:if="${availableCoupons == null or #lists.isEmpty(availableCoupons)}" value="dummy2">전상품 5% 할인 쿠폰</option>
                         </select>

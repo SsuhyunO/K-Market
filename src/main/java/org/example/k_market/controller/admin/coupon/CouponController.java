@@ -35,11 +35,11 @@ public class CouponController {
         String loginUid = (String) session.getAttribute("loginMember");
         String memberType = (String) session.getAttribute("loginMemberType");
 
-        // 최고관리자는 loginUid가 null이므로, null일 때는 seller 조회를 건너뜀
-        if (loginUid != null) {
+        if ("SELLER".equals(memberType)) {
             Seller seller = sellerService.findByUid(loginUid);
             model.addAttribute("companyName", seller.getCompanyName());
         } else {
+            // ADMIN이거나 그 외의 경우
             model.addAttribute("companyName", "최고관리자");
         }
 

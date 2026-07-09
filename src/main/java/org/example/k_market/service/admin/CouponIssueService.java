@@ -43,4 +43,8 @@ public class CouponIssueService {
 
         couponIssueDAO.stopCouponIssue(issueNo, STATUS_STOPPED);
     }
+
+    public List<CouponIssueDTO> getAvailableCoupons(String memberUid) {
+        return couponIssueDAO.getAvailableCouponsByMemberUid(memberUid);
+    }
 }

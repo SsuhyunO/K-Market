@@ -19,4 +19,5 @@ public interface CouponIssueDAO {
     CouponIssueDTO getCouponIssueByNo(@Param("issueNo") int issueNo);
 
     int stopCouponIssue(@Param("issueNo") int issueNo, @Param("status") int status);
+    List<CouponIssueDTO> getAvailableCouponsByMemberUid(String memberUid);
 }

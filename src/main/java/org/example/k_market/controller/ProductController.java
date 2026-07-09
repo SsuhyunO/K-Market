@@ -1,9 +1,19 @@
 package org.example.k_market.controller;
 
+import jakarta.servlet.http.HttpSession;
+import lombok.RequiredArgsConstructor;
+import org.example.k_market.dto.order.OrderItemViewDTO;
+import org.example.k_market.entity.Member;
+import org.example.k_market.service.MemberService;
+import org.example.k_market.service.OrderService;
+import org.example.k_market.service.admin.CouponIssueService;
+import org.example.k_market.service.admin.CouponService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import java.util.List;
 
 /**
  * 상품목록 페이지 매핑
@@ -17,10 +27,14 @@ import org.springframework.web.bind.annotation.RequestParam;
  *               ratingDesc(평점높은순) | reviewDesc(후기많은순) | latest(최근등록순)
  *  - page     : 페이지 번호 (기본값 1), 10개씩 페이징
  */
+@RequiredArgsConstructor
 @Controller("commonProductController")
 public class ProductController {
 
     private static final int PAGE_SIZE = 10;
+    private final MemberService memberService;
+    private final OrderService orderService;
+    private final CouponIssueService couponIssueService;
 
     @GetMapping("/product/list")
     public String list(
@@ -75,7 +89,43 @@ public class ProductController {
     }
 
     @GetMapping("/product/order")
-    public String order() {
+    public String order(@RequestParam(required = false) List<Integer> cartNoList,
+                        @RequestParam(required = false) Integer prodVariantId,
+                        @RequestParam(required = false) Integer count,
+                        HttpSession session,   // 또는 @AuthenticationPrincipal 등 프로젝트 인증 방식대로
+                        Model model) {
+        String memberUid = (String) session.getAttribute("loginMember"); // 프로젝트 인증 방식에 맞게 수정
+        Member member = memberService.findByUid(memberUid);
+
+        // 1. 주문 상품 리스트 조회
+        /*
+        List<OrderItemViewDTO> orderItems;
+        if (cartNoList != null && !cartNoList.isEmpty()) {
+            orderItems = orderService.getOrderItemsFromCart(cartNoList);
+        } else if (prodVariantId != null) {
+            orderItems = orderService.getOrderItemsDirect(prodVariantId, count);
+        } else {
+            return "redirect:/product/cart";
+        }
+        */
+
+        // 2. 회원 정보로 배송지 기본값 채우기
+        model.addAttribute("recvName", member.getName());
+        model.addAttribute("recvPhone", member.getPhone());
+        model.addAttribute("recvZip", member.getZipCode());
+        model.addAttribute("recvAddr1", member.getAddr1());
+        model.addAttribute("recvAddr2", member.getAddr2());
+        model.addAttribute("availablePoint", member.getPointBalance());
+
+        // 3. 쿠폰
+        model.addAttribute("availableCoupons", couponIssueService.getAvailableCoupons(member.getUid()));
+
+        // 4. 주문 상품 + 합계
+        // model.addAttribute("orderItems", orderItems);
+        // model.addAttribute("productTotal", calcProductTotal(orderItems));
+        // model.addAttribute("discountTotal", calcDiscountTotal(orderItems));
+        // model.addAttribute("shippingTotal", calcShippingTotal(orderItems));
+        // orderTotal, earnPoint, finalPrice 등은 usedPoint=0, coupon 미적용 상태의 초기값
 
         return "product/order";
     }
