@@ -23,6 +23,9 @@ jobs:
         uses: gradle/gradle-build-action@v2.6.0
         with:
           arguments: build
+        env:
+          GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
+          GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
 
       - name: Get JAR_FILE
         id: jarfile
