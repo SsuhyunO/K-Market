@@ -2,13 +2,16 @@ package org.example.k_market.controller;
 
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import org.example.k_market.dto.category.CategoryTreeDTO;
 import org.example.k_market.entity.Member;
+import org.example.k_market.service.CategoryService;
 import org.example.k_market.service.MemberService;
 import org.example.k_market.service.order.OrderService;
 import org.example.k_market.service.admin.CouponIssueService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
@@ -33,6 +36,12 @@ public class ProductController {
     private final MemberService memberService;
     private final OrderService orderService;
     private final CouponIssueService couponIssueService;
+    private final CategoryService categoryService;
+
+    @ModelAttribute("categoryTree")
+    public List<CategoryTreeDTO> categoryTree() {
+        return categoryService.getCategoryTree();
+    }
 
     @GetMapping("/product/list")
     public String list(
