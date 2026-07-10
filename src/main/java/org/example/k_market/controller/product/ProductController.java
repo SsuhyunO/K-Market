@@ -1,4 +1,4 @@
-package org.example.k_market.controller;
+package org.example.k_market.controller.product;
 
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -29,7 +29,7 @@ import java.util.List;
  *  - page     : 페이지 번호 (기본값 1), 10개씩 페이징
  */
 @RequiredArgsConstructor
-@Controller("commonProductController")
+@Controller
 public class ProductController {
 
     private static final int PAGE_SIZE = 10;

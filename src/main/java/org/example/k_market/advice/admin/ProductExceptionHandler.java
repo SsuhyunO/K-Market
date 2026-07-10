@@ -2,11 +2,12 @@ package org.example.k_market.advice.admin;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
+import org.example.k_market.controller.admin.product.ManagementProductController;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-@ControllerAdvice(assignableTypes = org.example.k_market.controller.admin.product.ProductController.class)
+@ControllerAdvice(assignableTypes = ManagementProductController.class)
 @Slf4j
 public class ProductExceptionHandler {
 

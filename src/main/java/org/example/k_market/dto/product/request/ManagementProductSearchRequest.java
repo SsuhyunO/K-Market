@@ -1,7 +1,7 @@
 package org.example.k_market.dto.product.request;
 
 import lombok.*;
-import org.example.k_market.service.product.ProdSearchType;
+import org.example.k_market.enums.ProductSearchType;
 
 @Getter
 @Setter
@@ -11,6 +11,6 @@ import org.example.k_market.service.product.ProdSearchType;
 @Builder
 public class ManagementProductSearchRequest {
     private int page = 1;
-    private ProdSearchType type;
+    private ProductSearchType type;
     private String keyword;
 }

@@ -4,6 +4,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.example.k_market.dto.pagination.response.PageResponse;
 import org.example.k_market.dto.product.command.ManagementProductSearchCommand;
+import org.example.k_market.dto.product.request.ProductListRequest;
 import org.example.k_market.dto.product.request.ProductRegisterRequest;
 import org.example.k_market.dto.product.response.ProductDetailResponse;
 import org.example.k_market.dto.product.response.ManagementProductListResponse;
@@ -59,8 +60,8 @@ public class ProductService {
         return productDetailViewer.getProductDetailForManagement(prodNo);
     }
 
-    public PageResponse<ProductListResponse> getProductPageInfo(int cateId, int page, int size) {
-        return productListViewer.getProductPageInfo();
+    public PageResponse<ProductListResponse> getProductPageInfo(ProductListRequest request) {
+        return productListViewer.getProductPageInfo(request);
     }
 
     @Transactional
