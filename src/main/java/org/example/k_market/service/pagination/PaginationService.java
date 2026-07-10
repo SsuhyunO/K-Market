@@ -1,6 +1,5 @@
 package org.example.k_market.service.pagination;
 
-import org.example.k_market.dto.pagination.request.PageRequest;
 import org.example.k_market.dto.pagination.response.PageResponse;
 import org.springframework.stereotype.Component;
 
@@ -8,11 +7,11 @@ import java.util.List;
 
 @Component
 public class PaginationService {
-    public <T> PageResponse<T> getPageInfo(PageRequest request, int size, int blockSize, PageQuery<T> pageQuery) {
+    public <T> PageResponse<T> getPageInfo(int page, int size, int blockSize, PageQuery<T> pageQuery) {
         int total = pageQuery.count();
         int rowSize = size > 0 ? size : 10;
         int totalPage = (int)Math.ceil((double)total / rowSize);
-        int currentPage = Math.max(request.getPage(), 1);
+        int currentPage = Math.max(page, 1);
         if (totalPage > 0) {
             currentPage = Math.min(currentPage, totalPage);
         }

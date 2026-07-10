@@ -4,8 +4,8 @@ export async function getProductList(page, searchType = null, keyword = null) {
     const params = new URLSearchParams();
 
     params.set('page', page);
-    if (type) {
-        params.set('type', type)
+    if (searchType) {
+        params.set('type', searchType)
     }
 
     if (keyword) {
@@ -13,7 +13,7 @@ export async function getProductList(page, searchType = null, keyword = null) {
     }
 
     const response = await fetch(
-        `${getContextPath()}api/admin/product/list?page=${params.toString()}`,
+        `${getContextPath()}api/admin/product/list?${params.toString()}`,
         {
             headers: { Accept: 'application/json' }
         }

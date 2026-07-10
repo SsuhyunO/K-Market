@@ -2,7 +2,6 @@ package org.example.k_market.controller.admin.product;
 
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
-import org.example.k_market.dto.pagination.request.PageRequest;
 import org.example.k_market.dto.pagination.response.PageResponse;
 import org.example.k_market.dto.product.command.ProductSearchCommand;
 import org.example.k_market.dto.product.request.ProductSearchRequest;
@@ -30,8 +29,8 @@ public class ProductApiController {
                 ProductSearchCommand
                     .builder()
                     .request(pageRequest)
-                    .sellerUid((String)session.getAttribute("sellerUid"))
-                    .role((String)session.getAttribute("memberType"))
+                    .sellerUid((String)session.getAttribute("loginMember"))
+                    .role((String)session.getAttribute("loginMemberType"))
                     .build()
                 )
             );

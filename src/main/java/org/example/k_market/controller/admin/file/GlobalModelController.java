@@ -1,7 +1,9 @@
 package org.example.k_market.controller.admin.file;
 
+import jakarta.servlet.DispatcherType;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.example.k_market.service.admin.AdminConfigService;
 import org.example.k_market.service.admin.BannerService;
 import org.springframework.ui.Model;
@@ -10,6 +12,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 
 @RequiredArgsConstructor
 @ControllerAdvice
+@Log4j2
 public class GlobalModelController {
 
     private final AdminConfigService adminConfigService;
@@ -17,8 +20,14 @@ public class GlobalModelController {
 
     @ModelAttribute
     public void addGlobalAttributes(HttpServletRequest request, Model model) {
+        if (request.getDispatcherType() == DispatcherType.ERROR) return;
+
         String path = getRequestPath(request);
         if (path.startsWith("/api/") || path.startsWith("/files/")) {
+            return;
+        }
+
+        if (path.equals("/admin") || path.startsWith("/admin/")) {
             return;
         }
 
@@ -27,10 +36,6 @@ public class GlobalModelController {
             model.addAttribute("siteConfig", adminConfigService.findById(1));
         } catch (Exception e) {
             model.addAttribute("siteConfig", null);
-        }
-
-        if (path.startsWith("/admin/")) {
-            return;
         }
 
         // 메인 상단 배너
