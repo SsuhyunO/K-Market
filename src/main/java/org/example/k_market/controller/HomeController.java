@@ -1,8 +1,12 @@
 package org.example.k_market.controller;
 
+import lombok.RequiredArgsConstructor;
+import org.example.k_market.dto.category.CategoryTreeDTO;
+import org.example.k_market.service.CategoryService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 
 import java.util.List;
 
@@ -17,19 +21,17 @@ import java.util.List;
  * 실제 데이터를 넣으면 그 데이터가 보입니다.
  */
 @Controller
+@RequiredArgsConstructor
 public class HomeController {
+    private final CategoryService categoryService;
+
+    @ModelAttribute("categoryTree")
+    public List<CategoryTreeDTO> categoryTree() {
+        return categoryService.getCategoryTree();
+    }
 
     @GetMapping("/")
     public String index(Model model) {
-        // 실제 데이터 연결 전까지는 빈 리스트만 넣어도 충분
-        // (aside.html이 빈 리스트일 때 placeholder 3개를 자동으로 보여줌)
-        model.addAttribute("bestProducts", List.of());
-
-        // model.addAttribute("hitProducts", productService.findHit());
-        // model.addAttribute("recommendProducts", productService.findRecommend());
-        // model.addAttribute("newProducts", productService.findNew());
-        // model.addAttribute("popularProducts", productService.findPopular());
-        // model.addAttribute("discountProducts", productService.findDiscount());
 
         return "index";
     }

@@ -8,13 +8,15 @@ plugins {
 }
 
 group = 'org.example'
-version = '0.0.8-SNAPSHOT'
+version = '0.0.9-SNAPSHOT'
 description = 'K_Market'
 
 // Gradle version값을 application.properties 파일에서 참조하기 위한 Gradle 스크립트 코드
 processResources {
     filesMatching('**/application.properties'){
-        expand(project.properties)
+        expand(project.properties) {
+            escapeBackslash = true
+        }
     }
 }
 

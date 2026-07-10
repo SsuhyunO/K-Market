@@ -38,7 +38,7 @@ public class ProductController {
     @GetMapping("/edit")
     public String edit(@RequestParam("prodNo") int prodNo, Model model) {
         addProductFormModel(model);
-        model.addAttribute("product", productService.getProductDetail(prodNo));
+        model.addAttribute("product", productService.getProductDetailForManagement(prodNo));
         return "admin/product/edit";
     }
 

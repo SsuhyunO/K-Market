@@ -9,7 +9,7 @@ import org.example.k_market.service.product.ProdSearchType;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ProductSearchRequest {
+public class ManagementProductSearchRequest {
     private int page = 1;
     private ProdSearchType type;
     private String keyword;
