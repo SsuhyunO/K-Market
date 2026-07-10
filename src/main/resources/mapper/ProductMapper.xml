@@ -103,4 +103,33 @@
             p.infoNoticeType,
             p.createdAt
     </select>
+
+    <select id="totalCountForManagement" resultType="int">
+        SELECT COUNT(prodNo)
+        FROM product p
+        <where>
+            <if test="role != 'ADMIN'">
+                sellerUid = #{seller}
+            </if>
+
+            <if test="keyword != null and keyword != ''">
+                <choose>
+                    <when test="type == 'CODE'">
+                        AND CAST(p.prodNo AS CHAR) LIKE CONCAT('%', #{keyword}, '%')
+                    </when>
+                    <when test="type == 'NAME'">
+                        AND p.prodName LIKE CONCAT('%', #{keyword}, '%')
+                    </when>
+                    <when test="type == 'SELLER'">
+                        AND EXISTS (
+                            SELECT 1
+                            FROM member m
+                            WHERE m.uid = p.sellerUid
+                            AND m.name LIKE CONCAT('%', #{keyword}, '%')
+                        )
+                    </when>
+                </choose>
+            </if>
+        </where>
+    </select>
 </mapper>

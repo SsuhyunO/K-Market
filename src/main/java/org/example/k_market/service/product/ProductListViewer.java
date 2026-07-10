@@ -5,6 +5,7 @@ import org.example.k_market.dao.ProductDAO;
 import org.example.k_market.dto.pagination.response.PageResponse;
 import org.example.k_market.dto.product.command.ManagementProductSearchCommand;
 import org.example.k_market.dto.product.request.ManagementProductSearchRequest;
+import org.example.k_market.dto.product.request.ProductListRequest;
 import org.example.k_market.dto.product.response.ManagementProductListResponse;
 import org.example.k_market.dto.product.response.ProductListResponse;
 import org.example.k_market.service.pagination.PageQuery;
@@ -34,6 +35,7 @@ public class ProductListViewer {
             PRODUCT_LIST_SIZE,
             PRODUCT_PAGE_BLOCK_SIZE,
             new PageQuery<>() {
+                @Override
                 public List<ManagementProductListResponse> fetch(int offset, int size) {
                     return productDAO.findProductsForManagement(
                         size,
@@ -46,13 +48,32 @@ public class ProductListViewer {
 
                 @Override
                 public int count() {
-                    return 0; // 카운트가 필요없는 페이지
+                    return productDAO.totalCountForManagement(
+                        command.getSellerUid(),
+                        command.getRole(),
+                        type,
+                        request.getKeyword());
                 }
             }
         );
     }
 
-    public PageResponse<ProductListResponse> getProductPageInfo() {
-        return null;
+    public PageResponse<ProductListResponse> getProductPageInfo(ProductListRequest request) {
+        return paginationService.getPageInfo(
+            1,
+            PRODUCT_LIST_SIZE,
+            PRODUCT_PAGE_BLOCK_SIZE,
+            new PageQuery<>() {
+                @Override
+                public List<ProductListResponse> fetch(int offset, int size) {
+                    return List.of();
+                }
+
+                @Override
+                public int count() {
+                    return 0;
+                }
+            }
+        );
     }
 }

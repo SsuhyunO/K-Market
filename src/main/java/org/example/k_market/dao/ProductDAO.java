@@ -17,4 +17,9 @@ public interface ProductDAO {
         @Param("type") String type,
         @Param("keyword") String keyword);
     ProductDetailResponse findProductDetail(@Param("prodNo") int prodNo);
+    int totalCountForManagement(
+        @Param("seller") String seller,
+        @Param("role") String role,
+        @Param("type") String type,
+        @Param("keyword") String keyword);
 }

@@ -2,7 +2,7 @@ import { ManagementTableForm } from '../../global/management-table-form.js';
 import { initPagination } from '../../global/pagination.js';
 import { initProductDetailModal } from './productDetailModal.js';
 import { renderProductRows } from './productTableRenderer.js';
-import { getProductList } from './productApi.js';
+import { getProducts } from '../productApi.js';
 
 document.addEventListener('DOMContentLoaded', function () {
     ManagementTableForm.init();
@@ -18,7 +18,12 @@ document.addEventListener('DOMContentLoaded', function () {
 async function loadProducts(page = 1) {
     const { type, keyword } = getSearchCondition();
 
-    const pageData = await getProductList(page, type, keyword);
+    const pageData = await getProducts({
+        page: page,
+        searchType: type,
+        keyword: keyword
+    });
+
     renderProductRows(pageData);
 
     return pageData;

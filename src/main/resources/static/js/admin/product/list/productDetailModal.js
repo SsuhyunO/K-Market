@@ -10,7 +10,7 @@ import {
     formatVariantItems,
     formatVariantStatus
 } from "./productFormatters.js";
-import { getProductDetail } from "./productApi.js";
+import { getProductDetail } from "../productApi.js";
 
 export function initProductDetailModal() {
     initModals();
