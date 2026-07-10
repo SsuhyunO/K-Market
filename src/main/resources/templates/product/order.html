@@ -232,22 +232,30 @@
                               th:attr="data-raw=${discountTotal != null ? discountTotal : 34500}"
                               th:text="'-' + (${discountTotal} != null ? ${discountTotal} : 34500) + '원'">-34,500원</span>
                     </div>
+
+                    <hr class="summary-divider">
+
+                    <div class="summary-row" id="summaryUsedPointRow"
+                         th:classappend="${usedPoint == null or usedPoint == 0} ? 'hidden' : ''">
+                        <span class="label">포인트 사용</span>
+                        <span class="value minus" id="summaryUsedPoint"
+                              th:attr="data-raw=${usedPoint != null ? usedPoint : 0}"
+                              th:text="'-' + (${usedPoint != null ? usedPoint : 0}) + '원'">-1,000원</span>
+                    </div>
                     <div class="summary-row">
-                        <span class="label">배송비</span>
-                        <span class="value" id="summaryShipping"
-                              th:attr="data-raw=${shippingTotal != null ? shippingTotal : 3000}"
-                              th:text="(${shippingTotal} != null ? ${shippingTotal} : 3000) + '원'">3,000원</span>
+                        <span class="label">전체주문금액</span>
+                        <span class="value" id="summaryOrderTotal"
+                              th:attr="data-raw=${orderTotal != null ? orderTotal : 131500}"
+                              th:text="(${orderTotal} != null ? ${orderTotal} : 131500) + '원'">131,500원</span>
                     </div>
 
                     <hr class="summary-divider">
 
                     <div class="summary-row">
-                        <span class="label">할인</span>
-                        <span class="value minus" id="summaryUsedPoint" th:text="'-' + (${usedPoint != null ? usedPoint : 1000}) + '원'">-1,000원</span>
-                    </div>
-                    <div class="summary-row">
-                        <span class="label">전체주문금액</span>
-                        <span class="value" id="summaryOrderTotal" th:text="(${orderTotal} != null ? orderTotal : 134+','+500) + '원'">134,500원</span>
+                        <span class="label">배송비</span>
+                        <span class="value" id="summaryShipping"
+                              th:attr="data-raw=${shippingTotal != null ? shippingTotal : 3000}"
+                              th:text="(${shippingTotal} != null ? ${shippingTotal} : 3000) + '원'">3,000원</span>
                     </div>
                     <div class="summary-row">
                         <span class="label">적립포인트</span>
@@ -258,10 +266,11 @@
 
                     <div class="summary-final">
                         <span class="label">최종결제금액</span>
-                        <span class="value" id="summaryFinalPrice" th:text="(${finalPrice} != null ? finalPrice : 134+','+500) + '원'">134,500원</span>
+                        <span class="value" id="summaryFinalPrice"
+                              th:attr="data-raw=${finalPrice != null ? finalPrice : 134500}"
+                              th:text="(${finalPrice} != null ? ${finalPrice} : 134500) + '원'">134,500원</span>
                     </div>
 
-                    <!-- 결제하기 클릭 시 결제완료 페이지로 이동 (실제 PG 연동/결제 테스트는 해당사항 없음) -->
                     <button type="button" class="btn-pay" id="btnPay">결제하기</button>
                 </div>
             </div>

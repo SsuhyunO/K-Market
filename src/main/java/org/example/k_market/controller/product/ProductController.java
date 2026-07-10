@@ -3,6 +3,7 @@ package org.example.k_market.controller.product;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.example.k_market.dto.category.CategoryTreeDTO;
+import org.example.k_market.dto.order.OrderItemViewDTO;
 import org.example.k_market.entity.Member;
 import org.example.k_market.service.CategoryService;
 import org.example.k_market.service.MemberService;
@@ -99,13 +100,12 @@ public class ProductController {
     public String order(@RequestParam(required = false) List<Integer> cartNoList,
                         @RequestParam(required = false) Integer prodVariantId,
                         @RequestParam(required = false) Integer count,
-                        HttpSession session,   // 또는 @AuthenticationPrincipal 등 프로젝트 인증 방식대로
+                        HttpSession session,
                         Model model) {
-        String memberUid = (String) session.getAttribute("loginMember"); // 프로젝트 인증 방식에 맞게 수정
+        String memberUid = (String) session.getAttribute("loginMember");
         Member member = memberService.findByUid(memberUid);
 
         // 1. 주문 상품 리스트 조회
-        /*
         List<OrderItemViewDTO> orderItems;
         if (cartNoList != null && !cartNoList.isEmpty()) {
             orderItems = orderService.getOrderItemsFromCart(cartNoList);
@@ -114,7 +114,6 @@ public class ProductController {
         } else {
             return "redirect:/product/cart";
         }
-        */
 
         // 2. 회원 정보로 배송지 기본값 채우기
         model.addAttribute("recvName", member.getName());
@@ -128,11 +127,25 @@ public class ProductController {
         model.addAttribute("availableCoupons", couponIssueService.getAvailableCoupons(member.getUid()));
 
         // 4. 주문 상품 + 합계
-        // model.addAttribute("orderItems", orderItems);
-        // model.addAttribute("productTotal", calcProductTotal(orderItems));
-        // model.addAttribute("discountTotal", calcDiscountTotal(orderItems));
-        // model.addAttribute("shippingTotal", calcShippingTotal(orderItems));
-        // orderTotal, earnPoint, finalPrice 등은 usedPoint=0, coupon 미적용 상태의 초기값
+        int productTotal = orderService.calcProductTotal(orderItems);
+        int discountTotal = orderService.calcDiscountTotal(orderItems);
+        int shippingTotal = orderService.calcShippingTotal(orderItems);
+        int earnPoint = orderService.calcEarnPoint(orderItems);
+
+        model.addAttribute("orderItems", orderItems);
+        model.addAttribute("productTotal", productTotal);
+        model.addAttribute("discountTotal", discountTotal);
+        model.addAttribute("shippingTotal", shippingTotal);
+        model.addAttribute("earnPoint", earnPoint);
+
+        // usedPoint=0, coupon 미적용 상태의 초기값
+        int usedPoint = 0;
+        int orderTotal = productTotal - discountTotal; // 포인트/쿠폰 적용 전 금액
+        int finalPrice = orderTotal + shippingTotal - usedPoint;
+
+        model.addAttribute("usedPoint", usedPoint);
+        model.addAttribute("orderTotal", orderTotal);
+        model.addAttribute("finalPrice", finalPrice);
 
         return "product/order";
     }
