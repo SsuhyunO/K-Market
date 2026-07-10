@@ -3,8 +3,9 @@ package org.example.k_market.service.product;
 import lombok.RequiredArgsConstructor;
 import org.example.k_market.dao.ProductDAO;
 import org.example.k_market.dto.pagination.response.PageResponse;
-import org.example.k_market.dto.product.command.ProductSearchCommand;
-import org.example.k_market.dto.product.request.ProductSearchRequest;
+import org.example.k_market.dto.product.command.ManagementProductSearchCommand;
+import org.example.k_market.dto.product.request.ManagementProductSearchRequest;
+import org.example.k_market.dto.product.response.ManagementProductListResponse;
 import org.example.k_market.dto.product.response.ProductListResponse;
 import org.example.k_market.service.pagination.PageQuery;
 import org.example.k_market.service.pagination.PaginationService;
@@ -21,8 +22,8 @@ public class ProductListViewer {
     private final PaginationService paginationService;
     private final ProductDAO productDAO;
 
-    public PageResponse<ProductListResponse> getProductPageInfo(ProductSearchCommand command) {
-        ProductSearchRequest request = command.getRequest();
+    public PageResponse<ManagementProductListResponse> getProductPageInfoForManagement(ManagementProductSearchCommand command) {
+        ManagementProductSearchRequest request = command.getRequest();
         System.out.println(command);
         String type = request.getType() != null
             ? request.getType().name()
@@ -33,8 +34,8 @@ public class ProductListViewer {
             PRODUCT_LIST_SIZE,
             PRODUCT_PAGE_BLOCK_SIZE,
             new PageQuery<>() {
-                public List<ProductListResponse> fetch(int offset, int size) {
-                    return productDAO.findProductsForPage(
+                public List<ManagementProductListResponse> fetch(int offset, int size) {
+                    return productDAO.findProductsForManagement(
                         size,
                         offset,
                         command.getSellerUid(),
@@ -45,13 +46,13 @@ public class ProductListViewer {
 
                 @Override
                 public int count() {
-                    return productDAO.totalCount(
-                        command.getSellerUid(),
-                        command.getRole(),
-                        type,
-                        request.getKeyword());
+                    return 0; // 카운트가 필요없는 페이지
                 }
             }
         );
+    }
+
+    public PageResponse<ProductListResponse> getProductPageInfo() {
+        return null;
     }
 }

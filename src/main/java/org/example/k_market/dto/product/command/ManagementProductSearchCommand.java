@@ -1,7 +1,7 @@
 package org.example.k_market.dto.product.command;
 
 import lombok.*;
-import org.example.k_market.dto.product.request.ProductSearchRequest;
+import org.example.k_market.dto.product.request.ManagementProductSearchRequest;
 
 @Getter
 @Setter
@@ -9,8 +9,8 @@ import org.example.k_market.dto.product.request.ProductSearchRequest;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ProductSearchCommand {
-    private ProductSearchRequest request;
+public class ManagementProductSearchCommand {
+    private ManagementProductSearchRequest request;
     private String sellerUid;
     private String role;
 }
