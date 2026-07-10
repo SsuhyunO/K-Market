@@ -1,0 +1,104 @@
+
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>케이마켓 - 추가 정보 입력</title>
+    <link rel="stylesheet" th:href="@{/css/member/register.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+</head>
+<body>
+
+<!-- 헤더 -->
+<header>
+    <div class="header-inner">
+        <a th:href="@{/}" class="logo">
+            <img th:src="@{/images/ci-logo.svg}" alt="케이마켓 로고">
+        </a>
+    </div>
+</header>
+
+<!-- 메인 -->
+<main>
+    <h2 class="section-title">추가 정보 입력</h2>
+    <p style="margin: 0 0 20px; color:#666; font-size:14px;">
+        구글 계정(<span th:text="${member.email}"></span>)으로 가입이 진행되었습니다.<br>
+        서비스 이용을 위해 아래 정보를 마저 입력해주세요.
+    </p>
+
+    <table class="form-table">
+
+        <!-- 이름: 구글에서 받아온 값 표시 (수정 가능하게 둠) -->
+        <tr>
+            <th>이름</th>
+            <td>
+                <input type="text" class="input-name" id="userName" th:value="${member.name}">
+            </td>
+        </tr>
+        <tr>
+            <th>생년월일</th>
+            <td>
+                <input type="date" class="input-date" id="userBirth">
+            </td>
+        </tr>
+        <tr>
+            <th>성별</th>
+            <td>
+                <div class="gender-group">
+                    <label><input type="radio" name="gender" value="M"> 남</label>
+                    <label><input type="radio" name="gender" value="F"> 여</label>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <th>휴대폰</th>
+            <td>
+                <input type="tel" class="input-tel" placeholder="예: 010-1234-5678" id="userPhone">
+                <span class="hint">'-' 포함하여 입력 (예: 010-1234-5678)</span>
+                <div id="phone-msg" style="font-size:13px; margin-top:4px;"></div>
+            </td>
+        </tr>
+        <tr>
+            <th>주소</th>
+            <td>
+                <div class="addr-group">
+                    <div class="addr-row">
+                        <input type="text" class="input-addr1" placeholder="우편번호검색글자" id="postcode" readonly>
+                        <button type="button" class="btn-postcode" onclick="openPostcode()">우편번호검색</button>
+                    </div>
+                    <div class="addr-row">
+                        <input type="text" class="input-addr2" placeholder="기본주소검색" id="addrBase" readonly>
+                    </div>
+                    <div class="addr-row">
+                        <input type="text" class="input-addr2" placeholder="상세주소입력" id="addrDetail">
+                    </div>
+                </div>
+            </td>
+        </tr>
+    </table>
+
+    <div class="btn-area">
+        <button type="button" class="btn-submit" onclick="submitGoogleProfile()">확인</button>
+    </div>
+</main>
+
+<!-- 푸터 -->
+<footer>
+    <div class="footer-copyright">
+        Copyright © 2025 김철학 All rights reserved.
+    </div>
+</footer>
+
+<script th:inline="javascript">
+    const indexUrl = /*[[@{/}]]*/ '/';
+    const completeProfileUrl = /*[[@{/member/google/complete-profile}]]*/ '/member/google/complete-profile';
+</script>
+
+<!-- 카카오 주소 API -->
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+
+<script th:src="@{/js/member/register-google.js}"></script>
+
+</body>
+</html>
