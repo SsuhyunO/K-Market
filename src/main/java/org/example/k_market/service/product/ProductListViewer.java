@@ -23,9 +23,13 @@ public class ProductListViewer {
 
     public PageResponse<ProductListResponse> getProductPageInfo(ProductSearchCommand command) {
         ProductSearchRequest request = command.getRequest();
+        System.out.println(command);
+        String type = request.getType() != null
+            ? request.getType().name()
+            : null;
 
         return paginationService.getPageInfo(
-            request.getPageRequest(),
+            request.getPage(),
             PRODUCT_LIST_SIZE,
             PRODUCT_PAGE_BLOCK_SIZE,
             new PageQuery<>() {
@@ -35,7 +39,7 @@ public class ProductListViewer {
                         offset,
                         command.getSellerUid(),
                         command.getRole(),
-                        request.getType().name(),
+                        type,
                         request.getKeyword());
                 }
 
@@ -44,7 +48,7 @@ public class ProductListViewer {
                     return productDAO.totalCount(
                         command.getSellerUid(),
                         command.getRole(),
-                        request.getType().name(),
+                        type,
                         request.getKeyword());
                 }
             }
