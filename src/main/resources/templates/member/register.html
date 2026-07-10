@@ -1,4 +1,5 @@
 
+
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -6,144 +7,147 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>케이마켓 - 일반 회원가입</title>
     <link rel="stylesheet" th:href="@{/css/member/register.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 </head>
 <body>
 
-    <!-- 헤더 -->
-    <header>
-        <div class="header-inner">
-            <a th:href="@{/}" class="logo">CI ( 로고 )</a>
-            <nav class="header-nav">
-                <a th:href="@{/member/login}">로그인</a>
-                <a th:href="@{/member/join}">회원가입</a>
-                <a th:href="@{/my/home}">마이페이지</a>
-                <a th:href="@{/product/cart}">🛒 장바구니</a>
-            </nav>
-        </div>
-    </header>
+<!-- 헤더 -->
+<header>
+    <div class="header-inner">
+        <a th:href="@{/}" class="logo">
+            <img th:src="@{/images/ci-logo.svg}" alt="케이마켓 로고">
+        </a>
+        <nav class="header-nav">
+            <a th:href="@{/member/login}">로그인</a>
+            <a th:href="@{/member/join}">회원가입</a>
+        </nav>
+    </div>
+</header>
 
-    <!-- 메인 -->
-    <main>
-        <h2 class="section-title">일반 회원가입</h2>
+<!-- 메인 -->
+<main>
+    <h2 class="section-title">일반 회원가입</h2>
 
-        <table class="form-table">
+    <table class="form-table">
 
-            <!-- 계정 정보 -->
-            <tr>
-                <th>아이디</th>
-                <td>
-                    <input type="text" class="input-id" placeholder="" maxlength="12" id="userId">
-                    <button type="button" class="btn-verify" onclick="checkUserId()">중복확인</button>
-                    <span class="hint">영문, 숫자  4~12자 설정</span>
-                    <div id="userId-msg" style="font-size:13px; margin-top:4px;"></div>
-                </td>
-            </tr>
-            <tr>
-                <th>비밀번호</th>
-                <td>
-                    <input type="password" class="input-pw" id="userPw">
-                    <span class="hint">숫자, 특수문자 필수  8~12자 설정</span>
-                    <div id="pw-msg" style="font-size:13px; margin-top:4px;"></div>
-                </td>
-            </tr>
-            <tr>
-                <th>비밀번호확인</th>
-                <td>
-                    <input type="password" class="input-pw" id="userPwConfirm">
-                    <div id="pwConfirm-msg" style="font-size:13px; margin-top:4px;"></div>
-                </td>
-            </tr>
+        <!-- 계정 정보 -->
+        <tr>
+            <th>아이디</th>
+            <td>
+                <input type="text" class="input-id" placeholder="" maxlength="12" id="userId">
+                <button type="button" class="btn-verify" onclick="checkUserId()">중복확인</button>
+                <span class="hint">영문, 숫자  4~12자 설정</span>
+                <div id="userId-msg" style="font-size:13px; margin-top:4px;"></div>
+            </td>
+        </tr>
+        <tr>
+            <th>비밀번호</th>
+            <td>
+                <input type="password" class="input-pw" id="userPw">
+                <span class="hint">숫자, 특수문자 필수  8~12자 설정</span>
+                <div id="pw-msg" style="font-size:13px; margin-top:4px;"></div>
+            </td>
+        </tr>
+        <tr>
+            <th>비밀번호확인</th>
+            <td>
+                <input type="password" class="input-pw" id="userPwConfirm">
+                <div id="pwConfirm-msg" style="font-size:13px; margin-top:4px;"></div>
+            </td>
+        </tr>
 
-            <!-- 구분선 -->
-            <tr class="divider"><th></th><td></td></tr>
+        <!-- 구분선 -->
+        <tr class="divider"><th></th><td></td></tr>
 
-            <!-- 개인 정보 -->
-            <tr>
-                <th>이름</th>
-                <td>
-                    <input type="text" class="input-name" placeholder="이름입력" id="userName">
-                </td>
-            </tr>
-            <tr>
-                <th>생년월일</th>
-                <td>
-                    <input type="date" class="input-date" id="userBirth">
-                </td>
-            </tr>
-            <tr>
-                <th>성별</th>
-                <td>
-                    <div class="gender-group">
-                        <label><input type="radio" name="gender" value="M"> 남</label>
-                        <label><input type="radio" name="gender" value="F"> 여</label>
+        <!-- 개인 정보 -->
+        <tr>
+            <th>이름</th>
+            <td>
+                <input type="text" class="input-name" placeholder="이름입력" id="userName">
+            </td>
+        </tr>
+        <tr>
+            <th>생년월일</th>
+            <td>
+                <input type="date" class="input-date" id="userBirth">
+            </td>
+        </tr>
+        <tr>
+            <th>성별</th>
+            <td>
+                <div class="gender-group">
+                    <label><input type="radio" name="gender" value="M"> 남</label>
+                    <label><input type="radio" name="gender" value="F"> 여</label>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <th>EMAIL</th>
+            <td>
+                <input type="email" class="input-email" placeholder="이메일입력" id="userEmail">
+                <button type="button" class="btn-verify" onclick="sendEmailCode()">이메일 인증</button>
+                <div id="email-msg" style="font-size:13px; margin-top:4px;"></div>
+            </td>
+        </tr>
+        <!-- 이 코드를 기존 EMAIL <tr> 태그 바로 밑에 복사해서 붙여넣으세요 -->
+        <tr id="emailCodeRow" style="display: none;">
+            <th>인증번호</th>
+            <td>
+                <input type="text" class="input-email" placeholder="인증번호 입력" id="emailCode">
+                <button type="button" class="btn-verify" onclick="verifyEmailCode()">인증 확인</button>
+                <div id="emailCode-msg" style="font-size:13px; margin-top:4px;"></div>
+            </td>
+        </tr>
+        <tr>
+            <th>휴대폰</th>
+            <td>
+                <input type="tel" class="input-tel" placeholder="휴대폰입력" id="userPhone">
+                <button type="button" class="btn-verify" onclick="sendPhoneCode()">휴대폰 인증</button>
+                <div id="phone-msg" style="font-size:13px; margin-top:4px;"></div>
+            </td>
+        </tr>
+        <tr>
+            <th>주소</th>
+            <td>
+                <div class="addr-group">
+                    <div class="addr-row">
+                        <input type="text" class="input-addr1" placeholder="우편번호검색글자" id="postcode" readonly>
+                        <button type="button" class="btn-postcode" onclick="openPostcode()">우편번호검색</button>
                     </div>
-                </td>
-            </tr>
-            <tr>
-                <th>EMAIL</th>
-                <td>
-                    <input type="email" class="input-email" placeholder="이메일입력" id="userEmail">
-                    <button type="button" class="btn-verify" onclick="sendEmailCode()">이메일 인증</button>
-                </td>
-            </tr>
-            <!-- 이 코드를 기존 EMAIL <tr> 태그 바로 밑에 복사해서 붙여넣으세요 -->
-            <tr id="emailCodeRow" style="display: none;">
-                <th>인증번호</th>
-                <td>
-                    <input type="text" class="input-email" placeholder="인증번호 입력" id="emailCode">
-                    <button type="button" class="btn-verify" onclick="verifyEmailCode()">인증 확인</button>
-                    <div id="emailCode-msg" style="font-size:13px; margin-top:4px;"></div>
-                </td>
-            </tr>
-            <tr>
-                <th>휴대폰</th>
-                <td>
-                    <input type="tel" class="input-tel" placeholder="휴대폰입력" id="userPhone">
-                    <button type="button" class="btn-verify" onclick="sendPhoneCode()">휴대폰 인증</button>
-                </td>
-            </tr>
-            <tr>
-                <th>주소</th>
-                <td>
-                    <div class="addr-group">
-                        <div class="addr-row">
-                            <input type="text" class="input-addr1" placeholder="우편번호검색글자" id="postcode" readonly>
-                            <button type="button" class="btn-postcode" onclick="openPostcode()">우편번호검색</button>
-                        </div>
-                        <div class="addr-row">
-                            <input type="text" class="input-addr2" placeholder="기본주소검색" id="addrBase" readonly>
-                        </div>
-                        <div class="addr-row">
-                            <input type="text" class="input-addr2" placeholder="상세주소입력" id="addrDetail">
-                        </div>
+                    <div class="addr-row">
+                        <input type="text" class="input-addr2" placeholder="기본주소검색" id="addrBase" readonly>
                     </div>
-                </td>
-            </tr>
-        </table>
+                    <div class="addr-row">
+                        <input type="text" class="input-addr2" placeholder="상세주소입력" id="addrDetail">
+                    </div>
+                </div>
+            </td>
+        </tr>
+    </table>
 
-        <!-- ② 회원가입 버튼 -->
-        <div class="btn-area">
-            <button type="button" class="btn-submit" onclick="submitJoin()">회원가입</button>
-        </div>
-    </main>
+    <!-- ② 회원가입 버튼 -->
+    <div class="btn-area">
+        <button type="button" class="btn-submit" onclick="submitJoin()">회원가입</button>
+    </div>
+</main>
 
-    <!-- 푸터 -->
-    <footer>
-        
-        <div class="footer-copyright">
-            Copyright © 2025 김철학 All rights reserved.
-        </div>
-    </footer>
+<!-- 푸터 -->
+<footer>
 
-    <script th:inline="javascript">
-        const loginUrl = /*[[@{/member/login}]]*/ '/member/login';
-        const indexUrl = /*[[@{/}]]*/ '/';
-    </script>
+    <div class="footer-copyright">
+        Copyright © 2025 김철학 All rights reserved.
+    </div>
+</footer>
 
-    <!-- 카카오 주소 API -->
-    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<script th:inline="javascript">
+    const loginUrl = /*[[@{/member/login}]]*/ '/member/login';
+    const indexUrl = /*[[@{/}]]*/ '/';
+</script>
 
-    <script th:src="@{/js/member/register.js}"></script>
+<!-- 카카오 주소 API -->
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+
+<script th:src="@{/js/member/register.js}"></script>
 
 
 </body>

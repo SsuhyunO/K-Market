@@ -45,6 +45,12 @@ public class MemberApiController {
         return memberService.isUidDuplicate(uid);
     }
 
+    // 이메일 중복확인 -> true면 이미 사용중(중복), false면 사용가능
+    @GetMapping("/check-email")
+    public boolean checkEmail(@RequestParam String email) {
+        return memberService.isEmailDuplicate(email);
+    }
+
     // 회원가입
     @PostMapping("/signup")
     public String signup(@Valid @RequestBody MemberDto.SignUpRequest request, HttpServletRequest httpRequest) {
