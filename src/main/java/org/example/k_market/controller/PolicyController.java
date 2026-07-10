@@ -2,11 +2,14 @@ package org.example.k_market.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.example.k_market.dto.PolicyArticleDTO;
+import org.example.k_market.dto.category.CategoryTreeDTO;
+import org.example.k_market.service.CategoryService;
 import org.example.k_market.service.PolicyService;
 import org.example.k_market.util.PolicyParser;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 
 import java.util.List;
 
@@ -26,6 +29,12 @@ import java.util.List;
 @Controller
 public class PolicyController {
     private final PolicyService policyService;
+    private final CategoryService categoryService;
+
+    @ModelAttribute("categoryTree")
+    public List<CategoryTreeDTO> categoryTree() {
+        return categoryService.getCategoryTree();
+    }
 
     @GetMapping("/policy/buyer")
     public String buyer(Model model) {
