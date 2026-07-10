@@ -31,4 +31,6 @@ public interface MemberRepository extends JpaRepository<Member, String> {
     Page<Member> findByEmailContaining(String email, Pageable pageable);
 
     Page<Member> findByPhoneContaining(String phone, Pageable pageable);
+
+    Optional<Member> findByEmail(String email);
 }

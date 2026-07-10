@@ -1,6 +1,4 @@
 
-
-
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -59,7 +57,8 @@
                 <div class="social-login">
                     <button class="social-btn naver" title="네이버 로그인">N</button>
                     <button class="social-btn kakao" title="카카오 로그인">K</button>
-                    <button class="social-btn google" title="구글 로그인">G</button>
+                    <!-- 구글 로그인: a 태그로 변경, /oauth2/authorization/google 로 이동하면 Security가 알아서 구글로 리다이렉트함 -->
+                    <a th:href="@{/oauth2/authorization/google}" class="social-btn google" title="구글 로그인">G</a>
                 </div>
             </div>
 

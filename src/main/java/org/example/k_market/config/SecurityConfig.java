@@ -1,5 +1,8 @@
 package org.example.k_market.config;
 
+import org.example.k_market.security.CustomOAuth2UserService;
+import org.example.k_market.security.OAuth2LoginSuccessHandler;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -16,6 +19,13 @@ import java.util.List;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
+
+    // ===== 구글 OAuth2 관련 =====
+    @Autowired
+    private CustomOAuth2UserService customOAuth2UserService;
+
+    @Autowired
+    private OAuth2LoginSuccessHandler oAuth2LoginSuccessHandler;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -48,6 +58,14 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                                 .anyRequest().permitAll()
                         // 나중에 보안 강화할 때 다시 좁힐 예정
+                )
+                // ===== 구글 OAuth2 로그인 설정 =====
+                .oauth2Login(oauth2 -> oauth2
+                        .loginPage("/member/login") // 커스텀 로그인 페이지
+                        .userInfoEndpoint(userInfo -> userInfo
+                                .userService(customOAuth2UserService)
+                        )
+                        .successHandler(oAuth2LoginSuccessHandler)
                 );
 
         return http.build();
