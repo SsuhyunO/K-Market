@@ -48,6 +48,7 @@ function checkPwMatch() {
 
 let idChecked = false;
 let bizChecked = false;
+let emailChecked = false;
 
 const ID_PATTERN = /^[A-Za-z0-9]{4,12}$/;
 const PW_LENGTH_OK = pw => pw.length >= 8 && pw.length <= 12;
@@ -56,6 +57,8 @@ const PW_HAS_NUMBER = pw => /[0-9]/.test(pw);
 const PW_HAS_SPECIAL = pw => /[!@#$%^&*(),.?":{}|<>]/.test(pw);
 const BIZ_NUM_PATTERN = /^\d{3}-\d{2}-\d{5}$/;
 const MAIL_ORDER_PATTERN = /^제\d{4}-[가-힣]+-\d{4,5}호$/;
+const TEL_PATTERN = /^0\d{1,2}-?\d{3,4}-?\d{4}$/;
+const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 async function checkUserId() {
     const id = document.getElementById('userId').value.trim();
@@ -139,6 +142,76 @@ document.getElementById('mailOrderNum').addEventListener('blur', function() {
     }
 });
 
+// 전화번호 형식 실시간 체크
+document.getElementById('tel').addEventListener('blur', function() {
+    const val = this.value.trim();
+    const msg = document.getElementById('tel-msg');
+
+    if (!val) {
+        msg.textContent = '';
+        return;
+    }
+    if (!TEL_PATTERN.test(val)) {
+        msg.style.color = '#c0392b';
+        msg.textContent = '전화번호 형식이 올바르지 않습니다. (예: 02-1234-5678)';
+    } else {
+        msg.style.color = '#4CAF50';
+        msg.textContent = '';
+    }
+});
+
+// 팩스 형식 실시간 체크 (선택 입력이므로 값이 있을 때만 검증)
+document.getElementById('fax').addEventListener('blur', function() {
+    const val = this.value.trim();
+    const msg = document.getElementById('fax-msg');
+
+    if (!val) {
+        msg.textContent = '';
+        return;
+    }
+    if (!TEL_PATTERN.test(val)) {
+        msg.style.color = '#c0392b';
+        msg.textContent = '팩스번호 형식이 올바르지 않습니다. (예: 02-1234-5678)';
+    } else {
+        msg.style.color = '#4CAF50';
+        msg.textContent = '';
+    }
+});
+
+// 이메일 형식 검증 + 중복확인
+async function checkEmail() {
+    const email = document.getElementById('userEmail').value.trim();
+    const msg = document.getElementById('userEmail-msg');
+
+    emailChecked = false;
+
+    if (!EMAIL_PATTERN.test(email)) {
+        msg.style.color = '#c0392b';
+        msg.textContent = '이메일 형식이 올바르지 않습니다.';
+        return;
+    }
+
+    try {
+        const res = await fetch(`/K_Market/api/member/check-email?email=${encodeURIComponent(email)}`);
+        const isDuplicate = await res.json();
+
+        if (isDuplicate) {
+            msg.style.color = '#c0392b';
+            msg.textContent = '이미 사용 중인 이메일입니다.';
+            emailChecked = false;
+        } else {
+            msg.style.color = '#4CAF50';
+            msg.textContent = '사용 가능한 이메일입니다.';
+            emailChecked = true;
+        }
+    } catch (err) {
+        console.error(err);
+        msg.style.color = '#c0392b';
+        msg.textContent = '중복확인 중 오류가 발생했습니다.';
+        emailChecked = false;
+    }
+}
+
 function openPostcode() {
     new daum.Postcode({
         oncomplete: function(data) {
@@ -197,8 +270,20 @@ async function submitJoin() {
     if (!tel) {
         alert('전화번호를 입력해 주세요.'); return;
     }
+    if (!TEL_PATTERN.test(tel)) {
+        alert('전화번호 형식이 올바르지 않습니다. (예: 02-1234-5678)'); return;
+    }
+    if (fax && !TEL_PATTERN.test(fax)) {
+        alert('팩스번호 형식이 올바르지 않습니다. (예: 02-1234-5678)'); return;
+    }
     if (!email) {
         alert('이메일을 입력해 주세요.'); return;
+    }
+    if (!EMAIL_PATTERN.test(email)) {
+        alert('이메일 형식이 올바르지 않습니다.'); return;
+    }
+    if (!emailChecked) {
+        alert('이메일 중복확인을 해주세요.'); return;
     }
 
     try {

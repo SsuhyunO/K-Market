@@ -24,6 +24,11 @@ public class MemberService {
         return memberRepository.existsByUid(uid);
     }
 
+    // 이메일 중복확인 (true = 이미 존재함 = 사용 불가)
+    public boolean isEmailDuplicate(String email) {
+        return memberRepository.existsByEmail(email);
+    }
+
     // 회원가입
     @Transactional
     public void signUp(MemberDto.SignUpRequest request, String regIp) {

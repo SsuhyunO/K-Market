@@ -1,5 +1,6 @@
 
 
+
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -7,18 +8,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>케이마켓 - 판매자 회원가입</title>
     <link rel="stylesheet" th:href="@{/css/member/registerSeller.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 </head>
 <body>
 
 <!-- 헤더 -->
 <header>
     <div class="header-inner">
-        <a th:href="@{/}" class="logo">CI ( 로고 )</a>
+        <a th:href="@{/}" class="logo">
+            <img th:src="@{/images/ci-logo.svg}" alt="케이마켓 로고">
+        </a>
         <nav class="header-nav">
             <a th:href="@{/member/login}">로그인</a>
             <a th:href="@{/member/join}">회원가입</a>
-            <a th:href="@{/my/home}">마이페이지</a>
-            <a th:href="@{/product/cart}">🛒 장바구니</a>
         </nav>
     </div>
 </header>
@@ -91,18 +93,22 @@
             <th>전화번호</th>
             <td>
                 <input type="tel" class="input-normal" placeholder="전화번호입력" id="tel">
+                <div id="tel-msg" style="font-size:13px; margin-top:4px;"></div>
             </td>
         </tr>
         <tr>
             <th>팩스</th>
             <td>
                 <input type="tel" class="input-normal" placeholder="팩스번호입력" id="fax">
+                <div id="fax-msg" style="font-size:13px; margin-top:4px;"></div>
             </td>
         </tr>
         <tr>
             <th>이메일</th>
             <td>
                 <input type="email" class="input-normal" placeholder="이메일입력" id="userEmail">
+                <button type="button" class="btn-verify" onclick="checkEmail()">중복확인</button>
+                <div id="userEmail-msg" style="font-size:13px; margin-top:4px;"></div>
             </td>
         </tr>
         <tr>

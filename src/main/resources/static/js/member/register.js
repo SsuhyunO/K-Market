@@ -11,9 +11,52 @@ function openPostcode() {
 
 // 이메일 인증 여부
 let emailVerified = false;
+let emailChecked = false;
 
 // 아이디 중복확인 여부
 let idChecked = false;
+
+const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const PHONE_PATTERN = /^01[016789]-?\d{3,4}-?\d{4}$/;
+
+// 이메일 형식 검증 + 중복확인
+async function checkEmailDuplicate() {
+    const email = document.getElementById('userEmail').value.trim();
+    const msg = document.getElementById('email-msg');
+
+    emailChecked = false;
+
+    if (!EMAIL_PATTERN.test(email)) {
+        msg.style.color = '#c0392b';
+        msg.textContent = '이메일 형식이 올바르지 않습니다.';
+        return false;
+    }
+
+    try {
+        const res = await fetch(
+            '/K_Market/api/member/check-email?email=' + encodeURIComponent(email),
+            { credentials: 'include' }
+        );
+
+        const isDuplicate = await res.json();
+
+        if (isDuplicate) {
+            msg.style.color = '#c0392b';
+            msg.textContent = '이미 사용 중인 이메일입니다.';
+            return false;
+        }
+
+        msg.style.color = '#4CAF50';
+        msg.textContent = '사용 가능한 이메일입니다.';
+        emailChecked = true;
+        return true;
+    } catch (err) {
+        console.error(err);
+        msg.style.color = '#c0392b';
+        msg.textContent = '중복확인 중 오류가 발생했습니다.';
+        return false;
+    }
+}
 
 // 이메일 인증번호 발송
 async function sendEmailCode() {
@@ -21,6 +64,11 @@ async function sendEmailCode() {
 
     if (!email) {
         alert('이메일을 입력해 주세요.');
+        return;
+    }
+
+    const ok = await checkEmailDuplicate();
+    if (!ok) {
         return;
     }
 
@@ -171,8 +219,34 @@ function checkPwMatch() {
     }
 }
 
+// 휴대폰 형식 실시간 검증
+document.getElementById('userPhone').addEventListener('input', function () {
+    const phone = this.value.trim();
+    const msg = document.getElementById('phone-msg');
+
+    if (phone.length === 0) {
+        msg.textContent = '';
+        return;
+    }
+
+    if (!PHONE_PATTERN.test(phone)) {
+        msg.style.color = '#c0392b';
+        msg.textContent = '휴대폰 번호 형식이 올바르지 않습니다. (예: 010-1234-5678)';
+    } else {
+        msg.style.color = '#4CAF50';
+        msg.textContent = '';
+    }
+});
+
 // 휴대폰 인증 (백엔드 API가 아직 없어서 임시 처리)
 function sendPhoneCode() {
+    const phone = document.getElementById('userPhone').value.trim();
+
+    if (!PHONE_PATTERN.test(phone)) {
+        alert('휴대폰 번호 형식이 올바르지 않습니다. (예: 010-1234-5678)');
+        return;
+    }
+
     alert('휴대폰 인증 기능은 아직 준비 중입니다.');
 }
 
@@ -200,8 +274,18 @@ async function submitJoin() {
         return;
     }
 
+    if (!EMAIL_PATTERN.test(email) || !emailChecked) {
+        alert('이메일 중복확인을 완료해 주세요.');
+        return;
+    }
+
     if (!emailVerified) {
         alert('이메일 인증을 완료해 주세요.');
+        return;
+    }
+
+    if (phone && !PHONE_PATTERN.test(phone)) {
+        alert('휴대폰 번호 형식이 올바르지 않습니다. (예: 010-1234-5678)');
         return;
     }
 
