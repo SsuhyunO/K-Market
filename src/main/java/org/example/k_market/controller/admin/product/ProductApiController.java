@@ -3,10 +3,10 @@ package org.example.k_market.controller.admin.product;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.example.k_market.dto.pagination.response.PageResponse;
-import org.example.k_market.dto.product.command.ProductSearchCommand;
-import org.example.k_market.dto.product.request.ProductSearchRequest;
+import org.example.k_market.dto.product.command.ManagementProductSearchCommand;
+import org.example.k_market.dto.product.request.ManagementProductSearchRequest;
 import org.example.k_market.dto.product.response.ProductDetailResponse;
-import org.example.k_market.dto.product.response.ProductListResponse;
+import org.example.k_market.dto.product.response.ManagementProductListResponse;
 import org.example.k_market.service.ProductService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,10 +23,10 @@ public class ProductApiController {
     private final ProductService productService;
 
     @GetMapping("/list")
-    public ResponseEntity<PageResponse<ProductListResponse>> getProductPageInfo(@ModelAttribute ProductSearchRequest pageRequest, HttpSession session) {
+    public ResponseEntity<PageResponse<ManagementProductListResponse>> getProductPageInfo(@ModelAttribute ManagementProductSearchRequest pageRequest, HttpSession session) {
         return ResponseEntity.ok(
-            productService.getProductPageInfo(
-                ProductSearchCommand
+            productService.getProductPageInfoForManagement(
+                ManagementProductSearchCommand
                     .builder()
                     .request(pageRequest)
                     .sellerUid((String)session.getAttribute("loginMember"))
@@ -38,6 +38,6 @@ public class ProductApiController {
 
     @GetMapping("/{prodNo}")
     public ResponseEntity<ProductDetailResponse> getProductDetail(@PathVariable int prodNo) {
-        return ResponseEntity.ok(productService.getProductDetail(prodNo));
+        return ResponseEntity.ok(productService.getProductDetailForManagement(prodNo));
     }
 }
