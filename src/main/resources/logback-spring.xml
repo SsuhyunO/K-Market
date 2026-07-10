@@ -1,23 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
 
-    <!-- 콘솔 출력 -->
+    <!-- 기본값은 프로젝트 실행 위치 기준 ./logs, 배포 시엔 환경변수로 override -->
+    <property name="LOG_PATH" value="${LOG_PATH:-./logs}" />
+
     <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
             <pattern>%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n</pattern>
         </encoder>
     </appender>
 
-    <!-- 일별 파일 저장 (절대경로 사용) -->
     <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>/home/ec2-user/logs/app.log</file>
+        <file>${LOG_PATH}/app.log</file>
 
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <!-- 날짜별 파일명 -->
-            <fileNamePattern>/home/ec2-user/logs/app.%d{yyyy-MM-dd}.log</fileNamePattern>
-            <!-- 30일치만 보관 -->
+            <fileNamePattern>${LOG_PATH}/app.%d{yyyy-MM-dd}.log</fileNamePattern>
             <maxHistory>30</maxHistory>
-            <!-- 전체 로그 용량 제한 -->
             <totalSizeCap>1GB</totalSizeCap>
         </rollingPolicy>
 
