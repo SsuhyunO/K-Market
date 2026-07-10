@@ -66,6 +66,7 @@ jobs:
             -o StrictHostKeyChecking=no \
             ${{ secrets.AWS_EC2_USER }}@${{ secrets.AWS_EC2_HOST }} << EOF
             pgrep java | xargs kill -9;
+            LOG_PATH=/home/${{ secrets.AWS_EC2_USER }}/logs \
             nohup java -jar /home/${{ secrets.AWS_EC2_USER }}/$JAR_FILE > app.log 2>&1 &
           EOF
 
