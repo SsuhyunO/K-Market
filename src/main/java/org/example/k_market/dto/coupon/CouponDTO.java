@@ -28,6 +28,7 @@ public class CouponDTO {
     // 추가 필드
     private Integer validDays;
     private String companyName;
+    private String sellerStatus;
 
     public Coupon toEntity(){
         return Coupon.builder()

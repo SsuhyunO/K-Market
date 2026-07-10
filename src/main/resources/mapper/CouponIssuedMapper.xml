@@ -44,9 +44,14 @@
         c.name          AS couponName,
         c.startDate     AS startDate,
         c.expireDate    AS expireDate,
-        c.notice        AS notice
+        c.notice        AS notice,
+        s.companyName   AS companyName,
+        s.status        AS sellerStatus,
+        m.status        AS memberStatus
         FROM coupon_issue ci
         LEFT JOIN coupon c ON ci.couponNo = c.couponNo
+        LEFT JOIN seller s ON c.sellerUid = s.uid
+        LEFT JOIN member m ON ci.memberUid = m.uid
         <include refid="issueSearchWhere"/>
         ORDER BY ci.issueNo DESC
         LIMIT #{offset}, #{pageSize}
@@ -54,10 +59,12 @@
 
     <select id="getCouponIssueByNo" resultType="org.example.k_market.dto.coupon.CouponIssueDTO">
         SELECT
-        ci.issueNo, ci.couponNo, ci.memberUid, ci.status, ci.createdAt, ci.updatedAt,
-        c.couponType, c.sellerUid, c.benefit, c.name AS couponName, c.startDate, c.expireDate, c.notice
+            ci.issueNo, ci.couponNo, ci.memberUid, ci.status, ci.createdAt, ci.updatedAt,
+            c.couponType, c.sellerUid, c.benefit, c.name AS couponName, c.startDate, c.expireDate, c.notice,
+            s.companyName AS companyName
         FROM coupon_issue ci
-        LEFT JOIN coupon c ON ci.couponNo = c.couponNo
+                 LEFT JOIN coupon c ON ci.couponNo = c.couponNo
+                 LEFT JOIN seller s ON c.sellerUid = s.uid
         WHERE ci.issueNo = #{issueNo}
     </select>
 

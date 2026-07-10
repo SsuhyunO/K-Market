@@ -24,4 +24,9 @@ public class CouponIssueDTO {
     private String startDate;
     private String expireDate;
     private String notice;
+
+    // 추가 필드
+    private String companyName;
+    private String sellerStatus;
+    private String memberStatus;
 }

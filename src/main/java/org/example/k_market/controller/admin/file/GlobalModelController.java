@@ -59,6 +59,14 @@ public class GlobalModelController {
                 model.addAttribute("mainSliderBanners", null);
             }
         }
+
+        if ("/my".equals(path)) {
+            model.addAttribute("myPage", bannerService.findEnabledBannersByType("myPage"));
+        } else if ("/member/login".equals(path)) {
+            model.addAttribute("userLogin", bannerService.findEnabledBannersByType("userLogin"));
+        } else if ("/product/view".equals(path)) {
+            model.addAttribute("productDetailView", bannerService.findEnabledBannersByType("productDetailView"));
+        }
     }
 
     private String getRequestPath(HttpServletRequest request) {

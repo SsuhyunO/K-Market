@@ -2,15 +2,16 @@ import { initModals, openModal } from '../../global/modal-form.js';
 import { delegate } from '../../global/event-manager.js';
 
 const COUPON_ISSUED_DETAIL_FIELDS = [
+    "issueNo",
     "couponNo",
     "couponType",
     "couponName",
     "benefit",
     "period",
     "memberId",
-    "issuedAt",
     "usedAt",
     "status",
+    "issuer",
     "description"
 ];
 
