@@ -3,9 +3,11 @@ package org.example.k_market.service.admin;
 import lombok.RequiredArgsConstructor;
 import org.example.k_market.dao.CouponIssueDAO;
 import org.example.k_market.dto.coupon.CouponIssueDTO;
+import org.example.k_market.dto.order.OrderItemViewDTO;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -44,7 +46,12 @@ public class CouponIssueService {
         couponIssueDAO.stopCouponIssue(issueNo, STATUS_STOPPED);
     }
 
-    public List<CouponIssueDTO> getAvailableCoupons(String memberUid) {
-        return couponIssueDAO.getAvailableCouponsByMemberUid(memberUid);
+    public List<CouponIssueDTO> getAvailableCoupons(String memberUid, List<OrderItemViewDTO> orderItems) {
+        List<String> sellerUidList = orderItems.stream()
+                .map(OrderItemViewDTO::getSellerUid)
+                .distinct()
+                .collect(Collectors.toList());
+
+        return couponIssueDAO.getAvailableCouponsByMemberUid(memberUid, sellerUidList);
     }
 }

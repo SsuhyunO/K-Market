@@ -62,8 +62,13 @@ public class CouponController {
 
     @PostMapping("/register")
     public String register(CouponDTO dto, HttpSession session){
-        String loginUid = (String) session.getAttribute("loginMember");
-        dto.setSellerUid(loginUid); // 폼값 무시하고 세션값으로 덮어쓰기
+        String loginMemberType = (String) session.getAttribute("loginMemberType"); // 실제 세션 키 이름에 맞게 수정
+
+        if ("SELLER".equals(loginMemberType)) {
+            String loginUid = (String) session.getAttribute("loginMember");
+            dto.setSellerUid(loginUid);
+        }
+        // ADMIN인 경우 sellerUid는 세팅하지 않음 (null 유지)
 
         couponService.register(dto);
 

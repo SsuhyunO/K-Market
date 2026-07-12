@@ -213,7 +213,47 @@ document.getElementById('btnApplyCoupon').addEventListener('click', () => {
         return;
     }
 
+    const couponType = selected.dataset.couponType; // "ALL", "PRODUCT" 등
     const benefit = selected.dataset.benefit; // "1000", "10", "DELIVERY_FREE"
+
+    // ===== PRODUCT 타입: 선택한 상품 1개 수량분만 기준으로 계산 =====
+    if (couponType === 'PRODUCT') {
+        const targetSelect = document.getElementById('couponTargetProduct');
+
+        if (!targetSelect.value) {
+            alert('쿠폰을 적용할 상품을 선택해주세요.');
+            return;
+        }
+
+        const targetVariantId = targetSelect.value;
+        const targetItem = orderItems.find(
+            item => String(item.prodVariantId) === String(targetVariantId)
+        );
+
+        if (!targetItem) {
+            alert('선택한 상품을 찾을 수 없습니다.');
+            return;
+        }
+
+        const baseAmount = targetItem.price; // 개당 가격 1개분만 기준
+
+        if (benefit === 'DELIVERY_FREE') {
+            appliedCouponDiscount = 0;
+            appliedCouponFreeShipping = true;
+        } else if (benefit.length <= 2) {
+            const rate = parseInt(benefit, 10);
+            appliedCouponDiscount = Math.floor(baseAmount * rate / 100);
+            appliedCouponFreeShipping = false;
+        } else {
+            appliedCouponDiscount = parseInt(benefit, 10);
+            appliedCouponFreeShipping = false;
+        }
+
+        recalculateSummary();
+        return;
+    }
+
+    // ===== ALL 등 기존 로직 =====
     const { productTotal, discountTotal } = getBaseAmounts();
     const priceAfterProductDiscount = productTotal - discountTotal;
 
@@ -221,17 +261,47 @@ document.getElementById('btnApplyCoupon').addEventListener('click', () => {
         appliedCouponDiscount = 0;
         appliedCouponFreeShipping = true;
     } else if (benefit.length <= 2) {
-        // 정률 (10, 20, 30...)
         const rate = parseInt(benefit, 10);
         appliedCouponDiscount = Math.floor(priceAfterProductDiscount * rate / 100);
         appliedCouponFreeShipping = false;
     } else {
-        // 정액 (1000, 2000...)
         appliedCouponDiscount = parseInt(benefit, 10);
         appliedCouponFreeShipping = false;
     }
 
     recalculateSummary();
+});
+
+document.getElementById('couponSelect').addEventListener('change', function () {
+    const selected = this.options[this.selectedIndex];
+    const couponType = selected.getAttribute('data-coupon-type');
+    const sellerUid = selected.getAttribute('data-seller-uid');
+
+    const targetRow = document.getElementById('couponTargetProductRow');
+    const targetSelect = document.getElementById('couponTargetProduct');
+
+    targetSelect.innerHTML = '<option value="">상품 선택</option>';
+
+    if (couponType === 'PRODUCT' && this.value !== '') {
+        // 같은 sellerUid를 가진 주문 상품만 필터링
+        const candidates = orderItems.filter(item => item.sellerUid === sellerUid);
+
+        candidates.forEach(item => {
+            const opt = document.createElement('option');
+            opt.value = item.prodVariantId; // 또는 prodNo
+            opt.textContent = `${item.productName} (${item.optionText || ''}) - 개당 ${item.price.toLocaleString()}원`;
+            targetSelect.appendChild(opt);
+        });
+
+        // 후보가 1개뿐이면 자동 선택
+        if (candidates.length === 1) {
+            targetSelect.value = candidates[0].prodVariantId;
+        }
+
+        targetRow.style.display = 'flex';
+    } else {
+        targetRow.style.display = 'none';
+    }
 });
 
 // ===== 최종 합계 재계산 =====

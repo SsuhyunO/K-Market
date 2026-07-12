@@ -96,10 +96,11 @@ public class ProductController {
         return "product/cart";
     }
 
+    // TODO: 테스트용 default, 실제 배포 전 제거
     @GetMapping("/product/order")
     public String order(@RequestParam(required = false) List<Integer> cartNoList,
-                        @RequestParam(required = false) Integer prodVariantId,
-                        @RequestParam(required = false) Integer count,
+                        @RequestParam(required = false, defaultValue = "109") Integer prodVariantId,
+                        @RequestParam(required = false, defaultValue = "2") Integer count,
                         HttpSession session,
                         Model model) {
         String memberUid = (String) session.getAttribute("loginMember");
@@ -124,7 +125,7 @@ public class ProductController {
         model.addAttribute("availablePoint", member.getPointBalance());
 
         // 3. 쿠폰
-        model.addAttribute("availableCoupons", couponIssueService.getAvailableCoupons(member.getUid()));
+        model.addAttribute("availableCoupons", couponIssueService.getAvailableCoupons(member.getUid(), orderItems));
 
         // 4. 주문 상품 + 합계
         int productTotal = orderService.calcProductTotal(orderItems);

@@ -13,6 +13,7 @@ public class OrderItemViewDTO {
     private Integer prodVariantId;   // 결제 시 다시 서버로 넘겨야 하니 hidden으로 필요
     private String thumbnailUrl;
     private String productName;
+    private String sellerUid;
     private String optionText;       // "블랙 / L"
     private Integer quantity;
     private Integer price;           // 판매가 (개당)

@@ -52,6 +52,7 @@ public class OrderService {
                 .prodVariantId(variant.getId())
                 .thumbnailUrl(thumbnailUrl)
                 .productName(product.getProdName())
+                .sellerUid(product.getSellerUid())
                 .optionText(optionText)
                 .quantity(count)
                 .price(price)

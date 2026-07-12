@@ -176,6 +176,15 @@
                         </select>
                         <button type="button" class="btn-apply" id="btnApplyCoupon">사용하기</button>
                     </div>
+
+                    <!-- PRODUCT 타입 쿠폰 선택 시에만 노출되는 상품 선택 셀렉트 -->
+                    <div class="discount-row" id="couponTargetProductRow" style="display:none; margin-top: 8px;">
+                        <label for="couponTargetProduct">적용상품</label>
+                        <select id="couponTargetProduct" name="couponTargetProduct">
+                            <option value="">상품 선택</option>
+                            <!-- JS로 동적 채움 -->
+                        </select>
+                    </div>
                 </section>
 
                 <!-- ④ 결제방법: 6가지 결제방식 중 1가지 선택 (실제 결제 테스트는 해당사항 없음) -->
@@ -286,6 +295,9 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script th:src="@{/js/common.js}"></script>
 <script th:src="@{/js/product/product.js}"></script>
+<script th:inline="javascript">
+    const orderItems = /*[[${orderItems}]]*/ [];
+</script>
 
 </body>
 </html>
