@@ -53,57 +53,6 @@
         OFFSET #{offset}
     </select>
 
-    <select id="findProductDetail" resultType="org.example.k_market.dto.product.response.ProductDetailResponse">
-        SELECT
-            p.prodNo,
-            p.cateId,
-            p.prodName,
-            p.description,
-            p.maker,
-            p.deliveryFee,
-            p.price,
-            p.discount,
-            p.point,
-            p.sold,
-            COALESCE(SUM(pv.stock), 0) AS stock,
-            parent.cateId AS rootCategoryId,
-            parent.name AS rootCategoryName,
-            c.name AS subCategoryName,
-            p.thumb1FileId,
-            p.thumb2FileId,
-            p.thumb3FileId,
-            p.detailInfoFileId,
-            p.sellerUid,
-            p.infoNoticeType,
-            p.createdAt
-        FROM product p
-        LEFT JOIN category c ON c.cateId = p.cateId
-        LEFT JOIN category parent ON parent.cateId = c.parentId
-        LEFT JOIN product_variant pv ON pv.prodNo = p.prodNo
-        WHERE p.prodNo = #{prodNo}
-        GROUP BY
-            p.prodNo,
-            p.cateId,
-            p.prodName,
-            p.description,
-            p.maker,
-            p.deliveryFee,
-            p.price,
-            p.discount,
-            p.point,
-            p.sold,
-            parent.cateId,
-            parent.name,
-            c.name,
-            p.thumb1FileId,
-            p.thumb2FileId,
-            p.thumb3FileId,
-            p.detailInfoFileId,
-            p.sellerUid,
-            p.infoNoticeType,
-            p.createdAt
-    </select>
-
     <select id="totalCountForManagement" resultType="int">
         SELECT COUNT(prodNo)
         FROM product p
@@ -131,5 +80,123 @@
                 </choose>
             </if>
         </where>
+    </select>
+
+    <select id="findProductsForCustomer" resultType="org.example.k_market.dto.product.response.ProductListResponse">
+        SELECT
+            p.prodNo AS no,
+            p.prodName AS name,
+            p.description,
+            p.price,
+            p.discount,
+            p.deliveryFee,
+            p.thumb1FileId,
+            m.name AS seller,
+            COALESCE(AVG(r.rating), 0) AS rating
+        FROM product p
+        JOIN member m ON m.uid = p.sellerUid
+        LEFT JOIN review r ON r.prodNo = p.prodNo
+        <where>
+            <if test="cateId != null">
+                p.cateId = #{cateId}
+            </if>
+        </where>
+        GROUP BY
+            p.prodNo,
+            p.prodName,
+            p.description,
+            p.price,
+            p.discount,
+            p.deliveryFee,
+            p.thumb1FileId,
+            m.name
+        <choose>
+            <when test="type == 'SALES'">
+                ORDER BY p.sold DESC, p.prodNo DESC
+            </when>
+            <when test="type == 'PRICE_ASC'">
+                ORDER BY (p.price * (100 - p.discount) / 100) ASC,
+                    p.prodNo DESC
+            </when>
+            <when test="type == 'PRICE_DESC'">
+                ORDER BY (p.price * (100 - p.discount) / 100) DESC,
+                    p.prodNo DESC
+            </when>
+            <when test="type == 'RATING'">
+                ORDER BY rating DESC, p.prodNo DESC
+            </when>
+            <when test="type == 'REVIEW_COUNT">
+                ORDER BY COUNT(r.reviewNo) DESC, p.prodNo DESC
+            </when>
+            <when test="type == 'CREATED_AT">
+                ORDER BY p.createdAt DESC, p.prodNo DESC
+            </when>
+            <otherwise>
+                ORDER BY p.prodNo DESC
+            </otherwise>
+        </choose>
+        LIMIT #{size}
+        OFFSET #{offset}
+    </select>
+
+    <select id="totalCountForCustomer" resultType="int">
+        SELECT COUNT(prodNo)
+        FROM product
+        <where>
+            <if test="cateId != null">
+                cateId = #{cateId}
+            </if>
+        </where>
+    </select>
+
+    <select id="findProductDetail" resultType="org.example.k_market.dto.product.response.ProductDetailResponse">
+        SELECT
+            p.prodNo,
+            p.cateId,
+            p.prodName,
+            p.description,
+            p.maker,
+            p.deliveryFee,
+            p.price,
+            p.discount,
+            p.point,
+            p.sold,
+            COALESCE(SUM(pv.stock), 0) AS stock,
+            parent.cateId AS rootCategoryId,
+            parent.name AS rootCategoryName,
+            c.name AS subCategoryName,
+            p.thumb1FileId,
+            p.thumb2FileId,
+            p.thumb3FileId,
+            p.detailInfoFileId,
+            p.sellerUid,
+            p.infoNoticeType,
+            p.createdAt
+        FROM product p
+            LEFT JOIN category c ON c.cateId = p.cateId
+            LEFT JOIN category parent ON parent.cateId = c.parentId
+            LEFT JOIN product_variant pv ON pv.prodNo = p.prodNo
+        WHERE p.prodNo = #{prodNo}
+        GROUP BY
+            p.prodNo,
+            p.cateId,
+            p.prodName,
+            p.description,
+            p.maker,
+            p.deliveryFee,
+            p.price,
+            p.discount,
+            p.point,
+            p.sold,
+            parent.cateId,
+            parent.name,
+            c.name,
+            p.thumb1FileId,
+            p.thumb2FileId,
+            p.thumb3FileId,
+            p.detailInfoFileId,
+            p.sellerUid,
+            p.infoNoticeType,
+            p.createdAt
     </select>
 </mapper>

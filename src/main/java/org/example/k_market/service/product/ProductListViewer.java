@@ -3,6 +3,7 @@ package org.example.k_market.service.product;
 import lombok.RequiredArgsConstructor;
 import org.example.k_market.dao.ProductDAO;
 import org.example.k_market.dto.pagination.response.PageResponse;
+import org.example.k_market.dto.product.ProductDTO;
 import org.example.k_market.dto.product.command.ManagementProductSearchCommand;
 import org.example.k_market.dto.product.request.ManagementProductSearchRequest;
 import org.example.k_market.dto.product.request.ProductListRequest;
@@ -11,10 +12,11 @@ import org.example.k_market.dto.product.response.ProductListResponse;
 import org.example.k_market.service.pagination.PageQuery;
 import org.example.k_market.service.pagination.PaginationService;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Component
+@Service
 @RequiredArgsConstructor
 public class ProductListViewer {
     private static final int PRODUCT_LIST_SIZE = 10;
@@ -45,7 +47,6 @@ public class ProductListViewer {
                         type,
                         request.getKeyword());
                 }
-
                 @Override
                 public int count() {
                     return productDAO.totalCountForManagement(
@@ -66,12 +67,16 @@ public class ProductListViewer {
             new PageQuery<>() {
                 @Override
                 public List<ProductListResponse> fetch(int offset, int size) {
-                    return List.of();
+                    return productDAO.findProductsForCustomer(
+                        size,
+                        offset,
+                        request.getCateId(),
+                        request.getSortType().name());
                 }
 
                 @Override
                 public int count() {
-                    return 0;
+                    return productDAO.totalCountForCustomer(request.getCateId());
                 }
             }
         );

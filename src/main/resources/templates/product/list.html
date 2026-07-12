@@ -3,11 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="context-path" th:content="@{/}">
     <title th:text="${categoryName} + ' - KMarket'">상품목록 - KMarket</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" th:href="@{/css/common.css}">
     <link rel="stylesheet" th:href="@{/css/product/list.css}">
+	<script type="module" th:src="@{/js/product/list.js}"></script>
 </head>
 <body>
 
@@ -92,39 +94,6 @@
         <!-- ④ 상품 리스트: 10개씩 페이징 -->
         <div class="product-list-row">
 
-            <!-- productList가 없거나 비어있을 때 placeholder 4개 -->
-            <th:block th:if="${productList == null or #lists.isEmpty(productList)}">
-
-                <a th:href="@{/product/view(category=${param.category != null ? param.category[0] : 11})}" class="product-row-item" th:each="i : ${#numbers.sequence(1, 4)}">
-                    <div class="row-thumb">🖼️</div>
-                    <div class="row-info">
-                        <div class="row-product-name">상품명</div>
-                        <div class="row-product-desc">간단한 상품 설명</div>
-                        <div class="row-price-area">
-                            <span class="row-price">27,000 원</span>
-                            <span class="row-price-del">30,000원</span>
-                            <span class="row-sale-rate">10%↓</span>
-                        </div>
-                        <div class="row-shipping">
-                            <span class="free">무료배송</span>
-                        </div>
-                    </div>
-                    <div class="row-meta">
-                        <div class="row-seller">
-                            <span class="seller-badge">🏠</span> 판매자
-                        </div>
-                        <div class="row-seller-grade grade-excellent">
-                            <span class="grade-icon">🏅</span> 고객만족우수
-                        </div>
-                        <div class="row-rating">
-                            <span class="rating-label">상품평</span>
-                            <span class="stars">★★★★☆</span>
-                        </div>
-                    </div>
-                </a>
-
-            </th:block>
-
             <!-- 실제 데이터 -->
             <a th:each="product : ${productList}"
                th:href="@{/product/{id}(id=${product.id})}"
@@ -175,9 +144,7 @@
                         <span class="stars" th:text="${product.ratingStarsText}">★★★★☆</span>
                     </div>
                 </div>
-
             </a>
-
         </div>
 
         <!-- 페이지네이션: 7개씩 노출, 이전/다음 -->
