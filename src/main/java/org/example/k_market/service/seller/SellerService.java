@@ -1,4 +1,4 @@
-package org.example.k_market.service;
+package org.example.k_market.service.seller;
 
 import lombok.RequiredArgsConstructor;
 import org.example.k_market.dto.seller.SellerDto;

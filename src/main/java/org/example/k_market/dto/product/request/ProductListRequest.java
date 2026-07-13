@@ -1,7 +1,7 @@
 package org.example.k_market.dto.product.request;
 
 import lombok.*;
-import org.example.k_market.enums.ProductSortType;
+import org.example.k_market.enums.product.ProductSortType;
 
 @Getter
 @Setter

@@ -4,7 +4,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.example.k_market.dto.seller.SellerDto;
-import org.example.k_market.service.SellerService;
+import org.example.k_market.service.seller.SellerService;
 import org.springframework.web.bind.annotation.*;
 
 @RestController

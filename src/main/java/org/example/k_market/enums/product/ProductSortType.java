@@ -1,4 +1,4 @@
-package org.example.k_market.enums;
+package org.example.k_market.enums.product;
 
 public enum ProductSortType {
     SALES,

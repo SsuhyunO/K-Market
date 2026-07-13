@@ -1,5 +1,5 @@
 import { ManagementTableForm } from '../../global/management-table-form.js';
-import { initPagination } from '../../global/pagination.js';
+import { initPagination } from '../../../global/pagination.js';
 import { initProductDetailModal } from './productDetailModal.js';
 import { renderProductRows } from './productTableRenderer.js';
 import { getProducts } from '../productApi.js';
