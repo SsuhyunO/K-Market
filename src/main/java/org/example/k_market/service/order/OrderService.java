@@ -70,6 +70,7 @@ public class OrderService {
         int lineTotal = price * count * (100 - discountRate) / 100;
 
         return List.of(OrderItemViewDTO.builder()
+                .prodNo(variant.getProdNo())
                 .prodVariantId(variant.getId())
                 .thumbnailUrl(thumbnailUrl)
                 .productName(product.getProdName())
@@ -138,7 +139,13 @@ public class OrderService {
     public int calcShippingTotal(List<OrderItemViewDTO> items) {
         return items.stream()
                 .filter(i -> !i.isFreeShipping())
-                .mapToInt(OrderItemViewDTO::getShippingFee)
+                .collect(Collectors.toMap(
+                        OrderItemViewDTO::getProdNo,
+                        OrderItemViewDTO::getShippingFee,
+                        (a, b) -> a,          // 같은 prodNo면 첫 값 유지
+                        LinkedHashMap::new))
+                .values().stream()
+                .mapToInt(Integer::intValue)
                 .sum();
     }
 
@@ -156,10 +163,12 @@ public class OrderService {
         // ===== 1. 상품별 실제 가격 재조회 (클라이언트 값 신뢰 X) =====
         List<OrderItemDTO> orderItems = new ArrayList<>();
 
-        int orderPrice = 0;      // 상품 원가 합계
-        int productDiscount = 0; // 상품자체할인 합계
-        int shippingFee = 0;
+        int orderPrice = 0;
+        int productDiscount = 0;
         int totalEarnPoint = 0;
+
+        // 💡 prodNo별 배송비를 dedup해서 저장 (같은 상품의 옵션 여러 개 담아도 배송비는 1번만)
+        Map<Integer, Integer> shippingFeeByProdNo = new LinkedHashMap<>();
 
         for (OrderItemRequestDTO itemReq : req.getItems()) {
             ProductVariant variant = variantRepository.findById(itemReq.getProdVariantId())
@@ -181,9 +190,10 @@ public class OrderService {
             int point = product.getPoint();
             int discountRate = product.getDiscount();
             int discountedUnitPrice = price * (100 - discountRate) / 100;
-            int lineTotal = discountedUnitPrice * qty; // 쿠폰 반영 전, 상품할인만 반영
+            int lineTotal = discountedUnitPrice * qty;
 
             OrderItemDTO item = OrderItemDTO.builder()
+                    .prodNo(variant.getProdNo())
                     .prodVariantId(variant.getId())
                     .count(qty)
                     .price(discountedUnitPrice)
@@ -194,9 +204,13 @@ public class OrderService {
 
             orderPrice += price * qty;
             productDiscount += (price - discountedUnitPrice) * qty;
-            shippingFee += product.getDeliveryFee(); // freeShipping 쿠폰 적용은 아래에서 반영
             totalEarnPoint += point * qty;
+
+            // 💡 같은 prodNo면 한 번만 반영됨 (putIfAbsent)
+            shippingFeeByProdNo.putIfAbsent(variant.getProdNo(), product.getDeliveryFee());
         }
+
+        int shippingFee = shippingFeeByProdNo.values().stream().mapToInt(Integer::intValue).sum();
 
         // ===== 2. 쿠폰 검증 및 반영 =====
         int couponDiscount = 0;
@@ -223,8 +237,8 @@ public class OrderService {
                 throw new IllegalStateException("만료된 쿠폰입니다.");
             }
 
-            String couponType = couponIssue.getCouponType(); // "PRODUCT" or "ORDER"
-            String benefit = couponIssue.getBenefit();       // "1000", "10", "DELIVERY_FREE"
+            String couponType = couponIssue.getCouponType(); // "PRODUCT", "ORDER", "DELIVERY"
+            String benefit = couponIssue.getBenefit();       // "1000", "10" (DELIVERY는 무시됨)
 
             if ("PRODUCT".equals(couponType)) {
                 Integer targetVariantId = req.getTargetVariantId();
@@ -232,16 +246,22 @@ public class OrderService {
                     throw new IllegalArgumentException("쿠폰을 적용할 상품이 지정되지 않았습니다.");
                 }
 
-                OrderItemDTO targetItem = orderItems.stream()
+                OrderItemDTO selectedItem = orderItems.stream()
                         .filter(i -> i.getProdVariantId() == targetVariantId)
                         .findFirst()
                         .orElseThrow(() -> new IllegalArgumentException("쿠폰 적용 대상 상품이 주문에 없습니다."));
 
-                int baseAmount = targetItem.getPrice() * targetItem.getCount();
+                int targetProdNo = selectedItem.getProdNo();
 
-                if ("DELIVERY_FREE".equals(benefit)) {
-                    freeShipping = true;
-                } else if (benefit.length() <= 2) {
+                List<OrderItemDTO> targetItems = orderItems.stream()
+                        .filter(i -> i.getProdNo() == targetProdNo)
+                        .toList();
+
+                int baseAmount = targetItems.stream()
+                        .mapToInt(i -> i.getPrice() * i.getCount())
+                        .sum();
+
+                if (benefit.length() <= 2) {
                     int rate = Integer.parseInt(benefit);
                     couponDiscount = baseAmount * rate / 100;
                 } else {
@@ -249,16 +269,13 @@ public class OrderService {
                 }
 
                 if (couponDiscount > 0) {
-                    targetItem.setTotal(targetItem.getTotal() - couponDiscount);
-                    targetItem.setPrice(targetItem.getTotal() / targetItem.getCount());
+                    distributeDiscountProportionally(targetItems, couponDiscount);
                 }
 
             } else if ("ORDER".equals(couponType)) {
                 int priceAfterProductDiscount = orderPrice - productDiscount;
 
-                if ("DELIVERY_FREE".equals(benefit)) {
-                    freeShipping = true;
-                } else if (benefit.length() <= 2) {
+                if (benefit.length() <= 2) {
                     int rate = Integer.parseInt(benefit);
                     couponDiscount = priceAfterProductDiscount * rate / 100;
                 } else {
@@ -268,6 +285,11 @@ public class OrderService {
                 if (couponDiscount > 0) {
                     distributeDiscountProportionally(orderItems, couponDiscount);
                 }
+
+            } else if ("DELIVERY".equals(couponType)) {
+                // 💡 DELIVERY 타입: 할인 없이 배송비 전체 무료
+                freeShipping = true;
+
             } else {
                 throw new IllegalStateException("알 수 없는 쿠폰 타입입니다: " + couponType);
             }

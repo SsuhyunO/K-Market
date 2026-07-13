@@ -77,47 +77,67 @@ function applyCoupon() {
         return;
     }
 
+    if (couponType === 'DELIVERY') {
+        applyDeliveryCoupon();
+        return;
+    }
+
+    // ORDER 타입: 전체 주문금액 기준 비율/정액 할인
     const { productTotal, discountTotal } = getBaseAmounts();
-    applyBenefit(productTotal - discountTotal, benefit);
-    recalculateSummary();
+    applyOrderCoupon(productTotal - discountTotal, benefit);
 }
 
 function applyProductCoupon(benefit) {
     const targetSelect = document.getElementById('couponTargetProduct');
+    const selectedProdNo = parseInt(targetSelect.value, 10);
 
-    if (!targetSelect.value) {
+    if (!selectedProdNo) {
         alert('쿠폰을 적용할 상품을 선택해주세요.');
         return;
     }
 
-    const targetItem = getOrderItems().find(
-        item => String(item.prodVariantId) === String(targetSelect.value)
+    // 💡 find 대신 filter를 사용하여 해당 prodNo를 가진 모든 옵션 상품을 배열로 가져옵니다.
+    const targetItems = getOrderItems().filter(
+        item => item.prodNo === selectedProdNo
     );
 
-    if (!targetItem) {
+    if (!targetItems || targetItems.length === 0) {
         alert('선택한 상품을 찾을 수 없습니다.');
         return;
     }
 
-    const discountRate = targetItem.discountRate || 0;
-    const discountedUnitPrice = Math.floor(targetItem.price * (100 - discountRate) / 100);
-    applyBenefit(discountedUnitPrice * targetItem.quantity, benefit);
+    // 💡 PRODUCT 쿠폰은 배송비 무료 혜택이 없음 — 할인(비율/정액) 계산만 수행
+    let baseAmount = 0;
+    targetItems.forEach(item => {
+        const discountRate = item.discountRate || 0;
+        const discountedUnitPrice = Math.floor(item.price * (100 - discountRate) / 100);
+        baseAmount += discountedUnitPrice * item.quantity;
+    });
+
+    appliedCouponDiscount = benefit.length <= 2
+        ? Math.floor(baseAmount * parseInt(benefit, 10) / 100)
+        : parseInt(benefit, 10);
+    appliedCouponFreeShipping = false;
+
     recalculateSummary();
 }
 
-function applyBenefit(baseAmount, benefit) {
-    if (benefit === 'DELIVERY_FREE') {
-        appliedCouponDiscount = 0;
-        appliedCouponFreeShipping = true;
-        return;
-    }
-
-    if (benefit.length <= 2) {
-        appliedCouponDiscount = Math.floor(baseAmount * parseInt(benefit, 10) / 100);
-    } else {
-        appliedCouponDiscount = parseInt(benefit, 10);
-    }
+function applyOrderCoupon(baseAmount, benefit) {
+    // 💡 ORDER 쿠폰도 배송비 무료 혜택이 없음 — 할인(비율/정액) 계산만 수행
+    appliedCouponDiscount = benefit.length <= 2
+        ? Math.floor(baseAmount * parseInt(benefit, 10) / 100)
+        : parseInt(benefit, 10);
     appliedCouponFreeShipping = false;
+
+    recalculateSummary();
+}
+
+function applyDeliveryCoupon() {
+    // 💡 DELIVERY 쿠폰은 상품 할인 없이 배송비 전체를 무료로 만듦
+    appliedCouponDiscount = 0;
+    appliedCouponFreeShipping = true;
+
+    recalculateSummary();
 }
 
 function updateCouponTargetProducts() {
@@ -127,7 +147,7 @@ function updateCouponTargetProducts() {
     const targetRow = document.getElementById('couponTargetProductRow');
     const targetSelect = document.getElementById('couponTargetProduct');
 
-    targetSelect.innerHTML = '<option value="">상품 선택</option>';
+    targetSelect.innerHTML = '<option value="">적용할 상품 선택</option>';
 
     if (couponType !== 'PRODUCT' || this.value === '') {
         targetRow.style.display = 'none';
@@ -135,15 +155,28 @@ function updateCouponTargetProducts() {
     }
 
     const candidates = getOrderItems().filter(item => item.sellerUid === sellerUid);
+
+    // 💡 prodNo 중복 제거를 위한 맵 처리
+    const uniqueProducts = [];
+    const visitedProdNos = new Set();
+
     candidates.forEach(item => {
+        if (!visitedProdNos.has(item.prodNo)) {
+            visitedProdNos.add(item.prodNo);
+            uniqueProducts.push(item);
+        }
+    });
+
+    // 💡 옵션 단위가 아니라 상품 종류(prodNo) 단위로 option을 생성합니다.
+    uniqueProducts.forEach(item => {
         const option = document.createElement('option');
-        option.value = item.prodVariantId;
-        option.textContent = `${item.productName} (${item.optionText || ''}) - 개당 ${item.price.toLocaleString()}원`;
+        option.value = item.prodNo; // 👈 value를 prodNo로 지정!
+        option.textContent = `[상품] ${item.productName}`;
         targetSelect.appendChild(option);
     });
 
-    if (candidates.length === 1) {
-        targetSelect.value = candidates[0].prodVariantId;
+    if (uniqueProducts.length === 1) {
+        targetSelect.value = uniqueProducts[0].prodNo;
     }
 
     targetRow.style.display = 'flex';
@@ -174,6 +207,18 @@ function initPayment() {
         const targetSelect = document.getElementById('couponTargetProduct');
         const checkedPayMethod = document.querySelector('input[name="payMethod"]:checked');
 
+        // 💡 현재 targetSelect.value에는 prodNo가 들어있습니다.
+        const selectedProdNo = targetSelect.value ? parseInt(targetSelect.value, 10) : null;
+        let mappedVariantId = null;
+
+        if (selectedProdNo) {
+            // 장바구니 품목 중 해당 prodNo를 가진 첫 번째 아이템의 옵션 ID(prodVariantId)를 찾아냅니다.
+            const matchedItem = getOrderItems().find(item => item.prodNo === selectedProdNo);
+            if (matchedItem) {
+                mappedVariantId = matchedItem.prodVariantId; // 👈 서버가 원하는 variantId 획득!
+            }
+        }
+
         const orderData = {
             receiver: document.getElementById('recvName').value,
             phone: document.getElementById('recvPhone').value,
@@ -182,7 +227,7 @@ function initPayment() {
             addr2: document.getElementById('recvAddr2').value,
             orderNote: document.getElementById('recvMemo').value,
             couponIssueId: select.value ? parseInt(select.value, 10) : null,
-            targetVariantId: targetSelect.value ? parseInt(targetSelect.value, 10) : null,
+            targetVariantId: mappedVariantId,
             usedPoints: appliedPoint,
             payMethod: checkedPayMethod?.value,
             items: getOrderItems().map(item => ({

@@ -154,7 +154,7 @@ public class ProductController {
         return "product/order";
     }
 
-    @GetMapping("/product/complete")
+    @GetMapping("/complete")
     public String complete(@RequestParam("orderNo") int orderNo, Model model, HttpSession session) {
         String memberUid = (String) session.getAttribute("loginMember");
 
