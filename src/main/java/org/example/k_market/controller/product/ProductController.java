@@ -95,14 +95,14 @@ public class ProductController {
         return "product/cart";
     }
 
-    // TODO: 테스트용 default, 실제 배포 전 제거
     @GetMapping("/order")
     public String order(@RequestParam(required = false) List<Integer> cartNoList,
-                        @RequestParam(required = false, defaultValue = "109") Integer prodVariantId,
-                        @RequestParam(required = false, defaultValue = "2") Integer count,
+                        @RequestParam(required = false) Integer prodVariantId,
+                        @RequestParam(required = false) Integer count,
                         HttpSession session,
                         Model model) {
         String memberUid = (String) session.getAttribute("loginMember");
+        int loginMemberLevel = (Integer) session.getAttribute("loginMemberLevel");
         Member member = memberService.findByUid(memberUid);
 
         // 1. 주문 상품 리스트 조회
@@ -134,7 +134,7 @@ public class ProductController {
         int productTotal = orderService.calcProductTotal(orderItems);
         int discountTotal = orderService.calcDiscountTotal(orderItems);
         int shippingTotal = orderService.calcShippingTotal(orderItems);
-        int earnPoint = orderService.calcEarnPoint(orderItems);
+        int earnPoint = orderService.calcEarnPoint(orderItems) * loginMemberLevel;
 
         model.addAttribute("orderItems", orderItems);
         model.addAttribute("productTotal", productTotal);

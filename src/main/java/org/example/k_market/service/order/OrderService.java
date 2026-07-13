@@ -363,6 +363,31 @@ public class OrderService {
             pointService.earnPoint(memberUid, totalEarnPoint, order.getOrderNo());
         }
 
+        // =================================================================
+        // 💡 [추가] 7. 결제 및 주문 완료에 따른 장바구니 목록 삭제 (주문한 상품만 제거)
+        // =================================================================
+        try {
+            // 이번 주문에 포함된 prodVariantId 목록 추출
+            List<Integer> orderedVariantIds = req.getItems().stream()
+                    .map(OrderItemRequestDTO::getProdVariantId)
+                    .toList();
+
+            if (!orderedVariantIds.isEmpty()) {
+                // 해당 회원의 장바구니 품목 중, 방금 주문한 상품(prodVariantId)만 매칭하여 삭제
+                // (이미 CartRepository에 memberUid와 prodVariantId 목록으로 지우는 쿼리 메서드가 있다면 그것을 사용하고,
+                //  없다면 안전하게 아래와 같이 루프를 돌며 삭제를 수행합니다.)
+                for (Integer variantId : orderedVariantIds) {
+                    cartRepository.findByMemberUidAndProdVariantId(memberUid, variantId)
+                            .ifPresent(cartRepository::delete);
+                }
+                log.info("주문 성공으로 인한 장바구니 품목 삭제 완료. 회원: {}, 삭제된 상품 수: {}", memberUid, orderedVariantIds.size());
+            }
+        } catch (Exception e) {
+            // 장바구니 삭제 실패로 인해 전체 주문이 롤백되는 것을 방지하고 싶다면 로그만 남깁니다.
+            // 만약 반드시 같이 지워져야만 한다면 try-catch를 빼고 바로 실행하여 예외를 던지게 두면 됩니다.
+            log.error("주문 완료 후 장바구니 삭제 중 오류 발생: ", e);
+        }
+
         return order.getOrderNo();
     }
 
