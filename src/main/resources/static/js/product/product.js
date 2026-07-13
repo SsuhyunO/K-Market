@@ -405,7 +405,7 @@ function initCartAndBuyButtons() {
 
     if (btnCart) {
         btnCart.addEventListener('click', function() {
-            fetch({CONTEXT_PATH} + 'product/api/member/me')
+            fetch(CONTEXT_PATH + 'product/api/member/me')
                 .then(res => {
                     if (!res.ok) throw new Error('unauthorized');
                     return res.json();

@@ -22,4 +22,5 @@ public class OrderItemViewDTO {
     private boolean freeShipping;
     private Integer shippingFee;
     private Integer lineTotal;       // 이 줄의 총액 (할인 적용된 가격 * 수량)
+    private int discountAmount; // 💡 이 필드를 추가해 주세요! (총 할인된 금액)
 }

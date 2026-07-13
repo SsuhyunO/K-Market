@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
+import java.util.Map;
 
 @RequiredArgsConstructor
 @Controller
@@ -117,7 +118,15 @@ public class ProductController {
     }
 
     @GetMapping("/product/complete")
-    public String complete() {
+    public String complete(@RequestParam("orderNo") int orderNo, Model model, HttpSession session) {
+        String memberUid = (String) session.getAttribute("loginMember");
+
+        // 서비스로부터 화면 출력을 위한 가공된 주문 데이터 가져오기
+        // ⚠️ 완벽한 구현을 위해 아래 OrderService에 추가할 메서드를 호출합니다.
+        Map<String, Object> completeData = orderService.getCompletePageData(orderNo, memberUid);
+
+        // 맵에 담긴 모든 데이터를 Model에 그대로 세팅
+        model.addAllAttributes(completeData);
 
         return "product/complete";
     }

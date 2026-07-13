@@ -25,4 +25,35 @@
         </foreach>
     </insert>
 
+    <select id="selectOrderByNo" parameterType="int" resultType="org.example.k_market.dto.order.OrderDTO">
+        SELECT
+            orderNo,
+            memberUid,
+            orderPrice,
+            orderDiscount,
+            usedPoints,
+            orderTotal,
+            receiver,
+            phone,
+            zipCode,
+            addr1,
+            addr2,
+            payMethod,
+            createdAt
+        FROM `order`
+        WHERE orderNo = #{orderNo}
+    </select>
+
+    <select id="selectOrderItemsByOrderNo" parameterType="int" resultType="org.example.k_market.dto.order.OrderItemDTO">
+        SELECT
+            orderItemNo,
+            orderNo,
+            prodVariantId,
+            count,
+            price,
+            total
+        FROM `order_item`
+        WHERE orderNo = #{orderNo}
+    </select>
+
 </mapper>

@@ -2,6 +2,8 @@ package org.example.k_market.dto;
 
 import lombok.*;
 
+import java.time.LocalDateTime;
+
 @Getter
 @Setter
 @ToString
@@ -9,12 +11,12 @@ import lombok.*;
 @NoArgsConstructor
 @Builder
 public class PointDTO {
-    private int pointNo;
+    private Long pointNo;
     private String memberUid;
-    private int orderNo;
-    private int point;
-    private String content;
+    private Integer orderNo;   // 사용/적립이 주문과 무관할 수도 있으니 nullable
+    private int point;         // 적립 +, 사용 -
+    private String content;    // "적립" / "사용"
     private String note;
-    private String createdAt;
-    private String expireDate;
+    private LocalDateTime createdAt;
+    private LocalDateTime expireDate;
 }
