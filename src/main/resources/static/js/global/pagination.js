@@ -16,23 +16,6 @@ export function initPagination(options = {}) {
     const pagination = document.querySelector(selector);
     if (!pagination) return;
 
-    async function moveToPage(page, pushUrl = true) {
-        const safePage = toPositiveInteger(page, 1);
-
-        try {
-            const data = await fetchPage(safePage);
-            const pageData = getPageData(data);
-
-            renderPagination(pageData, { selector });
-
-            if (updateUrl && pushUrl) {
-                updatePageUrl(pageData.page ?? safePage, { paramName });
-            }
-        } catch (error) {
-            onError(error);
-        }
-    }
-
     pagination.addEventListener("click", event => {
         const link = event.target.closest("[data-page]");
         if (!link) return;
@@ -46,18 +29,57 @@ export function initPagination(options = {}) {
         moveToPage(getCurrentPage(paramName), false);
     });
 
+    // 검색 조건이나 정렬 조건이 바뀌었을 때 외부에서 갱신 요청
+    window.addEventListener("pagination:refresh", event => {
+        const requestedPage = event.detail?.page;
+        const page = requestedPage ?? getCurrentPage(paramName);
+
+        // 외부에서 URL을 이미 변경했으므로 다시 pushState 하지 않음
+        moveToPage(page, false);
+    });
+
     moveToPage(getCurrentPage(paramName), false);
+
+    async function moveToPage(page, pushUrl = true) {
+        const safePage = toPositiveInteger(page, 1);
+
+        try {
+            const data = await fetchPage(safePage);
+            const pageData = getPageData(data);
+
+            renderPagination(pageData, {
+                selector,
+                paramName
+            });
+
+            if (updateUrl && pushUrl) {
+                updatePageUrl(
+                    pageData.page ?? safePage,
+                    { paramName }
+                );
+            }
+        } catch (error) {
+            onError(error);
+        }
+    }
 }
 
 function renderPagination(pageData, options = {}) {
-    const pagination = document.querySelector(options.selector || ".admin-pagination");
+    const pagination = document.querySelector(options.selector);
     if (!pagination) return;
 
     pagination.innerHTML = "";
 
-    if (!pageData || pageData.totalPage <= 1) return;
+    if (!pageData || pageData.totalPage <= 0) return;
 
-    appendPageItem(pagination, "이전", pageData.page - 1, pageData.page > 1);
+    if (pageData.hasPrev) {
+        appendPageItem(
+            pagination,
+            "이전",
+            pageData.page - 1,
+            pageData.hasPrev);
+    }
+
 
     for (let page = pageData.startPage; page <= pageData.lastPage; page++) {
         pagination.appendChild(
@@ -67,18 +89,18 @@ function renderPagination(pageData, options = {}) {
         );
     }
 
-    appendPageItem(
-        pagination,
-        "다음",
-        pageData.page + 1,
-        pageData.page < pageData.totalPage
-    );
+    if (pageData.hasNext) {
+        appendPageItem(
+            pagination,
+            "다음",
+            pageData.page + 1,
+            pageData.hasNext
+        );
+    }
 }
 
-function appendPageItem(pagination, text, page, enabled) {
-    pagination.appendChild(
-        enabled ? createPageLink(text, page) : createDisabledPage(text)
-    );
+function appendPageItem(pagination, text, page) {
+    pagination.appendChild(createPageLink(text, page));
 }
 
 function createPageLink(text, page) {
@@ -91,15 +113,8 @@ function createPageLink(text, page) {
 
 function createCurrentPage(page) {
     const span = document.createElement("span");
-    span.className = "current";
+    span.className = "active current";
     span.textContent = page;
-    return span;
-}
-
-function createDisabledPage(text) {
-    const span = document.createElement("span");
-    span.className = "disabled";
-    span.textContent = text;
     return span;
 }
 

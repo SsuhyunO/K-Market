@@ -17,4 +17,15 @@ public interface ProductNoticeValueRepository extends JpaRepository<ProductNotic
     @Modifying
     @Query("delete from ProductNoticeValue pnv where pnv.id.prodNo in :prodNos")
     int deleteAllByProdNoIn(@Param("prodNos") List<Integer> prodNos);
+
+    @Modifying
+    @Query("""
+        delete from ProductNoticeValue pnv
+        where pnv.id.prodNo = :prodNo
+            and pnv.id.noticeKey in :noticeKeys
+    """)
+    int deleteByProdNoAndNoticeKeyIn(
+        @Param("prodNo") int prodNo,
+        @Param("noticeKeys") List<String> noticeKeys
+    );
 }

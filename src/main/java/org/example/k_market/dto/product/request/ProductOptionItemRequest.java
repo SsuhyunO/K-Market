@@ -9,6 +9,7 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 public class ProductOptionItemRequest {
+    private Integer id;
     private String clientKey;
     private String value;
 }

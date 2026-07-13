@@ -166,6 +166,95 @@
     color: var(--color-primary);
     font-weight: bold;
 }
+.view-summary .summary-note {
+    font-size: 12px;
+    color: var(--color-gray-500);
+    margin-left: 4px;
+}
+.view-summary .stars,
+.review-empty .stars {
+    color: #f5a623;
+    font-size: 16px;
+}
+
+.option-summary {
+    border-top: 1px solid var(--color-gray-200);
+    border-bottom: 1px solid var(--color-gray-200);
+    padding: 16px;
+    margin-bottom: 20px;
+}
+.option-group {
+    display: grid;
+    grid-template-columns: 96px minmax(0, 1fr);
+    gap: 12px;
+    align-items: center;
+    margin-bottom: 12px;
+}
+.option-group:last-child {
+    margin-bottom: 0;
+}
+.option-group-name {
+    display: flex;
+    align-items: center;
+    min-height: 36px;
+    color: var(--color-gray-500);
+    font-size: 14px;
+    font-weight: 600;
+}
+.option-select {
+    width: 100%;
+    height: 36px;
+    border: 1px solid var(--color-gray-300);
+    background: var(--color-white);
+    border-radius: var(--radius-sm);
+    padding: 0 10px;
+    color: var(--color-gray-700);
+    font-size: 14px;
+    line-height: 36px;
+}
+.option-select:focus {
+    outline: none;
+    border-color: var(--color-primary);
+}
+.option-required-message {
+    margin-top: 10px;
+    padding-left: 108px;
+    color: var(--color-sale);
+    font-size: 13px;
+}
+
+.variant-stock-list {
+    margin: -4px 0 20px;
+    border: 1px solid var(--color-gray-200);
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+}
+.variant-stock-title {
+    padding: 10px 12px;
+    background: var(--color-gray-100);
+    color: var(--color-gray-700);
+    font-size: 13px;
+    font-weight: 700;
+}
+.variant-stock-list li {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 9px 12px;
+    border-top: 1px solid var(--color-gray-200);
+    font-size: 13px;
+}
+.variant-name {
+    color: var(--color-gray-700);
+}
+.variant-stock {
+    color: var(--color-gray-900);
+    font-weight: 700;
+    white-space: nowrap;
+}
+.variant-stock.sold-out {
+    color: var(--color-sale);
+}
 
 /* 수량 선택기 */
 .count-wrap {
@@ -246,6 +335,10 @@
     transition: opacity 0.2s;
 }
 .btn-wrap button:hover { opacity: 0.9; }
+.btn-wrap button:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+}
 .btn-cart {
     background: var(--color-gray-200);
     border: 1px solid var(--color-gray-300);
@@ -333,15 +426,31 @@
 .detail-content {
     text-align: center;
     background: #f9f9f9;
-    min-height: 800px;
+    min-height: 320px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     color: var(--color-gray-500);
-    border: 1px dashed var(--color-gray-300);
+    border: 1px solid var(--color-gray-200);
 }
-.detail-content h3 { font-size: 24px; margin-bottom: 16px; }
+.detail-content img {
+    width: 100%;
+    height: auto;
+}
+.detail-empty,
+.review-empty {
+    padding: 40px 16px;
+    color: var(--color-gray-500);
+    text-align: center;
+}
+.review-empty {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    border-top: 1px solid var(--color-gray-200);
+    border-bottom: 1px solid var(--color-gray-200);
+}
 
 /* 정보 제공 공시 테이블 */
 .info-table {

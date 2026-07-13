@@ -16,6 +16,8 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "product")
 public class Product {
+    private static final String DEFAULT_STATUS = "ON_SALE";
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int prodNo;
@@ -31,15 +33,24 @@ public class Product {
     private int discount;
     private int point;
     private int sold;
+    private int hit;
     private Integer thumb1FileId;
     private Integer thumb2FileId;
     private Integer thumb3FileId;
     private Integer detailInfoFileId;
     private String sellerUid;
     private String infoNoticeType;
+    private String status;
 
     @CreationTimestamp
     private LocalDateTime createdAt;
+
+    @PrePersist
+    public void prePersist() {
+        if (status == null || status.isBlank()) {
+            status = DEFAULT_STATUS;
+        }
+    }
 
     public ProductDTO toDTO() {
         return ProductDTO.builder()
@@ -53,6 +64,7 @@ public class Product {
             .discount(discount)
             .point(point)
             .sold(sold)
+            .hit(hit)
             .thumb1FileId(thumb1FileId)
             .thumb2FileId(thumb2FileId)
             .thumb3FileId(thumb3FileId)

@@ -21,6 +21,7 @@ public class ProductDTO {
     private int discount;
     private int point;
     private int sold;
+    private int hit;
     private int thumb1FileId;
     private int thumb2FileId;
     private int thumb3FileId;
@@ -41,6 +42,7 @@ public class ProductDTO {
             .discount(discount)
             .point(point)
             .sold(sold)
+            .hit(hit)
             .thumb1FileId(thumb1FileId)
             .thumb2FileId(thumb2FileId)
             .thumb3FileId(thumb3FileId)

@@ -3,6 +3,7 @@ package org.example.k_market.service;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.example.k_market.dto.category.CategoryDTO;
+import org.example.k_market.dto.category.CategoryContextResponse;
 import org.example.k_market.dto.category.CategorySaveDTO;
 import org.example.k_market.dto.category.CategoryTreeDTO;
 import org.example.k_market.dto.category.request.CategorySaveRequest;
@@ -140,6 +141,25 @@ public class CategoryService {
             .findById(cateId)
             .map(Category::toDTO)
             .orElse(null);
+    }
+
+    public CategoryContextResponse getContext(int cateId) {
+        CategoryDTO selectedCategory = getCategory(cateId);
+        if (selectedCategory == null) {
+            throw new IllegalArgumentException("존재하지 않는 카테고리입니다.");
+        }
+
+        if (selectedCategory.getParentId() == null) {
+            return getCategoryTree().stream()
+                .filter(root -> root.getCateId() == cateId)
+                .flatMap(root -> root.getChildren().stream())
+                .findFirst()
+                .map(child -> new CategoryContextResponse(null, null, child.getCateId()))
+                .orElse(new CategoryContextResponse(null, null, null));
+        }
+
+        CategoryDTO parentCategory = getCategory(selectedCategory.getParentId());
+        return new CategoryContextResponse(parentCategory, selectedCategory, null);
     }
 
     private void updateCategory(CategorySaveDTO dto) {

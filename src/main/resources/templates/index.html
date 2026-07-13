@@ -67,42 +67,28 @@
             <h2 class="section-title">🔥 히트상품</h2>
 
             <div class="product-grid-8">
-
-                <th:block th:if="${hitProducts == null}">
-                    <a class="product-card" href="#" th:each="i : ${#numbers.sequence(1, 8)}">
-                        <div class="product-thumb">
-                            <span>🖼️</span>
-                        </div>
-                        <div class="product-info">
-                            <div class="product-name">상품명</div>
-                            <div class="product-price-del">30,000원</div>
-                            <div class="product-sale-row">
-                                <span class="product-sale-rate">10%↓</span>
-                                <span class="btn-free-ship">무료배송</span>
-                            </div>
-                            <div class="product-price">27,000원</div>
-                        </div>
-                    </a>
-                </th:block>
-
                 <a th:each="product : ${hitProducts}"
-                   th:href="@{/product/{id}(id=${product.id})}"
-                   th:attr="data-id=${product.id}"
+                   th:href="@{/product/view(prodNo=${product.no})}"
+                   th:attr="data-id=${product.no}"
                    class="product-card">
 
                     <div class="product-thumb">
-                        <img th:if="${product.thumbnailUrl}" th:src="${product.thumbnailUrl}" alt="">
-                        <span th:unless="${product.thumbnailUrl}">🖼️</span>
+                        <img th:if="${product.thumb1FileId != null}" th:src="@{/files/{id}(id=${product.thumb1FileId})}" alt="">
+                        <span th:unless="${product.thumb1FileId != null}">🖼️</span>
                     </div>
 
                     <div class="product-info">
                         <div class="product-name" th:text="${product.name}">상품명</div>
-                        <div class="product-price-del" th:text="${product.originalPrice} + '원'">30,000원</div>
+                        <div class="product-price-del"
+                             th:if="${product.discount > 0}"
+                             th:text="${#numbers.formatInteger(product.price, 0, 'COMMA')} + '원'">30,000원</div>
                         <div class="product-sale-row">
-                            <span class="product-sale-rate" th:text="${product.discountRate} + '%↓'">10%↓</span>
+                            <span class="product-sale-rate"
+                                  th:if="${product.discount > 0}"
+                                  th:text="${product.discount} + '%↓'">10%↓</span>
                             <span class="btn-free-ship" th:if="${product.freeShipping}">무료배송</span>
                         </div>
-                        <div class="product-price" th:text="${product.salePrice} + '원'">27,000원</div>
+                        <div class="product-price" th:text="${#numbers.formatInteger(product.salePrice, 0, 'COMMA')} + '원'">27,000원</div>
                     </div>
                 </a>
 
@@ -114,42 +100,28 @@
             <h2 class="section-title">⭐ 추천상품</h2>
 
             <div class="product-grid-8">
-
-                <th:block th:if="${recommendProducts == null}">
-                    <a class="product-card" href="#" th:each="i : ${#numbers.sequence(1, 8)}">
-                        <div class="product-thumb">
-                            <span>🖼️</span>
-                        </div>
-                        <div class="product-info">
-                            <div class="product-name">상품명</div>
-                            <div class="product-price-del">30,000원</div>
-                            <div class="product-sale-row">
-                                <span class="product-sale-rate">10%↓</span>
-                                <span class="btn-free-ship">무료배송</span>
-                            </div>
-                            <div class="product-price">27,000원</div>
-                        </div>
-                    </a>
-                </th:block>
-
                 <a th:each="product : ${recommendProducts}"
-                   th:href="@{/product/{id}(id=${product.id})}"
-                   th:attr="data-id=${product.id}"
+                   th:href="@{/product/view(prodNo=${product.no})}"
+                   th:attr="data-id=${product.no}"
                    class="product-card">
 
                     <div class="product-thumb">
-                        <img th:if="${product.thumbnailUrl}" th:src="${product.thumbnailUrl}" alt="">
-                        <span th:unless="${product.thumbnailUrl}">🖼️</span>
+                        <img th:if="${product.thumb1FileId != null}" th:src="@{/files/{id}(id=${product.thumb1FileId})}" alt="">
+                        <span th:unless="${product.thumb1FileId != null}">🖼️</span>
                     </div>
 
                     <div class="product-info">
                         <div class="product-name" th:text="${product.name}">상품명</div>
-                        <div class="product-price-del" th:text="${product.originalPrice} + '원'">30,000원</div>
+                        <div class="product-price-del"
+                             th:if="${product.discount > 0}"
+                             th:text="${#numbers.formatInteger(product.price, 0, 'COMMA')} + '원'">30,000원</div>
                         <div class="product-sale-row">
-                            <span class="product-sale-rate" th:text="${product.discountRate} + '%↓'">10%↓</span>
+                            <span class="product-sale-rate"
+                                  th:if="${product.discount > 0}"
+                                  th:text="${product.discount} + '%↓'">10%↓</span>
                             <span class="btn-free-ship" th:if="${product.freeShipping}">무료배송</span>
                         </div>
-                        <div class="product-price" th:text="${product.salePrice} + '원'">27,000원</div>
+                        <div class="product-price" th:text="${#numbers.formatInteger(product.salePrice, 0, 'COMMA')} + '원'">27,000원</div>
                     </div>
                 </a>
 
@@ -161,89 +133,28 @@
             <h2 class="section-title">🆕 최신상품</h2>
 
             <div class="product-grid-8">
-
-                <th:block th:if="${newProducts == null}">
-                    <a class="product-card" href="#" th:each="i : ${#numbers.sequence(1, 8)}">
-                        <div class="product-thumb">
-                            <span>🖼️</span>
-                        </div>
-                        <div class="product-info">
-                            <div class="product-name">상품명</div>
-                            <div class="product-price-del">30,000원</div>
-                            <div class="product-sale-row">
-                                <span class="product-sale-rate">10%↓</span>
-                                <span class="btn-free-ship">무료배송</span>
-                            </div>
-                            <div class="product-price">27,000원</div>
-                        </div>
-                    </a>
-                </th:block>
-
                 <a th:each="product : ${newProducts}"
-                   th:href="@{/product/{id}(id=${product.id})}"
-                   th:attr="data-id=${product.id}"
+                   th:href="@{/product/view(prodNo=${product.no})}"
+                   th:attr="data-id=${product.no}"
                    class="product-card">
 
                     <div class="product-thumb">
-                        <img th:if="${product.thumbnailUrl}" th:src="${product.thumbnailUrl}" alt="">
-                        <span th:unless="${product.thumbnailUrl}">🖼️</span>
+                        <img th:if="${product.thumb1FileId != null}" th:src="@{/files/{id}(id=${product.thumb1FileId})}" alt="">
+                        <span th:unless="${product.thumb1FileId != null}">🖼️</span>
                     </div>
 
                     <div class="product-info">
                         <div class="product-name" th:text="${product.name}">상품명</div>
-                        <div class="product-price-del" th:text="${product.originalPrice} + '원'">30,000원</div>
+                        <div class="product-price-del"
+                             th:if="${product.discount > 0}"
+                             th:text="${#numbers.formatInteger(product.price, 0, 'COMMA')} + '원'">30,000원</div>
                         <div class="product-sale-row">
-                            <span class="product-sale-rate" th:text="${product.discountRate} + '%↓'">10%↓</span>
+                            <span class="product-sale-rate"
+                                  th:if="${product.discount > 0}"
+                                  th:text="${product.discount} + '%↓'">10%↓</span>
                             <span class="btn-free-ship" th:if="${product.freeShipping}">무료배송</span>
                         </div>
-                        <div class="product-price" th:text="${product.salePrice} + '원'">27,000원</div>
-                    </div>
-                </a>
-
-            </div>
-        </section>
-
-        <!-- 인기상품 -->
-        <section class="main-section" id="section-popular">
-            <h2 class="section-title">📈 인기상품</h2>
-
-            <div class="product-grid-8">
-
-                <th:block th:if="${popularProducts == null}">
-                    <a class="product-card" href="#" th:each="i : ${#numbers.sequence(1, 8)}">
-                        <div class="product-thumb">
-                            <span>🖼️</span>
-                        </div>
-                        <div class="product-info">
-                            <div class="product-name">상품명</div>
-                            <div class="product-price-del">30,000원</div>
-                            <div class="product-sale-row">
-                                <span class="product-sale-rate">10%↓</span>
-                                <span class="btn-free-ship">무료배송</span>
-                            </div>
-                            <div class="product-price">27,000원</div>
-                        </div>
-                    </a>
-                </th:block>
-
-                <a th:each="product : ${popularProducts}"
-                   th:href="@{/product/{id}(id=${product.id})}"
-                   th:attr="data-id=${product.id}"
-                   class="product-card">
-
-                    <div class="product-thumb">
-                        <img th:if="${product.thumbnailUrl}" th:src="${product.thumbnailUrl}" alt="">
-                        <span th:unless="${product.thumbnailUrl}">🖼️</span>
-                    </div>
-
-                    <div class="product-info">
-                        <div class="product-name" th:text="${product.name}">상품명</div>
-                        <div class="product-price-del" th:text="${product.originalPrice} + '원'">30,000원</div>
-                        <div class="product-sale-row">
-                            <span class="product-sale-rate" th:text="${product.discountRate} + '%↓'">10%↓</span>
-                            <span class="btn-free-ship" th:if="${product.freeShipping}">무료배송</span>
-                        </div>
-                        <div class="product-price" th:text="${product.salePrice} + '원'">27,000원</div>
+                        <div class="product-price" th:text="${#numbers.formatInteger(product.salePrice, 0, 'COMMA')} + '원'">27,000원</div>
                     </div>
                 </a>
 
@@ -255,42 +166,28 @@
             <h2 class="section-title">💸 할인상품</h2>
 
             <div class="product-grid-8">
-
-                <th:block th:if="${discountProducts == null}">
-                    <a class="product-card" href="#" th:each="i : ${#numbers.sequence(1, 8)}">
-                        <div class="product-thumb">
-                            <span>🖼️</span>
-                        </div>
-                        <div class="product-info">
-                            <div class="product-name">상품명</div>
-                            <div class="product-price-del">30,000원</div>
-                            <div class="product-sale-row">
-                                <span class="product-sale-rate">10%↓</span>
-                                <span class="btn-free-ship">무료배송</span>
-                            </div>
-                            <div class="product-price">27,000원</div>
-                        </div>
-                    </a>
-                </th:block>
-
                 <a th:each="product : ${discountProducts}"
-                   th:href="@{/product/{id}(id=${product.id})}"
-                   th:attr="data-id=${product.id}"
+                   th:href="@{/product/view(prodNo=${product.no})}"
+                   th:attr="data-id=${product.no}"
                    class="product-card">
 
                     <div class="product-thumb">
-                        <img th:if="${product.thumbnailUrl}" th:src="${product.thumbnailUrl}" alt="">
-                        <span th:unless="${product.thumbnailUrl}">🖼️</span>
+                        <img th:if="${product.thumb1FileId != null}" th:src="@{/files/{id}(id=${product.thumb1FileId})}" alt="">
+                        <span th:unless="${product.thumb1FileId != null}">🖼️</span>
                     </div>
 
                     <div class="product-info">
                         <div class="product-name" th:text="${product.name}">상품명</div>
-                        <div class="product-price-del" th:text="${product.originalPrice} + '원'">30,000원</div>
+                        <div class="product-price-del"
+                             th:if="${product.discount > 0}"
+                             th:text="${#numbers.formatInteger(product.price, 0, 'COMMA')} + '원'">30,000원</div>
                         <div class="product-sale-row">
-                            <span class="product-sale-rate" th:text="${product.discountRate} + '%↓'">10%↓</span>
+                            <span class="product-sale-rate"
+                                  th:if="${product.discount > 0}"
+                                  th:text="${product.discount} + '%↓'">10%↓</span>
                             <span class="btn-free-ship" th:if="${product.freeShipping}">무료배송</span>
                         </div>
-                        <div class="product-price" th:text="${product.salePrice} + '원'">27,000원</div>
+                        <div class="product-price" th:text="${#numbers.formatInteger(product.salePrice, 0, 'COMMA')} + '원'">27,000원</div>
                     </div>
                 </a>
 

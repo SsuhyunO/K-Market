@@ -10,14 +10,21 @@
             p.discount,
             p.point,
             p.sold,
-            COALESCE(SUM(pv.stock), 0) AS stock,
+            (
+                SELECT COALESCE(SUM(pv_stock.stock), 0)
+                FROM product_variant pv_stock
+                WHERE pv_stock.prodNo = p.prodNo
+                    AND pv_stock.status != 'DELETED'
+            ) AS stock,
             p.thumb1FileId,
             p.sellerUid
         FROM product p
         LEFT JOIN product_variant pv ON pv.prodNo = p.prodNo
+            AND pv.status != 'DELETED'
         <where>
+            p.status = 'ON_SALE'
             <if test="role != 'ADMIN'">
-                p.sellerUid = #{seller}
+                AND p.sellerUid = #{seller}
             </if>
 
             <if test="keyword != null and keyword != ''">
@@ -57,8 +64,9 @@
         SELECT COUNT(prodNo)
         FROM product p
         <where>
+            p.status = 'ON_SALE'
             <if test="role != 'ADMIN'">
-                sellerUid = #{seller}
+                AND sellerUid = #{seller}
             </if>
 
             <if test="keyword != null and keyword != ''">
@@ -98,8 +106,16 @@
         JOIN member m ON m.uid = p.sellerUid
         LEFT JOIN review r ON r.prodNo = p.prodNo
         <where>
+            p.status = 'ON_SALE'
+            AND
+            EXISTS (
+                SELECT 1
+                FROM product_variant pv_status
+                WHERE pv_status.prodNo = p.prodNo
+                    AND pv_status.status = 'ON_SALE'
+            )
             <if test="cateId != null">
-                p.cateId = #{cateId}
+                AND p.cateId = #{cateId}
             </if>
         </where>
         GROUP BY
@@ -127,10 +143,10 @@
             <when test="type == 'RATING'">
                 ORDER BY rating DESC, p.prodNo DESC
             </when>
-            <when test="type == 'REVIEW_COUNT">
+            <when test="type == 'REVIEW_COUNT'">
                 ORDER BY COUNT(r.reviewNo) DESC, p.prodNo DESC
             </when>
-            <when test="type == 'CREATED_AT">
+            <when test="type == 'CREATED_AT'">
                 ORDER BY p.createdAt DESC, p.prodNo DESC
             </when>
             <otherwise>
@@ -142,13 +158,176 @@
     </select>
 
     <select id="totalCountForCustomer" resultType="int">
-        SELECT COUNT(prodNo)
-        FROM product
+        SELECT COUNT(p.prodNo)
+        FROM product p
         <where>
+            p.status = 'ON_SALE'
+            AND
+            EXISTS (
+                SELECT 1
+                FROM product_variant pv_status
+                WHERE pv_status.prodNo = p.prodNo
+                    AND pv_status.status = 'ON_SALE'
+            )
             <if test="cateId != null">
-                cateId = #{cateId}
+                AND p.cateId = #{cateId}
             </if>
         </where>
+    </select>
+
+    <sql id="customerSearchWhere">
+        <where>
+            p.status = 'ON_SALE'
+            AND
+            EXISTS (
+                SELECT 1
+                FROM product_variant pv_status
+                WHERE pv_status.prodNo = p.prodNo
+                    AND pv_status.status = 'ON_SALE'
+            )
+            <if test="keyword != null and keyword != ''">
+                AND
+                <choose>
+                    <when test="name == true or description == true">
+                        <trim prefix="(" suffix=")" prefixOverrides="OR">
+                            <if test="name == true">
+                                OR p.prodName LIKE CONCAT('%', #{keyword}, '%')
+                            </if>
+                            <if test="description == true">
+                                OR p.description LIKE CONCAT('%', #{keyword}, '%')
+                            </if>
+                        </trim>
+                    </when>
+                    <otherwise>
+                        (
+                            p.prodName LIKE CONCAT('%', #{keyword}, '%')
+                            OR p.description LIKE CONCAT('%', #{keyword}, '%')
+                        )
+                    </otherwise>
+                </choose>
+            </if>
+            <if test="price == true and minPrice != null">
+                AND (p.price * (100 - p.discount) / 100) <![CDATA[>=]]> #{minPrice}
+            </if>
+            <if test="price == true and maxPrice != null">
+                AND (p.price * (100 - p.discount) / 100) <![CDATA[<=]]> #{maxPrice}
+            </if>
+        </where>
+    </sql>
+
+    <select id="findProductsForSearch" resultType="org.example.k_market.dto.product.response.ProductSearchResponse">
+        SELECT
+            p.prodNo AS no,
+            p.prodName AS name,
+            p.description,
+            p.price,
+            p.discount,
+            p.deliveryFee,
+            p.thumb1FileId,
+            p.sellerUid,
+            m.name AS seller,
+            COALESCE(AVG(r.rating), 0) AS rating
+        FROM product p
+        JOIN member m ON m.uid = p.sellerUid
+        LEFT JOIN review r ON r.prodNo = p.prodNo
+        <include refid="customerSearchWhere" />
+        GROUP BY
+            p.prodNo,
+            p.prodName,
+            p.description,
+            p.price,
+            p.discount,
+            p.deliveryFee,
+            p.thumb1FileId,
+            p.sellerUid,
+            m.name
+        <choose>
+            <when test="type == 'SALES'">
+                ORDER BY p.sold DESC, p.prodNo DESC
+            </when>
+            <when test="type == 'PRICE_ASC'">
+                ORDER BY (p.price * (100 - p.discount) / 100) ASC,
+                    p.prodNo DESC
+            </when>
+            <when test="type == 'PRICE_DESC'">
+                ORDER BY (p.price * (100 - p.discount) / 100) DESC,
+                    p.prodNo DESC
+            </when>
+            <when test="type == 'RATING'">
+                ORDER BY rating DESC, p.prodNo DESC
+            </when>
+            <when test="type == 'REVIEW_COUNT'">
+                ORDER BY COUNT(r.reviewNo) DESC, p.prodNo DESC
+            </when>
+            <when test="type == 'CREATED_AT'">
+                ORDER BY p.createdAt DESC, p.prodNo DESC
+            </when>
+            <otherwise>
+                ORDER BY p.prodNo DESC
+            </otherwise>
+        </choose>
+        LIMIT #{size}
+        OFFSET #{offset}
+    </select>
+
+    <select id="totalCountForSearch" resultType="int">
+        SELECT COUNT(p.prodNo)
+        FROM product p
+        <include refid="customerSearchWhere" />
+    </select>
+
+    <select id="findProductsForMain" resultType="org.example.k_market.dto.product.response.ProductListResponse">
+        SELECT
+            p.prodNo AS no,
+            p.prodName AS name,
+            p.description,
+            p.price,
+            p.discount,
+            p.deliveryFee,
+            p.thumb1FileId,
+            p.sellerUid,
+            m.name AS seller,
+            COALESCE(AVG(r.rating), 0) AS rating
+        FROM product p
+        JOIN member m ON m.uid = p.sellerUid
+        LEFT JOIN review r ON r.prodNo = p.prodNo
+        WHERE p.status = 'ON_SALE'
+            AND EXISTS (
+                SELECT 1
+                FROM product_variant pv_status
+                WHERE pv_status.prodNo = p.prodNo
+                    AND pv_status.status = 'ON_SALE'
+            )
+        GROUP BY
+            p.prodNo,
+            p.prodName,
+            p.description,
+            p.price,
+            p.discount,
+            p.deliveryFee,
+            p.thumb1FileId,
+            p.sellerUid,
+            m.name,
+            p.hit,
+            p.createdAt
+        <choose>
+            <when test="type == 'HIT'">
+                ORDER BY p.hit DESC, p.prodNo DESC
+            </when>
+            <when test="type == 'DISCOUNT'">
+                ORDER BY p.discount DESC, p.prodNo DESC
+            </when>
+            <when test="type == 'CREATED_AT'">
+                ORDER BY p.createdAt DESC, p.prodNo DESC
+            </when>
+            <when test="type == 'RATING'">
+                ORDER BY rating DESC, p.prodNo DESC
+            </when>
+            <otherwise>
+                ORDER BY p.prodNo DESC
+            </otherwise>
+        </choose>
+        LIMIT #{size}
     </select>
 
     <select id="findProductDetail" resultType="org.example.k_market.dto.product.response.ProductDetailResponse">
@@ -163,7 +342,12 @@
             p.discount,
             p.point,
             p.sold,
-            COALESCE(SUM(pv.stock), 0) AS stock,
+            (
+                SELECT COALESCE(SUM(pv_stock.stock), 0)
+                FROM product_variant pv_stock
+                WHERE pv_stock.prodNo = p.prodNo
+                    AND pv_stock.status != 'DELETED'
+            ) AS stock,
             parent.cateId AS rootCategoryId,
             parent.name AS rootCategoryName,
             c.name AS subCategoryName,
@@ -172,12 +356,16 @@
             p.thumb3FileId,
             p.detailInfoFileId,
             p.sellerUid,
+            m.name AS seller,
+            COALESCE(AVG(r.rating), 0) AS rating,
+            COUNT(DISTINCT r.reviewNo) AS reviewCount,
             p.infoNoticeType,
             p.createdAt
         FROM product p
             LEFT JOIN category c ON c.cateId = p.cateId
             LEFT JOIN category parent ON parent.cateId = c.parentId
-            LEFT JOIN product_variant pv ON pv.prodNo = p.prodNo
+            LEFT JOIN member m ON m.uid = p.sellerUid
+            LEFT JOIN review r ON r.prodNo = p.prodNo
         WHERE p.prodNo = #{prodNo}
         GROUP BY
             p.prodNo,
@@ -198,6 +386,7 @@
             p.thumb3FileId,
             p.detailInfoFileId,
             p.sellerUid,
+            m.name,
             p.infoNoticeType,
             p.createdAt
     </select>

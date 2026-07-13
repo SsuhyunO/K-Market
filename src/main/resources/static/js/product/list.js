@@ -82,13 +82,13 @@ function initSortTabs() {
 
         updateActiveSortTab();
 
-        loadProducts(1)
-            .then(response => {
-                // 정렬 변경 후 페이지네이션도 1페이지 기준으로 다시 그려야 한다면
-                // pagination 모듈에서 별도 갱신 함수를 노출하는 구조가 필요함.
-                return response;
+        window.dispatchEvent(
+            new CustomEvent('pagination:refresh', {
+                detail: {
+                    page: 1
+                }
             })
-            .catch(errorHandler);
+        );
     });
 }
 

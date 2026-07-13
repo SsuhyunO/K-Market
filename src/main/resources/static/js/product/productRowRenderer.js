@@ -2,8 +2,12 @@ import { getContextPath, getFileUrl } from "../global/pathUtils.js";
 import { escapeHtml } from "../global/htmlUtils.js";
 
 export function renderProductRows(products) {
-    console.log(products);
     const productListRow = document.getElementsByClassName('product-list-row')[0];
+
+    if (!products.list.length) {
+        productListRow.innerHTML = '<p class="product-empty">조건에 맞는 상품이 없습니다.</p>';
+        return;
+    }
 
     productListRow.innerHTML = products
         .list
@@ -18,7 +22,7 @@ function createProductRow(product) {
     const sellerGrade = getSellerGradeInfo(product.sellerGrade);
 
     return `
-        <a href="${getContextPath()}/product/${product.no}" class="product-row-item">
+        <a href="${getContextPath()}product/view?prodNo=${encodeURIComponent(product.no)}" class="product-row-item">
             <div class="row-thumb">
                 ${hasThumbnail 
                     ? `<img src="${getFileUrl(product.thumb1FileId)}" alt="${escapeHtml(product.name)} 상품 썸네일">`
@@ -84,7 +88,7 @@ function getSellerGradeInfo(grade) {
     switch (grade) {
         case 'EXCELLENT':
             return {
-                className: 'grad-excellent',
+                className: 'grade-excellent',
                 label: '고객만족우수'
             };
         case 'GOOD':

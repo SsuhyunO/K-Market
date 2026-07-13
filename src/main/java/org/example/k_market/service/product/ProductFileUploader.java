@@ -34,6 +34,29 @@ public class ProductFileUploader {
         );
     }
 
+    public ProductUploadedFiles uploadOptionalFiles(ProductRegisterRequest request, ProductUploadedFiles fallback) {
+        return new ProductUploadedFiles(
+            uploadOptionalImage(request.getThumb1(), "상품 이미지1", thumbnailMaxSize, fallback.thumb1FileId()),
+            uploadOptionalImage(request.getThumb2(), "상품 이미지2", thumbnailMaxSize, fallback.thumb2FileId()),
+            uploadOptionalImage(request.getThumb3(), "상품 이미지3", thumbnailMaxSize, fallback.thumb3FileId()),
+            uploadOptionalImage(request.getDetailInfoFile(), "상품 상세정보 이미지", detailInfoMaxSize, fallback.detailInfoFileId())
+        );
+    }
+
+    private Integer uploadOptionalImage(MultipartFile file, String fieldName, DataSize maxSize, Integer fallbackFileId) {
+        if (file == null || file.isEmpty()) {
+            return fallbackFileId;
+        }
+
+        validateImageFile(file, fieldName, maxSize);
+        FileDTO uploadedFile = fileService.uploadFile(file);
+        if (uploadedFile == null) {
+            throw new IllegalArgumentException(fieldName + " 파일 업로드에 실패했습니다.");
+        }
+
+        return uploadedFile.getId();
+    }
+
     private FileDTO uploadRequiredImage(MultipartFile file, String fieldName, DataSize maxSize) {
         validateImageFile(file, fieldName, maxSize);
 

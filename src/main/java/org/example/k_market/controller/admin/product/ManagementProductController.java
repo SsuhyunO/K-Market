@@ -6,6 +6,7 @@ import org.example.k_market.common.product.ProductInfoNoticeTemplates;
 import org.example.k_market.dto.product.request.ProductRegisterRequest;
 import org.example.k_market.service.CategoryService;
 import org.example.k_market.service.ProductService;
+import org.example.k_market.service.product.ProductRemovalResult;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -44,7 +45,8 @@ public class ManagementProductController {
 
     @PostMapping("/edit")
     public String edit(@RequestParam("prodNo") int prodNo, ProductRegisterRequest request, RedirectAttributes redirectAttributes) {
-        productService.modify();
+        productService.modify(prodNo, request);
+        redirectAttributes.addFlashAttribute("productMessage", "상품이 수정되었습니다.");
         return "redirect:/admin/product/list?edit=success";
     }
 
@@ -59,8 +61,8 @@ public class ManagementProductController {
     @PostMapping("/remove")
     public String remove(@RequestParam(value = "productNo", required = false) List<Integer> productNos,
                          RedirectAttributes redirectAttributes) {
-        productService.remove(productNos);
-        redirectAttributes.addFlashAttribute("productMessage", "선택한 상품이 삭제되었습니다.");
+        ProductRemovalResult result = productService.remove(productNos);
+        redirectAttributes.addFlashAttribute("productMessage", result.message());
         return "redirect:/admin/product/list?remove=success";
     }
 

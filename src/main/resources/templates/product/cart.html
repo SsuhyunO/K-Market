@@ -62,51 +62,31 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <!-- 더미 상품 1 -->
-                    <tr>
-                        <td><input type="checkbox" class="chk-item" checked></td>
-                        <td class="product-col">
-                            <div class="prod-thumb">📷</div>
-                            <div class="prod-info">
-                                <span class="name">나이키 스포츠웨어 클럽 플리스 후디 기모 맨투맨</span>
-                                <span class="desc">옵션: 블랙 / L</span>
-                            </div>
-                        </td>
-                        <td>
-                            <div class="count-control">
-                                <button type="button">-</button>
-                                <input type="text" value="1" readonly>
-                                <button type="button">+</button>
-                            </div>
-                        </td>
-                        <td>89,000원</td>
-                        <td class="discount">30%</td>
-                        <td>623P</td>
-                        <td>무료</td>
-                        <td class="total">62,300원</td>
+                    <tr th:if="${cartItems == null or #lists.isEmpty(cartItems)}">
+                        <td colspan="8" class="empty-cart">장바구니가 비어있습니다.</td>
                     </tr>
-                    <!-- 더미 상품 2 -->
-                    <tr>
-                        <td><input type="checkbox" class="chk-item" checked></td>
+                    <tr th:each="item : ${cartItems}">
+                        <td><input type="checkbox" class="chk-item" th:value="${item.cartNo}" checked></td>
                         <td class="product-col">
-                            <div class="prod-thumb">📷</div>
+                            <div class="prod-thumb">
+                                <img th:if="${item.thumbnailUrl}" th:src="${item.thumbnailUrl}" alt="">
+                                <span th:unless="${item.thumbnailUrl}">이미지 없음</span>
+                            </div>
                             <div class="prod-info">
-                                <span class="name">오리지널스 삼선 슬리퍼 알파바운스</span>
-                                <span class="desc">옵션: 화이트 / 260</span>
+                                <span class="name" th:text="${item.productName}">상품명</span>
+                                <span class="desc" th:if="${item.optionText}" th:text="'옵션: ' + ${item.optionText}">옵션</span>
                             </div>
                         </td>
                         <td>
                             <div class="count-control">
-                                <button type="button">-</button>
-                                <input type="text" value="2" readonly>
-                                <button type="button">+</button>
+                                <input type="text" th:value="${item.quantity}" readonly>
                             </div>
                         </td>
-                        <td>39,000원</td>
-                        <td class="discount">10%</td>
-                        <td>702P</td>
-                        <td>3,000원</td>
-                        <td class="total">70,200원</td>
+                        <td th:text="${#numbers.formatInteger(item.price, 1, 'COMMA')} + '원'">0원</td>
+                        <td class="discount" th:text="${item.discountRate} + '%'">0%</td>
+                        <td th:text="${#numbers.formatInteger(item.point * item.quantity, 1, 'COMMA')} + 'P'">0P</td>
+                        <td th:text="${item.freeShipping} ? '무료' : ${#numbers.formatInteger(item.shippingFee, 1, 'COMMA')} + '원'">무료</td>
+                        <td class="total" th:text="${#numbers.formatInteger(item.lineTotal, 1, 'COMMA')} + '원'">0원</td>
                     </tr>
                     </tbody>
                 </table>
@@ -126,41 +106,41 @@
 
                     <div class="summary-row">
                         <span class="label">상품수</span>
-                        <span class="value" id="summaryItemCount" th:text="${orderItems != null ? #lists.size(orderItems) : 3}">3</span>
+                        <span class="value" id="summaryItemCount" th:text="${cartItems != null ? #lists.size(cartItems) : 0}">0</span>
                     </div>
                     <div class="summary-row">
                         <span class="label">상품금액</span>
-                        <span class="value" id="summaryProductPrice" th:text="(${productTotal} != null ? ${productTotal} : 167+',000') + '원'">167,000원</span>
+                        <span class="value" id="summaryProductPrice" th:text="${#numbers.formatInteger(productTotal, 1, 'COMMA')} + '원'">0원</span>
                     </div>
                     <div class="summary-row">
                         <span class="label">할인금액</span>
-                        <span class="value minus" id="summaryDiscount" th:text="'-' + (${discountTotal} != null ? ${discountTotal} : 34+','+500) + '원'">-34,500원</span>
+                        <span class="value minus" id="summaryDiscount" th:text="'-' + ${#numbers.formatInteger(discountTotal, 1, 'COMMA')} + '원'">-0원</span>
                     </div>
                     <div class="summary-row">
                         <span class="label">배송비</span>
-                        <span class="value" id="summaryShipping" th:text="(${shippingTotal} != null ? ${shippingTotal} : 3+',000') + '원'">3,000원</span>
+                        <span class="value" id="summaryShipping" th:text="${#numbers.formatInteger(shippingTotal, 1, 'COMMA')} + '원'">0원</span>
                     </div>
 
                     <hr class="summary-divider">
 
                     <div class="summary-row">
                         <span class="label">전체주문금액</span>
-                        <span class="value" id="summaryOrderTotal" th:text="(${orderTotal} != null ? orderTotal : 135+','+500) + '원'">135,500원</span>
+                        <span class="value" id="summaryOrderTotal" th:text="${#numbers.formatInteger(orderTotal, 1, 'COMMA')} + '원'">0원</span>
                     </div>
                     <div class="summary-row">
                         <span class="label">적립포인트</span>
-                        <span class="value" id="summaryEarnPoint" th:text="(${earnPoint != null ? earnPoint : 270})">270</span>
+                        <span class="value" id="summaryEarnPoint" th:text="${#numbers.formatInteger(earnPoint, 1, 'COMMA')}">0</span>
                     </div>
 
                     <hr class="summary-divider">
 
                     <div class="summary-final">
                         <span class="label">전체주문금액</span>
-                        <span class="value" id="summaryFinalPrice" th:text="(${finalPrice} != null ? finalPrice : 135+','+500) + '원'">135,500원</span>
+                        <span class="value" id="summaryFinalPrice" th:text="${#numbers.formatInteger(finalPrice, 1, 'COMMA')} + '원'">0원</span>
                     </div>
 
-                    <!-- 결제하기 클릭 시 결제완료 페이지로 이동 (실제 PG 연동/결제 테스트는 해당사항 없음) -->
-                    <button type="button" class="btn-order" id="btnOrder">주문하기</button>
+                    <button type="button" class="btn-order" id="btnOrder"
+                            th:disabled="${cartItems == null or #lists.isEmpty(cartItems)}">주문하기</button>
                 </div>
 
             </div>
@@ -171,9 +151,8 @@
     </main>
 </div>
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script th:src="@{/js/common.js}"></script>
-<script th:src="@{/js/product/product.js}"></script>
+<script type="module" th:src="@{/js/product/cart.js}"></script>
 
 </body>
 </html>

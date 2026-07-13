@@ -41,6 +41,23 @@ public class ProductFormValidator {
         return category;
     }
 
+    public Category validateForModify(ProductRegisterRequest request) {
+        if (request.getCateId() == null) {
+            throw new IllegalArgumentException("카테고리를 선택해주세요.");
+        }
+
+        Category category = categoryRepository
+            .findById(request.getCateId())
+            .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 카테고리입니다."));
+
+        validateCategory(category, request);
+        validateProductInfo(request);
+        validateNoticeValues(request);
+        validateOptionVariants(request.getOptionGroups(), request.getVariants());
+
+        return category;
+    }
+
     private void validateSeller(String sellerUid) {
         if (isBlank(sellerUid)) {
             throw new IllegalStateException("로그인이 필요합니다.");

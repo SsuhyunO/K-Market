@@ -59,7 +59,6 @@ function initNavTabs() {
         'hit':       document.getElementById('section-hit'),
         'recommend': document.getElementById('section-recommend'),
         'new':       document.getElementById('section-new'),
-        'popular':   document.getElementById('section-popular'),
         'discount':  document.getElementById('section-discount'),
     };
 
@@ -103,6 +102,10 @@ function initNavTabs() {
 
 // 카테고리 서브메뉴 호버 이벤트
 function initCatMenu() {
+    if (document.querySelector('.aside-category details')) {
+        return;
+    }
+
     document.querySelectorAll('.aside-category li').forEach(li => {
         li.addEventListener('mouseenter', () => {
             const sub = li.querySelector('.cat-sub');
