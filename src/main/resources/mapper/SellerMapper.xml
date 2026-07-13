@@ -32,4 +32,45 @@
         WHERE uid = #{uid}
     </update>
 
+
+    <select id="findStatisticsBySellerUids" resultType="org.example.k_market.dto.seller.response.SellerStatisticsResponse">
+        SELECT
+            sales.sellerUid,
+            COALESCE(reviews.averageRating, 0) AS averageRating,
+            COALESCE(reviews.reviewCount, 0) AS reviewCount,
+            sales.salesCount
+        FROM (
+            SELECT
+                sellerUid,
+                COALESCE(SUM(sold), 0) AS salesCount
+            FROM product
+            WHERE sellerUid IN
+            <foreach collection="sellerUids"
+                     item="sellerUid"
+                     open="("
+                     separator=","
+                     close=")">
+                #{sellerUid}
+            </foreach>
+            GROUP BY sellerUid
+            ) sales
+            LEFT JOIN (
+                SELECT
+                    p.sellerUid,
+                    AVG(r.rating) AS averageRating,
+                    COUNT(r.reviewNo) AS reviewCount
+                FROM product p
+            JOIN review r ON r.prodNo = p.prodNo
+            WHERE p.sellerUid IN
+            <foreach collection="sellerUids"
+                     item="sellerUid"
+                     open="("
+                     separator=","
+                     close=")">
+                #{sellerUid}
+            </foreach>
+            GROUP BY p.sellerUid
+            ) reviews
+            ON reviews.sellerUid = sales.sellerUid
+    </select>
 </mapper>

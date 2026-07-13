@@ -26,70 +26,41 @@
         <!--
             💡 퍼블리싱 전용 매핑 로직 (서버 연결 전 테스트용)
             주소창의 ?category=12 번호를 읽어 1차(parent)와 2차(current) 이름을 자동으로 할당합니다.
-        -->Ø
-        <div class="list-header"
-             th:with="
-                cateId=${param.category != null ? param.category[0] : '12'},
-                parentName=${
-                    (cateId == '11' or cateId == '12' or cateId == '13') ? '패션·뷰티' :
-                    ((cateId == '21' or cateId == '22' or cateId == '23') ? '가전·디지털' :
-                    ((cateId == '31' or cateId == '32' or cateId == '33') ? '식품·생필품' :
-                    ((cateId == '41' or cateId == '42' or cateId == '43') ? '홈·데코·취미' : null)))
-                },
-                currentName=${
-                    cateId == '11' ? '남성의류' :
-                    (cateId == '12' ? '여성의류' :
-                    (cateId == '13' ? '화장품·뷰티' :
-                    (cateId == '21' ? '컴퓨터·PC' :
-                    (cateId == '22' ? '생활가전' :
-                    (cateId == '23' ? '모바일' :
-                    (cateId == '31' ? '신선식품' :
-                    (cateId == '32' ? '가공식품' :
-                    (cateId == '33' ? '생활용품' :
-                    (cateId == '41' ? '가구·인테리어' :
-                    (cateId == '42' ? '데코문구·오피스' :
-                    (cateId == '43' ? '문구반려·취미' : '전체상품')))))))))))
-                }
-             ">
+        -->
+        <div class="list-header">
 
             <!-- 메인 타이틀 -->
-            <h1 class="list-title" th:text="${currentName}">상품목록</h1>
+            <h1 class="list-title" th:text="${subCate.name}">상품목록</h1>
 
             <nav class="breadcrumb">
                 <a th:href="@{/}">HOME</a>
 
                 <!-- 1차 카테고리 (매핑된 이름이 있을 때만 노출) -->
-                <th:block th:if="${parentName != null}">
+                <th:block th:if="${parentCate != null}">
                     <span class="sep">&gt;</span>
-                    <a href="#" th:text="${parentName}">1차 카테고리</a>
+                    <a href="#" th:text="${parentCate.name}">1차 카테고리</a>
                 </th:block>
 
                 <!-- 2차 (현재) 카테고리 -->
                 <span class="sep">&gt;</span>
-                <span class="current" th:text="${currentName}">현재 카테고리</span>
+                <span class="current" th:text="${subCate.name}">현재 카테고리</span>
             </nav>
         </div>
 
         <!-- ③ 상품 정렬: 판매많은순 | 낮은가격순 | 높은가격순 | 평점높은순 | 후기많은순 | 최근등록순 -->
-        <nav class="sort-tabs">
-            <a th:href="@{/product/list(category=${categoryId}, sort='sales')}"
-               th:class="${sort == null or sort == 'sales'} ? 'active' : ''">판매많은순</a>
-            <span class="sep">|</span>
-            <a th:href="@{/product/list(category=${categoryId}, sort='priceAsc')}"
-               th:class="${sort == 'priceAsc'} ? 'active' : ''">낮은가격순</a>
-            <span class="sep">|</span>
-            <a th:href="@{/product/list(category=${categoryId}, sort='priceDesc')}"
-               th:class="${sort == 'priceDesc'} ? 'active' : ''">높은가격순</a>
-            <span class="sep">|</span>
-            <a th:href="@{/product/list(category=${categoryId}, sort='ratingDesc')}"
-               th:class="${sort == 'ratingDesc'} ? 'active' : ''">평점높은순</a>
-            <span class="sep">|</span>
-            <a th:href="@{/product/list(category=${categoryId}, sort='reviewDesc')}"
-               th:class="${sort == 'reviewDesc'} ? 'active' : ''">후기많은순</a>
-            <span class="sep">|</span>
-            <a th:href="@{/product/list(category=${categoryId}, sort='latest')}"
-               th:class="${sort == 'latest'} ? 'active' : ''">최근등록순</a>
-        </nav>
+	    <nav class="sort-tabs">
+		    <a href="#" data-sort="SALES">판매많은순</a>
+		    <span class="sep">|</span>
+		    <a href="#" data-sort="PRICE_ASC">낮은가격순</a>
+		    <span class="sep">|</span>
+		    <a href="#" data-sort="PRICE_DESC">높은가격순</a>
+		    <span class="sep">|</span>
+		    <a href="#" data-sort="RATING">평점높은순</a>
+		    <span class="sep">|</span>
+		    <a href="#" data-sort="REVIEW_COUNT">후기많은순</a>
+		    <span class="sep">|</span>
+		    <a href="#" data-sort="CREATED_AT">최근등록순</a>
+	    </nav>
 
         <!-- ④ 상품 리스트: 10개씩 페이징 -->
         <div class="product-list-row">
@@ -161,9 +132,7 @@
         </nav>
 
         <footer th:replace="~{fragments/footer :: footer}"></footer>
-
     </main>
-
 </div>
 
 <script th:src="@{/js/common.js}"></script>

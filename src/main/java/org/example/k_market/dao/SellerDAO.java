@@ -1,7 +1,11 @@
 package org.example.k_market.dao;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+import org.example.k_market.dto.seller.response.SellerStatisticsResponse;
 import org.example.k_market.entity.Seller;
+
+import java.util.List;
 
 @Mapper
 public interface SellerDAO {
@@ -17,4 +21,8 @@ public interface SellerDAO {
 
     // 판매자 정보 수정
     int updateSeller(Seller seller);
+
+    List<SellerStatisticsResponse> findStatisticsBySellerUids(
+        @Param("sellerUids") List<String> sellerUids
+    );
 }

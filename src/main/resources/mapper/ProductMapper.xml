@@ -91,6 +91,7 @@
             p.discount,
             p.deliveryFee,
             p.thumb1FileId,
+            p.sellerUid,
             m.name AS seller,
             COALESCE(AVG(r.rating), 0) AS rating
         FROM product p
@@ -109,6 +110,7 @@
             p.discount,
             p.deliveryFee,
             p.thumb1FileId,
+            p.sellerUid,
             m.name
         <choose>
             <when test="type == 'SALES'">
