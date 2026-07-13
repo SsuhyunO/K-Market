@@ -27,6 +27,12 @@ public class ProductListResponse {
         return (int)(price - ((double)price * discount / 100));
     }
 
+    public String getThumbnailUrl() {
+        return thumb1FileId != null
+            ? "/files/" + thumb1FileId
+            : null;
+    }
+
     public boolean isFreeShipping() {
         return deliveryFee <= 0;
     }

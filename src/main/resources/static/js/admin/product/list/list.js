@@ -33,25 +33,39 @@ function initSearchForm() {
     const searchForm = document.searchForm;
     if (!searchForm) return;
 
-    searchForm.addEventListener('submit', function (event) {
+    searchForm.addEventListener('submit', event => {
         event.preventDefault();
 
-        loadProducts(1)
-            .then(() => {
-                const params = new URLSearchParams(window.location.search);
-                params.set('page', '1');
+        const params = new URLSearchParams(window.location.search);
+        const { type, keyword } = getSearchCondition();
 
-                const { type, keyword } = getSearchCondition();
+        params.set('page', '1');
 
-                if (type) params.set('type', type);
-                else params.delete('type');
+        if (type) {
+            params.set('type', type);
+        } else {
+            params.delete('type');
+        }
 
-                if (keyword) params.set('keyword', keyword);
-                else params.delete('keyword');
+        if (keyword) {
+            params.set('keyword', keyword);
+        } else {
+            params.delete('keyword');
+        }
 
-                window.history.pushState(null, '', `${window.location.pathname}?${params.toString()}`);
+        window.history.pushState(
+            null,
+            '',
+            `${window.location.pathname}?${params.toString()}`
+        );
+
+        window.dispatchEvent(
+            new CustomEvent('pagination:refresh', {
+                detail: {
+                    page: 1
+                }
             })
-            .catch(errorHandler);
+        );
     });
 }
 

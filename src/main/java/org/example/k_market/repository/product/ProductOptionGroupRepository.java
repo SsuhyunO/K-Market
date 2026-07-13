@@ -17,4 +17,12 @@ public interface ProductOptionGroupRepository extends JpaRepository<ProductOptio
     @Modifying
     @Query("delete from ProductOptionGroup pog where pog.prodNo in :prodNos")
     int deleteAllByProdNoIn(@Param("prodNos") List<Integer> prodNos);
+
+    @Modifying
+    @Query("update ProductOptionGroup pog set pog.name = :name, pog.deleted = false where pog.id = :id and pog.prodNo = :prodNo")
+    int updateNameByIdAndProdNo(@Param("id") int id, @Param("prodNo") int prodNo, @Param("name") String name);
+
+    @Modifying
+    @Query("update ProductOptionGroup pog set pog.deleted = true where pog.id in :ids")
+    int markDeletedByIdIn(@Param("ids") List<Integer> ids);
 }

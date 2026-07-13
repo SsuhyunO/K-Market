@@ -300,14 +300,16 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
    ASIDE (카테고리 메뉴 + 베스트 상품)
    ============================================= */
 #aside {
+    --aside-sticky-top: 230px;
     width: var(--aside-w);
     flex-shrink: 0;
     /* 헤더 높이(배너90 + 로고영역90 + 탭44) + 여유 = 약 240px */
     position: sticky;
-    top: 230px;          /* sticky 헤더 아래에 붙어서 스크롤 따라 내려옴 */
+    top: var(--aside-sticky-top);          /* sticky 헤더 아래에 붙어서 스크롤 따라 내려옴 */
     align-self: flex-start;
-    max-height: calc(100vh - 180px);
+    max-height: calc(100vh - var(--aside-sticky-top) - 16px);
     overflow-y: auto;
+    overscroll-behavior: contain;
     scrollbar-width: none;          /* Firefox */
 }
 
@@ -324,6 +326,15 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
 }
 .aside-category li:last-child { border-bottom: none; }
 
+.cat-group {
+    background: var(--color-white);
+}
+.cat-group summary {
+    list-style: none;
+}
+.cat-group summary::-webkit-details-marker {
+    display: none;
+}
 .cat-item {
     display: flex;
     align-items: center;
@@ -335,9 +346,28 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
     background: var(--color-white);
     transition: background var(--transition), color var(--transition);
     position: relative;
+    cursor: pointer;
 }
-.cat-item:hover { background: var(--color-primary); color: var(--color-white); }
+.cat-item:hover,
+.cat-group[open] > .cat-item {
+    background: var(--color-primary);
+    color: var(--color-white);
+}
 .cat-item .cat-icon { font-size: 15px; flex-shrink: 0; }
+.cat-arrow {
+    margin-left: auto;
+    font-size: 14px;
+    color: var(--color-gray-400);
+    transform: rotate(0deg);
+    transition: transform var(--transition), color var(--transition);
+}
+.cat-item:hover .cat-arrow,
+.cat-group[open] > .cat-item .cat-arrow {
+    color: var(--color-white);
+}
+.cat-group[open] > .cat-item .cat-arrow {
+    transform: rotate(90deg);
+}
 
 /* 2차 카테고리 (서브메뉴) */
 .cat-sub {
@@ -345,7 +375,7 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
     padding: 4px 0;
     display: none;
 }
-.aside-category li:hover .cat-sub { display: block; }
+.cat-group[open] .cat-sub { display: block; }
 .cat-sub a {
     display: block;
     padding: 6px 14px 6px 34px;
@@ -353,7 +383,11 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
     color: var(--color-gray-600);
     transition: color var(--transition);
 }
-.cat-sub a:hover { color: var(--color-primary); }
+.cat-sub a:hover,
+.cat-sub a.active {
+    color: var(--color-primary);
+    font-weight: 700;
+}
 .cat-sub a::before { content: "·"; margin-right: 6px; }
 
 /* 베스트 상품 */
@@ -383,8 +417,11 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
     gap: 10px;
     padding: 8px 14px;
     transition: background var(--transition);
+    cursor: pointer;
 }
-.best-item:hover { background: var(--color-gray-100); }
+.best-item:hover {
+    background: var(--color-gray-100);
+}
 .best-item:first-child .best-rank { color: var(--color-primary); font-weight: 900; }
 
 /* 1위 상품 전용 스타일 */
@@ -452,6 +489,11 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
     font-size: 18px;
     flex-shrink: 0;
 }
+.best-thumb-placeholder img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
 .best-info {
     flex: 1; /* 숫자가 빠진 남은 공간을 텍스트 영역이 모두 차지하게 함 */
     min-width: 0; /* ★ flex 자식 요소의 텍스트가 찌그러지지 않고 말줄임(...) 처리되게 하는 필수 속성 */
@@ -470,15 +512,26 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
     color: var(--color-price-del);
     text-decoration: line-through;
 }
+.best-price-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    column-gap: 4px;
+    row-gap: 1px;
+    line-height: 1.25;
+}
 .best-sale {
     font-size: 11px;
     color: var(--color-sale);
     font-weight: 700;
+    flex-shrink: 0;
 }
 .best-price {
     font-size: 12px;
     font-weight: 700;
     color: var(--color-gray-900);
+    min-width: 0;
+    overflow-wrap: anywhere;
 }
 
 /* =============================================

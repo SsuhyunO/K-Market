@@ -113,7 +113,7 @@ public class ProductDetailViewer {
                 .build())
             .toList());
 
-        List<ProductVariant> variants = variantRepository.findByProdNoOrderByIdAsc(prodNo);
+        List<ProductVariant> variants = variantRepository.findByProdNoAndStatusNotOrderByIdAsc(prodNo, "DELETED");
         List<Integer> variantIds = variants.stream()
             .map(ProductVariant::getId)
             .toList();

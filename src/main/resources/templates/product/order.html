@@ -131,7 +131,7 @@
                         <label for="recvZip">우편번호</label>
                         <div class="addr-row">
                             <input type="text" id="recvZip" name="recvZip" th:value="${recvZip}" placeholder="우편번호" readonly>
-                            <button type="button" class="btn-search-addr" id="btnSearchAddr" onclick="postcode()">검색</button>
+                            <button type="button" class="btn-search-addr" id="btnSearchAddr">검색</button>
                         </div>
 
                         <label for="recvAddr1">기본주소</label>
@@ -301,15 +301,14 @@
 </div>
 
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script th:src="@{/js/common.js}"></script>
-<script th:src="@{/js/product/product.js}"></script>
 <script th:inline="javascript">
-    const orderItems = /*[[${orderItems}]]*/ [];
+    window.orderItems = /*[[${orderItems}]]*/ [];
 </script>
 <script th:inline="javascript">
-    const CONTEXT_PATH = /*[[@{/}]]*/ '';
+    window.CONTEXT_PATH = /*[[@{/}]]*/ '';
 </script>
+<script type="module" th:src="@{/js/product/order.js}"></script>
 
 </body>
 </html>
