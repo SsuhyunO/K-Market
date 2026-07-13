@@ -1,50 +1,162 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>KMarket 공지사항 보기</title>
+
     <th:block th:replace="~{admin/fragments/head::head}"></th:block>
-    <link rel="stylesheet" th:href="@{/css/admin/global/action-bar.css}">
-    <link rel="stylesheet" th:href="@{/css/admin/global/section-table.css}">
-    <link rel="stylesheet" th:href="@{/css/admin/cs/board.css}">
-    <script type="module" th:src="@{/js/admin/cs/cs-board.js}"></script>
+
+    <link rel="stylesheet"
+          th:href="@{/css/admin/global/action-bar.css}">
+
+    <link rel="stylesheet"
+          th:href="@{/css/admin/global/section-table.css}">
+
+    <link rel="stylesheet"
+          th:href="@{/css/admin/cs/board.css}">
+
+    <script type="module"
+            th:src="@{/js/admin/cs/cs-board.js}"></script>
 </head>
-<body>
+
+<body class="cs-board-page">
+
 <header th:replace="~{admin/fragments/header::header}"></header>
+
 <div class="admin-layout">
+
     <aside th:replace="~{admin/fragments/aside::aside}"></aside>
 
     <main id="admin-main">
+
         <div th:replace="~{admin/fragments/page-header::page-header}"></div>
 
-        <section th:replace="~{admin/fragments/dash-section::dash-section(null, '공지사항 보기', null, ~{::content})}">
+        <section th:replace="~{admin/fragments/dash-section::dash-section(
+                    null,
+                    '공지사항 보기',
+                    null,
+                    ~{::content}
+                )}">
+
             <th:block th:fragment="content">
+
+                <!-- 수정 완료 등의 메시지 -->
+                <script th:if="${message}"
+                        th:inline="javascript">
+                    alert([[${message}]]);
+                </script>
+
                 <table class="section-table cs-view-table">
+
+                    <tbody>
+
+                    <tr>
+                        <th>번호</th>
+                        <td th:text="${notice.boardNo}">1</td>
+                    </tr>
+
                     <tr>
                         <th>유형</th>
-                        <td>고객서비스</td>
+                        <td th:text="${notice.type}">
+                            고객서비스
+                        </td>
                     </tr>
+
                     <tr>
                         <th>제목</th>
-                        <td>[필독] 사이트 이용 안내</td>
+                        <td th:text="${notice.title}">
+                            공지사항 제목
+                        </td>
                     </tr>
+
+                    <tr>
+                        <th>작성일</th>
+                        <td th:text="${notice.createdAt != null
+                            ? #temporals.format(
+                                notice.createdAt,
+                                'yyyy.MM.dd HH:mm'
+                            )
+                            : '-'}">
+                            2026.07.13 09:00
+                        </td>
+                    </tr>
+
                     <tr>
                         <th>내용</th>
-                        <td class="cs-view-content">안녕하세요. 케이마켓입니다.
-공지사항 내용이 출력되는 영역입니다. 고객센터 공지사항의 상세 내용을 확인할 수 있습니다.</td>
+                        <td class="cs-view-content"
+                            th:text="${notice.content}">
+                            공지사항 내용
+                        </td>
                     </tr>
+
+                    </tbody>
+
                 </table>
 
+                <!-- 상세 화면 단일 삭제 폼 -->
+                <form id="notice-delete-form"
+                      th:action="@{/admin/cs/notice/delete}"
+                      method="post"
+                      style="display:none;">
+
+                    <input type="hidden"
+                           name="boardNo"
+                           th:value="${notice.boardNo}">
+
+                </form>
+
                 <div th:replace="~{admin/fragments/action-bar::action-bar(~{::actions})}">
+
                     <th:block th:fragment="actions">
-                        <button class="cs-board-button danger" type="button" data-cs-delete data-confirm-message="공지사항을 삭제하시겠습니까?">삭제</button>
-                        <button class="cs-board-button secondary" type="button" th:data-cs-link="@{/admin/cs/notice/modify}">수정</button>
-                        <button class="cs-board-button primary" type="button" th:data-cs-link="@{/admin/cs/notice/list}">목록</button>
+
+                        <button class="cs-board-button danger"
+                                type="button"
+                                onclick="deleteNotice()">
+                            삭제
+                        </button>
+
+                        <button class="cs-board-button secondary"
+                                type="button"
+                                th:data-cs-link="@{/admin/cs/notice/modify(
+                                    boardNo=${notice.boardNo}
+                                )}">
+                            수정
+                        </button>
+
+                        <button class="cs-board-button primary"
+                                type="button"
+                                th:data-cs-link="@{/admin/cs/notice/list}">
+                            목록
+                        </button>
+
                     </th:block>
+
                 </div>
+
+                <script>
+                    function deleteNotice() {
+                        const confirmed = confirm(
+                            '공지사항을 삭제하시겠습니까?'
+                        );
+
+                        if (!confirmed) {
+                            return;
+                        }
+
+                        document
+                            .getElementById('notice-delete-form')
+                            .submit();
+                    }
+                </script>
+
             </th:block>
+
         </section>
+
     </main>
+
 </div>
+
 <footer th:replace="~{admin/fragments/footer::footer}"></footer>
+
 </body>
 </html>

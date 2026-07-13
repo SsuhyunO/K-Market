@@ -1,55 +1,189 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>KMarket 문의하기 보기</title>
+
     <th:block th:replace="~{admin/fragments/head::head}"></th:block>
-    <link rel="stylesheet" th:href="@{/css/admin/global/action-bar.css}">
-    <link rel="stylesheet" th:href="@{/css/admin/global/section-table.css}">
-    <link rel="stylesheet" th:href="@{/css/admin/cs/board.css}">
-    <script type="module" th:src="@{/js/admin/cs/cs-board.js}"></script>
+
+    <link rel="stylesheet"
+          th:href="@{/css/admin/global/action-bar.css}">
+
+    <link rel="stylesheet"
+          th:href="@{/css/admin/global/section-table.css}">
+
+    <link rel="stylesheet"
+          th:href="@{/css/admin/cs/board.css}">
+
+    <script type="module"
+            th:src="@{/js/admin/cs/cs-board.js}"></script>
 </head>
-<body>
+
+<body class="cs-board-page cs-qna-page">
+
 <header th:replace="~{admin/fragments/header::header}"></header>
+
 <div class="admin-layout">
+
     <aside th:replace="~{admin/fragments/aside::aside}"></aside>
 
     <main id="admin-main">
+
         <div th:replace="~{admin/fragments/page-header::page-header}"></div>
 
-        <section th:replace="~{admin/fragments/dash-section::dash-section(null, '문의하기 보기', null, ~{::content})}">
+        <section th:replace="~{admin/fragments/dash-section::dash-section(
+                    null,
+                    '문의하기 보기',
+                    null,
+                    ~{::content}
+                )}">
+
             <th:block th:fragment="content">
+
+                <script th:if="${message}"
+                        th:inline="javascript">
+                    alert([[${message}]]);
+                </script>
+
                 <table class="section-table cs-view-table">
+
+                    <tbody>
+
+                    <tr>
+                        <th>번호</th>
+                        <td th:text="${qna.boardNo}"></td>
+                    </tr>
+
                     <tr>
                         <th>유형</th>
-                        <td>회원 - 가입</td>
+                        <td>
+                            <span th:text="${qna.category1}"></span>
+                            <span> - </span>
+                            <span th:text="${qna.category2}"></span>
+                        </td>
                     </tr>
+
+                    <tr>
+                        <th>작성자</th>
+                        <td th:text="${qna.maskedMemberUid}"></td>
+                    </tr>
+
+                    <tr>
+                        <th>작성일</th>
+                        <td th:text="${qna.createdAt != null
+                            ? #temporals.format(
+                                qna.createdAt,
+                                'yyyy.MM.dd HH:mm'
+                            )
+                            : '-'}">
+                        </td>
+                    </tr>
+
                     <tr>
                         <th>제목</th>
-                        <td>아이디를 여러개 사용할 수 있나요?</td>
+                        <td th:text="${qna.title}"></td>
                     </tr>
+
                     <tr>
                         <th>내용</th>
-                        <td class="cs-view-content">개인적인사정으로 아이디를 3개 사용 했으면하는데 사용할수있나요?</td>
+                        <td class="cs-view-content"
+                            th:text="${qna.content}">
+                        </td>
                     </tr>
+
                     <tr>
                         <th>답변</th>
-                        <td class="cs-view-content">대한민국 No1 오픈마켓 Kmarket
-안녕하세요. Chhak 고객님 저희 Kmarket을 이용해주셔서 감사합니다.
-안타깝게도 개인회원은 1개의계정 만 사용할수있습니다.
-문의하신내용에 만족 하셨나요?</td>
+                        <td class="cs-view-content"
+                            th:text="${qna.answer}">
+                        </td>
                     </tr>
+
+                    <tr>
+                        <th>답변일</th>
+                        <td th:text="${qna.answeredAt != null
+                            ? #temporals.format(
+                                qna.answeredAt,
+                                'yyyy.MM.dd HH:mm'
+                            )
+                            : '-'}">
+                        </td>
+                    </tr>
+
+                    </tbody>
+
                 </table>
 
-                <div th:replace="~{admin/fragments/action-bar::action-bar(~{::actions})}">
+                <form id="qna-delete-form"
+                      th:action="@{/admin/cs/qna/delete}"
+                      method="post"
+                      style="display:none;">
+
+                    <input type="hidden"
+                           name="boardNo"
+                           th:value="${qna.boardNo}">
+
+                </form>
+
+                <div th:replace="~{admin/fragments/action-bar::action-bar(
+                            ~{::actions}
+                        )}">
+
                     <th:block th:fragment="actions">
-                        <button class="cs-board-button danger" type="button" data-cs-delete data-confirm-message="문의글을 삭제하시겠습니까?">삭제</button>
-                        <button class="cs-board-button primary" type="button" th:data-cs-link="@{/admin/cs/qna/list}">목록</button>
+
+                        <button class="cs-board-button danger"
+                                type="button"
+                                id="qna-delete-button">
+                            삭제
+                        </button>
+
+                        <button class="cs-board-button secondary"
+                                type="button"
+                                th:data-cs-link="@{/admin/cs/qna/reply(
+                                    boardNo=${qna.boardNo}
+                                )}">
+                            답변수정
+                        </button>
+
+                        <button class="cs-board-button primary"
+                                type="button"
+                                th:data-cs-link="@{/admin/cs/qna/list}">
+                            목록
+                        </button>
+
                     </th:block>
+
                 </div>
+
+                <script>
+                    document.addEventListener('DOMContentLoaded', () => {
+
+                        const deleteButton =
+                            document.getElementById('qna-delete-button');
+
+                        const deleteForm =
+                            document.getElementById('qna-delete-form');
+
+                        deleteButton?.addEventListener('click', () => {
+
+                            const confirmed = confirm(
+                                '문의글을 삭제하시겠습니까?'
+                            );
+
+                            if (confirmed) {
+                                deleteForm.submit();
+                            }
+                        });
+                    });
+                </script>
+
             </th:block>
+
         </section>
+
     </main>
+
 </div>
+
 <footer th:replace="~{admin/fragments/footer::footer}"></footer>
+
 </body>
 </html>

@@ -3,20 +3,25 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="org.example.k_market.dao.NoticeDAO">
+<mapper namespace="org.example.k_market.dao.FaqDAO">
 
-    <sql id="noticeWhere">
-        WHERE boardType LIKE 'notice/%'
+    <sql id="faqWhere">
+        WHERE boardType LIKE 'faq/%'
+
+        <if test="category1 != null and category1 != ''">
+            AND boardType LIKE CONCAT('faq/', #{category1}, '/%')
+        </if>
     </sql>
 
     <select id="getTotalCount" resultType="int">
         SELECT COUNT(*)
         FROM board
-        <include refid="noticeWhere"/>
+        <include refid="faqWhere"/>
     </select>
 
-    <select id="getNoticeList"
-            resultType="org.example.k_market.dto.admin.NoticeDTO">
+    <select id="getFaqList"
+            resultType="org.example.k_market.dto.admin.FaqDTO">
+
         SELECT
         boardNo,
         memberUid,
@@ -26,13 +31,16 @@
         fileId,
         createdAt
         FROM board
-        <include refid="noticeWhere"/>
+
+        <include refid="faqWhere"/>
+
         ORDER BY boardNo DESC
         LIMIT #{offset}, #{pageSize}
     </select>
 
-    <select id="getNoticeByNo"
-            resultType="org.example.k_market.dto.admin.NoticeDTO">
+    <select id="getFaqByNo"
+            resultType="org.example.k_market.dto.admin.FaqDTO">
+
         SELECT
             boardNo,
             memberUid,
@@ -43,11 +51,11 @@
             createdAt
         FROM board
         WHERE boardNo = #{boardNo}
-          AND boardType LIKE 'notice/%'
+          AND boardType LIKE 'faq/%'
     </select>
 
-    <insert id="insertNotice"
-            parameterType="org.example.k_market.dto.admin.NoticeDTO"
+    <insert id="insertFaq"
+            parameterType="org.example.k_market.dto.admin.FaqDTO"
             useGeneratedKeys="true"
             keyProperty="boardNo">
 
@@ -69,21 +77,22 @@
                )
     </insert>
 
-    <update id="updateNotice"
-            parameterType="org.example.k_market.dto.admin.NoticeDTO">
+    <update id="updateFaq"
+            parameterType="org.example.k_market.dto.admin.FaqDTO">
 
         UPDATE board
         SET boardType = #{boardType},
             title = #{title},
             content = #{content}
         WHERE boardNo = #{boardNo}
-          AND boardType LIKE 'notice/%'
+          AND boardType LIKE 'faq/%'
     </update>
 
-    <delete id="deleteNotices">
+    <delete id="deleteFaqs">
         DELETE FROM board
-        WHERE boardType LIKE 'notice/%'
+        WHERE boardType LIKE 'faq/%'
         AND boardNo IN
+
         <foreach collection="boardNoList"
                  item="boardNo"
                  open="("
