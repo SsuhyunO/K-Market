@@ -11,6 +11,9 @@ export async function getProducts(options) {
     if (options.keyword) {
         params.set('keyword', options.keyword)
     }
+    if (options.uncategorizedOnly) {
+        params.set('uncategorizedOnly', 'true');
+    }
 
     const response = await fetch(
         `${getContextPath()}admin/product/api/list?${params.toString()}`,

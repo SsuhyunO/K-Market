@@ -16,12 +16,13 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 async function loadProducts(page = 1) {
-    const { type, keyword } = getSearchCondition();
+    const { type, keyword, uncategorizedOnly } = getSearchCondition();
 
     const pageData = await getProducts({
         page: page,
         searchType: type,
-        keyword: keyword
+        keyword: keyword,
+        uncategorizedOnly: uncategorizedOnly
     });
 
     renderProductRows(pageData);
@@ -37,7 +38,7 @@ function initSearchForm() {
         event.preventDefault();
 
         const params = new URLSearchParams(window.location.search);
-        const { type, keyword } = getSearchCondition();
+        const { type, keyword, uncategorizedOnly } = getSearchCondition();
 
         params.set('page', '1');
 
@@ -51,6 +52,12 @@ function initSearchForm() {
             params.set('keyword', keyword);
         } else {
             params.delete('keyword');
+        }
+
+        if (uncategorizedOnly) {
+            params.set('uncategorizedOnly', 'true');
+        } else {
+            params.delete('uncategorizedOnly');
         }
 
         window.history.pushState(
@@ -71,10 +78,13 @@ function initSearchForm() {
 
 function getSearchCondition() {
     const searchForm = document.searchForm;
+    const params = new URLSearchParams(window.location.search);
+    const urlUncategorizedOnly = params.get('uncategorizedOnly') === 'true';
 
     return {
         type: searchForm?.searchType?.value || null,
-        keyword: searchForm?.keyword?.value.trim()  || null
+        keyword: searchForm?.keyword?.value.trim()  || null,
+        uncategorizedOnly: searchForm?.uncategorizedOnly?.checked ?? urlUncategorizedOnly
     };
 }
 

@@ -17,12 +17,14 @@ public interface ProductDAO {
         @Param("seller") String seller,
         @Param("role") String role,
         @Param("type") String type,
-        @Param("keyword") String keyword);
+        @Param("keyword") String keyword,
+        @Param("uncategorizedOnly") boolean uncategorizedOnly);
     int totalCountForManagement(
         @Param("seller") String seller,
         @Param("role") String role,
         @Param("type") String type,
-        @Param("keyword") String keyword);
+        @Param("keyword") String keyword,
+        @Param("uncategorizedOnly") boolean uncategorizedOnly);
     ProductDetailResponse findProductDetail(@Param("prodNo") int prodNo);
     List<ProductListResponse> findProductsForCustomer(
         @Param("size") int size,

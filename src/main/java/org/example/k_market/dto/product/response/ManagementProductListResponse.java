@@ -18,4 +18,7 @@ public class ManagementProductListResponse {
     private int stock;
     private Integer thumb1FileId;
     private String sellerUid;
+    private String rootCategoryName;
+    private String subCategoryName;
+    private boolean uncategorized;
 }

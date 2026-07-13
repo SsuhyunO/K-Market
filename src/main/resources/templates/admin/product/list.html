@@ -27,13 +27,23 @@
                    th:if="${productListErrorMessage != null}"
                    th:text="${productListErrorMessage}">상품 처리에 실패했습니다.</p>
 
-                <th:block th:replace="~{admin/fragments/search-form::search-form(~{::search_options})}">
-                    <th:block th:fragment="search_options">
-                        <option value="NAME">상품명</option>
-                        <option value="CODE">상품코드</option>
-                        <option th:if="${session.loginMemberType eq 'ADMIN'}" value="SELLER">판매자</option>
-                    </th:block>
-                </th:block>
+                <form class="search-form product-search-form" name="searchForm"
+                      th:action="@{/admin/product/list}" method="get">
+                    <label class="search-form-label" for="search-type">검색조건</label>
+                    <select id="search-type" name="searchType" aria-label="검색조건">
+                        <option value="NAME" th:selected="${param.type == null or param.type[0] == 'NAME'}">상품명</option>
+                        <option value="CODE" th:selected="${param.type != null and param.type[0] == 'CODE'}">상품코드</option>
+                        <option th:if="${session.loginMemberType eq 'ADMIN'}" value="SELLER"
+                                th:selected="${param.type != null and param.type[0] == 'SELLER'}">판매자</option>
+                    </select>
+                    <input type="text" name="keyword" th:value="${param.keyword}" placeholder="검색어입력" aria-label="검색어">
+                    <label class="product-uncategorized-filter">
+                        <input type="checkbox" name="uncategorizedOnly" value="true"
+                               th:checked="${param.uncategorizedOnly != null and param.uncategorizedOnly[0] == 'true'}">
+                        <span>미분류 상품</span>
+                    </label>
+                    <button type="submit">검색</button>
+                </form>
 
                 <form th:replace="~{admin/fragments/management-table-form::management-table-form(
                     @{/admin/product/remove},
@@ -45,6 +55,7 @@
                             <th><label><input type="checkbox" id="select-all"></label></th>
                             <th>사진</th>
                             <th>상품코드</th>
+                            <th>분류</th>
                             <th>상품명</th>
                             <th>판매가격</th>
                             <th>할인율</th>

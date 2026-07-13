@@ -18,7 +18,7 @@ export function renderProductRows(pageData) {
     const products = pageData.list || [];
     if (products.length === 0) {
         const emptyRow = document.createElement("tr");
-        emptyRow.innerHTML = `<td colspan="11">등록된 상품이 없습니다.</td>`;
+        emptyRow.innerHTML = `<td colspan="12">등록된 상품이 없습니다.</td>`;
         table.appendChild(emptyRow);
         return;
     }
@@ -41,6 +41,7 @@ function createProductRow(product) {
         <td><label><input type="checkbox" name="productNo" value="${escapeHtml(product.prodNo)}"></label></td>
         <td>${renderThumbnail(product.thumb1FileId)}</td>
         <td>${escapeHtml(product.prodNo)}</td>
+        <td>${renderCategory(product)}</td>
         <td>${escapeHtml(product.prodName)}</td>
         <td>${price}</td>
         <td>${discount}</td>
@@ -55,6 +56,20 @@ function createProductRow(product) {
     `;
 
     return row;
+}
+
+function renderCategory(product) {
+    if (product.uncategorized) {
+        return `<span class="product-category-badge product-category-badge-uncategorized">미분류</span>`;
+    }
+
+    const rootName = product.rootCategoryName || "";
+    const subName = product.subCategoryName || "";
+    const categoryText = [rootName, subName].filter(Boolean).join(" > ");
+
+    return categoryText
+        ? `<span class="product-category-text">${escapeHtml(categoryText)}</span>`
+        : `<span class="product-category-badge">-</span>`;
 }
 
 function renderThumbnail(fileId) {

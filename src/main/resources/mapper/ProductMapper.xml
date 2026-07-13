@@ -17,14 +17,22 @@
                     AND pv_stock.status != 'DELETED'
             ) AS stock,
             p.thumb1FileId,
-            p.sellerUid
+            p.sellerUid,
+            parent.name AS rootCategoryName,
+            c.name AS subCategoryName,
+            CASE WHEN c.code = 'UNCATEGORIZED' THEN 1 ELSE 0 END AS uncategorized
         FROM product p
         LEFT JOIN product_variant pv ON pv.prodNo = p.prodNo
             AND pv.status != 'DELETED'
+        LEFT JOIN category c ON c.cateId = p.cateId
+        LEFT JOIN category parent ON parent.cateId = c.parentId
         <where>
             p.status = 'ON_SALE'
             <if test="role != 'ADMIN'">
                 AND p.sellerUid = #{seller}
+            </if>
+            <if test="uncategorizedOnly == true">
+                AND c.code = 'UNCATEGORIZED'
             </if>
 
             <if test="keyword != null and keyword != ''">
@@ -54,7 +62,10 @@
             p.point,
             p.sold,
             p.thumb1FileId,
-            p.sellerUid
+            p.sellerUid,
+            parent.name,
+            c.name,
+            c.code
         ORDER BY p.prodNo DESC
         LIMIT #{size}
         OFFSET #{offset}
@@ -63,10 +74,14 @@
     <select id="totalCountForManagement" resultType="int">
         SELECT COUNT(prodNo)
         FROM product p
+        LEFT JOIN category c ON c.cateId = p.cateId
         <where>
             p.status = 'ON_SALE'
             <if test="role != 'ADMIN'">
                 AND sellerUid = #{seller}
+            </if>
+            <if test="uncategorizedOnly == true">
+                AND c.code = 'UNCATEGORIZED'
             </if>
 
             <if test="keyword != null and keyword != ''">
