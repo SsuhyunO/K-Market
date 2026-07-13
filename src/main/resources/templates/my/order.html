@@ -65,17 +65,9 @@
 
             <!-- 3번 영역: 배너 광고 -->
             <div class="my-banner">
-                <a th:if="${myPage != null and !#lists.isEmpty(myPage)}"
-                   th:href="${myPage[0].link}"
-                   target="_blank"
-                   style="display:block; width:100%; height:100%;">
-                    <img th:src="@{/files/{id}(id=${myPage[0].fileId})}"
-                         th:alt="${myPage[0].name}"
-                         style="width:100%; height:100%; object-fit:cover; display:block;">
+                <a th:href="@{/event/summer-sale}" target="_blank" style="display:block; width:100%; height:100%;">
+                    <img th:src="@{/images/banner/banner_810x86.svg}" alt="K마켓 여름 신상 의류 세일" style="width:100%; height:100%; object-fit:cover; display:block;">
                 </a>
-                <span th:unless="${myPage != null and !#lists.isEmpty(myPage)}">
-                    810 × 86 배너 광고
-                </span>
             </div>
 
             <!-- 4번 영역: 전체주문내역 -->
