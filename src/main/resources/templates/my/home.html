@@ -63,17 +63,9 @@
 
             <!-- 3번 영역: 배너 광고 -->
             <div class="my-banner">
-                <a th:if="${myPage != null and !#lists.isEmpty(myPage)}"
-                   th:href="${myPage[0].link}"
-                   target="_blank"
-                   style="display:block; width:100%; height:100%;">
-                    <img th:src="@{/files/{id}(id=${myPage[0].fileId})}"
-                         th:alt="${myPage[0].name}"
-                         style="width:100%; height:100%; object-fit:cover; display:block;">
+                <a th:href="@{/event/summer-sale}" target="_blank" style="display:block; width:100%; height:100%;">
+                    <img th:src="@{/images/banner/banner_810x86.svg}" alt="K마켓 여름 신상 의류 세일" style="width:100%; height:100%; object-fit:cover; display:block;">
                 </a>
-                <span th:unless="${myPage != null and !#lists.isEmpty(myPage)}">
-                    810 × 86 배너 광고
-                </span>
             </div>
 
             <!-- 4~7번 영역: 최근주문내역 -->
@@ -315,8 +307,11 @@
             <a th:href="@{/policy/privacy}">개인정보처리방침</a>
             <a th:href="@{/policy/finance}">전자금융거래약관</a>
         </div>
+
         <div class="footer-info-inner">
-            <div class="footer-logo-box">로고</div>
+            <div class="footer-logo-box">
+                <img th:src="@{/images/ci-icon-animated-large.svg}" alt="케이마켓 로고">
+            </div>
             <div class="footer-company">
                 <strong>(주)케이마켓</strong>
                 부산광역시 부산진구 중앙대로 103<br>
@@ -331,7 +326,7 @@
         </div>
     </div>
     <div class="footer-copyright">
-        Copyright &copy; 2025 김철학 All rights reserved.
+        Copyright © 2025 김철학 All rights reserved.
     </div>
 </footer>
 

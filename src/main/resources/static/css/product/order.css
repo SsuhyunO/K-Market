@@ -269,6 +269,9 @@
     margin-bottom: 12px;
     font-size: 14px;
 }
+.summary-row.hidden {
+    display: none;
+}
 .summary-row .label { color: var(--color-gray-600); }
 .summary-row .value { color: var(--color-gray-900); font-weight: 600; }
 .summary-row .value.minus { color: var(--color-primary); }

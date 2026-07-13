@@ -29,4 +29,5 @@ public class CouponIssueDTO {
     private String companyName;
     private String sellerStatus;
     private String memberStatus;
+
 }

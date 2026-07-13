@@ -82,19 +82,30 @@
     </update>
 
     <select id="getAvailableCouponsByMemberUid" resultType="org.example.k_market.dto.coupon.CouponIssueDTO">
-        SELECT
-            ci.issueNo,
-            ci.couponNo,
-            ci.memberUid,
-            ci.status,
-            c.name AS couponName,
-            c.benefit
+        SELECT DISTINCT
+        ci.issueNo,
+        ci.couponNo,
+        ci.memberUid,
+        ci.status,
+        ci.createdAt,
+        c.name AS couponName,
+        c.couponType,
+        c.benefit,
+        c.sellerUid
         FROM coupon_issue ci
-                 JOIN coupon c ON ci.couponNo = c.couponNo
-                 LEFT JOIN seller s ON c.sellerUid = s.uid
+        JOIN coupon c ON ci.couponNo = c.couponNo
+        LEFT JOIN seller s ON c.sellerUid = s.uid
         WHERE ci.memberUid = #{memberUid}
-          AND ci.status = 0
-          AND (c.sellerUid IS NULL OR s.status != 'SUSPENDED')
+        AND ci.status = 0
+        AND (c.expireDate IS NULL OR c.expireDate >= CURDATE())
+        AND (c.sellerUid IS NULL OR s.status != 'SUSPENDED')
+        AND (
+        c.sellerUid IS NULL
+        OR c.sellerUid IN
+        <foreach collection="sellerUidList" item="sellerUid" open="(" separator="," close=")">
+            #{sellerUid}
+        </foreach>
+        )
         ORDER BY ci.createdAt DESC
     </select>
 
@@ -104,5 +115,12 @@
             SET ci.status = 2
         WHERE ci.status = 0
           AND c.expireDate &lt; CURDATE()
+    </update>
+
+    <!-- CouponIssueDAO.xml -->
+    <update id="markAsUsed">
+        UPDATE coupon_issue
+        SET status = #{status}, updatedAt = NOW()
+        WHERE issueNo = #{issueNo}
     </update>
 </mapper>

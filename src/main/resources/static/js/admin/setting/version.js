@@ -7,6 +7,7 @@ document.addEventListener("DOMContentLoaded", function () {
     initModals();
     ManagementTableForm.init();
     initVersionRegisterValidation();
+    initVersionDetailModal();
 });
 
 function initVersionRegisterValidation() {
@@ -32,4 +33,28 @@ function validateVersionRegisterForm(registerForm) {
 
 function isVersionRegisterField(form, target) {
     return target.matches("input, textarea") && form.contains(target);
+}
+
+// 목록의 [확인] 버튼을 누르면 해당 버전의 데이터로 상세 모달 채우기
+function initVersionDetailModal() {
+    const nameEl = document.getElementById("version-detail-name");
+    const listEl = document.getElementById("version-detail-change");
+    if (!nameEl || !listEl) return;
+
+    document.addEventListener("click", function (e) {
+        const button = e.target.closest(".version-detail-button");
+        if (!button) return;
+
+        nameEl.textContent = button.dataset.version || "";
+
+        const content = button.dataset.content || "";
+        const lines = content.split(/\r?\n/).map(l => l.trim()).filter(l => l.length > 0);
+
+        listEl.innerHTML = "";
+        lines.forEach(line => {
+            const li = document.createElement("li");
+            li.textContent = line;
+            listEl.appendChild(li);
+        });
+    });
 }
