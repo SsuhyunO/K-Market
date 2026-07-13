@@ -11,7 +11,27 @@ document.addEventListener('DOMContentLoaded', function () {
                 location.href = CTX + '/member/login';
                 return;
             }
-            document.getElementById('infoUid').textContent = member.uid || '-';
+            const providerLabelMap = {
+                GOOGLE: 'Google 계정',
+                NAVER: 'Naver 계정',
+                KAKAO: 'Kakao 계정'
+            };
+            const provider = member.provider || 'LOCAL';
+            document.getElementById('infoUid').textContent = providerLabelMap[provider] || (member.uid || '-');
+
+            // 연동 로그인 아이콘/뱃지 표시
+            const iconMap = { NAVER: 'naverIcon', KAKAO: 'kakaoIcon', GOOGLE: 'googleIcon' };
+            const badgeMap = { NAVER: 'naverBadge', KAKAO: 'kakaoBadge', GOOGLE: 'googleBadge' };
+            if (iconMap[provider]) {
+                const iconEl = document.getElementById(iconMap[provider]);
+                const badgeEl = document.getElementById(badgeMap[provider]);
+                if (iconEl) {
+                    iconEl.style.opacity = '1';
+                    iconEl.style.boxShadow = '0 0 0 2px currentColor';
+                }
+                if (badgeEl) badgeEl.style.visibility = 'visible';
+            }
+
             document.getElementById('infoName').textContent = member.name || '-';
             document.getElementById('infoBirth').textContent = member.birthDate || '-';
             document.getElementById('infoEmail').textContent = member.email || '-';

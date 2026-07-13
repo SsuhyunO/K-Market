@@ -175,6 +175,7 @@ public class MemberDto {
         private String zipCode;
         private String addr1;
         private String addr2;
+        private String provider;
 
         public static Response from(Member member) {
             return Response.builder()
@@ -189,6 +190,7 @@ public class MemberDto {
                     .zipCode(member.getZipCode())
                     .addr1(member.getAddr1())
                     .addr2(member.getAddr2())
+                    .provider(member.getProvider())
                     .build();
         }
     }
