@@ -1,50 +1,165 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>KMarket 공지사항 수정</title>
+
     <th:block th:replace="~{admin/fragments/head::head}"></th:block>
-    <link rel="stylesheet" th:href="@{/css/admin/global/action-bar.css}">
-    <link rel="stylesheet" th:href="@{/css/admin/global/section-table.css}">
-    <link rel="stylesheet" th:href="@{/css/admin/cs/board.css}">
-    <script type="module" th:src="@{/js/admin/cs/cs-board.js}"></script>
+
+    <link rel="stylesheet"
+          th:href="@{/css/admin/global/action-bar.css}">
+
+    <link rel="stylesheet"
+          th:href="@{/css/admin/global/section-table.css}">
+
+    <link rel="stylesheet"
+          th:href="@{/css/admin/cs/board.css}">
+
+    <script type="module"
+            th:src="@{/js/admin/cs/cs-board.js}"></script>
 </head>
-<body>
+
+<body class="cs-board-page">
+
 <header th:replace="~{admin/fragments/header::header}"></header>
+
 <div class="admin-layout">
+
     <aside th:replace="~{admin/fragments/aside::aside}"></aside>
 
     <main id="admin-main">
+
         <div th:replace="~{admin/fragments/page-header::page-header}"></div>
 
-        <section th:replace="~{admin/fragments/dash-section::dash-section(null, '공지사항 수정', null, ~{::content})}">
+        <section th:replace="~{admin/fragments/dash-section::dash-section(
+                    null,
+                    '공지사항 수정',
+                    null,
+                    ~{::content}
+                )}">
+
             <th:block th:fragment="content">
-                <form action="#" method="post">
+
+                <form th:action="@{/admin/cs/notice/modify}"
+                      method="post">
+
+                    <input type="hidden"
+                           name="boardNo"
+                           th:value="${notice.boardNo}">
+
                     <table class="section-table cs-form-table">
+
+                        <tbody>
+
                         <tr>
-                            <th><label for="notice-type">유형</label></th>
-                            <td><input id="notice-type" type="text" name="type" value="고객서비스"></td>
+                            <th>
+                                <label for="notice-type">
+                                    유형
+                                </label>
+                            </th>
+
+                            <td>
+                                <select id="notice-type"
+                                        name="type"
+                                        required>
+
+                                    <option value="">
+                                        유형선택
+                                    </option>
+
+                                    <option value="고객서비스"
+                                            th:selected="${notice.type == '고객서비스'}">
+                                        고객서비스
+                                    </option>
+
+                                    <option value="이벤트 당첨"
+                                            th:selected="${notice.type == '이벤트 당첨'}">
+                                        이벤트 당첨
+                                    </option>
+
+                                    <option value="안전거래"
+                                            th:selected="${notice.type == '안전거래'}">
+                                        안전거래
+                                    </option>
+
+                                    <option value="위해상품"
+                                            th:selected="${notice.type == '위해상품'}">
+                                        위해상품
+                                    </option>
+
+                                </select>
+                            </td>
                         </tr>
+
                         <tr>
-                            <th><label for="notice-title">제목</label></th>
-                            <td><input id="notice-title" type="text" name="title" value="[필독] 사이트 이용 안내"></td>
+                            <th>
+                                <label for="notice-title">
+                                    제목
+                                </label>
+                            </th>
+
+                            <td>
+                                <input id="notice-title"
+                                       type="text"
+                                       name="title"
+                                       th:value="${notice.title}"
+                                       placeholder="제목을 입력하세요."
+                                       maxlength="200"
+                                       required>
+                            </td>
                         </tr>
+
                         <tr>
-                            <th><label for="notice-content">내용</label></th>
-                            <td><textarea id="notice-content" name="content">공지사항 내용이 출력되는 영역입니다.</textarea></td>
+                            <th>
+                                <label for="notice-content">
+                                    내용
+                                </label>
+                            </th>
+
+                            <td>
+                                <textarea id="notice-content"
+                                          name="content"
+                                          placeholder="내용을 입력하세요."
+                                          required
+                                          th:text="${notice.content}"></textarea>
+                            </td>
                         </tr>
+
+                        </tbody>
+
                     </table>
 
                     <div th:replace="~{admin/fragments/action-bar::action-bar(~{::actions})}">
+
                         <th:block th:fragment="actions">
-                            <button class="cs-board-button secondary" type="button" th:data-cs-link="@{/admin/cs/notice/view}">취소</button>
-                            <button class="cs-board-button primary" type="submit">수정하기</button>
+
+                            <button class="cs-board-button secondary"
+                                    type="button"
+                                    th:data-cs-link="@{/admin/cs/notice/view(
+                                        boardNo=${notice.boardNo}
+                                    )}">
+                                취소
+                            </button>
+
+                            <button class="cs-board-button primary"
+                                    type="submit">
+                                수정하기
+                            </button>
+
                         </th:block>
+
                     </div>
+
                 </form>
+
             </th:block>
+
         </section>
+
     </main>
+
 </div>
+
 <footer th:replace="~{admin/fragments/footer::footer}"></footer>
+
 </body>
 </html>

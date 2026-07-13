@@ -1,50 +1,145 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>KMarket 자주묻는질문 보기</title>
+
     <th:block th:replace="~{admin/fragments/head::head}"></th:block>
-    <link rel="stylesheet" th:href="@{/css/admin/global/action-bar.css}">
-    <link rel="stylesheet" th:href="@{/css/admin/global/section-table.css}">
-    <link rel="stylesheet" th:href="@{/css/admin/cs/board.css}">
-    <script type="module" th:src="@{/js/admin/cs/cs-board.js}"></script>
+
+    <link rel="stylesheet"
+          th:href="@{/css/admin/global/action-bar.css}">
+
+    <link rel="stylesheet"
+          th:href="@{/css/admin/global/section-table.css}">
+
+    <link rel="stylesheet"
+          th:href="@{/css/admin/cs/board.css}">
+
+    <script type="module"
+            th:src="@{/js/admin/cs/cs-board.js}"></script>
 </head>
-<body>
+
+<body class="cs-board-page">
+
 <header th:replace="~{admin/fragments/header::header}"></header>
+
 <div class="admin-layout">
+
     <aside th:replace="~{admin/fragments/aside::aside}"></aside>
 
     <main id="admin-main">
+
         <div th:replace="~{admin/fragments/page-header::page-header}"></div>
 
-        <section th:replace="~{admin/fragments/dash-section::dash-section(null, '자주묻는질문 보기', null, ~{::content})}">
+        <section th:replace="~{admin/fragments/dash-section::dash-section(
+                    null,
+                    '자주묻는질문 보기',
+                    null,
+                    ~{::content}
+                )}">
+
             <th:block th:fragment="content">
+
+                <script th:if="${message}"
+                        th:inline="javascript">
+                    alert([[${message}]]);
+                </script>
+
                 <table class="section-table cs-view-table">
+
+                    <tbody>
+
                     <tr>
-                        <th>유형</th>
-                        <td>회원</td>
+                        <th>번호</th>
+                        <td th:text="${faq.boardNo}"></td>
                     </tr>
+
+                    <tr>
+                        <th>1차 유형</th>
+                        <td th:text="${faq.category1}"></td>
+                    </tr>
+
+                    <tr>
+                        <th>2차 유형</th>
+                        <td th:text="${faq.category2}"></td>
+                    </tr>
+
                     <tr>
                         <th>제목</th>
-                        <td>회원가입은 어떻게 하나요?</td>
+                        <td th:text="${faq.title}"></td>
                     </tr>
+
                     <tr>
                         <th>내용</th>
-                        <td class="cs-view-content">회원가입은 화면 상단 회원가입 메뉴에서 진행할 수 있습니다.
-자주묻는질문의 답변 내용이 출력되는 영역입니다.</td>
+                        <td class="cs-view-content"
+                            th:text="${faq.content}">
+                        </td>
                     </tr>
+
+                    </tbody>
+
                 </table>
 
+                <form id="faq-delete-form"
+                      th:action="@{/admin/cs/faq/delete}"
+                      method="post"
+                      style="display:none;">
+
+                    <input type="hidden"
+                           name="boardNo"
+                           th:value="${faq.boardNo}">
+                </form>
+
                 <div th:replace="~{admin/fragments/action-bar::action-bar(~{::actions})}">
+
                     <th:block th:fragment="actions">
-                        <button class="cs-board-button danger" type="button" data-cs-delete data-confirm-message="자주묻는질문을 삭제하시겠습니까?">삭제</button>
-                        <button class="cs-board-button secondary" type="button" th:data-cs-link="@{/admin/cs/faq/modify}">수정</button>
-                        <button class="cs-board-button primary" type="button" th:data-cs-link="@{/admin/cs/faq/list}">목록</button>
+
+                        <button class="cs-board-button danger"
+                                type="button"
+                                id="faq-delete-button">
+                            삭제
+                        </button>
+
+                        <button class="cs-board-button secondary"
+                                type="button"
+                                th:data-cs-link="@{/admin/cs/faq/modify(boardNo=${faq.boardNo})}">
+                            수정
+                        </button>
+
+                        <button class="cs-board-button primary"
+                                type="button"
+                                th:data-cs-link="@{/admin/cs/faq/list}">
+                            목록
+                        </button>
+
                     </th:block>
+
                 </div>
+
+                <script>
+                    document.addEventListener('DOMContentLoaded', () => {
+                        const deleteButton =
+                            document.getElementById('faq-delete-button');
+
+                        const deleteForm =
+                            document.getElementById('faq-delete-form');
+
+                        deleteButton?.addEventListener('click', () => {
+                            if (confirm('자주묻는질문을 삭제하시겠습니까?')) {
+                                deleteForm.submit();
+                            }
+                        });
+                    });
+                </script>
+
             </th:block>
+
         </section>
+
     </main>
+
 </div>
+
 <footer th:replace="~{admin/fragments/footer::footer}"></footer>
+
 </body>
 </html>

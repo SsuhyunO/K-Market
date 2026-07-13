@@ -1,163 +1,285 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>KMarket 자주묻는질문 목록</title>
+
     <th:block th:replace="~{admin/fragments/head::head}"></th:block>
-    <link rel="stylesheet" th:href="@{/css/admin/global/management-table-form.css}">
-    <link rel="stylesheet" th:href="@{/css/admin/global/action-bar.css}">
-    <link rel="stylesheet" th:href="@{/css/admin/cs/board.css}">
-    <script type="module" th:src="@{/js/admin/cs/cs-board.js}"></script>
+
+    <link rel="stylesheet"
+          th:href="@{/css/admin/global/management-table-form.css}">
+
+    <link rel="stylesheet"
+          th:href="@{/css/admin/global/action-bar.css}">
+
+    <link rel="stylesheet"
+          th:href="@{/css/admin/cs/board.css}">
+
+    <script type="module"
+            th:src="@{/js/admin/cs/cs-board.js}"></script>
 </head>
+
 <body class="cs-board-page">
+
 <header th:replace="~{admin/fragments/header::header}"></header>
+
 <div class="admin-layout">
+
     <aside th:replace="~{admin/fragments/aside::aside}"></aside>
 
     <main id="admin-main">
+
         <div th:replace="~{admin/fragments/page-header::page-header}"></div>
 
-        <section th:replace="~{admin/fragments/dash-section::dash-section(null, '자주묻는질문 목록', null, ~{::content})}">
+        <section th:replace="~{admin/fragments/dash-section::dash-section(
+                    null,
+                    '자주묻는질문 목록',
+                    null,
+                    ~{::content}
+                )}">
+
             <th:block th:fragment="content">
+
+                <!-- 등록·수정·삭제 결과 메시지 -->
+                <script th:if="${message}"
+                        th:inline="javascript">
+                    alert([[${message}]]);
+                </script>
+
+                <!-- DB 기준 1차 유형 필터 -->
                 <div class="cs-type-filter">
-                    <select aria-label="자주묻는질문 유형 선택">
-                        <option value="">유형선택</option>
-                        <option value="member">회원</option>
-                        <option value="order">주문</option>
-                        <option value="payment">결제</option>
-                        <option value="delivery">배송</option>
-                        <option value="cancel">취소/반품/교환</option>
-                    </select>
+
+                    <form id="faq-filter-form"
+                          th:action="@{/admin/cs/faq/list}"
+                          method="get">
+
+                        <select id="faq-type-filter"
+                                name="category1"
+                                aria-label="자주묻는질문 유형 선택"
+                                onchange="this.form.submit()">
+
+                            <option value=""
+                                    th:selected="${selectedCategory1 == null
+                                        or selectedCategory1 == ''}">
+                                유형선택
+                            </option>
+
+                            <option value="회원"
+                                    th:selected="${selectedCategory1 == '회원'}">
+                                회원
+                            </option>
+
+                            <option value="상품"
+                                    th:selected="${selectedCategory1 == '상품'}">
+                                상품
+                            </option>
+
+                            <option value="주문"
+                                    th:selected="${selectedCategory1 == '주문'}">
+                                주문
+                            </option>
+
+                            <option value="결제"
+                                    th:selected="${selectedCategory1 == '결제'}">
+                                결제
+                            </option>
+
+                            <option value="배송"
+                                    th:selected="${selectedCategory1 == '배송'}">
+                                배송
+                            </option>
+
+                            <option value="취소·반품·교환"
+                                    th:selected="${selectedCategory1
+                                        == '취소·반품·교환'}">
+                                취소·반품·교환
+                            </option>
+
+                            <option value="쿠폰·혜택"
+                                    th:selected="${selectedCategory1
+                                        == '쿠폰·혜택'}">
+                                쿠폰·혜택
+                            </option>
+
+                        </select>
+
+                    </form>
+
                 </div>
 
-                <form th:replace="~{admin/fragments/management-table-form::management-table-form(
-                    '#',
-                    ~{::table_content},
-                    ~{::table_footer},
-                    'faqNo')}">
-                    <th:block th:fragment="table_content">
-                        <tr>
-                            <th><label><input type="checkbox" id="select-all"></label></th>
-                            <th>번호</th>
-                            <th>유형</th>
-                            <th>제목</th>
-                            <th>조회</th>
-                            <th>날짜</th>
-                            <th>관리</th>
-                        </tr>
-                        <tr>
-                            <td><label><input type="checkbox" name="faqNo" value="100"></label></td>
-                            <td>100</td>
-                            <td>회원</td>
-                            <td><button class="cs-title-button" type="button" th:data-cs-link="@{/admin/cs/faq/view}">회원가입은 어떻게 하나요?</button></td>
-                            <td>120</td>
-                            <td>00.00.00</td>
-                            <td>
-                                <div class="cs-manage-actions">
-                                    <button type="button" data-cs-delete data-confirm-message="자주묻는질문을 삭제하시겠습니까?">[삭제]</button>
-                                    <button type="button" th:data-cs-link="@{/admin/cs/faq/modify}">[수정]</button>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><label><input type="checkbox" name="faqNo" value="99"></label></td>
-                            <td>99</td>
-                            <td>주문</td>
-                            <td><button class="cs-title-button" type="button" th:data-cs-link="@{/admin/cs/faq/view}">주문 내역은 어디서 확인하나요?</button></td>
-                            <td>120</td>
-                            <td>00.00.00</td>
-                            <td>
-                                <div class="cs-manage-actions">
-                                    <button type="button" data-cs-delete data-confirm-message="자주묻는질문을 삭제하시겠습니까?">[삭제]</button>
-                                    <button type="button" th:data-cs-link="@{/admin/cs/faq/modify}">[수정]</button>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><label><input type="checkbox" name="faqNo" value="98"></label></td>
-                            <td>98</td>
-                            <td>배송</td>
-                            <td><button class="cs-title-button" type="button" th:data-cs-link="@{/admin/cs/faq/view}">배송 조회는 어떻게 하나요?</button></td>
-                            <td>120</td>
-                            <td>00.00.00</td>
-                            <td>
-                                <div class="cs-manage-actions">
-                                    <button type="button" data-cs-delete data-confirm-message="자주묻는질문을 삭제하시겠습니까?">[삭제]</button>
-                                    <button type="button" th:data-cs-link="@{/admin/cs/faq/modify}">[수정]</button>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><label><input type="checkbox" name="faqNo" value="97"></label></td>
-                            <td>97</td>
-                            <td>결제</td>
-                            <td><button class="cs-title-button" type="button" th:data-cs-link="@{/admin/cs/faq/view}">무통장입금은 어디서 확인하나요?</button></td>
-                            <td>120</td>
-                            <td>00.00.00</td>
-                            <td>
-                                <div class="cs-manage-actions">
-                                    <button type="button" data-cs-delete data-confirm-message="자주묻는질문을 삭제하시겠습니까?">[삭제]</button>
-                                    <button type="button" th:data-cs-link="@{/admin/cs/faq/modify}">[수정]</button>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><label><input type="checkbox" name="faqNo" value="93"></label></td>
-                            <td>93</td>
-                            <td>취소/반품/교환</td>
-                            <td><button class="cs-title-button" type="button" th:data-cs-link="@{/admin/cs/faq/view}">반품 신청은 어떻게 하나요?</button></td>
-                            <td>120</td>
-                            <td>00.00.00</td>
-                            <td>
-                                <div class="cs-manage-actions">
-                                    <button type="button" data-cs-delete data-confirm-message="자주묻는질문을 삭제하시겠습니까?">[삭제]</button>
-                                    <button type="button" th:data-cs-link="@{/admin/cs/faq/modify}">[수정]</button>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><label><input type="checkbox" name="faqNo" value="92"></label></td>
-                            <td>92</td>
-                            <td>배송</td>
-                            <td><button class="cs-title-button" type="button" th:data-cs-link="@{/admin/cs/faq/view}">배송지 변경은 가능한가요?</button></td>
-                            <td>120</td>
-                            <td>00.00.00</td>
-                            <td>
-                                <div class="cs-manage-actions">
-                                    <button type="button" data-cs-delete data-confirm-message="자주묻는질문을 삭제하시겠습니까?">[삭제]</button>
-                                    <button type="button" th:data-cs-link="@{/admin/cs/faq/modify}">[수정]</button>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><label><input type="checkbox" name="faqNo" value="91"></label></td>
-                            <td>91</td>
-                            <td>회원</td>
-                            <td><button class="cs-title-button" type="button" th:data-cs-link="@{/admin/cs/faq/view}">비밀번호를 잊어버렸습니다.</button></td>
-                            <td>120</td>
-                            <td>00.00.00</td>
-                            <td>
-                                <div class="cs-manage-actions">
-                                    <button type="button" data-cs-delete data-confirm-message="자주묻는질문을 삭제하시겠습니까?">[삭제]</button>
-                                    <button type="button" th:data-cs-link="@{/admin/cs/faq/modify}">[수정]</button>
-                                </div>
-                            </td>
-                        </tr>
-                    </th:block>
+                <!-- FAQ 삭제 폼 -->
+                <form id="management-table-form"
+                      th:action="@{/admin/cs/faq/delete}"
+                      method="post"
+                      data-checkbox-name="boardNo">
 
-                    <th:block th:fragment="table_footer">
+                    <div class="management-table-scroll">
+
+                        <table class="management-table">
+
+                            <thead>
+                            <tr>
+                                <th>
+                                    <label>
+                                        <input type="checkbox"
+                                               id="select-all">
+                                    </label>
+                                </th>
+
+                                <th>번호</th>
+                                <th>1차 유형</th>
+                                <th>2차 유형</th>
+                                <th>제목</th>
+                                <th>조회</th>
+                                <th>날짜</th>
+                                <th>관리</th>
+                            </tr>
+                            </thead>
+
+                            <tbody>
+
+                            <!-- 조회 결과가 없을 때 -->
+                            <tr th:if="${faqList == null
+                                or #lists.isEmpty(faqList)}">
+
+                                <td colspan="8"
+                                    class="cs-empty-row">
+
+                                    <span th:if="${selectedCategory1 == null
+                                        or selectedCategory1 == ''}">
+                                        등록된 자주묻는질문이 없습니다.
+                                    </span>
+
+                                    <span th:unless="${selectedCategory1 == null
+                                        or selectedCategory1 == ''}"
+                                          th:text="|${selectedCategory1} 유형에 등록된 글이 없습니다.|">
+                                    </span>
+
+                                </td>
+
+                            </tr>
+
+                            <!-- FAQ 목록 -->
+                            <tr th:each="faq : ${faqList}">
+
+                                <td>
+                                    <label>
+                                        <input type="checkbox"
+                                               name="boardNo"
+                                               th:value="${faq.boardNo}">
+                                    </label>
+                                </td>
+
+                                <td th:text="${faq.boardNo}">
+                                    1
+                                </td>
+
+                                <td th:text="${faq.category1}">
+                                    회원
+                                </td>
+
+                                <td th:text="${faq.category2}">
+                                    회원가입
+                                </td>
+
+                                <td>
+                                    <button class="cs-title-button"
+                                            type="button"
+                                            th:data-cs-link="@{/admin/cs/faq/view(
+                                                boardNo=${faq.boardNo}
+                                            )}"
+                                            th:text="${faq.title}">
+                                        FAQ 제목
+                                    </button>
+                                </td>
+
+                                <!-- 조회수 기능 미구현 -->
+                                <td>-</td>
+
+                                <td th:text="${faq.createdAt != null
+                                    ? #temporals.format(
+                                        faq.createdAt,
+                                        'yyyy.MM.dd'
+                                    )
+                                    : '-'}">
+                                    2026.07.13
+                                </td>
+
+                                <td>
+                                    <div class="cs-manage-actions">
+
+                                        <!-- 단일 삭제 -->
+                                        <button type="button"
+                                                data-cs-delete-single
+                                                th:data-checkbox-value="${faq.boardNo}"
+                                                data-confirm-message="자주묻는질문을 삭제하시겠습니까?">
+                                            [삭제]
+                                        </button>
+
+                                        <!-- 수정 화면 이동 -->
+                                        <button type="button"
+                                                th:data-cs-link="@{/admin/cs/faq/modify(
+                                                    boardNo=${faq.boardNo}
+                                                )}">
+                                            [수정]
+                                        </button>
+
+                                    </div>
+                                </td>
+
+                            </tr>
+
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+                    <div class="btn-area"
+                         style="
+                            display:flex;
+                            justify-content:space-between;
+                            align-items:center;
+                            margin-top:20px;
+                         ">
+
+                        <!-- 선택 삭제 -->
                         <button type="submit"
                                 data-management-action="bulk-submit"
                                 data-empty-message="삭제할 자주묻는질문을 선택해주세요."
                                 data-confirm-message="선택한 자주묻는질문을 삭제하시겠습니까?"
-                                data-action-variant="secondary">선택삭제</button>
-                        <nav th:replace="~{admin/fragments/admin-pagination::admin-pagination}"></nav>
-                        <button type="button" th:data-cs-link="@{/admin/cs/faq/write}" data-action-variant="primary">작성하기</button>
-                    </th:block>
+                                data-action-variant="secondary">
+                            선택삭제
+                        </button>
+
+                        <!-- 선택한 유형을 유지하는 페이징 -->
+                        <nav th:if="${pageInfo != null}"
+                             th:replace="~{admin/fragments/admin-pagination
+                                ::admin-pagination(
+                                    ${pageInfo},
+                                    ${faqPageUrl}
+                                )}">
+                        </nav>
+
+                        <!-- 작성 화면 이동 -->
+                        <button type="button"
+                                th:data-cs-link="@{/admin/cs/faq/write}"
+                                data-action-variant="primary">
+                            작성하기
+                        </button>
+
+                    </div>
+
                 </form>
+
             </th:block>
+
         </section>
+
     </main>
+
 </div>
+
 <footer th:replace="~{admin/fragments/footer::footer}"></footer>
+
 </body>
 </html>

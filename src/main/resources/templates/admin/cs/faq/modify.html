@@ -1,50 +1,303 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>KMarket 자주묻는질문 수정</title>
+
     <th:block th:replace="~{admin/fragments/head::head}"></th:block>
-    <link rel="stylesheet" th:href="@{/css/admin/global/action-bar.css}">
-    <link rel="stylesheet" th:href="@{/css/admin/global/section-table.css}">
-    <link rel="stylesheet" th:href="@{/css/admin/cs/board.css}">
-    <script type="module" th:src="@{/js/admin/cs/cs-board.js}"></script>
+
+    <link rel="stylesheet"
+          th:href="@{/css/admin/global/action-bar.css}">
+
+    <link rel="stylesheet"
+          th:href="@{/css/admin/global/section-table.css}">
+
+    <link rel="stylesheet"
+          th:href="@{/css/admin/cs/board.css}">
+
+    <script type="module"
+            th:src="@{/js/admin/cs/cs-board.js}"></script>
 </head>
-<body>
+
+<body class="cs-board-page">
+
 <header th:replace="~{admin/fragments/header::header}"></header>
+
 <div class="admin-layout">
+
     <aside th:replace="~{admin/fragments/aside::aside}"></aside>
 
     <main id="admin-main">
+
         <div th:replace="~{admin/fragments/page-header::page-header}"></div>
 
-        <section th:replace="~{admin/fragments/dash-section::dash-section(null, '자주묻는질문 수정', null, ~{::content})}">
+        <section th:replace="~{admin/fragments/dash-section::dash-section(
+                    null,
+                    '자주묻는질문 수정',
+                    null,
+                    ~{::content}
+                )}">
+
             <th:block th:fragment="content">
-                <form action="#" method="post">
+
+                <form th:action="@{/admin/cs/faq/modify}"
+                      method="post">
+
+                    <input type="hidden"
+                           name="boardNo"
+                           th:value="${faq.boardNo}">
+
                     <table class="section-table cs-form-table">
+
+                        <tbody>
+
                         <tr>
-                            <th><label for="faq-type">유형</label></th>
-                            <td><input id="faq-type" type="text" name="type" value="회원"></td>
+                            <th>
+                                <label for="faq-category1">
+                                    유형
+                                </label>
+                            </th>
+
+                            <td>
+                                <div class="cs-category-selects">
+
+                                    <select id="faq-category1"
+                                            name="category1"
+                                            required>
+
+                                        <option value="">
+                                            1차 유형 선택
+                                        </option>
+
+                                        <option value="회원"
+                                                th:selected="${faq.category1 == '회원'}">
+                                            회원
+                                        </option>
+
+                                        <option value="상품"
+                                                th:selected="${faq.category1 == '상품'}">
+                                            상품
+                                        </option>
+
+                                        <option value="주문"
+                                                th:selected="${faq.category1 == '주문'}">
+                                            주문
+                                        </option>
+
+                                        <option value="결제"
+                                                th:selected="${faq.category1 == '결제'}">
+                                            결제
+                                        </option>
+
+                                        <option value="배송"
+                                                th:selected="${faq.category1 == '배송'}">
+                                            배송
+                                        </option>
+
+                                        <option value="취소·반품·교환"
+                                                th:selected="${faq.category1 == '취소·반품·교환'}">
+                                            취소·반품·교환
+                                        </option>
+
+                                        <option value="쿠폰·혜택"
+                                                th:selected="${faq.category1 == '쿠폰·혜택'}">
+                                            쿠폰·혜택
+                                        </option>
+
+                                    </select>
+
+                                    <select id="faq-category2"
+                                            name="category2"
+                                            th:data-selected-category="${faq.category2}"
+                                            required>
+
+                                        <option value="">
+                                            2차 유형 선택
+                                        </option>
+
+                                    </select>
+
+                                </div>
+                            </td>
                         </tr>
+
                         <tr>
-                            <th><label for="faq-title">제목</label></th>
-                            <td><input id="faq-title" type="text" name="title" value="회원가입은 어떻게 하나요?"></td>
+                            <th>
+                                <label for="faq-title">
+                                    제목
+                                </label>
+                            </th>
+
+                            <td>
+                                <input id="faq-title"
+                                       type="text"
+                                       name="title"
+                                       th:value="${faq.title}"
+                                       placeholder="질문 제목을 입력하세요."
+                                       maxlength="200"
+                                       required>
+                            </td>
                         </tr>
+
                         <tr>
-                            <th><label for="faq-content">내용</label></th>
-                            <td><textarea id="faq-content" name="content">회원가입은 화면 상단 회원가입 메뉴에서 진행할 수 있습니다.</textarea></td>
+                            <th>
+                                <label for="faq-content">
+                                    내용
+                                </label>
+                            </th>
+
+                            <td>
+                                <textarea id="faq-content"
+                                          name="content"
+                                          placeholder="답변 내용을 입력하세요."
+                                          required
+                                          th:text="${faq.content}"></textarea>
+                            </td>
                         </tr>
+
+                        </tbody>
+
                     </table>
 
                     <div th:replace="~{admin/fragments/action-bar::action-bar(~{::actions})}">
+
                         <th:block th:fragment="actions">
-                            <button class="cs-board-button secondary" type="button" th:data-cs-link="@{/admin/cs/faq/view}">취소</button>
-                            <button class="cs-board-button primary" type="submit">수정하기</button>
+
+                            <button class="cs-board-button secondary"
+                                    type="button"
+                                    th:data-cs-link="@{/admin/cs/faq/view(
+                                        boardNo=${faq.boardNo}
+                                    )}">
+                                취소하기
+                            </button>
+
+                            <button class="cs-board-button primary"
+                                    type="submit">
+                                수정하기
+                            </button>
+
                         </th:block>
+
                     </div>
+
                 </form>
+
+                <script>
+                    document.addEventListener('DOMContentLoaded', () => {
+
+                        const category1 =
+                            document.getElementById('faq-category1');
+
+                        const category2 =
+                            document.getElementById('faq-category2');
+
+                        const selectedCategory2 =
+                            category2.dataset.selectedCategory;
+
+                        const categoryMap = {
+                            '회원': [
+                                '회원가입',
+                                '로그인',
+                                '비밀번호',
+                                '회원정보',
+                                '회원탈퇴'
+                            ],
+
+                            '상품': [
+                                '상품정보',
+                                '상품옵션',
+                                '재입고',
+                                '품절'
+                            ],
+
+                            '주문': [
+                                '주문조회',
+                                '주문변경',
+                                '주문취소',
+                                '주문오류'
+                            ],
+
+                            '결제': [
+                                '결제방법',
+                                '무통장입금',
+                                '결제오류',
+                                '현금영수증'
+                            ],
+
+                            '배송': [
+                                '배송조회',
+                                '배송지변경',
+                                '배송지연',
+                                '배송완료'
+                            ],
+
+                            '취소·반품·교환': [
+                                '주문취소',
+                                '반품신청',
+                                '교환신청',
+                                '환불'
+                            ],
+
+                            '쿠폰·혜택': [
+                                '쿠폰사용',
+                                '포인트',
+                                '이벤트',
+                                '할인혜택'
+                            ]
+                        };
+
+                        function updateCategory2(
+                            selectedValue = ''
+                        ) {
+                            const selectedCategory =
+                                category1.value;
+
+                            category2.innerHTML =
+                                '<option value="">2차 유형 선택</option>';
+
+                            if (!selectedCategory ||
+                                !categoryMap[selectedCategory]) {
+
+                                category2.disabled = true;
+                                return;
+                            }
+
+                            categoryMap[selectedCategory]
+                                .forEach(category => {
+
+                                    const option =
+                                        document.createElement('option');
+
+                                    option.value = category;
+                                    option.textContent = category;
+
+                                    if (category === selectedValue) {
+                                        option.selected = true;
+                                    }
+
+                                    category2.appendChild(option);
+                                });
+
+                            category2.disabled = false;
+                        }
+
+                        category1.addEventListener(
+                            'change',
+                            () => updateCategory2()
+                        );
+
+                        updateCategory2(selectedCategory2);
+                    });
+                </script>
+
             </th:block>
+
         </section>
+
     </main>
+
 </div>
+
 <footer th:replace="~{admin/fragments/footer::footer}"></footer>
+
 </body>
 </html>

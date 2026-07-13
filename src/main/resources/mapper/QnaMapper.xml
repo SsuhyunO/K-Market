@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.example.k_market.dao.QnaDAO">
+
+    <!-- 문의글 목록 공통 조건 -->
+    <sql id="qnaWhere">
+        WHERE boardType LIKE 'qna/%'
+
+        <if test="category1 != null and category1 != ''">
+            AND boardType LIKE CONCAT(
+            'qna/',
+            #{category1},
+            '/%'
+            )
+        </if>
+
+        <if test="category2 != null and category2 != ''">
+            AND boardType = CONCAT(
+            'qna/',
+            #{category1},
+            '/',
+            #{category2}
+            )
+        </if>
+    </sql>
+
+    <!-- 문의글 전체 개수 -->
+    <select id="getTotalCount"
+            resultType="int">
+
+        SELECT COUNT(*)
+        FROM board
+
+        <include refid="qnaWhere"/>
+
+    </select>
+
+    <!-- 문의글 목록 -->
+    <select id="getQnaList"
+            resultType="org.example.k_market.dto.admin.QnaDTO">
+
+        SELECT
+        boardNo,
+        memberUid,
+        boardType,
+        title,
+        content,
+        fileId,
+        createdAt,
+        answer,
+        answeredAt
+        FROM board
+
+        <include refid="qnaWhere"/>
+
+        ORDER BY boardNo DESC
+
+        LIMIT #{offset}, #{pageSize}
+
+    </select>
+
+    <!-- 문의글 상세 조회 -->
+    <select id="getQnaByNo"
+            resultType="org.example.k_market.dto.admin.QnaDTO">
+
+        SELECT
+            boardNo,
+            memberUid,
+            boardType,
+            title,
+            content,
+            fileId,
+            createdAt,
+            answer,
+            answeredAt
+        FROM board
+        WHERE boardNo = #{boardNo}
+          AND boardType LIKE 'qna/%'
+
+    </select>
+
+    <!-- 관리자 답변 등록 및 수정 -->
+    <update id="updateAnswer">
+
+        UPDATE board
+        SET answer = #{answer},
+            answeredAt = NOW()
+        WHERE boardNo = #{boardNo}
+          AND boardType LIKE 'qna/%'
+
+    </update>
+
+    <!-- 문의글 단일 및 선택 삭제 -->
+    <delete id="deleteQnas">
+
+        DELETE FROM board
+        WHERE boardType LIKE 'qna/%'
+        AND boardNo IN
+
+        <foreach collection="boardNoList"
+                 item="boardNo"
+                 open="("
+                 separator=","
+                 close=")">
+            #{boardNo}
+        </foreach>
+
+    </delete>
+
+</mapper>
