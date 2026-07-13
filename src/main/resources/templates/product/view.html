@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title th:text="${product.prodName} + ' - KMarket'">상품보기 - KMarket</title>
+    <title th:text="${page.product().prodName} + ' - KMarket'">상품보기 - KMarket</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" th:href="@{/css/common.css}">
@@ -22,44 +22,44 @@
 
             <nav class="breadcrumb">
                 <a th:href="@{/}">HOME</a>
-                <th:block th:if="${parentCate != null}">
+                <th:block th:if="${page.parentCate() != null}">
                     <span class="sep">&gt;</span>
-                    <a th:href="@{/product/list(category=${parentCate.cateId})}" th:text="${parentCate.name}">1차 카테고리</a>
+                    <a th:href="@{/product/list(category=${page.parentCate().cateId})}" th:text="${page.parentCate().name}">1차 카테고리</a>
                 </th:block>
                 <span class="sep">&gt;</span>
-                <a th:if="${subCate != null}"
-                   th:href="@{/product/list(category=${subCate.cateId})}"
+                <a th:if="${page.subCate() != null}"
+                   th:href="@{/product/list(category=${page.subCate().cateId})}"
                    class="current"
-                   th:text="${subCate.name}">현재 카테고리</a>
+                   th:text="${page.subCate().name}">현재 카테고리</a>
             </nav>
         </div>
 
         <div class="view-basic">
             <div class="view-img">
-                <img th:if="${product.thumb1FileId != null}"
-                     th:src="@{/files/{id}(id=${product.thumb1FileId})}"
-                     th:alt="${product.prodName}">
-                <span th:unless="${product.thumb1FileId != null}" class="dummy-img">📷</span>
+                <img th:if="${page.product().thumb1FileId != null}"
+                     th:src="@{/files/{id}(id=${page.product().thumb1FileId})}"
+                     th:alt="${page.product().prodName}">
+                <span th:unless="${page.product().thumb1FileId != null}" class="dummy-img">📷</span>
             </div>
 
             <div class="view-info">
                 <div class="brand-row">
-                    <span class="pno" th:text="'상품번호: ' + ${product.prodNo}">상품번호</span>
-                    <span class="brand" th:text="${product.maker}">제조사</span>
+                    <span class="pno" th:text="'상품번호: ' + ${page.product().prodNo}">상품번호</span>
+                    <span class="brand" th:text="${page.product().maker}">제조사</span>
                 </div>
-                <h2 class="title" th:text="${product.prodName}">상품명</h2>
-                <p class="desc" th:text="${product.description}">상품 설명</p>
+                <h2 class="title" th:text="${page.product().prodName}">상품명</h2>
+                <p class="desc" th:text="${page.product().description}">상품 설명</p>
 
                 <div class="price-wrap">
                     <div class="del-price"
-                         th:if="${product.discount > 0}"
-                         th:text="${#numbers.formatInteger(product.price, 0, 'COMMA')} + '원'">89,000원</div>
+                         th:if="${page.product().discount > 0}"
+                         th:text="${#numbers.formatInteger(page.product().price, 0, 'COMMA')} + '원'">89,000원</div>
                     <div class="sale-row">
                         <span class="rate"
-                              th:if="${product.discount > 0}"
-                              th:text="${product.discount} + '%↓'">30%↓</span>
+                              th:if="${page.product().discount > 0}"
+                              th:text="${page.product().discount} + '%↓'">30%↓</span>
                         <span class="final-price">
-                            <span th:remove="tag" th:text="${#numbers.formatInteger(product.salePrice, 0, 'COMMA')}">62,300</span><span>원</span>
+                            <span th:remove="tag" th:text="${#numbers.formatInteger(page.product().salePrice, 0, 'COMMA')}">62,300</span><span>원</span>
                         </span>
                     </div>
                 </div>
@@ -68,44 +68,44 @@
                     <div class="row">
                         <div class="th">배송비</div>
                         <div class="td">
-                            <span th:if="${product.freeShipping}">무료배송</span>
-                            <span th:unless="${product.freeShipping}"
-                                  th:text="${#numbers.formatInteger(product.deliveryFee, 0, 'COMMA')} + '원'">3,000원</span>
+                            <span th:if="${page.product().freeShipping}">무료배송</span>
+                            <span th:unless="${page.product().freeShipping}"
+                                  th:text="${#numbers.formatInteger(page.product().deliveryFee, 0, 'COMMA')} + '원'">3,000원</span>
                             <span class="summary-note">(제주/도서산간 추가 배송비가 발생할 수 있습니다)</span>
                         </div>
                     </div>
                     <div class="row">
                         <div class="th">배송안내</div>
                         <div class="td">
-                            <span th:text="${todayDate} + '(' + ${todayDayOfWeek} + ')로부터 3일이내 배송'">7월 13일(월)로부터 3일이내 배송</span>
+                            <span th:text="${page.todayDate()} + '(' + ${page.todayDayOfWeek()} + ')로부터 3일이내 배송'">7월 13일(월)로부터 3일이내 배송</span>
                             <span class="highlight"
-                                  th:text="${expectedDeliveryDate} + '(' + ${expectedDeliveryDayOfWeek} + ') 도착 예정'">7월 16일(목) 도착 예정</span>
+                                  th:text="${page.expectedDeliveryDate()} + '(' + ${page.expectedDeliveryDayOfWeek()} + ') 도착 예정'">7월 16일(목) 도착 예정</span>
                         </div>
                     </div>
                     <div class="row">
                         <div class="th">상품평</div>
                         <div class="td">
-                            <span class="stars" th:text="${product.ratingStars}">☆☆☆☆☆</span>
-                            <span th:text="'(' + ${#numbers.formatInteger(product.reviewCount, 0, 'COMMA')} + '건)'">(0건)</span>
+                            <span class="stars" th:text="${page.product().ratingStars}">☆☆☆☆☆</span>
+                            <span th:text="'(' + ${#numbers.formatInteger(page.product().reviewCount, 0, 'COMMA')} + '건)'">(0건)</span>
                         </div>
                     </div>
                     <div class="row">
                         <div class="th">판매자</div>
-                        <div class="td" th:text="${product.seller != null ? product.seller : product.sellerUid}">판매자</div>
+                        <div class="td" th:text="${page.product().seller != null ? page.product().seller : page.product().sellerUid}">판매자</div>
                     </div>
                     <div class="row">
                         <div class="th">재고</div>
                         <div class="td"
                              id="variantStock"
-                             th:attr="data-total-stock=${product.stock}"
-                             th:text="${product.stock <= 0 ? '품절' : (#numbers.formatInteger(product.stock, 0, 'COMMA') + '개')}">0개</div>
+                             th:attr="data-total-stock=${page.product().stock}"
+                             th:text="${page.product().stock <= 0 ? '품절' : (#numbers.formatInteger(page.product().stock, 0, 'COMMA') + '개')}">0개</div>
                     </div>
                 </div>
 
                 <div class="option-summary"
-                     th:if="${product.optionGroups != null and !#lists.isEmpty(product.optionGroups)}"
+                     th:if="${page.product().optionGroups != null and !#lists.isEmpty(page.product().optionGroups)}"
                      data-option-selector>
-                    <div class="option-group" th:each="group : ${product.optionGroups}">
+                    <div class="option-group" th:each="group : ${page.product().optionGroups}">
                         <label class="option-group-name"
                                th:for="|option-group-${group.id}|"
                                th:text="${group.name}">옵션명</label>
@@ -122,10 +122,10 @@
                     <p class="option-required-message" data-option-message>옵션을 선택해주세요.</p>
                 </div>
 
-                <div class="variant-stock-list" th:if="${product.variants != null and !#lists.isEmpty(product.variants)}">
+                <div class="variant-stock-list" th:if="${page.product().variants != null and !#lists.isEmpty(page.product().variants)}">
                     <div class="variant-stock-title">조합별 재고</div>
                     <ul>
-                        <li th:each="variant : ${product.variants}">
+                        <li th:each="variant : ${page.product().variants}">
                             <span class="variant-name"
                                   th:text="${variant.items == null or #lists.isEmpty(variant.items)}
                                       ? '기본상품'
@@ -141,7 +141,7 @@
 
                 <div class="count-wrap">
                     <span class="name">수량</span>
-                    <div class="count-control" th:attr="data-unit-price=${product.salePrice}">
+                    <div class="count-control" th:attr="data-unit-price=${page.product().salePrice}">
                         <button type="button">-</button>
                         <input type="text" value="1" readonly>
                         <button type="button">+</button>
@@ -151,13 +151,13 @@
                 <div class="total-price-wrap">
                     <span class="label">총 상품금액</span>
                     <span class="total">
-                        <span th:remove="tag" th:text="${#numbers.formatInteger(product.salePrice, 0, 'COMMA')}">62,300</span><span>원</span>
+                        <span th:remove="tag" th:text="${#numbers.formatInteger(page.product().salePrice, 0, 'COMMA')}">62,300</span><span>원</span>
                     </span>
                 </div>
 
                 <div class="btn-wrap">
-                    <button type="button" class="btn-cart" th:disabled="${product.stock <= 0}">장바구니 담기</button>
-                    <button type="button" class="btn-buy" th:disabled="${product.stock <= 0}">바로 구매하기</button>
+                    <button type="button" class="btn-cart" th:disabled="${page.product().stock <= 0}">장바구니 담기</button>
+                    <button type="button" class="btn-buy" th:disabled="${page.product().stock <= 0}">바로 구매하기</button>
                 </div>
             </div>
         </div>
@@ -171,10 +171,10 @@
         <article id="detail" class="content-section">
             <h3 class="sec-title">상품상세정보</h3>
             <div class="detail-content">
-                <img th:if="${product.detailInfoFileId != null}"
-                     th:src="@{/files/{id}(id=${product.detailInfoFileId})}"
-                     th:alt="${product.prodName} + ' 상세 이미지'">
-                <div th:unless="${product.detailInfoFileId != null}" class="detail-empty">
+                <img th:if="${page.product().detailInfoFileId != null}"
+                     th:src="@{/files/{id}(id=${page.product().detailInfoFileId})}"
+                     th:alt="${page.product().prodName} + ' 상세 이미지'">
+                <div th:unless="${page.product().detailInfoFileId != null}" class="detail-empty">
                     등록된 상세 이미지가 없습니다.
                 </div>
             </div>
@@ -182,15 +182,59 @@
 
         <article id="notice" class="content-section">
             <h3 class="sec-title">상품정보 제공고시</h3>
+            <h4 class="notice-subtitle">공통 상품정보 제공고시</h4>
+            <table class="info-table">
+                <tbody>
+                <tr>
+                    <th>상품번호</th>
+                    <td th:text="${page.product().prodNo}">상품번호</td>
+                </tr>
+                <tr>
+                    <th>상품상태</th>
+                    <td th:switch="${page.product().status}">
+                        <span th:case="'ON_SALE'">새상품</span>
+                        <span th:case="'STOPPED'">판매중지</span>
+                        <span th:case="'DELETED'">삭제</span>
+                        <span th:case="*" th:text="${page.product().status}">상태</span>
+                    </td>
+                </tr>
+                <tr>
+                    <th>부가세 면세여부</th>
+                    <td th:text="${page.product().taxType}">과세상품</td>
+                </tr>
+                <tr>
+                    <th>영수증 발행</th>
+                    <td th:text="${page.product().receiptIssueType}">영수증 발행</td>
+                </tr>
+                <tr>
+                    <th>사업자 구분</th>
+                    <td th:text="${page.product().businessType}">사업자 구분</td>
+                </tr>
+                <tr>
+                    <th>브랜드</th>
+                    <td th:text="${page.product().brand}">브랜드</td>
+                </tr>
+                <tr>
+                    <th>원산지</th>
+                    <td th:text="${page.product().origin}">원산지</td>
+                </tr>
+                </tbody>
+            </table>
+
+            <h4 class="notice-subtitle notice-subtitle-category">상품군별 상품정보 제공고시</h4>
             <table class="info-table">
                 <tbody>
                 <tr>
                     <th>상품군</th>
-                    <td th:text="${product.infoNoticeTypeName != null ? product.infoNoticeTypeName : product.infoNoticeType}">상품군</td>
+                    <td th:text="${page.product().infoNoticeTypeName != null ? page.product().infoNoticeTypeName : page.product().infoNoticeType}">상품군</td>
                 </tr>
-                <tr th:each="notice : ${product.noticeValues}">
+                <tr th:each="notice : ${page.product().noticeValues}">
                     <th th:text="${notice.label}">항목명</th>
                     <td th:text="${notice.value}">항목 값</td>
+                </tr>
+                <tr th:if="${page.product().noticeValues == null or #lists.isEmpty(page.product().noticeValues)}">
+                    <th>제공고시</th>
+                    <td>등록된 상품군별 상품정보 제공고시가 없습니다.</td>
                 </tr>
                 </tbody>
             </table>
@@ -199,9 +243,9 @@
         <article id="review" class="content-section">
             <h3 class="sec-title">상품리뷰</h3>
             <div class="review-empty">
-                <span class="stars" th:text="${product.ratingStars}">☆☆☆☆☆</span>
-                <span th:text="${#numbers.formatDecimal(product.rating, 1, 1)} + ' / 5.0'">0.0 / 5.0</span>
-                <span th:text="'리뷰 ' + ${#numbers.formatInteger(product.reviewCount, 0, 'COMMA')} + '건'">리뷰 0건</span>
+                <span class="stars" th:text="${page.product().ratingStars}">☆☆☆☆☆</span>
+                <span th:text="${#numbers.formatDecimal(page.product().rating, 1, 1)} + ' / 5.0'">0.0 / 5.0</span>
+                <span th:text="'리뷰 ' + ${#numbers.formatInteger(page.product().reviewCount, 0, 'COMMA')} + '건'">리뷰 0건</span>
             </div>
         </article>
 
@@ -211,7 +255,7 @@
 
 <script th:src="@{/js/common.js}"></script>
 <script th:inline="javascript">
-    window.productVariants = /*[[${product.variants}]]*/ [];
+    window.productVariants = /*[[${page.product().variants}]]*/ [];
 </script>
 <script type="module" th:src="@{/js/product/view.js}"></script>
 

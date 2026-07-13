@@ -8,12 +8,17 @@ import org.example.k_market.dto.product.request.ManagementProductSearchRequest;
 import org.example.k_market.dto.product.response.ProductDetailResponse;
 import org.example.k_market.dto.product.response.ManagementProductListResponse;
 import org.example.k_market.service.ProductService;
+import org.example.k_market.service.product.ProductRemovalResult;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/admin/product/api")
@@ -39,5 +44,12 @@ public class ManagementProductApiController {
     @GetMapping("/{prodNo}")
     public ResponseEntity<ProductDetailResponse> getProductDetail(@PathVariable int prodNo) {
         return ResponseEntity.ok(productService.getProductDetailForManagement(prodNo));
+    }
+
+    @DeleteMapping
+    public ResponseEntity<ProductRemovalResult> removeProducts(
+        @RequestParam("productNo") List<Integer> productNos
+    ) {
+        return ResponseEntity.ok(productService.remove(productNos));
     }
 }

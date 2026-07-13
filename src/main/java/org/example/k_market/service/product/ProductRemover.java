@@ -66,6 +66,7 @@ public class ProductRemover {
         if (!stoppedProdNos.isEmpty()) {
             productRepository.updateStatusByProdNoIn(stoppedProdNos, STOPPED_STATUS);
             variantRepository.updateStatusByProdNoIn(stoppedProdNos, STOPPED_STATUS);
+            markOptionsDeleted(stoppedProdNos);
         }
 
         int hardDeletedCount = hardDeleteProdNos.isEmpty()
@@ -106,6 +107,17 @@ public class ProductRemover {
         return variantRepository.findByProdNoIn(prodNos).stream()
             .map(ProductVariant::getId)
             .toList();
+    }
+
+    private void markOptionsDeleted(List<Integer> prodNos) {
+        List<Integer> groupIds = optionGroupRepository.findByProdNoIn(prodNos).stream()
+            .map(ProductOptionGroup::getId)
+            .toList();
+
+        if (!groupIds.isEmpty()) {
+            optionItemRepository.markDeletedByGroupIdIn(groupIds);
+        }
+        optionGroupRepository.markDeletedByProdNoIn(prodNos);
     }
 
     private int removeByHardDelete(List<Integer> prodNos) {

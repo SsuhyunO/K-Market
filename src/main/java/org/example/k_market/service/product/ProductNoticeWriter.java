@@ -1,6 +1,7 @@
 package org.example.k_market.service.product;
 
 import lombok.RequiredArgsConstructor;
+import org.example.k_market.common.product.ProductCommonNoticeKeys;
 import org.example.k_market.entity.product.ProductNoticeValue;
 import org.example.k_market.entity.product.ProductNoticeValueId;
 import org.example.k_market.repository.product.ProductNoticeValueRepository;
@@ -18,9 +19,11 @@ public class ProductNoticeWriter {
             return;
         }
 
-        noticeValues.forEach((noticeKey, value) -> noticeValueRepository.save(ProductNoticeValue.builder()
-            .id(new ProductNoticeValueId(noticeKey, prodNo))
-            .value(value)
-            .build()));
+        noticeValues.entrySet().stream()
+            .filter(entry -> !ProductCommonNoticeKeys.contains(entry.getKey()))
+            .forEach(entry -> noticeValueRepository.save(ProductNoticeValue.builder()
+                .id(new ProductNoticeValueId(entry.getKey(), prodNo))
+                .value(entry.getValue())
+                .build()));
     }
 }

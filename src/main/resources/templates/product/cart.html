@@ -62,10 +62,10 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr th:if="${cartItems == null or #lists.isEmpty(cartItems)}">
+                    <tr th:if="${page.empty}">
                         <td colspan="8" class="empty-cart">장바구니가 비어있습니다.</td>
                     </tr>
-                    <tr th:each="item : ${cartItems}">
+                    <tr th:each="item : ${page.cartItems()}">
                         <td><input type="checkbox" class="chk-item" th:value="${item.cartNo}" checked></td>
                         <td class="product-col">
                             <div class="prod-thumb">
@@ -106,41 +106,41 @@
 
                     <div class="summary-row">
                         <span class="label">상품수</span>
-                        <span class="value" id="summaryItemCount" th:text="${cartItems != null ? #lists.size(cartItems) : 0}">0</span>
+                        <span class="value" id="summaryItemCount" th:text="${page.itemCount()}">0</span>
                     </div>
                     <div class="summary-row">
                         <span class="label">상품금액</span>
-                        <span class="value" id="summaryProductPrice" th:text="${#numbers.formatInteger(productTotal, 1, 'COMMA')} + '원'">0원</span>
+                        <span class="value" id="summaryProductPrice" th:text="${#numbers.formatInteger(page.productTotal(), 1, 'COMMA')} + '원'">0원</span>
                     </div>
                     <div class="summary-row">
                         <span class="label">할인금액</span>
-                        <span class="value minus" id="summaryDiscount" th:text="'-' + ${#numbers.formatInteger(discountTotal, 1, 'COMMA')} + '원'">-0원</span>
+                        <span class="value minus" id="summaryDiscount" th:text="'-' + ${#numbers.formatInteger(page.discountTotal(), 1, 'COMMA')} + '원'">-0원</span>
                     </div>
                     <div class="summary-row">
                         <span class="label">배송비</span>
-                        <span class="value" id="summaryShipping" th:text="${#numbers.formatInteger(shippingTotal, 1, 'COMMA')} + '원'">0원</span>
+                        <span class="value" id="summaryShipping" th:text="${#numbers.formatInteger(page.shippingTotal(), 1, 'COMMA')} + '원'">0원</span>
                     </div>
 
                     <hr class="summary-divider">
 
                     <div class="summary-row">
                         <span class="label">전체주문금액</span>
-                        <span class="value" id="summaryOrderTotal" th:text="${#numbers.formatInteger(orderTotal, 1, 'COMMA')} + '원'">0원</span>
+                        <span class="value" id="summaryOrderTotal" th:text="${#numbers.formatInteger(page.orderTotal(), 1, 'COMMA')} + '원'">0원</span>
                     </div>
                     <div class="summary-row">
                         <span class="label">적립포인트</span>
-                        <span class="value" id="summaryEarnPoint" th:text="${#numbers.formatInteger(earnPoint, 1, 'COMMA')}">0</span>
+                        <span class="value" id="summaryEarnPoint" th:text="${#numbers.formatInteger(page.earnPoint(), 1, 'COMMA')}">0</span>
                     </div>
 
                     <hr class="summary-divider">
 
                     <div class="summary-final">
                         <span class="label">전체주문금액</span>
-                        <span class="value" id="summaryFinalPrice" th:text="${#numbers.formatInteger(finalPrice, 1, 'COMMA')} + '원'">0원</span>
+                        <span class="value" id="summaryFinalPrice" th:text="${#numbers.formatInteger(page.finalPrice(), 1, 'COMMA')} + '원'">0원</span>
                     </div>
 
                     <button type="button" class="btn-order" id="btnOrder"
-                            th:disabled="${cartItems == null or #lists.isEmpty(cartItems)}">주문하기</button>
+                            th:disabled="${page.empty}">주문하기</button>
                 </div>
 
             </div>

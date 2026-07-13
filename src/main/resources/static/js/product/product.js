@@ -413,11 +413,11 @@ function initCartAndBuyButtons() {
                 .then(() => {
                     // 로그인 상태 확인됨 → 정상적으로 장바구니 담기 처리
                     alert('상품이 장바구니에 담겼습니다.');
-                    window.location.href = '/K_Market/product/cart';
+                    window.location.href = '/K_Market/cart';
                 })
                 .catch(() => {
                     // 비로그인 상태 → 인터셉터와 동일한 방식으로 이동
-                    window.location.href = '/K_Market/product/cart';
+                    window.location.href = '/K_Market/cart';
                 });
         });
     }

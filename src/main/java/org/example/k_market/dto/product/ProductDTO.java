@@ -20,8 +20,12 @@ public class ProductDTO {
     private int price;
     private int discount;
     private int point;
-    private int sold;
     private int hit;
+    private String taxType;
+    private String receiptIssueType;
+    private String businessType;
+    private String brand;
+    private String origin;
     private int thumb1FileId;
     private int thumb2FileId;
     private int thumb3FileId;
@@ -41,8 +45,12 @@ public class ProductDTO {
             .price(price)
             .discount(discount)
             .point(point)
-            .sold(sold)
             .hit(hit)
+            .taxType(taxType)
+            .receiptIssueType(receiptIssueType)
+            .businessType(businessType)
+            .brand(brand)
+            .origin(origin)
             .thumb1FileId(thumb1FileId)
             .thumb2FileId(thumb2FileId)
             .thumb3FileId(thumb3FileId)

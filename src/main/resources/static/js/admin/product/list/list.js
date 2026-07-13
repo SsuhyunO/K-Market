@@ -2,12 +2,13 @@ import { ManagementTableForm } from '../../global/management-table-form.js';
 import { initPagination } from '../../../global/pagination.js';
 import { initProductDetailModal } from './productDetailModal.js';
 import { renderProductRows } from './productTableRenderer.js';
-import { getProducts } from '../productApi.js';
+import { getProducts, removeProducts } from '../productApi.js';
 
 document.addEventListener('DOMContentLoaded', function () {
     ManagementTableForm.init();
     initProductDetailModal();
     initSearchForm();
+    initRemoveForm();
 
     initPagination({
         fetchPage: loadProducts,
@@ -73,6 +74,33 @@ function initSearchForm() {
                 }
             })
         );
+    });
+}
+
+function initRemoveForm() {
+    const form = document.getElementById('management-table-form');
+    if (!form) return;
+
+    form.addEventListener('submit', async event => {
+        event.preventDefault();
+
+        const productNos = ManagementTableForm
+            .getChecked(form, `input[name="${form.dataset.checkboxName}"]`)
+            .map(checkbox => Number.parseInt(checkbox.value, 10))
+            .filter(Number.isInteger);
+
+        if (productNos.length === 0) {
+            return;
+        }
+
+        try {
+            const result = await removeProducts(productNos);
+            alert(result.message || '상품이 삭제되었습니다.');
+            window.dispatchEvent(new CustomEvent('pagination:refresh'));
+        } catch (error) {
+            console.error('Error:', error);
+            alert(error.message || '상품 삭제에 실패했습니다.');
+        }
     });
 }
 

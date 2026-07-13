@@ -1,6 +1,7 @@
 package org.example.k_market.service.product;
 
 import lombok.RequiredArgsConstructor;
+import org.example.k_market.common.product.ProductCommonNoticeKeys;
 import org.example.k_market.dto.product.request.ProductOptionGroupRequest;
 import org.example.k_market.dto.product.request.ProductOptionItemRequest;
 import org.example.k_market.dto.product.request.ProductRegisterRequest;
@@ -76,6 +77,11 @@ public class ProductModifier {
             request.getPrice(),
             request.getDiscount(),
             request.getPoint(),
+            request.getTaxType(),
+            request.getReceiptIssueType(),
+            request.getBusinessType(),
+            request.getBrand(),
+            request.getOrigin(),
             uploadedFiles.thumb1FileId(),
             uploadedFiles.thumb2FileId(),
             uploadedFiles.thumb3FileId(),
@@ -338,7 +344,9 @@ public class ProductModifier {
     }
 
     private void replaceNoticeValues(int prodNo, ProductRegisterRequest request) {
-        Map<String, String> submittedValues = request.getInformationNoticeValues();
+        Map<String, String> submittedValues = request.getInformationNoticeValues().entrySet().stream()
+            .filter(entry -> !ProductCommonNoticeKeys.contains(entry.getKey()))
+            .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (left, right) -> right, LinkedHashMap::new));
         Map<String, ProductNoticeValue> existingValuesByKey = noticeValueRepository.findByIdProdNo(prodNo).stream()
             .collect(Collectors.toMap(value -> value.getId().getNoticeKey(), Function.identity()));
 

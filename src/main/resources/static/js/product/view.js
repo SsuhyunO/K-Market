@@ -172,7 +172,7 @@ function initPurchaseButtons() {
             }
 
             const count = Number(document.querySelector('.count-control input')?.value || 1);
-            const response = await fetch(`${getContextPath()}product/api/cart`, {
+            const response = await fetch(`${getContextPath()}cart/api`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -182,7 +182,7 @@ function initPurchaseButtons() {
             });
 
             if (response.status === 401) {
-                window.location.href = `${getContextPath()}product/cart`;
+                window.location.href = `${getContextPath()}cart`;
                 return;
             }
 
@@ -193,7 +193,7 @@ function initPurchaseButtons() {
             }
 
             if (confirm('장바구니에 담았습니다. 장바구니로 이동하시겠습니까?')) {
-                window.location.href = `${getContextPath()}product/cart`;
+                window.location.href = `${getContextPath()}cart`;
             }
         });
     }

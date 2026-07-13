@@ -41,3 +41,23 @@ export async function getProductDetail(prodNo) {
     console.log(JSON.stringify(json));
     return json;
 }
+
+export async function removeProducts(productNos) {
+    const params = new URLSearchParams();
+    productNos.forEach(productNo => params.append('productNo', productNo));
+
+    const response = await fetch(
+        `${getContextPath()}admin/product/api?${params.toString()}`,
+        {
+            method: 'DELETE',
+            headers: { Accept: 'application/json' }
+        }
+    );
+
+    const json = await response.json().catch(() => ({}));
+    if (!response.ok) {
+        throw new Error(json.message || `상품 삭제 실패: ${response.status}`);
+    }
+
+    return json;
+}

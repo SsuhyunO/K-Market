@@ -1,6 +1,7 @@
 package org.example.k_market.service.product;
 
 import lombok.RequiredArgsConstructor;
+import org.example.k_market.common.product.ProductCommonNoticeKeys;
 import org.example.k_market.common.product.ProductInfoNoticeField;
 import org.example.k_market.common.product.ProductInfoNoticeTemplate;
 import org.example.k_market.common.product.ProductInfoNoticeTemplates;
@@ -162,6 +163,10 @@ public class ProductDetailViewer {
         List<ProductDetailResponse.NoticeValue> noticeValues = new ArrayList<>();
 
         for (ProductInfoNoticeField field : template.fields()) {
+            if (ProductCommonNoticeKeys.contains(field.key())) {
+                continue;
+            }
+
             noticeValues.add(ProductDetailResponse.NoticeValue.builder()
                 .key(field.key())
                 .label(field.label())

@@ -14,7 +14,7 @@ public class ManagementProductListResponse {
     private int price;
     private int discount;
     private int point;
-    private int sold;
+    private int hit;
     private int stock;
     private Integer thumb1FileId;
     private String sellerUid;

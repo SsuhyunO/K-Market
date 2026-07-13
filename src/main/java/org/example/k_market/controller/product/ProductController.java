@@ -5,13 +5,14 @@ import lombok.RequiredArgsConstructor;
 import org.example.k_market.dto.category.CategoryContextResponse;
 import org.example.k_market.dto.category.CategoryTreeDTO;
 import org.example.k_market.dto.order.OrderItemViewDTO;
+import org.example.k_market.dto.product.response.ProductListPageResponse;
+import org.example.k_market.dto.product.response.ProductViewPageResponse;
 import org.example.k_market.entity.Member;
-import org.example.k_market.service.CartService;
 import org.example.k_market.service.CategoryService;
 import org.example.k_market.service.MemberService;
-import org.example.k_market.service.ProductService;
-import org.example.k_market.service.order.OrderService;
 import org.example.k_market.service.admin.CouponIssueService;
+import org.example.k_market.service.order.OrderService;
+import org.example.k_market.service.product.ProductViewPageReader;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,10 +20,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 
 @RequiredArgsConstructor
@@ -34,8 +32,7 @@ public class ProductController {
     private final OrderService orderService;
     private final CouponIssueService couponIssueService;
     private final CategoryService categoryService;
-    private final ProductService productService;
-    private final CartService cartService;
+    private final ProductViewPageReader productViewPageReader;
 
     @ModelAttribute("categoryTree")
     public List<CategoryTreeDTO> categoryTree() {
@@ -49,50 +46,18 @@ public class ProductController {
             return "redirect:/product/list?category=" + categoryContext.redirectCategoryId();
         }
 
-        model.addAttribute("parentCate", categoryContext.parentCate());
-        model.addAttribute("subCate", categoryContext.subCate());
+        model.addAttribute("page", new ProductListPageResponse(
+            categoryContext.parentCate(),
+            categoryContext.subCate()
+        ));
         return "product/list";
     }
 
     @GetMapping("/view")
     public String view(@RequestParam("prodNo") int prodNo, Model model) {
-        var product = productService.getProductDetail(prodNo);
-        CategoryContextResponse categoryContext = categoryService.getContext(product.getCateId());
-        LocalDate today = LocalDate.now();
-        LocalDate expectedDeliveryDate = today.plusDays(3);
-        DateTimeFormatter dayFormatter = DateTimeFormatter.ofPattern("E", Locale.KOREAN);
-        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("M월 d일", Locale.KOREAN);
-
-        model.addAttribute("product", product);
-        model.addAttribute("parentCate", categoryContext.parentCate());
-        model.addAttribute("subCate", categoryContext.subCate());
-        model.addAttribute("todayDate", today.format(dateFormatter));
-        model.addAttribute("todayDayOfWeek", today.format(dayFormatter));
-        model.addAttribute("expectedDeliveryDate", expectedDeliveryDate.format(dateFormatter));
-        model.addAttribute("expectedDeliveryDayOfWeek", expectedDeliveryDate.format(dayFormatter));
+        ProductViewPageResponse page = productViewPageReader.getViewPage(prodNo);
+        model.addAttribute("page", page);
         return "product/view";
-    }
-
-    @GetMapping("/cart")
-    public String cart(HttpSession session, Model model) {
-        String memberUid = (String) session.getAttribute("loginMember");
-        List<OrderItemViewDTO> cartItems = cartService.getCartItems(memberUid);
-        int productTotal = orderService.calcProductTotal(cartItems);
-        int discountTotal = orderService.calcDiscountTotal(cartItems);
-        int shippingTotal = orderService.calcShippingTotal(cartItems);
-        int earnPoint = orderService.calcEarnPoint(cartItems);
-        int orderTotal = productTotal - discountTotal;
-        int finalPrice = orderTotal + shippingTotal;
-
-        model.addAttribute("cartItems", cartItems);
-        model.addAttribute("productTotal", productTotal);
-        model.addAttribute("discountTotal", discountTotal);
-        model.addAttribute("shippingTotal", shippingTotal);
-        model.addAttribute("earnPoint", earnPoint);
-        model.addAttribute("orderTotal", orderTotal);
-        model.addAttribute("finalPrice", finalPrice);
-
-        return "product/cart";
     }
 
     // TODO: 테스트용 default, 실제 배포 전 제거
@@ -112,11 +77,11 @@ public class ProductController {
         } else if (prodVariantId != null) {
             orderItems = orderService.getOrderItemsDirect(prodVariantId, count);
         } else {
-            return "redirect:/product/cart";
+            return "redirect:/cart";
         }
 
         if (orderItems.isEmpty()) {
-            return "redirect:/product/cart";
+            return "redirect:/cart";
         }
 
         // 2. 회원 정보로 배송지 기본값 채우기

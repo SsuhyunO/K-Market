@@ -30,14 +30,22 @@
 html, body {
     font-family: var(--font), serif;
     font-size: 13px;
-    background: var(--adm-gray-100);
     color: var(--adm-gray-900);
-    min-height: 100vh;
+    min-height: 100%;
+}
+
+html {
+    height: 100%;
+    background: var(--adm-dark);
+    overflow-x: hidden;
 }
 
 body {
     display: flex;
     flex-direction: column;
+    min-height: 100vh;
+    background: var(--adm-gray-100);
+    overflow-x: hidden;
 }
 
 a {

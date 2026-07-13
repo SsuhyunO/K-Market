@@ -345,6 +345,17 @@
     font-weight: 800;
 }
 
+.product-detail-notice-group + .product-detail-notice-group {
+    margin-top: 14px;
+}
+
+.product-detail-notice-group h5 {
+    margin: 0 0 6px;
+    color: var(--adm-gray-800);
+    font-size: 12px;
+    font-weight: 800;
+}
+
 .product-detail-list div {
     display: grid;
     grid-template-columns: 128px minmax(0, 1fr);

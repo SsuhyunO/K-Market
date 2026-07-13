@@ -41,10 +41,14 @@
             sales.salesCount
         FROM (
             SELECT
-                sellerUid,
-                COALESCE(SUM(sold), 0) AS salesCount
-            FROM product
-            WHERE sellerUid IN
+                p.sellerUid,
+                COALESCE(SUM(CASE WHEN o.orderNo IS NOT NULL THEN oi.count ELSE 0 END), 0) AS salesCount
+            FROM product p
+            LEFT JOIN product_variant pv ON pv.prodNo = p.prodNo
+            LEFT JOIN order_item oi ON oi.prodVariantId = pv.id
+            LEFT JOIN `order` o ON o.orderNo = oi.orderNo
+                AND o.status NOT IN ('CANCELLED', 'REFUNDED')
+            WHERE p.sellerUid IN
             <foreach collection="sellerUids"
                      item="sellerUid"
                      open="("
@@ -52,7 +56,7 @@
                      close=")">
                 #{sellerUid}
             </foreach>
-            GROUP BY sellerUid
+            GROUP BY p.sellerUid
             ) sales
             LEFT JOIN (
                 SELECT

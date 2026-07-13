@@ -32,7 +32,7 @@ function createProductRow(product) {
     const price = formatNumber(product.price);
     const discount = formatDiscount(product.discount);
     const point = formatNumber(product.point);
-    const sold = formatNumber(product.sold);
+    const hit = formatNumber(product.hit);
     const stock = formatNumber(product.stock);
 
     row.dataset.productNo = product.prodNo;
@@ -48,7 +48,7 @@ function createProductRow(product) {
         <td>${point}</td>
         <td>${stock}</td>
         <td>${escapeHtml(product.sellerUid || "-")}</td>
-        <td>${sold}</td>
+        <td>${hit}</td>
         <td>
             <button class="product-control-button" type="button" data-product-detail-button data-product-no="${escapeHtml(product.prodNo)}">[ 상세 ]</button>
             <button class="product-control-button" type="button" data-product-edit-button data-product-no="${escapeHtml(product.prodNo)}">[ 수정 ]</button>

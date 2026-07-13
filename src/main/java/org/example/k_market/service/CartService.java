@@ -3,6 +3,7 @@ package org.example.k_market.service;
 import lombok.RequiredArgsConstructor;
 import org.example.k_market.dto.cart.CartAddRequest;
 import org.example.k_market.dto.order.OrderItemViewDTO;
+import org.example.k_market.dto.product.response.ProductCartPageResponse;
 import org.example.k_market.entity.cart.Cart;
 import org.example.k_market.entity.product.Product;
 import org.example.k_market.entity.product.ProductOptionItem;
@@ -13,6 +14,8 @@ import org.example.k_market.repository.product.ProductOptionItemRepository;
 import org.example.k_market.repository.product.ProductRepository;
 import org.example.k_market.repository.product.ProductVariantItemRepository;
 import org.example.k_market.repository.product.ProductVariantRepository;
+import org.example.k_market.service.order.OrderItemTotalCalculator;
+import org.example.k_market.service.order.OrderItemTotals;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,6 +31,7 @@ public class CartService {
     private final ProductVariantRepository variantRepository;
     private final ProductVariantItemRepository variantItemRepository;
     private final ProductOptionItemRepository optionItemRepository;
+    private final OrderItemTotalCalculator totalCalculator;
 
     @Transactional
     public void add(String memberUid, CartAddRequest request) {
@@ -79,6 +83,21 @@ public class CartService {
         return cartRepository.findByMemberUidOrderByCartNoDesc(memberUid).stream()
             .map(this::toOrderItemView)
             .toList();
+    }
+
+    public ProductCartPageResponse getCartPage(String memberUid) {
+        List<OrderItemViewDTO> cartItems = getCartItems(memberUid);
+        OrderItemTotals totals = totalCalculator.calculate(cartItems);
+
+        return new ProductCartPageResponse(
+            cartItems,
+            totals.productTotal(),
+            totals.discountTotal(),
+            totals.shippingTotal(),
+            totals.earnPoint(),
+            totals.orderTotal(),
+            totals.finalPrice()
+        );
     }
 
     @Transactional
