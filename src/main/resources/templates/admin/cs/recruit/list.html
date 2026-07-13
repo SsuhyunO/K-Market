@@ -1,169 +1,437 @@
 <!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <title>KMarket 채용하기 목록</title>
 
     <th:block th:replace="~{admin/fragments/head::head}"></th:block>
 
-    <link rel="stylesheet" th:href="@{/css/admin/global/management-table-form.css}">
-    <link rel="stylesheet" th:href="@{/css/admin/global/action-bar.css}">
-    <link rel="stylesheet" th:href="@{/css/admin/global/modal-form.css}">
-    <link rel="stylesheet" th:href="@{/css/admin/global/section-table.css}">
-    <link rel="stylesheet" th:href="@{/css/admin/global/search-form.css}">
-    <link rel="stylesheet" th:href="@{/css/admin/cs/board.css}">
+    <link rel="stylesheet"
+          th:href="@{/css/admin/global/management-table-form.css}">
 
-    <script type="module" th:src="@{/js/admin/cs/cs-board.js}"></script>
-    <script type="module" th:src="@{/js/admin/cs/recruit.js}"></script>
+    <link rel="stylesheet"
+          th:href="@{/css/admin/global/action-bar.css}">
+
+    <link rel="stylesheet"
+          th:href="@{/css/admin/global/modal-form.css}">
+
+    <link rel="stylesheet"
+          th:href="@{/css/admin/global/section-table.css}">
+
+    <link rel="stylesheet"
+          th:href="@{/css/admin/global/search-form.css}">
+
+    <link rel="stylesheet"
+          th:href="@{/css/admin/cs/board.css}">
+
+    <script type="module"
+            th:src="@{/js/admin/cs/cs-board.js}">
+    </script>
+
+    <script type="module"
+            th:src="@{/js/admin/cs/recruit.js}">
+    </script>
 </head>
 
 <body class="cs-board-page cs-recruit-page">
 
-<!-- 등록/수정/삭제 완료 메시지 -->
-<script th:if="${message != null}" th:inline="javascript">
+<!-- 등록·수정·삭제 완료 메시지 -->
+<script th:if="${message != null}"
+        th:inline="javascript">
     alert([[${message}]]);
 </script>
 
 <header th:replace="~{admin/fragments/header::header}"></header>
 
 <div class="admin-layout">
+
     <aside th:replace="~{admin/fragments/aside::aside}"></aside>
 
     <main id="admin-main">
-        <div th:replace="~{admin/fragments/page-header::page-header}"></div>
 
-        <section th:replace="~{admin/fragments/dash-section::dash-section(null, '채용하기 목록', null, ~{::content})}">
+        <div th:replace="~{admin/fragments/page-header::page-header}">
+        </div>
+
+        <section th:replace="~{admin/fragments/dash-section::dash-section(
+                    null,
+                    '채용하기 목록',
+                    null,
+                    ~{::content}
+                )}">
+
             <th:block th:fragment="content">
 
-                <!-- 검색 영역 -->
+                <!-- =====================================================
+                     검색 영역
+                     ===================================================== -->
                 <form class="search-form cs-recruit-search-form"
                       name="search-form"
                       th:action="@{/admin/cs/recruit/list}"
                       method="get">
 
-                    <select name="searchType" aria-label="채용 검색조건">
-                        <option value="id">채용번호</option>
-                        <option value="department">채용부서</option>
-                        <option value="experience">경력사항</option>
-                        <option value="recruitCategory">채용형태</option>
-                        <option value="title">제목</option>
+                    <!-- 새 검색 시 항상 1페이지부터 조회 -->
+                    <input type="hidden"
+                           name="page"
+                           value="1">
+
+                    <input type="hidden"
+                           name="size"
+                           th:value="${size != null ? size : 10}">
+
+                    <select name="searchType"
+                            aria-label="채용 검색조건">
+
+                        <option value="id"
+                                th:selected="${searchType == null
+                                    or searchType == 'id'}">
+                            채용번호
+                        </option>
+
+                        <option value="department"
+                                th:selected="${searchType == 'department'}">
+                            채용부서
+                        </option>
+
+                        <option value="experience"
+                                th:selected="${searchType == 'experience'}">
+                            경력사항
+                        </option>
+
+                        <option value="recruitCategory"
+                                th:selected="${searchType == 'recruitCategory'}">
+                            채용형태
+                        </option>
+
+                        <option value="title"
+                                th:selected="${searchType == 'title'}">
+                            제목
+                        </option>
+
                     </select>
 
                     <input type="text"
                            name="keyword"
+                           th:value="${keyword}"
                            placeholder="검색어입력"
                            aria-label="검색어">
 
-                    <button type="submit">검색</button>
+                    <button type="submit">
+                        검색
+                    </button>
+
                 </form>
 
-                <!-- 채용 목록/삭제 form -->
+
+                <!-- =====================================================
+                     목록 및 선택 삭제 폼
+                     ===================================================== -->
                 <form th:action="@{/admin/cs/recruit/delete}"
                       method="post"
                       id="recruit-list-form">
 
-                    <table class="management-table">
-                        <thead>
-                        <tr>
-                            <th>
-                                <label>
-                                    <input type="checkbox" id="select-all">
-                                </label>
-                            </th>
-                            <th>번호</th>
-                            <th>채용부서</th>
-                            <th>경력사항</th>
-                            <th>채용형태</th>
-                            <th>제목</th>
-                            <th>작성자</th>
-                            <th>상태</th>
-                            <th>모집기간</th>
-                            <th>작성일</th>
-                        </tr>
-                        </thead>
+                    <!-- 삭제 후 현재 페이지 및 검색 조건 유지 -->
+                    <input type="hidden"
+                           name="page"
+                           th:value="${currentPage != null
+                               ? currentPage
+                               : 1}">
 
-                        <tbody>
-                        <!-- 데이터 없을 때 -->
-                        <tr th:if="${dtoList == null or #lists.isEmpty(dtoList)}">
-                            <td colspan="10" style="text-align:center; padding:30px 0;">
-                                등록된 채용공고가 없습니다.
-                            </td>
-                        </tr>
+                    <input type="hidden"
+                           name="size"
+                           th:value="${size != null
+                               ? size
+                               : 10}">
 
-                        <!-- DB 데이터 출력 -->
-                        <tr th:each="recruit : ${dtoList}">
-                            <td>
-                                <label>
-                                    <input class="checkboxes"
-                                           type="checkbox"
-                                           name="recruitNo"
-                                           th:value="${recruit.id}">
-                                </label>
-                            </td>
+                    <input type="hidden"
+                           name="searchType"
+                           th:value="${searchType != null
+                               ? searchType
+                               : 'id'}">
 
-                            <td th:text="${recruit.id}">120</td>
+                    <input type="hidden"
+                           name="keyword"
+                           th:value="${keyword != null
+                               ? keyword
+                               : ''}">
 
-                            <td th:text="${recruit.department}">광고사업</td>
 
-                            <td th:text="${recruit.experience}">경력 4 ~ 15년</td>
+                    <!-- =================================================
+                         채용공고 목록 테이블
+                         ================================================= -->
+                    <div class="management-table-scroll">
 
-                            <td th:text="${recruit.recruitCategory}">정규직</td>
+                        <table class="management-table">
 
-                            <td th:text="${recruit.title}">광고 플랫폼 기획</td>
+                            <thead>
+                            <tr>
+                                <th>
+                                    <label>
+                                        <input type="checkbox"
+                                               id="select-all"
+                                               aria-label="전체 선택">
+                                    </label>
+                                </th>
 
-                            <td th:text="${recruit.sellerUid}">관리자</td>
+                                <th>번호</th>
+                                <th>채용부서</th>
+                                <th>경력사항</th>
+                                <th>채용형태</th>
+                                <th>제목</th>
+                                <th>작성자</th>
+                                <th>상태</th>
+                                <th>모집기간</th>
+                                <th>작성일</th>
+                            </tr>
+                            </thead>
 
-                            <td>
-                                <span th:class="${recruit.status == '모집중' ? 'cs-recruit-status active' : 'cs-recruit-status ended'}"
-                                      th:text="${recruit.status}">
-                                    모집중
-                                </span>
-                            </td>
+                            <tbody>
 
-                            <td>
-                                <span th:text="${recruit.recruitStartAt != null ? #temporals.format(recruit.recruitStartAt, 'yyyy-MM-dd') : '0000-00-00'}"></span>
-                                <br>
-                                ~
-                                <span th:text="${recruit.recruitEndAt != null ? #temporals.format(recruit.recruitEndAt, 'yyyy-MM-dd') : '0000-00-00'}"></span>
-                            </td>
+                            <!-- 조회 결과가 없을 때 -->
+                            <tr th:if="${dtoList == null
+                                or #lists.isEmpty(dtoList)}">
 
-                            <td>
-                                <span th:text="${recruit.createdAt != null ? #temporals.format(recruit.createdAt, 'yyyy-MM-dd') : '0000-00-00'}"></span>
-                                <br>
-                                <span th:text="${recruit.createdAt != null ? #temporals.format(recruit.createdAt, 'HH.mm.ss') : '00.00.00'}"></span>
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
+                                <td colspan="10"
+                                    class="cs-empty-row">
 
-                    <!-- 하단 버튼 영역 -->
-                    <div style="display:flex; align-items:center; justify-content:space-between; margin-top:20px;">
+                                    등록된 채용공고가 없습니다.
 
-                        <div style="display:flex; gap:10px;">
+                                </td>
+                            </tr>
+
+
+                            <!-- DB 목록 출력 -->
+                            <tr th:each="recruit : ${dtoList}">
+
+                                <!-- 선택 -->
+                                <td>
+                                    <label>
+                                        <input class="checkboxes"
+                                               type="checkbox"
+                                               name="recruitNo"
+                                               th:value="${recruit.id}"
+                                               aria-label="채용공고 선택">
+                                    </label>
+                                </td>
+
+                                <!-- 번호 -->
+                                <td th:text="${recruit.id}">
+                                    1
+                                </td>
+
+                                <!-- 채용부서 -->
+                                <td th:text="${recruit.department}">
+                                    IT
+                                </td>
+
+                                <!-- 경력사항 -->
+                                <td th:text="${recruit.experience}">
+                                    신입
+                                </td>
+
+                                <!-- 채용형태 -->
+                                <td th:text="${recruit.recruitCategory}">
+                                    정규직
+                                </td>
+
+                                <!-- 제목 -->
+                                <td class="cs-recruit-title"
+                                    th:text="${recruit.title}">
+                                    개발자 모집
+                                </td>
+
+                                <!-- 작성자 -->
+                                <td th:text="${recruit.sellerUid}">
+                                    관리자
+                                </td>
+
+                                <!-- 상태 -->
+                                <td>
+                                    <span th:class="${recruit.status == '모집중'
+                                            ? 'cs-recruit-status active'
+                                            : 'cs-recruit-status ended'}"
+                                          th:text="${recruit.status}">
+                                        모집중
+                                    </span>
+                                </td>
+
+                                <!-- 모집기간 -->
+                                <td>
+                                    <span th:text="${recruit.recruitStartAt != null
+                                        ? #temporals.format(
+                                            recruit.recruitStartAt,
+                                            'yyyy-MM-dd'
+                                        )
+                                        : '-'}">
+                                        2026-07-01
+                                    </span>
+
+                                    <br>
+
+                                    <span>~</span>
+
+                                    <span th:text="${recruit.recruitEndAt != null
+                                        ? #temporals.format(
+                                            recruit.recruitEndAt,
+                                            'yyyy-MM-dd'
+                                        )
+                                        : '-'}">
+                                        2026-07-31
+                                    </span>
+                                </td>
+
+                                <!-- 작성일 -->
+                                <td>
+                                    <span th:text="${recruit.createdAt != null
+                                        ? #temporals.format(
+                                            recruit.createdAt,
+                                            'yyyy-MM-dd'
+                                        )
+                                        : '-'}">
+                                        2026-07-08
+                                    </span>
+
+                                    <br>
+
+                                    <span th:text="${recruit.createdAt != null
+                                        ? #temporals.format(
+                                            recruit.createdAt,
+                                            'HH.mm.ss'
+                                        )
+                                        : ''}">
+                                        16.37.03
+                                    </span>
+                                </td>
+
+                            </tr>
+
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+
+                    <!-- =================================================
+                         페이지네이션
+                         다른 고객센터 목록과 동일한 이전 / 번호 / 다음
+                         ================================================= -->
+                    <div class="cs-board-pagination"
+                         th:if="${totalPages != null and totalPages > 0}"
+                         aria-label="채용공고 페이지 이동">
+
+                        <!-- 이전 -->
+                        <a class="cs-page-direction"
+                           th:href="@{/admin/cs/recruit/list(
+                                page=${currentPage > 1
+                                    ? currentPage - 1
+                                    : 1},
+                                size=${size},
+                                searchType=${searchType},
+                                keyword=${keyword}
+                           )}"
+                           th:classappend="${currentPage == 1}
+                                ? ' disabled'
+                                : ''">
+                            이전
+                        </a>
+
+
+                        <!-- 페이지 번호 -->
+                        <th:block th:if="${startPage != null
+                            and endPage != null
+                            and startPage <= endPage}">
+
+                            <a th:each="pageNumber :
+                                    ${#numbers.sequence(
+                                        startPage,
+                                        endPage
+                                    )}"
+                               class="cs-page-number"
+                               th:href="@{/admin/cs/recruit/list(
+                                    page=${pageNumber},
+                                    size=${size},
+                                    searchType=${searchType},
+                                    keyword=${keyword}
+                               )}"
+                               th:text="${pageNumber}"
+                               th:classappend="${pageNumber == currentPage}
+                                    ? ' active'
+                                    : ''"
+                               th:attr="aria-current=${pageNumber == currentPage
+                                    ? 'page'
+                                    : null}">
+                                1
+                            </a>
+
+                        </th:block>
+
+
+                        <!-- 다음 -->
+                        <a class="cs-page-direction"
+                           th:href="@{/admin/cs/recruit/list(
+                                page=${currentPage < totalPages
+                                    ? currentPage + 1
+                                    : totalPages},
+                                size=${size},
+                                searchType=${searchType},
+                                keyword=${keyword}
+                           )}"
+                           th:classappend="${currentPage == totalPages}
+                                ? ' disabled'
+                                : ''">
+                            다음
+                        </a>
+
+                    </div>
+
+
+                    <!-- =================================================
+                         하단 버튼 영역
+                         ================================================= -->
+                    <div class="btn-area cs-recruit-actions">
+
+                        <!-- 왼쪽 버튼 -->
+                        <div class="cs-recruit-actions-left">
+
                             <button type="submit"
-                                    onclick="return confirm('선택한 채용공고를 삭제하시겠습니까?');"
-                                    style="padding:8px 15px; border:1px solid #ccc; background:#fff; cursor:pointer;">
+                                    class="cs-board-button secondary"
+                                    onclick="return confirm(
+                                        '선택한 채용공고를 삭제하시겠습니까?'
+                                    );">
                                 선택삭제
                             </button>
 
                             <button type="button"
                                     id="btn-select-edit"
-                                    style="border:1px solid #ccc; padding:6px 12px; border-radius:4px; background:#fff;">
+                                    class="cs-board-button secondary">
                                 선택수정
                             </button>
+
                         </div>
 
-                        <div>
-                            <button type="button"
-                                    data-modal-target="recruit-register-modal"
-                                    style="padding:8px 15px; border:1px solid #315efb; background:#315efb; color:#fff; cursor:pointer;">
-                                채용등록
-                            </button>
-                        </div>
+
+                        <!-- 오른쪽 등록 버튼 -->
+                        <button type="button"
+                                class="cs-board-button primary"
+                                data-modal-target="recruit-register-modal">
+                            채용등록
+                        </button>
+
                     </div>
+
                 </form>
 
-                <!-- 채용등록 모달 -->
-                <div th:replace="~{admin/fragments/modal::modal('recruit-register-modal', '채용등록', ~{::recruit_register_modal_content})}">
+
+                <!-- =====================================================
+                     채용등록 모달
+                     ===================================================== -->
+                <div th:replace="~{admin/fragments/modal::modal(
+                            'recruit-register-modal',
+                            '채용등록',
+                            ~{::recruit_register_modal_content}
+                        )}">
+
                     <th:block th:fragment="recruit_register_modal_content">
 
                         <form id="recruit-register-form"
@@ -171,12 +439,19 @@
                               method="post"
                               novalidate>
 
-                            <table class="section-table cs-recruit-modal-table">
+                            <table class="section-table
+                                          cs-recruit-modal-table">
 
+                                <tbody>
+
+                                <!-- 제목 -->
                                 <tr>
                                     <th>
-                                        <label for="recruit-title">제목</label>
+                                        <label for="recruit-title">
+                                            제목
+                                        </label>
                                     </th>
+
                                     <td>
                                         <input id="recruit-title"
                                                type="text"
@@ -185,65 +460,144 @@
                                     </td>
                                 </tr>
 
+
+                                <!-- 채용부서 -->
                                 <tr>
                                     <th>
-                                        <label for="recruit-department">채용부서</label>
+                                        <label for="recruit-department">
+                                            채용부서
+                                        </label>
                                     </th>
+
                                     <td>
-                                        <select id="recruit-department" name="department">
-                                            <option value="">채용부서 선택</option>
-                                            <option value="광고사업">광고사업</option>
-                                            <option value="IT">IT</option>
-                                            <option value="운영">운영</option>
-                                            <option value="경영">경영</option>
+                                        <select id="recruit-department"
+                                                name="department">
+
+                                            <option value="">
+                                                채용부서 선택
+                                            </option>
+
+                                            <option value="광고사업">
+                                                광고사업
+                                            </option>
+
+                                            <option value="IT">
+                                                IT
+                                            </option>
+
+                                            <option value="운영">
+                                                운영
+                                            </option>
+
+                                            <option value="경영">
+                                                경영
+                                            </option>
+
                                         </select>
                                     </td>
                                 </tr>
 
+
+                                <!-- 경력사항 -->
                                 <tr>
                                     <th>
-                                        <label for="recruit-experience">경력사항</label>
+                                        <label for="recruit-experience">
+                                            경력사항
+                                        </label>
                                     </th>
+
                                     <td>
-                                        <select id="recruit-experience" name="experience">
-                                            <option value="">경력사항 선택</option>
-                                            <option value="신입">신입</option>
-                                            <option value="무관">무관</option>
-                                            <option value="경력 2 ~ 15년">경력 2 ~ 15년</option>
-                                            <option value="경력 4 ~ 15년">경력 4 ~ 15년</option>
+                                        <select id="recruit-experience"
+                                                name="experience">
+
+                                            <option value="">
+                                                경력사항 선택
+                                            </option>
+
+                                            <option value="신입">
+                                                신입
+                                            </option>
+
+                                            <option value="무관">
+                                                무관
+                                            </option>
+
+                                            <option value="경력 2 ~ 15년">
+                                                경력 2 ~ 15년
+                                            </option>
+
+                                            <option value="경력 4 ~ 15년">
+                                                경력 4 ~ 15년
+                                            </option>
+
                                         </select>
                                     </td>
                                 </tr>
 
+
+                                <!-- 채용형태 -->
                                 <tr>
                                     <th>
-                                        <label for="recruit-category">채용형태</label>
+                                        <label for="recruit-category">
+                                            채용형태
+                                        </label>
                                     </th>
+
                                     <td>
-                                        <select id="recruit-category" name="recruitCategory">
-                                            <option value="">채용형태 선택</option>
-                                            <option value="정규직">정규직</option>
-                                            <option value="계약직">계약직</option>
+                                        <select id="recruit-category"
+                                                name="recruitCategory">
+
+                                            <option value="">
+                                                채용형태 선택
+                                            </option>
+
+                                            <option value="정규직">
+                                                정규직
+                                            </option>
+
+                                            <option value="계약직">
+                                                계약직
+                                            </option>
+
                                         </select>
                                     </td>
                                 </tr>
 
+
+                                <!-- 상태 -->
                                 <tr>
                                     <th>
-                                        <label for="recruit-status">상태</label>
+                                        <label for="recruit-status">
+                                            상태
+                                        </label>
                                     </th>
+
                                     <td>
-                                        <select id="recruit-status" name="status">
-                                            <option value="모집중">모집중</option>
-                                            <option value="종료">종료</option>
+                                        <select id="recruit-status"
+                                                name="status">
+
+                                            <option value="모집중">
+                                                모집중
+                                            </option>
+
+                                            <option value="종료">
+                                                종료
+                                            </option>
+
                                         </select>
                                     </td>
                                 </tr>
 
+
+                                <!-- 모집기간 -->
                                 <tr>
-                                    <th>모집기간</th>
+                                    <th>
+                                        모집기간
+                                    </th>
+
                                     <td>
                                         <div class="cs-recruit-period-fields">
+
                                             <input id="recruit-start-date"
                                                    type="date"
                                                    name="startDate"
@@ -255,14 +609,20 @@
                                                    type="date"
                                                    name="endDate"
                                                    aria-label="모집 종료일">
+
                                         </div>
                                     </td>
                                 </tr>
 
+
+                                <!-- 내용 -->
                                 <tr>
                                     <th>
-                                        <label for="recruit-content">내용</label>
+                                        <label for="recruit-content">
+                                            내용
+                                        </label>
                                     </th>
+
                                     <td>
                                         <textarea id="recruit-content"
                                                   name="content"
@@ -270,22 +630,41 @@
                                     </td>
                                 </tr>
 
+                                </tbody>
+
                             </table>
 
-                            <div class="modal-form-actions cs-recruit-modal-actions">
-                                <button type="button" data-modal-close>취소</button>
-                                <button type="submit">등록</button>
+
+                            <!-- 모달 버튼 -->
+                            <div class="modal-form-actions
+                                        cs-recruit-modal-actions">
+
+                                <button type="button"
+                                        data-modal-close>
+                                    취소
+                                </button>
+
+                                <button type="submit">
+                                    등록
+                                </button>
+
                             </div>
+
                         </form>
 
                     </th:block>
+
                 </div>
 
             </th:block>
+
         </section>
+
     </main>
+
 </div>
 
 <footer th:replace="~{admin/fragments/footer::footer}"></footer>
+
 </body>
 </html>

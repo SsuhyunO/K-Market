@@ -67,6 +67,11 @@
     transition: transform .28s ease, width .28s ease;
 }
 
+
+/* =========================================================
+   배너 목록 테이블 열 너비
+   ========================================================= */
+
 .management-table th:nth-child(1),
 .management-table td:nth-child(1) {
     width: 42px;
@@ -117,6 +122,11 @@
     width: 90px;
 }
 
+
+/* =========================================================
+   배너 활성·비활성 버튼
+   ========================================================= */
+
 .banner-state-button {
     display: inline-flex;
     align-items: center;
@@ -130,7 +140,13 @@
     color: var(--adm-gray-700);
     font-size: 12px;
     font-weight: 700;
-    transition: color var(--transition), border-color var(--transition), background var(--transition);
+    text-decoration: none;
+    box-sizing: border-box;
+    cursor: pointer;
+    transition:
+            color var(--transition),
+            border-color var(--transition),
+            background var(--transition);
 }
 
 .banner-state-button:hover {
@@ -138,6 +154,11 @@
     color: var(--adm-primary);
     background: #eff6ff;
 }
+
+
+/* =========================================================
+   배너 등록 모달
+   ========================================================= */
 
 .banner-modal-table th {
     width: 180px;
@@ -157,7 +178,10 @@
 
 .banner-modal-field-group {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+    grid-template-columns:
+            minmax(0, 1fr)
+            auto
+            minmax(0, 1fr);
     align-items: center;
     gap: 8px;
     width: min(100%, 520px);
@@ -165,7 +189,10 @@
 
 .banner-size-field-group {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+    grid-template-columns:
+            minmax(0, 1fr)
+            auto
+            minmax(0, 1fr);
     align-items: center;
     gap: 8px;
     width: min(100%, 360px);
@@ -182,7 +209,74 @@
     font-size: 12px;
 }
 
+
+/* =========================================================
+   배너관리 하단 버튼
+   ========================================================= */
+
+/* 선택삭제 + 선택수정 버튼 묶음 */
+.banner-footer-left {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* 공통 버튼 형태 */
+.cs-board-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 76px;
+    height: 36px;
+    padding: 0 16px;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1;
+    text-align: center;
+    white-space: nowrap;
+    cursor: pointer;
+    transition:
+            background-color var(--transition),
+            border-color var(--transition),
+            color var(--transition);
+}
+
+/* 선택삭제, 선택수정 */
+.cs-board-button.secondary {
+    border: 1px solid var(--adm-gray-300);
+    background: var(--adm-white);
+    color: var(--adm-gray-700);
+}
+
+.cs-board-button.secondary:hover {
+    border-color: var(--adm-gray-500);
+    background: var(--adm-gray-100);
+    color: var(--adm-gray-900);
+}
+
+/* 배너등록 */
+.cs-board-button.primary {
+    border: 1px solid var(--adm-primary);
+    background: var(--adm-primary);
+    color: var(--adm-white);
+}
+
+.cs-board-button.primary:hover {
+    border-color: #244ee8;
+    background: #244ee8;
+    color: var(--adm-white);
+}
+
+
+/* =========================================================
+   반응형
+   ========================================================= */
+
 @media (max-width: 768px) {
+
     .banner-nav a {
         min-height: 38px;
         padding: 0 14px;
@@ -198,4 +292,14 @@
         display: none;
     }
 
+    .banner-footer-left {
+        gap: 6px;
+    }
+
+    .cs-board-button {
+        min-width: 68px;
+        height: 34px;
+        padding: 0 12px;
+        font-size: 13px;
+    }
 }

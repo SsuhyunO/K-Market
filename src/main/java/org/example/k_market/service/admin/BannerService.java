@@ -99,6 +99,23 @@ public class BannerService {
                 .collect(Collectors.toList());
     }
 
+    // 특정 타입의 활성 배너 1개 조회
+// userLogin, myPage 등 사용자 화면 출력용
+    @Transactional(readOnly = true)
+    public BannerDTO findFirstEnabledBannerByType(String bannerType) {
+
+        if (bannerType == null || bannerType.isBlank()) {
+            return null;
+        }
+
+        return bannerRepository
+                .findByBannerTypeAndEnabledTrueOrderByBannerIdDesc(bannerType)
+                .stream()
+                .findFirst()
+                .map(this::toDTO)
+                .orElse(null);
+    }
+
     // 배너 활성 / 비활성 변경
     public void toggleEnabled(Integer bannerId) {
 
