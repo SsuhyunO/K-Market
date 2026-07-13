@@ -18,8 +18,10 @@ public class OrderDTO {
     private String memberUid;
     private int orderPrice;
     private int orderDiscount;
+    private Long couponIssueId;
     private int orderTotal;
     private int usedPoints;
+    private int shippingFee;
     private String receiver;
     private String phone;
     private String zipCode;
@@ -38,8 +40,10 @@ public class OrderDTO {
                 .memberUid(memberUid)
                 .orderPrice(orderPrice)
                 .orderDiscount(orderDiscount)
+                .couponIssueId(couponIssueId)
                 .orderTotal(orderTotal)
                 .usedPoints(usedPoints)
+                .shippingFee(shippingFee)
                 .receiver(receiver)
                 .phone(phone)
                 .zipCode(zipCode)

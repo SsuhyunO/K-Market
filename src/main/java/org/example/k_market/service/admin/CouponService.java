@@ -2,6 +2,7 @@ package org.example.k_market.service.admin;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.example.k_market.dao.CouponDAO;
 import org.example.k_market.dao.CouponIssueDAO;
 import org.example.k_market.dto.coupon.CouponDTO;
@@ -14,6 +15,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@Slf4j
 @RequiredArgsConstructor
 @Service
 public class CouponService {
@@ -25,6 +27,7 @@ public class CouponService {
     }
 
     public void register(CouponDTO dto){
+        log.info("sellerUid raw value = [{}]", dto.getSellerUid());
         // expireDate가 없으면 validDays로 계산해서 넣어줌
         if (dto.getExpireDate() == null || dto.getExpireDate().isBlank()) {
             LocalDate baseDate = (dto.getStartDate() == null || dto.getStartDate().isBlank())
