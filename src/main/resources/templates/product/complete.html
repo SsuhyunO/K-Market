@@ -19,7 +19,6 @@
 
     <main class="main-content">
 
-        <!-- 페이지 타이틀 + 브레드크럼 (HOME > 주문하기 > 주문완료) -->
         <div class="complete-header">
             <h1 class="complete-title">주문완료</h1>
             <nav class="breadcrumb">
@@ -31,7 +30,6 @@
             </nav>
         </div>
 
-        <!-- 완료 안내 메시지 -->
         <div class="complete-message">
             <div class="icon">✅</div>
             <h2>
@@ -40,7 +38,6 @@
             <p>즐거운 쇼핑이 되셨나요? 항상 고객님을 위한 케이마켓이 되겠습니다.</p>
         </div>
 
-        <!-- ① 주문상품: 썸네일, 상품명·설명, 상품금액, 할인금액, 수량, 주문금액 출력 -->
         <table class="complete-product-table">
             <thead>
             <tr>
@@ -54,7 +51,6 @@
             </thead>
             <tbody>
 
-            <!-- orderItems가 없을 때 placeholder 2개 -->
             <th:block th:if="${orderItems == null or #lists.isEmpty(orderItems)}">
                 <tr>
                     <td><input type="checkbox" checked disabled></td>
@@ -67,10 +63,10 @@
                             </div>
                         </div>
                     </td>
-                    <td>89,000</td>
-                    <td>-26,700</td>
+                    <td>89,000원</td>
+                    <td>-26,700원</td>
                     <td>1</td>
-                    <td class="order-amount">62,300</td>
+                    <td class="order-amount">62,300원</td>
                 </tr>
                 <tr>
                     <td><input type="checkbox" checked disabled></td>
@@ -83,14 +79,13 @@
                             </div>
                         </div>
                     </td>
-                    <td>39,000</td>
-                    <td>-7,800</td>
+                    <td>39,000원</td>
+                    <td>-7,800원</td>
                     <td>2</td>
-                    <td class="order-amount">70,200</td>
+                    <td class="order-amount">70,200원</td>
                 </tr>
             </th:block>
 
-            <!-- 실제 데이터 -->
             <tr th:each="item : ${orderItems}">
                 <td><input type="checkbox" checked disabled></td>
                 <td>
@@ -105,38 +100,40 @@
                         </div>
                     </div>
                 </td>
-                <td th:text="${item.price}">27,000</td>
-                <td th:text="'-' + ${item.discountAmount}">-1,350</td>
+                <td th:text="${#numbers.formatInteger(item.price, 1, 'COMMA')} + '원'">27,000원</td>
+                <td th:text="${item.discountAmount > 0} ? '-' + ${#numbers.formatInteger(item.discountAmount, 1, 'COMMA')} + '원' : '0원'">-1,350원</td>
                 <td th:text="${item.quantity}">1</td>
-                <td class="order-amount" th:text="${item.lineTotal}">25,650</td>
+                <td class="order-amount" th:text="${#numbers.formatInteger(item.lineTotal, 1, 'COMMA')} + '원'">25,650원</td>
             </tr>
 
             </tbody>
         </table>
 
-        <!-- 총 상품금액 / 총 할인금액 / 배송비 / 총 결제금액 요약 -->
         <div class="amount-summary-wrap">
             <div class="amount-summary">
                 <div class="row">
                     <span class="label">총 상품금액</span>
-                    <span class="value" th:text="(${productTotal} != null ? productTotal : 167+',000') + '원'">167,000원</span>
+                    <span class="value" th:text="${productTotal != null ? #numbers.formatInteger(productTotal, 1, 'COMMA') : '167,000'} + '원'">167,000원</span>
                 </div>
                 <div class="row">
                     <span class="label">총 할인금액</span>
-                    <span class="value" th:text="'-' + (${discountTotal} != null ? discountTotal : 35+','+500) + '원'">-35,500원</span>
+                    <span class="value" th:text="${discountTotal != null and discountTotal > 0 ? '-' + #numbers.formatInteger(discountTotal, 1, 'COMMA') : '-35,500'} + '원'">-35,500원</span>
+                </div>
+                <div class="row" th:if="${usedPoints != null and usedPoints > 0}">
+                    <span class="label">포인트 사용</span>
+                    <span class="value" th:text="'-' + ${#numbers.formatInteger(usedPoints, 1, 'COMMA')} + '원'">-5,000원</span>
                 </div>
                 <div class="row">
                     <span class="label">배송비</span>
-                    <span class="value" th:text="(${shippingTotal} != null ? shippingTotal : 3+',000') + '원'">3000원</span>
+                    <span class="value" th:text="${shippingTotal != null ? #numbers.formatInteger(shippingTotal, 1, 'COMMA') : '3,000'} + '원'">3,000원</span>
                 </div>
                 <div class="row final">
                     <span class="label">총 결제금액</span>
-                    <span class="value" th:text="(${finalPrice} != null ? finalPrice : 134+','+500) + '원'">134,500원</span>
+                    <span class="value" th:text="${finalPrice != null ? #numbers.formatInteger(finalPrice, 1, 'COMMA') : '134,500'} + '원'">134,500원</span>
                 </div>
             </div>
         </div>
 
-        <!-- ② 주문정보: 주문번호, 결제방법, 주문자/연락처, 총 결제금액 출력 -->
         <section class="info-section">
             <h3 class="info-section-title">주문정보</h3>
             <div class="order-info-layout">
@@ -156,12 +153,11 @@
 
                 <div class="order-final-amount">
                     <span class="label">총 결제금액</span>
-                    <span class="value" th:text="(${finalPrice} != null ? finalPrice :  134+','+500) + '원'">134,500원</span>
+                    <span class="value" th:text="${finalPrice != null ? #numbers.formatInteger(finalPrice, 1, 'COMMA') : '134,500'} + '원'">134,500원</span>
                 </div>
             </div>
         </section>
 
-        <!-- ③ 배송정보: 수취인, 연락처, 배송지 주소 출력 -->
         <section class="info-section">
             <h3 class="info-section-title">배송정보</h3>
             <div class="delivery-info-list">

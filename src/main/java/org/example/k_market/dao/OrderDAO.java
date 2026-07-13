@@ -13,4 +13,7 @@ public interface OrderDAO {
     void insertOrder(OrderDTO order);
 
     void insertOrderItems(@Param("items") List<OrderItemDTO> items);
+
+    OrderDTO selectOrderByNo(int orderNo);
+    List<OrderItemDTO> selectOrderItemsByOrderNo(int orderNo);
 }
