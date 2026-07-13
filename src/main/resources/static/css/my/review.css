@@ -223,13 +223,6 @@ main {
 .my-banner {
     width: 100%;
     height: 86px;
-    border: 1px solid #ddd;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #aaa;
-    font-size: 14px;
-    background-color: #f9f9f9;
 }
 
 /* ===== 공통 섹션 스타일 ===== */

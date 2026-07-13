@@ -1,11 +1,17 @@
 package org.example.k_market.config;
 
+import org.example.k_market.security.CustomOAuth2UserService;
+import org.example.k_market.security.OAuth2LoginSuccessHandler;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
+import org.springframework.security.oauth2.client.web.DefaultOAuth2AuthorizationRequestResolver;
+import org.springframework.security.oauth2.client.web.OAuth2AuthorizationRequestResolver;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
@@ -16,6 +22,17 @@ import java.util.List;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
+
+    // ===== 구글 OAuth2 관련 =====
+    @Autowired
+    private CustomOAuth2UserService customOAuth2UserService;
+
+    @Autowired
+    private OAuth2LoginSuccessHandler oAuth2LoginSuccessHandler;
+
+    // ===== 추가된 부분: 구글 인증요청 URL에 파라미터 커스텀 추가용 =====
+    @Autowired
+    private ClientRegistrationRepository clientRegistrationRepository;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -40,6 +57,22 @@ public class SecurityConfig {
         return source;
     }
 
+    // ===== 추가된 부분: 구글 로그인 요청 시 prompt=login 파라미터를 강제로 추가 =====
+    // select_account는 로그인된 구글 계정이 1개뿐이면 "선택할 게 없다"고 판단해 그냥 스킵되어버림.
+    // login으로 지정하면 계정 개수와 상관없이 매번 재인증(비밀번호 재입력) 화면을 거치게 강제됨.
+    @Bean
+    public OAuth2AuthorizationRequestResolver authorizationRequestResolver() {
+        DefaultOAuth2AuthorizationRequestResolver resolver =
+                new DefaultOAuth2AuthorizationRequestResolver(
+                        clientRegistrationRepository, "/oauth2/authorization");
+
+        resolver.setAuthorizationRequestCustomizer(customizer ->
+                customizer.additionalParameters(params -> params.put("prompt", "login"))
+        );
+
+        return resolver;
+    }
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
@@ -48,6 +81,17 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                                 .anyRequest().permitAll()
                         // 나중에 보안 강화할 때 다시 좁힐 예정
+                )
+                // ===== 구글 OAuth2 로그인 설정 =====
+                .oauth2Login(oauth2 -> oauth2
+                        .loginPage("/member/login") // 커스텀 로그인 페이지
+                        .authorizationEndpoint(endpoint -> endpoint
+                                .authorizationRequestResolver(authorizationRequestResolver())
+                        )
+                        .userInfoEndpoint(userInfo -> userInfo
+                                .userService(customOAuth2UserService)
+                        )
+                        .successHandler(oAuth2LoginSuccessHandler)
                 );
 
         return http.build();

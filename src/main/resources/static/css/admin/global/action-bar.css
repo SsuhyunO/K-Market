@@ -1,6 +1,6 @@
 .btn-area {
     display: flex;
-    justify-content: flex-end; /* 양 끝 정렬 대신 오른쪽 정렬로 변경 */
+    justify-content: space-between; /* 양 끝 정렬 대신 오른쪽 정렬로 변경 */
     align-items: center;
     gap: 10px;               /* 버튼과 페이지네이션 사이의 간격 추가 */
     margin-top: 12px;

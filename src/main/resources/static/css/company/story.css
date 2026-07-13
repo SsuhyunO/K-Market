@@ -44,7 +44,7 @@
     text-underline-offset: 6px;
 }
 
-/* ③ 블로그 카드 그리드 */
+/* ③ 블로그 카드 그리드 (전체보기) */
 .story-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -89,16 +89,96 @@
 }
 
 /* =============================================
+   ④ 카테고리별 피처 레이아웃
+   사진 2장 세로 + 오른쪽 텍스트
+   ============================================= */
+.story-feature {
+    display: flex;
+    gap: 40px;
+    align-items: stretch;
+    animation: storyFadeUp 0.6s ease both;
+}
+
+.story-feature-images {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    width: 340px;
+    flex-shrink: 0;
+}
+
+.story-feature-img {
+    display: block;
+    aspect-ratio: 4 / 3;
+    border: 1px solid var(--color-gray-200);
+    border-radius: var(--radius-md);
+    background: var(--color-gray-100);
+    overflow: hidden;
+}
+.story-feature-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s ease;
+}
+.story-feature-img:hover img {
+    transform: scale(1.04);
+}
+
+.story-feature-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.story-feature-tag {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--color-primary);
+    margin-bottom: 12px;
+}
+
+.story-feature-title {
+    font-size: 26px;
+    font-weight: 800;
+    color: var(--color-gray-900);
+    line-height: 1.4;
+    margin-bottom: 16px;
+}
+
+.story-feature-desc {
+    font-size: 15px;
+    color: var(--color-gray-600);
+    line-height: 1.8;
+}
+
+@keyframes storyFadeUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* =============================================
    반응형
    ============================================= */
 @media (max-width: 900px) {
     .story-grid { grid-template-columns: repeat(2, 1fr); gap: 18px; }
     .story-category { gap: 14px; flex-wrap: wrap; }
     .story-title { font-size: 21px; }
+
+    .story-feature { flex-direction: column; gap: 24px; }
+    .story-feature-images { width: 100%; flex-direction: row; }
 }
 
 @media (max-width: 580px) {
     .story-grid { grid-template-columns: 1fr; }
+    .story-feature-images { flex-direction: column; }
 }
 
 /* company-index.css */

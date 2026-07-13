@@ -24,7 +24,7 @@
 
         <section th:replace="~{admin/fragments/dash-section::dash-section(null, null, null, ~{::main_content})}">
             <th:block th:fragment="main_content">
-                <th:block th:replace="~{admin/fragments/search-form(~{::options})}">
+                <th:block th:replace="~{admin/fragments/search-form::search-form(~{::options})}">
                     <th:block th:fragment="options">
                         <option value="쿠폰번호" th:selected="${searchType == '쿠폰번호'}">쿠폰번호</option>
                         <option value="쿠폰명" th:selected="${searchType == '쿠폰명'}">쿠폰명</option>
@@ -65,14 +65,18 @@
                                         (coupon.couponType == 'ORDER' ? '주문상품 할인' :
                                         (coupon.couponType == 'DELIVERY' ? '배송비 무료' : coupon.couponType))
                                      },
-                                     statusDisplay=${coupon.status == 'ACTIVE' ? '발급중' : '종료'},
-                                     issuerDisplay=${coupon.companyName != null ? coupon.companyName : '최고관리자'}"
+                                     statusDisplay=${
+                                            coupon.status == 'ACTIVE' ? '발급중' :
+                                            (coupon.status == 'EXPIRED' ? '기간만료' : '강제종료')
+                                        },
+                                     issuerDisplay=${coupon.companyName != null ? coupon.companyName : '최고관리자'},
+                                     issuerBadge=${coupon.sellerStatus == 'SUSPENDED' ? ' (정지)' : ''}"
                             th:attr="data-coupon-no=${coupon.couponNo},
                                      data-coupon-type=${couponTypeDisplay},
                                      data-coupon-name=${coupon.name},
                                      data-benefit=${benefitDisplay},
                                      data-period=${coupon.startDate + ' ~ ' + coupon.expireDate},
-                                     data-issuer=${issuerDisplay},
+                                     data-issuer=${issuerDisplay + issuerBadge},
                                      data-issue-count=${coupon.issuedCnt},
                                      data-used-count=${coupon.usedCnt},
                                      data-status=${statusDisplay},
@@ -93,7 +97,8 @@
 
                             <td>
                                 <span class="coupon-status"
-                                      th:classappend="${coupon.status == 'ACTIVE'} ? 'active' : 'disabled'"
+                                      th:classappend="${coupon.status == 'ACTIVE'} ? 'active' :
+                                                        (${coupon.status == 'EXPIRED'} ? 'expired' : 'disabled')"
                                       th:text="${statusDisplay}"></span>
                             </td>
 
@@ -108,10 +113,11 @@
 
                 <div th:replace="~{admin/fragments/action-bar::action-bar(~{::coupon_table_footer})}">
                     <th:block th:fragment="coupon_table_footer">
-                        <span class="btn-area-spacer"></span>
-                        <nav th:replace="~{admin/fragments/admin-pagination::admin-pagination(
-                                pageInfo=${pageInfo},
-                                baseUrl='/admin/coupon/list')}"></nav>
+                        <div style="flex: 1; display: flex; justify-content: center;">
+                            <nav th:replace="~{admin/fragments/admin-pagination::admin-pagination(
+                                    pageInfo=${pageInfo},
+                                    baseUrl='/admin/coupon/list')}"></nav>
+                        </div>
                         <button type="button"
                                 data-modal-target="coupon-register-modal"
                                 data-action-variant="primary">쿠폰등록</button>

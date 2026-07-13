@@ -8,6 +8,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.PostMapping;
+
+import java.util.List;
 
 @Controller("shopListController")
 @RequestMapping("/admin")
@@ -22,5 +25,11 @@ public class ListController {
         model.addAttribute("shopList", result.getItems());
         model.addAttribute("pageInfo", result.getPageInfo());
         return "admin/shop/list";
+    }
+
+    @PostMapping("/shop/delete")
+    public String delete(@RequestParam(value = "shopNo", required = false) List<String> shopNo) {
+        shopService.deleteShops(shopNo);
+        return "redirect:/admin/shop-list";
     }
 }

@@ -86,66 +86,66 @@ public class CategoryService {
 
     public List<CategoryDTO> getCategories() {
         return categoryRepository
-                .findAllByOrderBySortOrderAscCateIdAsc()
-                .stream()
-                .filter(category -> !UNCATEGORIZED_CODE.equals(category.getCode()))
-                .map(Category::toDTO)
-                .toList();
+            .findAllByOrderBySortOrderAscCateIdAsc()
+            .stream()
+            .filter(category -> !UNCATEGORIZED_CODE.equals(category.getCode()))
+            .map(Category::toDTO)
+            .toList();
     }
 
     public List<CategoryTreeDTO> getCategoryTree() {
         List<CategoryDTO> categories = getCategories();
 
         Map<Integer, List<CategoryDTO>> childrenByParentId = categories
-                .stream()
-                .filter(category -> category.getParentId() != null) // .. 2차 카테고리 찾기
-                .collect(Collectors.groupingBy(CategoryDTO::getParentId));
+            .stream()
+            .filter(category -> category.getParentId() != null) // .. 2차 카테고리 찾기
+            .collect(Collectors.groupingBy(CategoryDTO::getParentId));
 
         return categories
-                .stream()
-                .filter(category -> category.getParentId() == null) // .. 루트 카테고리 찾기
-                .map(root -> CategoryTreeDTO.builder()
-                        .cateId(root.getCateId())
-                        .name(root.getName())
-                        .children(childrenByParentId.getOrDefault(root.getCateId(), List.of())) // 루트 카테고리에 자식 카테고리 초기화
-                        .build())
-                .toList();
+            .stream()
+            .filter(category -> category.getParentId() == null) // .. 루트 카테고리 찾기
+            .map(root -> CategoryTreeDTO.builder()
+                .cateId(root.getCateId())
+                .name(root.getName())
+                .children(childrenByParentId.getOrDefault(root.getCateId(), List.of())) // 루트 카테고리에 자식 카테고리 초기화
+                .build())
+            .toList();
     }
 
     public List<CategoryDTO> getRootCategories() {
         return categoryRepository
-                .findByParentIsNull()
-                .stream()
-                .map(Category::toDTO)
-                .toList();
+            .findByParentIsNull()
+            .stream()
+            .map(Category::toDTO)
+            .toList();
     }
 
     public List<CategoryDTO> getSubCategories(int parentId) {
         return categoryRepository
-                .findByParent_CateId(parentId)
-                .stream()
-                .map(Category::toDTO)
-                .toList();
+            .findByParent_CateId(parentId)
+            .stream()
+            .map(Category::toDTO)
+            .toList();
     }
 
     public String getInfoNoticeType(int cateId) {
         return categoryRepository
-                .findById(cateId)
-                .map(Category::getInfoNoticeType)
-                .orElse(null);
+            .findById(cateId)
+            .map(Category::getInfoNoticeType)
+            .orElse(null);
     }
 
     public CategoryDTO getCategory(int cateId) {
         return categoryRepository
-                .findById(cateId)
-                .map(Category::toDTO)
-                .orElse(null);
+            .findById(cateId)
+            .map(Category::toDTO)
+            .orElse(null);
     }
 
     private void updateCategory(CategorySaveDTO dto) {
         Category category = categoryRepository
-                .findById(toCateId(dto.getId()))
-                .orElseThrow();
+            .findById(toCateId(dto.getId()))
+            .orElseThrow();
 
         if (UNCATEGORIZED_CODE.equals(category.getCode())) {
             throw new IllegalArgumentException("미분류 카테고리는 수정할 수 없습니다.");
@@ -207,8 +207,8 @@ public class CategoryService {
 
     private void deleteCategory(int cateId) {
         Category target = categoryRepository
-                .findById(cateId)
-                .orElseThrow();
+            .findById(cateId)
+            .orElseThrow();
 
         Category uncategorized = categoryRepository.findByCode(UNCATEGORIZED_CODE);
 

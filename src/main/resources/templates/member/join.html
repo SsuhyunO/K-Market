@@ -1,4 +1,5 @@
 
+
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -6,85 +7,87 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>케이마켓 - 회원가입</title>
     <link rel="stylesheet" th:href="@{/css/member/join.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 </head>
 <body>
 
-    <!-- 헤더 -->
-    <header>
-        <div class="header-inner">
-            <a th:href="@{/}" class="logo">CI ( 로고 )</a>
-            <nav class="header-nav">
-                <a th:href="@{/member/login}">로그인</a>
-                <a th:href="@{/member/join}">회원가입</a>
-                <a th:href="@{/my/home}">마이페이지</a>
-                <a th:href="@{/product/cart}">🛒 장바구니</a>
-            </nav>
+<header>
+    <div class="header-inner">
+        <a th:href="@{/}" class="logo">
+            <img th:src="@{/images/ci-logo.svg}" alt="케이마켓 로고">
+        </a>
+        <nav class="header-nav">
+            <a th:href="@{/member/login}">로그인</a>
+            <a th:href="@{/member/join}">회원가입</a>
+        </nav>
+    </div>
+</header>
+
+<!-- 메인 -->
+<main>
+    <div class="join-wrapper">
+
+        <div class="welcome-text">
+            <p>대한민국 1등 온라인 인터넷 쇼핑</p>
+            <h2>케이마켓에 오신 것을 환영합니다.</h2>
         </div>
-    </header>
 
-    <!-- 메인 -->
-    <main>
-        <div class="join-wrapper">
+        <div class="join-cards">
 
-            <div class="welcome-text">
-                <p>대한민국 1등 온라인 인터넷 쇼핑</p>
-                <h2>케이마켓에 오신 것을 환영합니다.</h2>
-            </div>
-
-            <div class="join-cards">
-
-                <!-- 일반 회원가입 -->
-                <div class="join-card card-normal">
-                    <div class="card-header">일반회원가입</div>
-                    <div class="card-body">
-                        <p class="card-desc">개인구매회원 (외국 인포함)</p>
-                        <p class="card-sub">만 14세 이상가능</p>
-                        <a th:href="@{/member/signup(type=normal)}" class="btn-join">회원가입</a>
-                    </div>
-                </div>
-
-                <!-- 판매 회원가입 -->
-                <div class="join-card card-seller">
-                    <div class="card-header">판매회원가입</div>
-                    <div class="card-body">
-                        <p class="card-desc">사업자판매회원</p>
-                        <p class="card-sub">사업자등록증 증빙보 유한회원</p>
-                        <a th:href="@{/member/signup(type=seller)}" class="btn-join">회원가입</a>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-    </main>
-
-    <!-- 푸터 -->
-    <footer>
-        <div class="footer-info">
-            <div class="footer-nav">
-                <a th:href="@{/company/index}">회사소개</a>
-                <a th:href="@{/policy/buyer}">서비스이용약관</a>
-                <a th:href="@{/policy/privacy}">개인정보처리방침</a>
-                <a th:href="@{/policy/finance}">전자금융거래약관</a>
-            </div>
-            <div class="footer-info-inner">
-                <div class="footer-logo-box">로고</div>
-                <div class="footer-company">
-                    <strong>(주)케이마켓</strong>
-                    부산광역시 부산진구 중앙대로 103<br>
-                    대표이사 : 홍길동<br>
-                    사업자등록번호 : 123-45-12345
-                </div>
-                <div class="footer-cs">
-                    <strong>고객센터</strong>
-                    Tel : 1234-5678 평일 09:00~18:00<br>
-                    전자금융거래 분쟁 담당 : 1234-1234 (36팀) 09:00~18:00
+            <!-- 일반 회원가입 -->
+            <div class="join-card card-normal">
+                <div class="card-header">일반회원가입</div>
+                <div class="card-body">
+                    <p class="card-desc">개인구매회원 (외국 인포함)</p>
+                    <p class="card-sub">만 14세 이상가능</p>
+                    <a th:href="@{/member/signup(type=normal)}" class="btn-join">회원가입</a>
                 </div>
             </div>
+
+            <!-- 판매 회원가입 -->
+            <div class="join-card card-seller">
+                <div class="card-header">판매회원가입</div>
+                <div class="card-body">
+                    <p class="card-desc">사업자판매회원</p>
+                    <p class="card-sub">사업자등록증 증빙보 유한회원</p>
+                    <a th:href="@{/member/signup(type=seller)}" class="btn-join">회원가입</a>
+                </div>
+            </div>
+
         </div>
-        <div class="footer-copyright">
-            Copyright © 2025 김철학 All rights reserved.
+    </div>
+</main>
+
+<footer>
+    <div class="footer-info">
+        <div class="footer-nav">
+            <a th:href="@{/company/index}">회사소개</a>
+            <a th:href="@{/policy/buyer}">서비스이용약관</a>
+            <a th:href="@{/policy/privacy}">개인정보처리방침</a>
+            <a th:href="@{/policy/finance}">전자금융거래약관</a>
         </div>
-    </footer>
+
+        <div class="footer-info-inner">
+            <div class="footer-logo-box">
+                <img th:src="@{/images/ci-icon-animated-large.svg}" alt="케이마켓 로고">
+            </div>
+            <div class="footer-company">
+                <strong>(주)케이마켓</strong>
+                부산광역시 부산진구 중앙대로 103<br>
+                대표이사 : 홍길동<br>
+                사업자등록번호 : 123-45-12345
+            </div>
+            <div class="footer-cs">
+                <strong>고객센터</strong>
+                Tel : 1234-5678 평일 09:00~18:00<br>
+                전자금융거래 분쟁 담당 : 1234-1234 (36팀) 09:00~18:00
+            </div>
+        </div>
+    </div>
+    <div class="footer-copyright">
+        Copyright © 2025 김철학 All rights reserved.
+    </div>
+</footer>
 
 </body>
 </html>

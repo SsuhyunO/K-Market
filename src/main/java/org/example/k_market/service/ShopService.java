@@ -51,6 +51,11 @@ public class ShopService {
         return new ShopDto.ListResult(items, pageInfo);
     }
 
+    // 아이디 중복확인
+    public boolean isUserIdDuplicate(String userId) {
+        return memberRepository.existsByUid(userId);
+    }
+
     // 상점등록 (member + seller 동시 생성)
     @Transactional
     public void registerShop(ShopDto.RegisterRequest request, String regIp) {
@@ -78,5 +83,16 @@ public class ShopService {
                 .orElseThrow(() -> new IllegalArgumentException("상점 정보가 없습니다."));
 
         seller.changeStatus(status);
+    }
+
+    // 선택삭제 (seller + member 함께 삭제)
+    @Transactional
+    public void deleteShops(List<String> uids) {
+        if (uids == null || uids.isEmpty()) return;
+
+        for (String uid : uids) {
+            sellerRepository.deleteById(uid);
+            memberRepository.deleteById(uid);
+        }
     }
 }

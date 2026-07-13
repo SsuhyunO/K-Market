@@ -4,9 +4,8 @@ import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.example.k_market.dto.coupon.CouponDTO;
 import org.example.k_market.dto.coupon.CouponIssueDTO;
-import org.example.k_market.dto.seller.SellerDto;
 import org.example.k_market.entity.Seller;
-import org.example.k_market.service.SellerService;
+import org.example.k_market.service.seller.SellerService;
 import org.example.k_market.service.admin.CouponIssueService;
 import org.example.k_market.service.admin.CouponService;
 import org.example.k_market.util.PageInfo;
@@ -62,8 +61,13 @@ public class CouponController {
 
     @PostMapping("/register")
     public String register(CouponDTO dto, HttpSession session){
-        String loginUid = (String) session.getAttribute("loginMember");
-        dto.setSellerUid(loginUid); // 폼값 무시하고 세션값으로 덮어쓰기
+        String loginMemberType = (String) session.getAttribute("loginMemberType"); // 실제 세션 키 이름에 맞게 수정
+
+        if ("SELLER".equals(loginMemberType)) {
+            String loginUid = (String) session.getAttribute("loginMember");
+            dto.setSellerUid(loginUid);
+        }
+        // ADMIN인 경우 sellerUid는 세팅하지 않음 (null 유지)
 
         couponService.register(dto);
 
@@ -74,7 +78,7 @@ public class CouponController {
     @ResponseBody
     public ResponseEntity<Void> endCoupon(@PathVariable int couponNo, HttpSession session) {
         String loginUid = (String) session.getAttribute("loginMember");
-        String memberType = (String) session.getAttribute("memberType");
+        String memberType = (String) session.getAttribute("loginMemberType");
 
         CouponDTO coupon = couponService.getCouponByNo(couponNo);
         if (coupon == null) {

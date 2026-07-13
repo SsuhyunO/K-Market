@@ -14,6 +14,9 @@ public interface MemberRepository extends JpaRepository<Member, String> {
     // 아이디(uid) 존재 여부 확인 (중복확인용)
     boolean existsByUid(String uid);
 
+    // 이메일 존재 여부 확인 (중복확인용)
+    boolean existsByEmail(String email);
+
     // 이름 + 이메일로 회원 찾기 (아이디 찾기용)
     Member findByNameAndEmail(String name, String email);
 
@@ -28,4 +31,6 @@ public interface MemberRepository extends JpaRepository<Member, String> {
     Page<Member> findByEmailContaining(String email, Pageable pageable);
 
     Page<Member> findByPhoneContaining(String phone, Pageable pageable);
+
+    Optional<Member> findByEmail(String email);
 }

@@ -1,0 +1,32 @@
+<svg width="810" height="86" viewBox="0 0 810 86" xmlns="http://www.w3.org/2000/svg" role="img">
+<title>K마켓 여름 신상 의류 세일 배너</title>
+<desc>주황색 배경의 K마켓 의류 세일 광고 배너, 810x86 크기</desc>
+<defs>
+<linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+<stop offset="0%" stop-color="#FF8A3D"/>
+<stop offset="100%" stop-color="#FF6B1A"/>
+</linearGradient>
+</defs>
+
+<rect x="0" y="0" width="810" height="86" fill="url(#bg)"/>
+
+<circle cx="760" cy="10" r="60" fill="#FFA05C" opacity="0.35"/>
+<circle cx="30" cy="90" r="50" fill="#FF7A2E" opacity="0.35"/>
+
+<g transform="translate(40,18)" fill="none" stroke="#FFFFFF" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round" opacity="0.95">
+<path d="M10 8 L20 0 L30 8 L26 14 L26 50 L14 50 L14 14 Z" fill="#FFFFFF" opacity="0.15"/>
+<path d="M10 8 L4 14 L8 20 L14 14"/>
+<path d="M30 8 L36 14 L32 20 L26 14"/>
+</g>
+
+<text x="95" y="38" font-family="sans-serif" font-size="24" font-weight="700" fill="#FFFFFF">K마켓</text>
+<text x="95" y="60" font-family="sans-serif" font-size="14" font-weight="400" fill="#FFF3E8">여름 신상 의류 컬렉션</text>
+
+<line x1="230" y1="20" x2="230" y2="66" stroke="#FFD9B3" stroke-width="1" opacity="0.6"/>
+
+<text x="255" y="40" font-family="sans-serif" font-size="20" font-weight="700" fill="#FFFFFF">최대 50% 할인</text>
+<text x="255" y="60" font-family="sans-serif" font-size="13" font-weight="400" fill="#FFF3E8">전 품목 무료배송 · 오늘만 특가</text>
+
+<rect x="670" y="26" width="110" height="34" rx="17" fill="#FFFFFF"/>
+<text x="725" y="48" font-family="sans-serif" font-size="14" font-weight="700" fill="#FF6B1A" text-anchor="middle">지금 쇼핑하기</text>
+</svg>

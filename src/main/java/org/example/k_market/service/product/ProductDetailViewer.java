@@ -42,7 +42,7 @@ public class ProductDetailViewer {
     private final ProductNoticeValueRepository noticeValueRepository;
     private final FileRepository fileRepository;
 
-    public ProductDetailResponse getProductDetail(int prodNo) {
+    public ProductDetailResponse getProductDetailForManagement(int prodNo) {
         ProductDetailResponse detail = productDAO.findProductDetail(prodNo);
         if (detail == null) {
             throw new NoSuchElementException("존재하지 않는 상품입니다.");

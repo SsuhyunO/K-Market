@@ -1,46 +1,17 @@
 <div th:fragment="aside" id="aside">
 
-    <!-- 1차/2차 카테고리 클릭 시 /product/list?category=ID 로 이동 → 상품목록 페이지 출력 -->
     <nav class="aside-category">
         <ul>
-            <li>
-                <a class="cat-item" th:href="@{/product/list(category=1)}">
-                    <span class="cat-icon">👕</span>패션·뷰티<span style="margin-left:auto;font-size:10px;color:var(--color-gray-400)">▾</span>
+            <li th:each="root : ${categoryTree}">
+                <a class="cat-item" th:href="@{/product/list(category=${root.cateId})}">
+                    <span class="cat-icon" th:text="${root.icon}"></span>
+                    <span th:text="${root.displayName}"></span>
+                    <span style="margin-left:auto;font-size:10px;color:var(--color-gray-400)">▾</span>
                 </a>
                 <div class="cat-sub">
-                    <a th:href="@{/product/list(category=11)}">남성의류</a>
-                    <a th:href="@{/product/list(category=12)}">여성의류</a>
-                    <a th:href="@{/product/list(category=13)}">화장품·뷰티</a>
-                </div>
-            </li>
-            <li>
-                <a class="cat-item" th:href="@{/product/list(category=2)}">
-                    <span class="cat-icon">💻</span>가전·디지털<span style="margin-left:auto;font-size:10px;color:var(--color-gray-400)">▾</span>
-                </a>
-                <div class="cat-sub">
-                    <a th:href="@{/product/list(category=21)}">컴퓨터</a>
-                    <a th:href="@{/product/list(category=22)}">생활가전</a>
-                    <a th:href="@{/product/list(category=23)}">모바일</a>
-                </div>
-            </li>
-            <li>
-                <a class="cat-item" th:href="@{/product/list(category=3)}">
-                    <span class="cat-icon">🍽️</span>식품·생필품<span style="margin-left:auto;font-size:10px;color:var(--color-gray-400)">▾</span>
-                </a>
-                <div class="cat-sub">
-                    <a th:href="@{/product/list(category=31)}">신선식품</a>
-                    <a th:href="@{/product/list(category=32)}">가공식품</a>
-                    <a th:href="@{/product/list(category=32)}">생활용품</a>
-                </div>
-            </li>
-            <li>
-                <a class="cat-item" th:href="@{/product/list(category=4)}">
-                    <span class="cat-icon">🏠</span>홈·데코·문구<span style="margin-left:auto;font-size:10px;color:var(--color-gray-400)">▾</span>
-                </a>
-                <div class="cat-sub">
-                    <a th:href="@{/product/list(category=41)}">가구·인테리어</a>
-                    <a th:href="@{/product/list(category=42)}">문구·오피스</a>
-                    <a th:href="@{/product/list(category=43)}">반려·취미</a>
+                    <a th:each="child : ${root.children}"
+                       th:href="@{/product/list(category=${child.cateId})}"
+                       th:text="${child.name}"></a>
                 </div>
             </li>
         </ul>
@@ -48,7 +19,7 @@
 
     <!-- 베스트 상품: Controller가 bestProducts를 모델에 안 넣으면 자동으로 숨겨짐
          (약관 페이지 등은 bestProducts를 넘기지 않으면 됨, fragment 호출부는 항상 동일) -->
-    <div class="aside-best" th:if="${bestProducts != null}">
+    <div class="aside-best" th:if="${showBest == null or showBest}">
         <div class="aside-best-title">
             <span>🏷️</span> 베스트 상품
         </div>

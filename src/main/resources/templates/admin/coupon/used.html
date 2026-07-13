@@ -24,7 +24,7 @@
 
         <section th:replace="~{admin/fragments/dash-section::dash-section(null, null, null, ~{::main_content})}">
             <th:block th:fragment="main_content">
-                <th:block th:replace="~{admin/fragments/search-form(~{::options})}">
+                <th:block th:replace="~{admin/fragments/search-form::search-form(~{::options})}">
                     <th:block th:fragment="options">
                         <option value="발급번호" th:selected="${searchType == '발급번호'}">발급번호</option>
                         <option value="쿠폰번호" th:selected="${searchType == '쿠폰번호'}">쿠폰번호</option>
@@ -42,7 +42,7 @@
                             <th>혜택</th>
                             <th>사용자</th>
                             <th>상태</th>
-                            <th>발급일</th>
+                            <th>발급시간</th>
                             <th>사용일</th>
                             <th>관리</th>
                         </tr>
@@ -77,17 +77,21 @@
                                         (issue.benefit == 'DELIVERY_FREE' ? '배송비 무료' : issue.benefit)
                                         )))))))))
                                      },
-                                     usedAtDisplay=${issue.status == 1 ? issue.updatedAt : '-'}"
-                            th:attr="data-coupon-no=${issue.couponNo},
+                                     usedAtDisplay=${issue.status == 1 ? issue.updatedAt : '-'},
+                                     issuerDisplay=${issue.companyName != null ? issue.companyName : '최고관리자'},
+                                     issuerBadge=${issue.sellerStatus == 'SUSPENDED' ? ' (정지)' : ''},
+                                     memberDisplay=${issue.memberStatus == 'WITHDRAWN' ? issue.memberUid + ' (탈퇴)' : issue.memberUid}"
+                            th:attr="data-issue-no=${issue.issueNo},
+                                     data-coupon-no=${issue.couponNo},
                                      data-coupon-type=${couponTypeDisplay},
                                      data-coupon-name=${issue.couponName},
                                      data-benefit=${benefitDisplay},
                                      data-period=${issue.startDate + ' ~ ' + issue.expireDate},
-                                     data-member-id=${issue.memberUid},
-                                     data-issued-at=${issue.createdAt},
                                      data-used-at=${usedAtDisplay},
                                      data-status=${statusDisplay},
-                                     data-description=${issue.notice}">
+                                     data-issuer=${issuerDisplay + issuerBadge},
+                                     data-description=${issue.notice},
+                                     data-member-id=${memberDisplay}">
 
                             <td>
                                 <button class="coupon-link-button" type="button" data-coupon-issued-detail-button
@@ -96,7 +100,9 @@
                             <td th:text="${issue.couponNo}"></td>
                             <td th:text="${issue.couponName}"></td>
                             <td th:text="${benefitDisplay}"></td>
-                            <td th:text="${issue.memberUid}"></td>
+                            <td>
+                                <span th:text="${memberDisplay}"></span>
+                            </td>
                             <td>
                                 <span class="coupon-status" th:classappend="${statusClass}" th:text="${statusDisplay}"></span>
                             </td>
@@ -113,11 +119,11 @@
 
                 <div th:replace="~{admin/fragments/action-bar::action-bar(~{::coupon_issued_table_footer})}">
                     <th:block th:fragment="coupon_issued_table_footer">
-                        <span class="btn-area-spacer"></span>
-                        <nav th:replace="~{admin/fragments/admin-pagination::admin-pagination(
-                                pageInfo=${pageInfo},
-                                baseUrl='/admin/coupon/used')}"></nav>
-                        <span class="btn-area-spacer"></span>
+                        <div style="flex: 1; display: flex; justify-content: center;">
+                            <nav th:replace="~{admin/fragments/admin-pagination::admin-pagination(
+                                    pageInfo=${pageInfo},
+                                    baseUrl='/admin/coupon/used')}"></nav>
+                        </div>
                     </th:block>
                 </div>
 
@@ -128,13 +134,19 @@
                                 <tr>
                                     <th>쿠폰번호</th>
                                     <td id="coupon-issued-detail-coupon-no"></td>
-                                    <th>상태</th>
+                                    <th>발급처</th>
+                                    <td id="coupon-issued-detail-issuer"></td>
+                                </tr>
+                                <tr>
+                                    <th>발급번호</th>
+                                    <td id="coupon-issued-detail-issue-no"></td>
+                                    <th>사용여부</th>
                                     <td id="coupon-issued-detail-status"></td>
                                 </tr>
                                 <tr>
                                     <th>쿠폰종류</th>
                                     <td id="coupon-issued-detail-coupon-type"></td>
-                                    <th>사용자</th>
+                                    <th>발급대상</th>
                                     <td id="coupon-issued-detail-member-id"></td>
                                 </tr>
                                 <tr>
@@ -148,10 +160,6 @@
                                 <tr>
                                     <th>사용기간</th>
                                     <td colspan="3" id="coupon-issued-detail-period"></td>
-                                </tr>
-                                <tr>
-                                    <th>발급일</th>
-                                    <td colspan="3" id="coupon-issued-detail-issued-at"></td>
                                 </tr>
                                 <tr>
                                     <th>사용일</th>

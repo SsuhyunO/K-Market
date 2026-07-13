@@ -166,11 +166,26 @@
                             <option value="">쿠폰 선택</option>
                             <option th:each="coupon : ${availableCoupons}"
                                     th:value="${coupon.issueNo}"
-                                    th:text="${coupon.couponName}">쿠폰명</option>
-                            <option th:if="${availableCoupons == null or #lists.isEmpty(availableCoupons)}" value="dummy1">신규가입 1,000원 할인 쿠폰</option>
-                            <option th:if="${availableCoupons == null or #lists.isEmpty(availableCoupons)}" value="dummy2">전상품 5% 할인 쿠폰</option>
+                                    th:attr="data-coupon-type=${coupon.couponType},
+                                             data-benefit=${coupon.benefit},
+                                             data-seller-uid=${coupon.sellerUid}"
+                                    th:text="${coupon.couponName} + ' - ' +
+                                              (${coupon.benefit == 'DELIVERY_FREE'} ? '배송비 무료' :
+                                               (${#strings.length(coupon.benefit)} <= 2 ? ${coupon.benefit} + '% 할인' :
+                                                ${#numbers.formatInteger(coupon.benefit, 1, 'COMMA')} + '원 할인'))">
+                                쿠폰명 - 혜택
+                            </option>
                         </select>
                         <button type="button" class="btn-apply" id="btnApplyCoupon">사용하기</button>
+                    </div>
+
+                    <!-- PRODUCT 타입 쿠폰 선택 시에만 노출되는 상품 선택 셀렉트 -->
+                    <div class="discount-row" id="couponTargetProductRow" style="display:none; margin-top: 8px;">
+                        <label for="couponTargetProduct">적용상품</label>
+                        <select id="couponTargetProduct" name="couponTargetProduct">
+                            <option value="">상품 선택</option>
+                            <!-- JS로 동적 채움 -->
+                        </select>
                     </div>
                 </section>
 
@@ -218,26 +233,47 @@
                     </div>
                     <div class="summary-row">
                         <span class="label">상품금액</span>
-                        <span class="value" id="summaryProductPrice" th:text="(${productTotal} != null ? ${productTotal} : 167+',000') + '원'">167,000원</span>
+                        <span class="value" id="summaryProductPrice"
+                              th:attr="data-raw=${productTotal != null ? productTotal : 167000}"
+                              th:text="(${productTotal} != null ? ${productTotal} : 167000) + '원'">167,000원</span>
                     </div>
                     <div class="summary-row">
                         <span class="label">할인금액</span>
-                        <span class="value minus" id="summaryDiscount" th:text="'-' + (${discountTotal} != null ? ${discountTotal} : 34+','+500) + '원'">-34,500원</span>
+                        <span class="value minus" id="summaryDiscount"
+                              th:attr="data-raw=${discountTotal != null ? discountTotal : 34500}"
+                              th:text="'-' + (${discountTotal} != null ? ${discountTotal} : 34500) + '원'">-34,500원</span>
                     </div>
+
+                    <hr class="summary-divider">
+
+                    <!-- 쿠폰 할인: 처음엔 항상 숨김(hidden), 쿠폰 적용 시 JS가 노출 -->
+                    <div class="summary-row hidden" id="summaryCouponRow">
+                        <span class="label">쿠폰 할인</span>
+                        <span class="value minus" id="summaryCouponDiscount"
+                              data-raw="0">-0원</span>
+                    </div>
+
+                    <!-- 포인트 사용: 처음엔 항상 숨김(hidden), 포인트 적용 시 JS가 노출 -->
+                    <div class="summary-row hidden" id="summaryUsedPointRow">
+                        <span class="label">포인트 사용</span>
+                        <span class="value minus" id="summaryUsedPoint"
+                              data-raw="0">-0원</span>
+                    </div>
+
                     <div class="summary-row">
-                        <span class="label">배송비</span>
-                        <span class="value" id="summaryShipping" th:text="(${shippingTotal} != null ? ${shippingTotal} : 3+',000') + '원'">3,000원</span>
+                        <span class="label">전체주문금액</span>
+                        <span class="value" id="summaryOrderTotal"
+                              th:attr="data-raw=${orderTotal != null ? orderTotal : 131500}"
+                              th:text="(${orderTotal} != null ? ${orderTotal} : 131500) + '원'">131,500원</span>
                     </div>
 
                     <hr class="summary-divider">
 
                     <div class="summary-row">
-                        <span class="label">할인</span>
-                        <span class="value minus" id="summaryUsedPoint" th:text="'-' + (${usedPoint != null ? usedPoint : 1000}) + '원'">-1,000원</span>
-                    </div>
-                    <div class="summary-row">
-                        <span class="label">전체주문금액</span>
-                        <span class="value" id="summaryOrderTotal" th:text="(${orderTotal} != null ? orderTotal : 134+','+500) + '원'">134,500원</span>
+                        <span class="label">배송비</span>
+                        <span class="value" id="summaryShipping"
+                              th:attr="data-raw=${shippingTotal != null ? shippingTotal : 3000}"
+                              th:text="(${shippingTotal} != null ? ${shippingTotal} : 3000) + '원'">3,000원</span>
                     </div>
                     <div class="summary-row">
                         <span class="label">적립포인트</span>
@@ -248,10 +284,11 @@
 
                     <div class="summary-final">
                         <span class="label">최종결제금액</span>
-                        <span class="value" id="summaryFinalPrice" th:text="(${finalPrice} != null ? finalPrice : 134+','+500) + '원'">134,500원</span>
+                        <span class="value" id="summaryFinalPrice"
+                              th:attr="data-raw=${finalPrice != null ? finalPrice : 134500}"
+                              th:text="(${finalPrice} != null ? ${finalPrice} : 134500) + '원'">134,500원</span>
                     </div>
 
-                    <!-- 결제하기 클릭 시 결제완료 페이지로 이동 (실제 PG 연동/결제 테스트는 해당사항 없음) -->
                     <button type="button" class="btn-pay" id="btnPay">결제하기</button>
                 </div>
             </div>
@@ -266,7 +303,13 @@
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script th:src="@{/js/common.js}"></script>
-<script th:src="@{/js/product.js}"></script>
+<script th:src="@{/js/product/product.js}"></script>
+<script th:inline="javascript">
+    const orderItems = /*[[${orderItems}]]*/ [];
+</script>
+<script th:inline="javascript">
+    const CONTEXT_PATH = /*[[@{/}]]*/ '';
+</script>
 
 </body>
 </html>

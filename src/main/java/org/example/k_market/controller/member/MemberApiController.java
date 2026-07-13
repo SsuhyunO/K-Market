@@ -45,6 +45,12 @@ public class MemberApiController {
         return memberService.isUidDuplicate(uid);
     }
 
+    // 이메일 중복확인 -> true면 이미 사용중(중복), false면 사용가능
+    @GetMapping("/check-email")
+    public boolean checkEmail(@RequestParam String email) {
+        return memberService.isEmailDuplicate(email);
+    }
+
     // 회원가입
     @PostMapping("/signup")
     public String signup(@Valid @RequestBody MemberDto.SignUpRequest request, HttpServletRequest httpRequest) {
@@ -71,6 +77,9 @@ public class MemberApiController {
         session.setAttribute("loginMember", member.getUid());
         // ===== 추가된 부분: 역할(권한) 기반 화면/접근 제어를 위해 memberType도 세션에 저장 =====
         session.setAttribute("loginMemberType", member.getMemberType()); // "MEMBER" / "SELLER" / "ADMIN"
+
+        // ===== 추가된 부분: 최근 로그인 시각 갱신 =====
+        memberService.updateLastLoginAt(member.getUid());
 
         // 자동로그인 체크 시 토큰 발급 + 쿠키 저장 (7일)
         if (request.isAutoLogin()) {

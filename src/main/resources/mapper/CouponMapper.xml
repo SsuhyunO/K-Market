@@ -61,6 +61,7 @@
         c.couponType    AS couponType,
         c.sellerUid     AS sellerUid,
         s.companyName   AS companyName,
+        s.status        AS sellerStatus,
         c.benefit       AS benefit,
         c.issuedCnt     AS issuedCnt,
         c.usedCnt       AS usedCnt,
@@ -79,8 +80,9 @@
 
     <update id="updateStatusToDisabled">
         UPDATE coupon
-        SET status = 'DISABLED'
+        SET status = 'FORCE_ENDED'
         WHERE couponNo = #{couponNo}
+          AND status = 'ACTIVE'
     </update>
 
     <update id="disableExpiredCoupons">

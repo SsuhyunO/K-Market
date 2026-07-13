@@ -1,4 +1,5 @@
 ﻿
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -24,7 +25,7 @@
 		<section th:replace="~{admin/fragments/dash-section::dash-section(null, null, null, ~{::main_content})}">
 			<th:block th:fragment="main_content">
 
-				<th:block th:replace="~{admin/fragments/search-form(~{::options})}">
+				<th:block th:replace="~{admin/fragments/search-form::search-form(~{::options})}">
 					<th:block th:fragment="options">
 						<option value="상호명">상호명</option>
 						<option value="대표자">대표자</option>
@@ -34,7 +35,7 @@
 				</th:block>
 
 				<form th:replace="~{admin/fragments/management-table-form::management-table-form(
-                    null,
+                    @{/admin/shop/delete},
                     ~{::table-content},
                     ~{::shop-table-footer},
                     'shopNo')}">
@@ -71,7 +72,7 @@
 								<button type="button" class="shop-manage-btn"
 								        data-modal-target="shop-status-modal"
 								        th:attr="data-uid=${shop.uid}, data-name=${shop.companyName}"
-								        title="운영상태 변경"></button>
+								        title="운영상태 변경">⋮</button>
 							</td>
 						</tr>
 					</th:block>
@@ -96,7 +97,6 @@
 							<div class="shop-status-modal-actions">
 								<button type="button" class="shop-status-choice approve" data-status="ACTIVE">승인 (운영시작)</button>
 								<button type="button" class="shop-status-choice suspend" data-status="SUSPENDED">중단</button>
-								<button type="button" class="shop-status-choice resume" data-status="ACTIVE">재개</button>
 							</div>
 						</div>
 					</th:block>
@@ -111,7 +111,10 @@
 										<label for="shop-register-userid">아이디</label>
 										<span class="row-description">영문, 숫자 4~12자 설정</span>
 									</th>
-									<td><input id="shop-register-userid" name="userId" type="text"></td>
+									<td>
+										<input id="shop-register-userid" name="userId" type="text">
+										<div id="shop-register-userid-msg" class="live-check-msg"></div>
+									</td>
 								</tr>
 								<tr>
 									<th>
@@ -119,6 +122,13 @@
 										<span class="row-description">영문, 숫자, 특수문자 8~12자 설정</span>
 									</th>
 									<td><input id="shop-register-pass" name="password" type="password"></td>
+								</tr>
+								<tr>
+									<th><label for="shop-register-pass-confirm">비밀번호확인</label></th>
+									<td>
+										<input id="shop-register-pass-confirm" name="passwordConfirm" type="password">
+										<div id="shop-register-pass-match-msg" class="live-check-msg"></div>
+									</td>
 								</tr>
 							</table>
 

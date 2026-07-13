@@ -4,11 +4,22 @@
     box-sizing: border-box;
 }
 
+html, body {
+    height: 100%;
+}
+
 body {
     font-family: 'Malgun Gothic', '맑은 고딕', sans-serif;
     font-size: 14px;
     color: #333;
     background-color: #fff;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+main {
+    flex: 1;
 }
 
 a {

@@ -1,8 +1,9 @@
 
 
 
+
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>쿠폰내역 | K-Market</title>
@@ -27,7 +28,7 @@
             <div class="summary-divider"></div>
             <div class="summary-item">
                 <span class="summary-label">쿠폰</span>
-                <span class="summary-num">1</span>
+                <span class="summary-num" th:text="${#lists.size(coupons)}">1</span>
             </div>
             <div class="summary-divider"></div>
             <div class="summary-item">
@@ -63,7 +64,12 @@
         <div class="my-content">
 
             <!-- 3번 영역: 배너 광고 -->
-            <div class="my-banner">810 × 86 배너 광고</div>
+            <!-- 3번 영역: 배너 광고 -->
+            <div class="my-banner">
+                <a th:href="@{/event/summer-sale}" target="_blank" style="display:block; width:100%; height:100%;">
+                    <img th:src="@{/images/banner/banner_810x86.svg}" alt="K마켓 여름 신상 의류 세일" style="width:100%; height:100%; object-fit:cover; display:block;">
+                </a>
+            </div>
 
             <!-- 4번 영역: 쿠폰내역 -->
             <section class="my-section">
@@ -124,7 +130,7 @@
                     </tr>
                     </thead>
                     <tbody id="couponListBody">
-                    <!-- JS로 동적 렌더링 -->
+                    <!-- JS로 동적 렌더링 (SERVER_COUPONS 기반) -->
                     </tbody>
                 </table>
 
@@ -199,6 +205,13 @@
         </div>
     </div>
 </div>
+
+<!-- 서버에서 조회한 쿠폰 데이터를 JS로 전달 (더미 데이터 대체) -->
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    const SERVER_COUPONS = /*[[${coupons}]]*/ [];
+    /*]]>*/
+</script>
 <script th:src="@{/js/my/coupon.js}"></script>
 </body>
 </html>

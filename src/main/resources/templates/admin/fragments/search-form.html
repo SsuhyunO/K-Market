@@ -1,8 +1,8 @@
 <!-- TODO : 공통 사용 프래그먼트 폼에 action이 쿠폰 전용으로 들어가있음 차후 수정사항 -->
-<form class="search-form" name="search-form" th:fragment="search-form(options)"
+<form class="search-form" name="searchForm" th:fragment="search-form(options)"
       th:action="@{/admin/coupon/list}" method="get">
 	<label class="search-form-label" for="search-type">검색조건</label>
-	<select id="search-type" name="search-type" aria-label="검색조건">
+	<select id="search-type" name="searchType" aria-label="검색조건">
 		<th:block th:replace="${options}"></th:block>
 	</select>
 	<input type="text" name="keyword" th:value="${param.keyword}" placeholder="검색어입력" aria-label="검색어">

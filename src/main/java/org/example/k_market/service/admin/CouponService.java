@@ -1,7 +1,10 @@
 package org.example.k_market.service.admin;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.example.k_market.dao.CouponDAO;
+import org.example.k_market.dao.CouponIssueDAO;
 import org.example.k_market.dto.coupon.CouponDTO;
 import org.example.k_market.repository.coupon.CouponRepository;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -12,16 +15,19 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@Slf4j
 @RequiredArgsConstructor
 @Service
 public class CouponService {
     private final CouponDAO couponDAO;
+    private final CouponIssueDAO couponIssueDAO;
 
     public List<CouponDTO> findAll() {
         return couponDAO.findAll();
     }
 
     public void register(CouponDTO dto){
+        log.info("sellerUid raw value = [{}]", dto.getSellerUid());
         // expireDate가 없으면 validDays로 계산해서 넣어줌
         if (dto.getExpireDate() == null || dto.getExpireDate().isBlank()) {
             LocalDate baseDate = (dto.getStartDate() == null || dto.getStartDate().isBlank())
@@ -43,13 +49,17 @@ public class CouponService {
         return couponDAO.getTotalCount(searchType, keyword);
     }
 
+    @Transactional
     public void endCoupon(int couponNo) {
         couponDAO.updateStatusToDisabled(couponNo);
+        couponIssueDAO.stopIssuesByCouponNo(couponNo);
     }
 
     @Scheduled(cron = "0 0 0 * * *") // 매일 자정 실행
+    @Transactional
     public void disableExpiredCoupons() {
         couponDAO.disableExpiredCoupons();
+        couponIssueDAO.expireIssuesByExpiredCoupons();
     }
 
     public CouponDTO getCouponByNo(int couponNo) {

@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.example.k_market.dao.ProductDAO">
 
-    <select id="findProductsForPage" resultType="org.example.k_market.dto.product.response.ProductListResponse">
+    <select id="findProductsForManagement" resultType="org.example.k_market.dto.product.response.ManagementProductListResponse">
         SELECT
             p.prodNo,
             p.prodName,
@@ -15,6 +15,30 @@
             p.sellerUid
         FROM product p
         LEFT JOIN product_variant pv ON pv.prodNo = p.prodNo
+        <where>
+            <if test="role != 'ADMIN'">
+                p.sellerUid = #{seller}
+            </if>
+
+            <if test="keyword != null and keyword != ''">
+                <choose>
+                    <when test="type == 'CODE'">
+                        AND CAST(p.prodNo AS CHAR) LIKE CONCAT('%', #{keyword}, '%')
+                    </when>
+                    <when test="type == 'NAME'">
+                        AND p.prodName LIKE CONCAT('%', #{keyword}, '%')
+                    </when>
+                    <when test="type == 'SELLER'">
+                        AND EXISTS (
+                            SELECT 1
+                            FROM member m
+                            WHERE m.uid = p.sellerUid
+                                AND m.name LIKE CONCAT('%', #{keyword}, '%')
+                        )
+                    </when>
+                </choose>
+            </if>
+        </where>
         GROUP BY
             p.prodNo,
             p.prodName,
@@ -27,6 +51,104 @@
         ORDER BY p.prodNo DESC
         LIMIT #{size}
         OFFSET #{offset}
+    </select>
+
+    <select id="totalCountForManagement" resultType="int">
+        SELECT COUNT(prodNo)
+        FROM product p
+        <where>
+            <if test="role != 'ADMIN'">
+                sellerUid = #{seller}
+            </if>
+
+            <if test="keyword != null and keyword != ''">
+                <choose>
+                    <when test="type == 'CODE'">
+                        AND CAST(p.prodNo AS CHAR) LIKE CONCAT('%', #{keyword}, '%')
+                    </when>
+                    <when test="type == 'NAME'">
+                        AND p.prodName LIKE CONCAT('%', #{keyword}, '%')
+                    </when>
+                    <when test="type == 'SELLER'">
+                        AND EXISTS (
+                            SELECT 1
+                            FROM member m
+                            WHERE m.uid = p.sellerUid
+                            AND m.name LIKE CONCAT('%', #{keyword}, '%')
+                        )
+                    </when>
+                </choose>
+            </if>
+        </where>
+    </select>
+
+    <select id="findProductsForCustomer" resultType="org.example.k_market.dto.product.response.ProductListResponse">
+        SELECT
+            p.prodNo AS no,
+            p.prodName AS name,
+            p.description,
+            p.price,
+            p.discount,
+            p.deliveryFee,
+            p.thumb1FileId,
+            p.sellerUid,
+            m.name AS seller,
+            COALESCE(AVG(r.rating), 0) AS rating
+        FROM product p
+        JOIN member m ON m.uid = p.sellerUid
+        LEFT JOIN review r ON r.prodNo = p.prodNo
+        <where>
+            <if test="cateId != null">
+                p.cateId = #{cateId}
+            </if>
+        </where>
+        GROUP BY
+            p.prodNo,
+            p.prodName,
+            p.description,
+            p.price,
+            p.discount,
+            p.deliveryFee,
+            p.thumb1FileId,
+            p.sellerUid,
+            m.name
+        <choose>
+            <when test="type == 'SALES'">
+                ORDER BY p.sold DESC, p.prodNo DESC
+            </when>
+            <when test="type == 'PRICE_ASC'">
+                ORDER BY (p.price * (100 - p.discount) / 100) ASC,
+                    p.prodNo DESC
+            </when>
+            <when test="type == 'PRICE_DESC'">
+                ORDER BY (p.price * (100 - p.discount) / 100) DESC,
+                    p.prodNo DESC
+            </when>
+            <when test="type == 'RATING'">
+                ORDER BY rating DESC, p.prodNo DESC
+            </when>
+            <when test="type == 'REVIEW_COUNT">
+                ORDER BY COUNT(r.reviewNo) DESC, p.prodNo DESC
+            </when>
+            <when test="type == 'CREATED_AT">
+                ORDER BY p.createdAt DESC, p.prodNo DESC
+            </when>
+            <otherwise>
+                ORDER BY p.prodNo DESC
+            </otherwise>
+        </choose>
+        LIMIT #{size}
+        OFFSET #{offset}
+    </select>
+
+    <select id="totalCountForCustomer" resultType="int">
+        SELECT COUNT(prodNo)
+        FROM product
+        <where>
+            <if test="cateId != null">
+                cateId = #{cateId}
+            </if>
+        </where>
     </select>
 
     <select id="findProductDetail" resultType="org.example.k_market.dto.product.response.ProductDetailResponse">
@@ -53,9 +175,9 @@
             p.infoNoticeType,
             p.createdAt
         FROM product p
-        LEFT JOIN category c ON c.cateId = p.cateId
-        LEFT JOIN category parent ON parent.cateId = c.parentId
-        LEFT JOIN product_variant pv ON pv.prodNo = p.prodNo
+            LEFT JOIN category c ON c.cateId = p.cateId
+            LEFT JOIN category parent ON parent.cateId = c.parentId
+            LEFT JOIN product_variant pv ON pv.prodNo = p.prodNo
         WHERE p.prodNo = #{prodNo}
         GROUP BY
             p.prodNo,
@@ -78,9 +200,5 @@
             p.sellerUid,
             p.infoNoticeType,
             p.createdAt
-    </select>
-
-    <select id="totalCount" resultType="int">
-        SELECT COUNT(prodNo) FROM product;
     </select>
 </mapper>

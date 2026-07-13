@@ -11,7 +11,7 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 public class OrderPageRequest {
-    private List<OrderItemRequest> items;   // 바로구매든 장바구니든 여기로 통일
+    private List<OrderItemRequestDTO> items;   // 바로구매든 장바구니든 여기로 통일
 
     // 배송정보
     private String recvName;
