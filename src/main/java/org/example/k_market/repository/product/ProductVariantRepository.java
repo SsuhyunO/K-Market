@@ -17,4 +17,9 @@ public interface ProductVariantRepository extends JpaRepository<ProductVariant, 
     @Modifying
     @Query("delete from ProductVariant pv where pv.prodNo in :prodNos")
     int deleteAllByProdNoIn(@Param("prodNos") List<Integer> prodNos);
+
+    // ProductVariantRepository.java
+    @Modifying
+    @Query("UPDATE ProductVariant v SET v.stock = v.stock - :count WHERE v.id = :id AND v.stock >= :count")
+    int decreaseStock(@Param("id") int id, @Param("count") int count);
 }

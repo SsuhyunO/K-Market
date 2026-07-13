@@ -54,4 +54,29 @@ public class CouponIssueService {
 
         return couponIssueDAO.getAvailableCouponsByMemberUid(memberUid, sellerUidList);
     }
+
+    /**
+     * 결제 완료 시 쿠폰을 사용완료 처리한다.
+     * 상태(READY) 및 만료일을 재검증한 뒤 USED로 변경한다.
+     */
+    public void markAsUsed(int issueNo, String memberUid) {
+        CouponIssueDTO issue = couponIssueDAO.getCouponIssueByNo(issueNo);
+
+        if (issue == null) {
+            throw new IllegalArgumentException("존재하지 않는 발급 쿠폰입니다.");
+        }
+        if (!memberUid.equals(issue.getMemberUid())) {
+            throw new IllegalStateException("본인의 쿠폰이 아닙니다.");
+        }
+        if (issue.getStatus() != STATUS_READY) {
+            throw new IllegalStateException("이미 사용되었거나 사용할 수 없는 쿠폰입니다.");
+        }
+        if (issue.getExpireDate() != null
+                && java.time.LocalDate.parse(issue.getExpireDate().substring(0, 10))
+                .isBefore(java.time.LocalDate.now())) {
+            throw new IllegalStateException("만료된 쿠폰입니다.");
+        }
+
+        couponIssueDAO.markAsUsed(issueNo, STATUS_USED);
+    }
 }

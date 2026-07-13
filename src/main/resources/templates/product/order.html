@@ -166,7 +166,9 @@
                             <option value="">쿠폰 선택</option>
                             <option th:each="coupon : ${availableCoupons}"
                                     th:value="${coupon.issueNo}"
-                                    th:attr="data-benefit=${coupon.benefit}"
+                                    th:attr="data-coupon-type=${coupon.couponType},
+                                             data-benefit=${coupon.benefit},
+                                             data-seller-uid=${coupon.sellerUid}"
                                     th:text="${coupon.couponName} + ' - ' +
                                               (${coupon.benefit == 'DELIVERY_FREE'} ? '배송비 무료' :
                                                (${#strings.length(coupon.benefit)} <= 2 ? ${coupon.benefit} + '% 할인' :
@@ -244,13 +246,20 @@
 
                     <hr class="summary-divider">
 
-                    <div class="summary-row" id="summaryUsedPointRow"
-                         th:classappend="${usedPoint == null or usedPoint == 0} ? 'hidden' : ''">
+                    <!-- 쿠폰 할인: 처음엔 항상 숨김(hidden), 쿠폰 적용 시 JS가 노출 -->
+                    <div class="summary-row hidden" id="summaryCouponRow">
+                        <span class="label">쿠폰 할인</span>
+                        <span class="value minus" id="summaryCouponDiscount"
+                              data-raw="0">-0원</span>
+                    </div>
+
+                    <!-- 포인트 사용: 처음엔 항상 숨김(hidden), 포인트 적용 시 JS가 노출 -->
+                    <div class="summary-row hidden" id="summaryUsedPointRow">
                         <span class="label">포인트 사용</span>
                         <span class="value minus" id="summaryUsedPoint"
-                              th:attr="data-raw=${usedPoint != null ? usedPoint : 0}"
-                              th:text="'-' + (${usedPoint != null ? usedPoint : 0}) + '원'">-1,000원</span>
+                              data-raw="0">-0원</span>
                     </div>
+
                     <div class="summary-row">
                         <span class="label">전체주문금액</span>
                         <span class="value" id="summaryOrderTotal"
@@ -297,6 +306,9 @@
 <script th:src="@{/js/product/product.js}"></script>
 <script th:inline="javascript">
     const orderItems = /*[[${orderItems}]]*/ [];
+</script>
+<script th:inline="javascript">
+    const CONTEXT_PATH = /*[[@{/}]]*/ '';
 </script>
 
 </body>

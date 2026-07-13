@@ -116,4 +116,11 @@
         WHERE ci.status = 0
           AND c.expireDate &lt; CURDATE()
     </update>
+
+    <!-- CouponIssueDAO.xml -->
+    <update id="markAsUsed">
+        UPDATE coupon_issue
+        SET status = #{status}, updatedAt = NOW()
+        WHERE issueNo = #{issueNo}
+    </update>
 </mapper>

@@ -1,8 +1,6 @@
 package org.example.k_market.entity.order;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
 import org.example.k_market.dto.order.OrderDTO;
 import org.hibernate.annotations.CreationTimestamp;
@@ -18,7 +16,9 @@ import java.time.LocalDateTime;
 @Table(name = "order")
 public class Order {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int orderNo;
+
     private String memberUid;
     private int orderPrice;
     private int orderDiscount;
@@ -31,6 +31,8 @@ public class Order {
     private String addr2;
     private String payMethod;
     private String status;
+    private Long couponIssueId;
+    private int shippingFee;
 
     @CreationTimestamp
     private LocalDateTime createdAt;

@@ -26,4 +26,7 @@ public interface CouponIssueDAO {
                                                     );
 
     void expireIssuesByExpiredCoupons();
+
+    // CouponIssueDAO.java (인터페이스)
+    void markAsUsed(@Param("issueNo") int issueNo, @Param("status") int status);
 }
