@@ -19,6 +19,10 @@ public class ProductExceptionHandler {
             redirectAttributes.addFlashAttribute("productListErrorMessage", exception.getMessage());
             return "redirect:/admin/product/list";
         }
+        if (isProductEditRequest(request)) {
+            redirectAttributes.addFlashAttribute("productErrorMessage", exception.getMessage());
+            return "redirect:/admin/product/edit?prodNo=" + request.getParameter("prodNo");
+        }
 
         redirectAttributes.addFlashAttribute("productErrorMessage", exception.getMessage());
         return "redirect:/admin/product/register";
@@ -36,6 +40,14 @@ public class ProductExceptionHandler {
             );
             return "redirect:/admin/product/list";
         }
+        if (isProductEditRequest(request)) {
+            log.error("상품 수정 실패", exception);
+            redirectAttributes.addFlashAttribute(
+                "productErrorMessage",
+                "상품 수정 중 문제가 발생했습니다. 입력값을 확인한 뒤 다시 시도해주세요."
+            );
+            return "redirect:/admin/product/edit?prodNo=" + request.getParameter("prodNo");
+        }
 
         log.error("상품 등록 실패", exception);
         redirectAttributes.addFlashAttribute(
@@ -46,6 +58,14 @@ public class ProductExceptionHandler {
     }
 
     private boolean isProductDeleteRequest(HttpServletRequest request) {
+        return matchesRequestUri(request, "/admin/product/remove");
+    }
+
+    private boolean isProductEditRequest(HttpServletRequest request) {
+        return matchesRequestUri(request, "/admin/product/edit");
+    }
+
+    private boolean matchesRequestUri(HttpServletRequest request, String path) {
         String requestUri = request.getRequestURI();
         String contextPath = request.getContextPath();
 
@@ -53,6 +73,6 @@ public class ProductExceptionHandler {
             requestUri = requestUri.substring(contextPath.length());
         }
 
-        return "/admin/product/remove".equals(requestUri);
+        return path.equals(requestUri);
     }
 }

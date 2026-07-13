@@ -3,80 +3,54 @@
     <nav class="aside-category">
         <ul>
             <li th:each="root : ${categoryTree}">
-                <a class="cat-item" th:href="@{/product/list(category=${root.cateId})}">
-                    <span class="cat-icon" th:text="${root.icon}"></span>
-                    <span th:text="${root.displayName}"></span>
-                    <span style="margin-left:auto;font-size:10px;color:var(--color-gray-400)">▾</span>
-                </a>
-                <div class="cat-sub">
-                    <a th:each="child : ${root.children}"
-                       th:href="@{/product/list(category=${child.cateId})}"
-                       th:text="${child.name}"></a>
-                </div>
+                <details class="cat-group"
+                         th:attr="open=${parentCate != null and parentCate.cateId == root.cateId} ? 'open' : null">
+                    <summary class="cat-item">
+                        <span class="cat-icon" th:text="${root.icon}"></span>
+                        <span th:text="${root.displayName}"></span>
+                        <span class="cat-arrow">›</span>
+                    </summary>
+                    <div class="cat-sub">
+                        <a th:each="child : ${root.children}"
+                           th:href="@{/product/list(category=${child.cateId})}"
+                           th:classappend="${subCate != null and subCate.cateId == child.cateId} ? ' active' : ''"
+                           th:text="${child.name}"></a>
+                    </div>
+                </details>
             </li>
         </ul>
     </nav>
 
-    <!-- 베스트 상품: Controller가 bestProducts를 모델에 안 넣으면 자동으로 숨겨짐
-         (약관 페이지 등은 bestProducts를 넘기지 않으면 됨, fragment 호출부는 항상 동일) -->
-    <div class="aside-best" th:if="${showBest == null or showBest}">
+    <div class="aside-best"
+         th:if="${(showBest == null or showBest) and bestProducts != null and !#lists.isEmpty(bestProducts)}">
         <div class="aside-best-title">
             <span>🏷️</span> 베스트 상품
         </div>
         <ul class="best-list" id="bestList">
-
-            <!-- bestProducts가 비어있을 때(0건)를 대비한 placeholder 3개 -->
-            <th:block th:if="${#lists.isEmpty(bestProducts)}">
-                <li class="best-item rank-1">
-                    <div class="best-thumb-placeholder">🖼️</div>
-                    <div class="best-info">
-                        <div class="best-name">상품명 텍스트</div>
-                        <div class="best-price-del">30,000원</div>
-                        <div style="display:flex;gap:4px;align-items:center;">
-                            <span class="best-sale">10%↓</span>
-                            <span class="best-price">27,000원</span>
-                        </div>
-                    </div>
-                </li>
-                <li class="best-item">
-                    <div class="best-thumb-placeholder">🖼️</div>
-                    <div class="best-info">
-                        <div class="best-name">상품명 텍스트</div>
-                        <div class="best-price-del">30,000원</div>
-                        <div style="display:flex;gap:4px;align-items:center;">
-                            <span class="best-sale">10%↓</span>
-                            <span class="best-price">27,000원</span>
-                        </div>
-                    </div>
-                </li>
-                <li class="best-item">
-                    <div class="best-thumb-placeholder">🖼️</div>
-                    <div class="best-info">
-                        <div class="best-name">상품명 텍스트</div>
-                        <div class="best-price-del">30,000원</div>
-                        <div style="display:flex;gap:4px;align-items:center;">
-                            <span class="best-sale">10%↓</span>
-                            <span class="best-price">27,000원</span>
-                        </div>
-                    </div>
-                </li>
-            </th:block>
-
-            <!-- 실제 데이터 반복 렌더링 -->
-            <li th:each="product, stat : ${bestProducts}"
-                th:class="${stat.index == 0} ? 'best-item rank-1' : 'best-item'">
+            <li th:each="product, stat : ${bestProducts}">
+                <a th:href="@{/product/view(prodNo=${product.prodNo})}"
+                   th:class="${stat.index == 0} ? 'best-item rank-1' : 'best-item'">
+                <span class="best-rank" th:text="${stat.count}">1</span>
                 <div class="best-thumb-placeholder">
-                    <img th:if="${product.thumbnailUrl}" th:src="${product.thumbnailUrl}" alt="">
-                    <span th:unless="${product.thumbnailUrl}">🖼️</span>
+                    <img th:if="${product.thumbnailFileId != null}"
+                         th:src="@{/files/{id}(id=${product.thumbnailFileId})}"
+                         th:alt="${product.name}">
+                    <span th:unless="${product.thumbnailFileId != null}">🖼️</span>
                 </div>
                 <div class="best-info">
                     <div class="best-name" th:text="${product.name}">상품명 텍스트</div>
-                    <div class="best-price-del" th:text="${product.originalPrice} + '원'">30,000원</div>
-                    <div style="display:flex;gap:4px;align-items:center;">
-                        <span class="best-sale" th:text="${product.discountRate} + '%↓'">10%↓</span>
-                        <span class="best-price" th:text="${product.salePrice} + '원'">27,000원</span>
+                    <div class="best-price-del"
+                         th:if="${product.discountRate > 0}"
+                         th:text="${#numbers.formatInteger(product.originalPrice, 0, 'COMMA')} + '원'">30,000원</div>
+                    <div class="best-price-row">
+                        <span class="best-sale"
+                              th:if="${product.discountRate > 0}"
+                              th:text="${product.discountRate} + '%↓'">10%↓</span>
+                        <span class="best-price"
+                              th:text="${#numbers.formatInteger(product.salePrice(), 0, 'COMMA')} + '원'">27,000원</span>
                     </div>
                 </div>
+                </a>
             </li>
         </ul>
     </div>

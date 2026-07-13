@@ -11,6 +11,7 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 public class ProductVariantRequest {
+    private Integer id;
     @Builder.Default
     private List<ProductVariantItemRequest> items = new java.util.ArrayList<>();
     private int stock;

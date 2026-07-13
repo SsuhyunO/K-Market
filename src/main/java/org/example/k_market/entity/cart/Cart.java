@@ -9,6 +9,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import java.time.LocalDateTime;
 
 @Getter
+@Setter
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
@@ -20,7 +21,7 @@ public class Cart {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int cartNo;
     private String memberUid;
-    private int prodNo;
+    private int prodVariantId;
     private int count;
     private int price;
     private int total;
@@ -32,7 +33,7 @@ public class Cart {
         return CartDTO.builder()
                 .cartNo(cartNo)
                 .memberUid(memberUid)
-                .prodNo(prodNo)
+                .prodVariantId(prodVariantId)
                 .count(count)
                 .price(price)
                 .total(total)

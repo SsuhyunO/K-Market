@@ -7,9 +7,10 @@ import lombok.*;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
+@Builder(toBuilder = true)
 public class OrderItemViewDTO {
 
+    private Integer cartNo;
     private Integer prodVariantId;   // 결제 시 다시 서버로 넘겨야 하니 hidden으로 필요
     private String thumbnailUrl;
     private String productName;

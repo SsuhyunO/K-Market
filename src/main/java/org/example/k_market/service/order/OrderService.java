@@ -9,12 +9,12 @@ import org.example.k_market.dto.order.OrderDTO;
 import org.example.k_market.dto.order.OrderItemDTO;
 import org.example.k_market.dto.order.OrderItemRequestDTO;
 import org.example.k_market.dto.order.OrderItemViewDTO;
-import org.example.k_market.entity.admin.File;
+import org.example.k_market.entity.cart.Cart;
 import org.example.k_market.entity.product.Product;
 import org.example.k_market.entity.product.ProductOptionItem;
 import org.example.k_market.entity.product.ProductVariant;
 import org.example.k_market.entity.product.ProductVariantItem;
-import org.example.k_market.repository.admin.FileRepository;
+import org.example.k_market.repository.cart.CartRepository;
 import org.example.k_market.repository.product.ProductOptionItemRepository;
 import org.example.k_market.repository.product.ProductRepository;
 import org.example.k_market.repository.product.ProductVariantItemRepository;
@@ -37,7 +37,7 @@ public class OrderService {
     private final ProductVariantRepository variantRepository;
     private final ProductVariantItemRepository variantItemRepository;
     private final ProductOptionItemRepository optionItemRepository;
-    private final FileRepository fileRepository;
+    private final CartRepository cartRepository;
     private final OrderDAO orderDAO;
     private final CouponIssueService couponIssueService;  // 기존 서비스, 메서드 확장 필요
     private final PointService pointService;
@@ -50,12 +50,15 @@ public class OrderService {
         ProductVariant variant = variantRepository.findById(prodVariantId)
                 .orElseThrow(() -> new NoSuchElementException("존재하지 않는 옵션입니다."));
 
+        validateOrderableVariant(variant);
+
         if (variant.getStock() < count) {
             throw new IllegalStateException("재고가 부족합니다.");
         }
 
         Product product = productRepository.findById(variant.getProdNo())
                 .orElseThrow(() -> new NoSuchElementException("존재하지 않는 상품입니다."));
+        validateOrderableProduct(product);
 
         String optionText = buildOptionText(variant.getId());
         String thumbnailUrl = buildThumbnailUrl(product.getThumb1FileId());
@@ -76,7 +79,7 @@ public class OrderService {
                 .price(price)
                 .discountRate(discountRate)
                 .point(point)
-                .freeShipping(false) // 쿠폰 적용 전 기본값
+                .freeShipping(shippingFee <= 0)
                 .shippingFee(shippingFee)
                 .lineTotal(lineTotal)
                 .build());
@@ -98,19 +101,28 @@ public class OrderService {
         if (thumb1FileId == null || thumb1FileId <= 0) {
             return null;
         }
-        return fileRepository.findById(thumb1FileId)
-                .map(this::toFileUrl)
-                .orElse(null);
+        return "/files/" + thumb1FileId;
     }
 
-    private String toFileUrl(File file) {
-        // TODO: 실제 파일 서빙 경로 규칙에 맞게 수정
-        return "/uploads/" + file.getId() + "." + file.getExtension();
-    }
+    public List<OrderItemViewDTO> getOrderItemsFromCart(List<Integer> cartNoList, String memberUid) {
+        if (memberUid == null || memberUid.isBlank() || cartNoList == null || cartNoList.isEmpty()) {
+            return List.of();
+        }
 
-    public List<OrderItemViewDTO> getOrderItemsFromCart(List<Integer> cartNoList) {
-        // TODO: cart 쪽 완성 후 구현
-        return List.of();
+        List<Integer> targetCartNos = cartNoList.stream()
+                .filter(cartNo -> cartNo != null && cartNo > 0)
+                .distinct()
+                .toList();
+
+        if (targetCartNos.isEmpty()) {
+            return List.of();
+        }
+
+        return cartRepository.findByMemberUidAndCartNoIn(memberUid, targetCartNos).stream()
+                .map(cart -> getOrderItemsDirect(cart.getProdVariantId(), cart.getCount()).getFirst().toBuilder()
+                        .cartNo(cart.getCartNo())
+                        .build())
+                .toList();
     }
 
     public int calcProductTotal(List<OrderItemViewDTO> items) {
@@ -154,12 +166,15 @@ public class OrderService {
                     .orElseThrow(() -> new NoSuchElementException(
                             "존재하지 않는 옵션입니다. prodVariantId=" + itemReq.getProdVariantId()));
 
+            validateOrderableVariant(variant);
+
             if (variant.getStock() < itemReq.getCount()) {
                 throw new IllegalStateException("재고가 부족합니다. prodVariantId=" + itemReq.getProdVariantId());
             }
 
             Product product = productRepository.findById(variant.getProdNo())
                     .orElseThrow(() -> new NoSuchElementException("존재하지 않는 상품입니다."));
+            validateOrderableProduct(product);
 
             int qty = itemReq.getCount();
             int price = product.getPrice();
@@ -327,6 +342,18 @@ public class OrderService {
         }
 
         return order.getOrderNo();
+    }
+
+    private void validateOrderableVariant(ProductVariant variant) {
+        if (!"ON_SALE".equals(variant.getStatus())) {
+            throw new IllegalStateException("판매중인 상품 옵션이 아닙니다. prodVariantId=" + variant.getId());
+        }
+    }
+
+    private void validateOrderableProduct(Product product) {
+        if (!"ON_SALE".equals(product.getStatus())) {
+            throw new IllegalStateException("판매중인 상품이 아닙니다. prodNo=" + product.getProdNo());
+        }
     }
 
     /**

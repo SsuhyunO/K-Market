@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>나이키 기모 맨투맨 - KMarket</title>
+    <title th:text="${product.prodName} + ' - KMarket'">상품보기 - KMarket</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" th:href="@{/css/common.css}">
@@ -14,310 +14,206 @@
 <header th:replace="~{fragments/header :: header}"></header>
 
 <div class="page-wrapper">
-
-    <!-- aside 호출 -->
     <aside th:replace="~{fragments/aside :: aside}"></aside>
 
     <main class="main-content">
-
-        <!-- ① 페이지 타이틀 + ② 브레드크럼 -->
-        <div class="view-header"
-             th:with="
-                cateId=${param.category != null ? param.category[0] : '11'},
-                parentName=${
-                    (cateId == '11' or cateId == '12' or cateId == '13') ? '패션·뷰티' :
-                    ((cateId == '21' or cateId == '22' or cateId == '23') ? '가전·디지털' :
-                    ((cateId == '31' or cateId == '32' or cateId == '33') ? '식품·생필품' :
-                    ((cateId == '41' or cateId == '42' or cateId == '43') ? '홈·데코·취미' : null)))
-                },
-                currentName=${
-                    cateId == '11' ? '남성의류' :
-                    (cateId == '12' ? '여성의류' :
-                    (cateId == '13' ? '화장품·뷰티' :
-                    (cateId == '21' ? '컴퓨터·PC' :
-                    (cateId == '22' ? '생활가전' :
-                    (cateId == '23' ? '모바일' :
-                    (cateId == '31' ? '신선식품' :
-                    (cateId == '32' ? '가공식품' :
-                    (cateId == '33' ? '생활용품' :
-                    (cateId == '41' ? '가구·인테리어' :
-                    (cateId == '42' ? '문구·오피스' :
-                    (cateId == '43' ? '반려·취미' : '전체상품')))))))))))
-                }
-             ">
-
+        <div class="view-header">
             <h1 class="view-title">상품보기</h1>
 
             <nav class="breadcrumb">
                 <a th:href="@{/}">HOME</a>
-                <th:block th:if="${parentName != null}">
+                <th:block th:if="${parentCate != null}">
                     <span class="sep">&gt;</span>
-                    <a th:href="@{/product/list(category=${cateId})}" th:text="${parentName}">1차 카테고리</a>
+                    <a th:href="@{/product/list(category=${parentCate.cateId})}" th:text="${parentCate.name}">1차 카테고리</a>
                 </th:block>
                 <span class="sep">&gt;</span>
-                <span class="current" th:text="${currentName}">현재 카테고리</span>
+                <a th:if="${subCate != null}"
+                   th:href="@{/product/list(category=${subCate.cateId})}"
+                   class="current"
+                   th:text="${subCate.name}">현재 카테고리</a>
             </nav>
         </div>
 
-        <!-- ③ 상품 기본 정보 영역 (상단) -->
         <div class="view-basic">
-            <!-- 썸네일 이미지 -->
             <div class="view-img">
-                <span class="dummy-img">📷</span>
+                <img th:if="${product.thumb1FileId != null}"
+                     th:src="@{/files/{id}(id=${product.thumb1FileId})}"
+                     th:alt="${product.prodName}">
+                <span th:unless="${product.thumb1FileId != null}" class="dummy-img">📷</span>
             </div>
 
-            <!-- 상품 정보 -->
             <div class="view-info">
-                <!-- 💡 수정된 부분: 상품번호와 브랜드명을 .brand-row 로 묶어서 가로 배치 -->
                 <div class="brand-row">
-                    <span class="pno">상품번호: 20260628001</span>
-                    <span class="brand">나이키(NIKE)</span>
+                    <span class="pno" th:text="'상품번호: ' + ${product.prodNo}">상품번호</span>
+                    <span class="brand" th:text="${product.maker}">제조사</span>
                 </div>
-                <h2 class="title">나이키 스포츠웨어 클럽 플리스 후디 기모 맨투맨</h2>
-                <p class="desc">부드러운 플리스 소재로 따뜻하고 편안한 착용감을 제공하는 베스트셀러 후디입니다.</p>
+                <h2 class="title" th:text="${product.prodName}">상품명</h2>
+                <p class="desc" th:text="${product.description}">상품 설명</p>
 
-                <!-- 가격 -->
                 <div class="price-wrap">
-                    <div class="del-price">89,000원</div>
+                    <div class="del-price"
+                         th:if="${product.discount > 0}"
+                         th:text="${#numbers.formatInteger(product.price, 0, 'COMMA')} + '원'">89,000원</div>
                     <div class="sale-row">
-                        <span class="rate">30%↓</span>
-                        <span class="final-price">62,300<span>원</span></span>
+                        <span class="rate"
+                              th:if="${product.discount > 0}"
+                              th:text="${product.discount} + '%↓'">30%↓</span>
+                        <span class="final-price">
+                            <span th:remove="tag" th:text="${#numbers.formatInteger(product.salePrice, 0, 'COMMA')}">62,300</span><span>원</span>
+                        </span>
                     </div>
                 </div>
 
-                <!-- 요약 정보 (상품번호 추가됨!) -->
                 <div class="view-summary">
                     <div class="row">
                         <div class="th">배송비</div>
-                        <div class="td">무료배송 <span style="font-size:12px; color:#888;">(제주/도서산간 3,000원 추가)</span></div>
+                        <div class="td">
+                            <span th:if="${product.freeShipping}">무료배송</span>
+                            <span th:unless="${product.freeShipping}"
+                                  th:text="${#numbers.formatInteger(product.deliveryFee, 0, 'COMMA')} + '원'">3,000원</span>
+                            <span class="summary-note">(제주/도서산간 추가 배송비가 발생할 수 있습니다)</span>
+                        </div>
                     </div>
                     <div class="row">
                         <div class="th">배송안내</div>
-                        <div class="td">오늘(수) 23:59 전 주문 시 <span class="highlight">내일(목) 도착 예정</span></div>
+                        <div class="td">
+                            <span th:text="${todayDate} + '(' + ${todayDayOfWeek} + ')로부터 3일이내 배송'">7월 13일(월)로부터 3일이내 배송</span>
+                            <span class="highlight"
+                                  th:text="${expectedDeliveryDate} + '(' + ${expectedDeliveryDayOfWeek} + ') 도착 예정'">7월 16일(목) 도착 예정</span>
+                        </div>
                     </div>
                     <div class="row">
                         <div class="th">상품평</div>
-                        <div class="td"><span style="color:#f5a623; font-size:16px;">★★★★★</span> (1,284건)</div>
+                        <div class="td">
+                            <span class="stars" th:text="${product.ratingStars}">☆☆☆☆☆</span>
+                            <span th:text="'(' + ${#numbers.formatInteger(product.reviewCount, 0, 'COMMA')} + '건)'">(0건)</span>
+                        </div>
                     </div>
                     <div class="row">
                         <div class="th">판매자</div>
-                        <div class="td">나이키공식스토어 <span class="highlight">🏅고객만족우수</span></div>
+                        <div class="td" th:text="${product.seller != null ? product.seller : product.sellerUid}">판매자</div>
+                    </div>
+                    <div class="row">
+                        <div class="th">재고</div>
+                        <div class="td"
+                             id="variantStock"
+                             th:attr="data-total-stock=${product.stock}"
+                             th:text="${product.stock <= 0 ? '품절' : (#numbers.formatInteger(product.stock, 0, 'COMMA') + '개')}">0개</div>
                     </div>
                 </div>
 
-                <!-- 수량 선택 -->
+                <div class="option-summary"
+                     th:if="${product.optionGroups != null and !#lists.isEmpty(product.optionGroups)}"
+                     data-option-selector>
+                    <div class="option-group" th:each="group : ${product.optionGroups}">
+                        <label class="option-group-name"
+                               th:for="|option-group-${group.id}|"
+                               th:text="${group.name}">옵션명</label>
+                        <select class="option-select"
+                                th:id="|option-group-${group.id}|"
+                                data-option-select
+                                required>
+                            <option value="">선택</option>
+                            <option th:each="item : ${group.items}"
+                                    th:value="${item.id}"
+                                    th:text="${item.value}">옵션값</option>
+                        </select>
+                    </div>
+                    <p class="option-required-message" data-option-message>옵션을 선택해주세요.</p>
+                </div>
+
+                <div class="variant-stock-list" th:if="${product.variants != null and !#lists.isEmpty(product.variants)}">
+                    <div class="variant-stock-title">조합별 재고</div>
+                    <ul>
+                        <li th:each="variant : ${product.variants}">
+                            <span class="variant-name"
+                                  th:text="${variant.items == null or #lists.isEmpty(variant.items)}
+                                      ? '기본상품'
+                                      : ${#strings.listJoin(variant.items.![value], ' / ')}">기본상품</span>
+                            <span class="variant-stock"
+                                  th:classappend="${variant.stock <= 0 or variant.status != 'ON_SALE'} ? ' sold-out'"
+                                  th:text="${variant.stock <= 0 or variant.status != 'ON_SALE'}
+                                      ? '품절'
+                                      : ${#numbers.formatInteger(variant.stock, 0, 'COMMA')} + '개'">0개</span>
+                        </li>
+                    </ul>
+                </div>
+
                 <div class="count-wrap">
                     <span class="name">수량</span>
-                    <div class="count-control">
+                    <div class="count-control" th:attr="data-unit-price=${product.salePrice}">
                         <button type="button">-</button>
                         <input type="text" value="1" readonly>
                         <button type="button">+</button>
                     </div>
                 </div>
 
-                <!-- 총 상품 금액 -->
                 <div class="total-price-wrap">
                     <span class="label">총 상품금액</span>
-                    <span class="total">62,300<span>원</span></span>
+                    <span class="total">
+                        <span th:remove="tag" th:text="${#numbers.formatInteger(product.salePrice, 0, 'COMMA')}">62,300</span><span>원</span>
+                    </span>
                 </div>
 
-                <!-- 구매/장바구니 버튼 -->
                 <div class="btn-wrap">
-                    <button type="button" class="btn-cart">장바구니 담기</button>
-                    <button type="button" class="btn-buy">바로 구매하기</button>
+                    <button type="button" class="btn-cart" th:disabled="${product.stock <= 0}">장바구니 담기</button>
+                    <button type="button" class="btn-buy" th:disabled="${product.stock <= 0}">바로 구매하기</button>
                 </div>
             </div>
         </div>
 
-        <!-- ④ 더미 배너 영역 -->
-        <div class="view-banner">
-            <!-- 💡 실제 이미지 경로를 넣으면 배경색 대신 배너가 출력됩니다 -->
-            K-Market 특별 기획전! 지금 구매 시 10% 추가 할인 쿠폰 증정 🎉
-        </div>
-
-        <!-- ⑤ 3가지 스크롤 스티키 탭 메뉴 -->
         <div class="view-tabs">
             <a href="#detail" class="active">상품상세정보</a>
-            <a href="#notice">상품정보 제공공시</a>
+            <a href="#notice">상품정보 제공고시</a>
             <a href="#review">상품리뷰</a>
         </div>
 
-        <!-- ⑥ 상세 콘텐츠 - 상품상세정보 -->
         <article id="detail" class="content-section">
             <h3 class="sec-title">상품상세정보</h3>
             <div class="detail-content">
-
-                <div class="detail-block">
-                    <div class="detail-img">🧥</div>
-                    <h4>플리스 소재의 따뜻한 보온성</h4>
-                    <p>안감 기모 처리로 쌀쌀한 날씨에도 따뜻하게 착용할 수 있습니다.<br>가볍고 부드러운 터치감이 특징입니다.</p>
+                <img th:if="${product.detailInfoFileId != null}"
+                     th:src="@{/files/{id}(id=${product.detailInfoFileId})}"
+                     th:alt="${product.prodName} + ' 상세 이미지'">
+                <div th:unless="${product.detailInfoFileId != null}" class="detail-empty">
+                    등록된 상세 이미지가 없습니다.
                 </div>
-
-                <div class="detail-block">
-                    <div class="detail-img">📐</div>
-                    <h4>편안한 루즈 핏 디자인</h4>
-                    <p>과하지 않은 루즈 핏으로 데일리하게 매치하기 좋고,<br>레이어드 코디에도 부담 없이 활용할 수 있습니다.</p>
-                </div>
-
-                <div class="detail-block">
-                    <div class="detail-img">🎨</div>
-                    <h4>다양한 컬러 옵션</h4>
-                    <p>블랙, 그레이, 네이비 3가지 컬러로 준비되어<br>취향에 맞게 선택하실 수 있습니다.</p>
-                </div>
-
-                <p class="detail-end">상세 설명 끝부분</p>
             </div>
         </article>
 
-        <!-- ⑥ 상세 콘텐츠 - 상품정보 제공공시 -->
         <article id="notice" class="content-section">
-            <h3 class="sec-title">상품정보 제공공시</h3>
+            <h3 class="sec-title">상품정보 제공고시</h3>
             <table class="info-table">
                 <tbody>
                 <tr>
-                    <th>제품 소재</th>
-                    <td>면 80%, 폴리에스터 20%</td>
+                    <th>상품군</th>
+                    <td th:text="${product.infoNoticeTypeName != null ? product.infoNoticeTypeName : product.infoNoticeType}">상품군</td>
                 </tr>
-                <tr>
-                    <th>색상</th>
-                    <td>블랙, 그레이, 네이비</td>
-                </tr>
-                <tr>
-                    <th>치수</th>
-                    <td>S, M, L, XL</td>
-                </tr>
-                <tr>
-                    <th>제조자(수입자)</th>
-                    <td>나이키 / (주)나이키코리아</td>
-                </tr>
-                <tr>
-                    <th>제조국</th>
-                    <td>베트남</td>
-                </tr>
-                <tr>
-                    <th>세탁방법 및 취급시 주의사항</th>
-                    <td>물세탁 가능, 표백제 사용 금지, 건조기 사용 금지</td>
-                </tr>
-                <tr>
-                    <th>제조연월</th>
-                    <td>2026.03</td>
-                </tr>
-                <tr>
-                    <th>품질보증기준</th>
-                    <td>관련 법 및 소비자 분쟁해결 규정에 따름</td>
-                </tr>
-                <tr>
-                    <th>A/S 책임자와 전화번호</th>
-                    <td>나이키 고객센터 1588-0000</td>
+                <tr th:each="notice : ${product.noticeValues}">
+                    <th th:text="${notice.label}">항목명</th>
+                    <td th:text="${notice.value}">항목 값</td>
                 </tr>
                 </tbody>
             </table>
         </article>
 
-        <!-- ⑥ 상세 콘텐츠 - 상품리뷰 -->
         <article id="review" class="content-section">
             <h3 class="sec-title">상품리뷰</h3>
-            <div class="review-list">
-
-                <div class="review-item">
-                    <div class="meta">
-                        <span class="stars">★★★★★</span>
-                        <span class="user">seo******</span>
-                        <span class="date">2026.06.28</span>
-                    </div>
-                    <div class="thumb">
-                        <span class="dummy-img">📷</span>
-                    </div>
-                    <div class="text">
-                        가격대비 정말 괜찮은 옷이라 생각되네요. 핏은 음... 제가 입기엔 어깨선이 맞고 루즈핏이라 하기도 좀 힘드네요.
-                        아주 약간 루즈한정도...? 그래도 이만한 옷은 없다고 봅니다. 깨끗하고 포장도 깔끔하고 다음에도 여기서 판매하는
-                        제품들을 구매하고 싶네요. 정말 만족하고 후기 남깁니다 많이 파시길 바래요~
-                    </div>
-                </div>
-
-                <div class="review-item">
-                    <div class="meta">
-                        <span class="stars">★★★★☆</span>
-                        <span class="user">shop****</span>
-                        <span class="date">2026.06.25</span>
-                    </div>
-                    <div class="thumb">
-                        <span class="dummy-img">📷</span>
-                    </div>
-                    <div class="text">
-                        색상이 화면에서 보는 것보다 약간 어둡긴 한데 그래도 예쁩니다. 마감 처리도 깔끔하고 세탁해도 변형이 없네요.
-                        배송도 예상보다 하루 빨리 와서 좋았습니다.
-                    </div>
-                </div>
-
-                <div class="review-item">
-                    <div class="meta">
-                        <span class="stars">★★★★★</span>
-                        <span class="user">min_j***</span>
-                        <span class="date">2026.06.20</span>
-                    </div>
-                    <div class="thumb">
-                        <span class="dummy-img">📷</span>
-                    </div>
-                    <div class="text">
-                        기모 안감이 부드럽고 따뜻해서 겨울 내내 입었어요. 사이즈도 평소 입던 대로 주문했는데 핏이 예쁘게 나옵니다.
-                        재구매 의사 100%입니다!
-                    </div>
-                </div>
-
-                <div class="review-item">
-                    <div class="meta">
-                        <span class="stars">★★★☆☆</span>
-                        <span class="user">cool***</span>
-                        <span class="date">2026.06.18</span>
-                    </div>
-                    <div class="thumb">
-                        <span class="dummy-img">📷</span>
-                    </div>
-                    <div class="text">
-                        디자인은 만족스러운데 생각보다 약간 얇은 느낌이 있어요. 그래도 가격 대비 나쁘지 않은 선택인 것 같습니다.
-                    </div>
-                </div>
-
-                <div class="review-item">
-                    <div class="meta">
-                        <span class="stars">★★★★★</span>
-                        <span class="user">hyu_st**</span>
-                        <span class="date">2026.06.15</span>
-                    </div>
-                    <div class="thumb">
-                        <span class="dummy-img">📷</span>
-                    </div>
-                    <div class="text">
-                        선물용으로 구매했는데 받는 분이 너무 좋아하셨어요. 포장 상태도 좋았고 배송도 빨랐습니다.
-                        나이키 정품 인증도 잘 되어 있어서 믿고 구매했습니다.
-                    </div>
-                </div>
-
+            <div class="review-empty">
+                <span class="stars" th:text="${product.ratingStars}">☆☆☆☆☆</span>
+                <span th:text="${#numbers.formatDecimal(product.rating, 1, 1)} + ' / 5.0'">0.0 / 5.0</span>
+                <span th:text="'리뷰 ' + ${#numbers.formatInteger(product.reviewCount, 0, 'COMMA')} + '건'">리뷰 0건</span>
             </div>
-
-            <!-- 리뷰 페이지네이션 -->
-            <nav class="review-pagination">
-                <a href="#" class="page-nav">&lt; 이전</a>
-                <a href="#" class="active">1</a>
-                <a href="#">2</a>
-                <a href="#">3</a>
-                <a href="#">4</a>
-                <a href="#">5</a>
-                <a href="#">6</a>
-                <a href="#">7</a>
-                <a href="#" class="page-nav">다음 &gt;</a>
-            </nav>
         </article>
 
         <footer th:replace="~{fragments/footer :: footer}"></footer>
-
     </main>
 </div>
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script th:src="@{/js/common.js}"></script>
-<script th:src="@{/js/product/product.js}"></script>
+<script th:inline="javascript">
+    window.productVariants = /*[[${product.variants}]]*/ [];
+</script>
+<script type="module" th:src="@{/js/product/view.js}"></script>
 
 </body>
 </html>

@@ -17,4 +17,15 @@ public interface ProductVariantItemRepository extends JpaRepository<ProductVaria
     @Modifying
     @Query("delete from ProductVariantItem pvi where pvi.id.variantId in :variantIds")
     int deleteAllByVariantIdIn(@Param("variantIds") List<Integer> variantIds);
+
+    @Modifying
+    @Query("""
+        delete from ProductVariantItem pvi
+        where pvi.id.variantId = :variantId
+            and pvi.id.optionItemId in :optionItemIds
+    """)
+    int deleteByVariantIdAndOptionItemIdIn(
+        @Param("variantId") int variantId,
+        @Param("optionItemIds") List<Integer> optionItemIds
+    );
 }

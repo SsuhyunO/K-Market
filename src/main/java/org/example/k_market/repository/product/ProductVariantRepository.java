@@ -12,14 +12,44 @@ import java.util.List;
 @Repository
 public interface ProductVariantRepository extends JpaRepository<ProductVariant, Integer> {
     List<ProductVariant> findByProdNoOrderByIdAsc(int prodNo);
+    List<ProductVariant> findByProdNoAndStatusNotOrderByIdAsc(int prodNo, String status);
     List<ProductVariant> findByProdNoIn(List<Integer> prodNos);
 
     @Modifying
     @Query("delete from ProductVariant pv where pv.prodNo in :prodNos")
     int deleteAllByProdNoIn(@Param("prodNos") List<Integer> prodNos);
 
-    // ProductVariantRepository.java
     @Modifying
-    @Query("UPDATE ProductVariant v SET v.stock = v.stock - :count WHERE v.id = :id AND v.stock >= :count")
+    @Query("""
+        update ProductVariant pv
+        set pv.status = :status
+        where pv.prodNo in :prodNos
+    """)
+    int updateStatusByProdNoIn(
+        @Param("prodNos") List<Integer> prodNos,
+        @Param("status") String status
+    );
+
+    @Modifying
+    @Query("update ProductVariant pv set pv.stock = :stock, pv.status = :status where pv.id = :id and pv.prodNo = :prodNo")
+    int updateByIdAndProdNo(
+        @Param("id") int id,
+        @Param("prodNo") int prodNo,
+        @Param("stock") int stock,
+        @Param("status") String status
+    );
+
+    @Modifying
+    @Query("update ProductVariant pv set pv.status = :status where pv.id in :ids")
+    int updateStatusByIdIn(@Param("ids") List<Integer> ids, @Param("status") String status);
+
+    @Modifying
+    @Query("""
+        UPDATE ProductVariant v
+        SET v.stock = v.stock - :count
+        WHERE v.id = :id
+            AND v.stock >= :count
+            AND v.status = 'ON_SALE'
+    """)
     int decreaseStock(@Param("id") int id, @Param("count") int count);
 }

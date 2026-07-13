@@ -11,6 +11,7 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 public class ProductOptionGroupRequest {
+    private Integer id;
     private String clientKey;
     private String name;
 

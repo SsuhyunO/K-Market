@@ -105,6 +105,9 @@ function createOptionRow(index, group = null) {
     if (group?.clientKey) {
         row.dataset.optionGroupKey = group.clientKey;
     }
+    if (group?.id) {
+        row.dataset.optionGroupId = String(group.id);
+    }
 
     optionLabel.dataset.optionLabel = "";
     optionLabel.htmlFor = `option${index}`;
@@ -123,7 +126,7 @@ function createOptionRow(index, group = null) {
     valueHeader.append(valueLabel);
     if (group?.items?.length > 0) {
         const itemList = itemEditor.querySelector("[data-option-item-list]");
-        group.items.forEach(item => itemList?.append(createOptionItem(item.value, item.clientKey)));
+        group.items.forEach(item => itemList?.append(createOptionItem(item.value, item.clientKey, item.id)));
     }
     valueCell.append(itemEditor);
 
@@ -145,9 +148,11 @@ function initializeEditOptions(optionRowsContainer) {
     optionRowsContainer.innerHTML = "";
     product.optionGroups
         .map(group => ({
+            id: group.id,
             clientKey: `group-${group.id}`,
             name: group.name || "",
             items: (group.items || []).map(item => ({
+                id: item.id,
                 clientKey: `item-${item.id}`,
                 value: item.value || ""
             }))
@@ -237,7 +242,7 @@ function addOptionItem(row) {
     return true;
 }
 
-function createOptionItem(value, clientKey = null) {
+function createOptionItem(value, clientKey = null, id = null) {
     const item = document.createElement("div");
     const input = document.createElement("input");
     const deleteButton = document.createElement("button");
@@ -245,6 +250,9 @@ function createOptionItem(value, clientKey = null) {
     item.className = "option-item";
     item.dataset.optionItem = "";
     item.dataset.optionItemKey = clientKey || createClientKey("item");
+    if (id) {
+        item.dataset.optionItemId = String(id);
+    }
 
     input.type = "text";
     input.maxLength = 30;
@@ -352,6 +360,7 @@ function readOptionGroup(row) {
 
     return {
         row,
+        id: toPositiveInteger(row.dataset.optionGroupId),
         clientKey: row.dataset.optionGroupKey,
         name,
         items
@@ -361,6 +370,7 @@ function readOptionGroup(row) {
 function readOptionItems(row) {
     return Array.from(row.querySelectorAll("[data-option-item]"))
         .map(item => ({
+            id: toPositiveInteger(item.dataset.optionItemId),
             clientKey: item.dataset.optionItemKey,
             value: item.querySelector("[data-option-item-value]")?.value.trim() || ""
         }));
@@ -407,10 +417,16 @@ function renderOptionItemFields(optionItemFields, groups) {
     optionItemFields.innerHTML = "";
 
     groups.forEach((group, groupIndex) => {
+        if (group.id) {
+            appendHiddenInput(optionItemFields, `optionGroups[${groupIndex}].id`, group.id);
+        }
         appendHiddenInput(optionItemFields, `optionGroups[${groupIndex}].clientKey`, group.clientKey);
         appendHiddenInput(optionItemFields, `optionGroups[${groupIndex}].name`, group.name);
 
         group.items.forEach((item, itemIndex) => {
+            if (item.id) {
+                appendHiddenInput(optionItemFields, `optionGroups[${groupIndex}].items[${itemIndex}].id`, item.id);
+            }
             appendHiddenInput(optionItemFields, `optionGroups[${groupIndex}].items[${itemIndex}].clientKey`, item.clientKey);
             appendHiddenInput(optionItemFields, `optionGroups[${groupIndex}].items[${itemIndex}].value`, item.value);
         });
@@ -439,6 +455,7 @@ function getPreviousVariantValues(optionStockBody) {
         if (!key) return;
 
         values.set(key, {
+            id: row.querySelector("[data-option-variant-id]")?.value || "",
             stock: row.querySelector("[data-option-stock-input]")?.value || "0",
             status: row.querySelector("[data-option-status-input]")?.value || "ON_SALE"
         });
@@ -462,6 +479,7 @@ function getEditVariantValues() {
             : items.map(item => `item-${item.id}`).join("|");
 
         values.set(key, {
+            id: variant.id ? String(variant.id) : "",
             stock: String(variant.stock ?? 0),
             status: variant.status || "ON_SALE"
         });
@@ -525,6 +543,10 @@ function createOptionStockRow(combination, index, previous) {
         appendHiddenInput(optionCell, `variants[${index}].items[${itemIndex}].groupKey`, item.groupKey);
         appendHiddenInput(optionCell, `variants[${index}].items[${itemIndex}].itemKey`, item.itemKey);
     });
+    if (previous.id) {
+        const variantIdInput = appendHiddenInput(optionCell, `variants[${index}].id`, previous.id);
+        variantIdInput.dataset.optionVariantId = "";
+    }
 
     stockInput.type = "number";
     stockInput.name = `variants[${index}].stock`;
@@ -559,6 +581,7 @@ function appendHiddenInput(parent, name, value) {
     input.name = name;
     input.value = value;
     parent.append(input);
+    return input;
 }
 
 function updateTotalStock(stockInput, optionStockBody) {
@@ -578,6 +601,11 @@ function toNonNegativeNumber(value) {
     }
 
     return numberValue;
+}
+
+function toPositiveInteger(value) {
+    const numberValue = Number.parseInt(value, 10);
+    return Number.isInteger(numberValue) && numberValue > 0 ? numberValue : null;
 }
 
 function ensureOptionRowKey(row) {

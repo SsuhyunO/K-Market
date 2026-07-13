@@ -18,11 +18,15 @@ public class ProductNoticeValue {
     private ProductNoticeValueId id;
     private String value;
 
+    public void updateValue(String value) {
+        this.value = value;
+    }
+
     public ProductNoticeValueDTO toDTO() {
         return ProductNoticeValueDTO.builder()
-                .noticeKey(id.getNoticeKey())
-                .prodNo(id.getProdNo())
-                .value(value)
-                .build();
+            .noticeKey(id.getNoticeKey())
+            .prodNo(id.getProdNo())
+            .value(value)
+            .build();
     }
 }

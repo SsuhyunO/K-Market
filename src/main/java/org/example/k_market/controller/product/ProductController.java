@@ -2,68 +2,100 @@ package org.example.k_market.controller.product;
 
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
-import org.example.k_market.dto.category.CategoryDTO;
+import org.example.k_market.dto.category.CategoryContextResponse;
 import org.example.k_market.dto.category.CategoryTreeDTO;
 import org.example.k_market.dto.order.OrderItemViewDTO;
 import org.example.k_market.entity.Member;
-import org.example.k_market.enums.product.ProductSortType;
+import org.example.k_market.service.CartService;
 import org.example.k_market.service.CategoryService;
 import org.example.k_market.service.MemberService;
+import org.example.k_market.service.ProductService;
 import org.example.k_market.service.order.OrderService;
 import org.example.k_market.service.admin.CouponIssueService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 
 @RequiredArgsConstructor
 @Controller
+@RequestMapping("/product")
 public class ProductController {
 
     private final MemberService memberService;
     private final OrderService orderService;
     private final CouponIssueService couponIssueService;
     private final CategoryService categoryService;
+    private final ProductService productService;
+    private final CartService cartService;
 
     @ModelAttribute("categoryTree")
     public List<CategoryTreeDTO> categoryTree() {
         return categoryService.getCategoryTree();
     }
 
-    @GetMapping("/product/list")
+    @GetMapping("/list")
     public String list(Model model, @RequestParam("category") int cateId) {
-        // aside의 베스트 상품을 보여주기 위해 필요 (빈 리스트면 placeholder, 실제 데이터면 그 데이터)
-        CategoryDTO subCate = categoryService.getCategory(cateId);
-        CategoryDTO parentCate = categoryService.getCategory(subCate.getParentId());
-        model.addAttribute("parentCate", parentCate);
-        model.addAttribute("subCate", subCate);
-        model.addAttribute("bestProducts", java.util.List.of());
+        CategoryContextResponse categoryContext = categoryService.getContext(cateId);
+        if (categoryContext.hasRedirect()) {
+            return "redirect:/product/list?category=" + categoryContext.redirectCategoryId();
+        }
 
+        model.addAttribute("parentCate", categoryContext.parentCate());
+        model.addAttribute("subCate", categoryContext.subCate());
         return "product/list";
     }
 
-    @GetMapping("/product/view")
-    public String view() {
+    @GetMapping("/view")
+    public String view(@RequestParam("prodNo") int prodNo, Model model) {
+        var product = productService.getProductDetail(prodNo);
+        CategoryContextResponse categoryContext = categoryService.getContext(product.getCateId());
+        LocalDate today = LocalDate.now();
+        LocalDate expectedDeliveryDate = today.plusDays(3);
+        DateTimeFormatter dayFormatter = DateTimeFormatter.ofPattern("E", Locale.KOREAN);
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("M월 d일", Locale.KOREAN);
 
-        // 💡 나중에는 여기서 파라미터(id 등)를 받아서 DB에서 상품 정보를 조회한 뒤
-        // model.addAttribute("product", productInfo); 처럼 넘겨주는 로직이 추가됩니다.
-        // 하지만 지금은 화면만 띄우면 되므로 아주 심플합니다!
-
-        return "product/view"; // templates/product 폴더 안의 view.html을 화면에 띄워라!
+        model.addAttribute("product", product);
+        model.addAttribute("parentCate", categoryContext.parentCate());
+        model.addAttribute("subCate", categoryContext.subCate());
+        model.addAttribute("todayDate", today.format(dateFormatter));
+        model.addAttribute("todayDayOfWeek", today.format(dayFormatter));
+        model.addAttribute("expectedDeliveryDate", expectedDeliveryDate.format(dateFormatter));
+        model.addAttribute("expectedDeliveryDayOfWeek", expectedDeliveryDate.format(dayFormatter));
+        return "product/view";
     }
 
-    @GetMapping("/product/cart")
-    public String cart() {
+    @GetMapping("/cart")
+    public String cart(HttpSession session, Model model) {
+        String memberUid = (String) session.getAttribute("loginMember");
+        List<OrderItemViewDTO> cartItems = cartService.getCartItems(memberUid);
+        int productTotal = orderService.calcProductTotal(cartItems);
+        int discountTotal = orderService.calcDiscountTotal(cartItems);
+        int shippingTotal = orderService.calcShippingTotal(cartItems);
+        int earnPoint = orderService.calcEarnPoint(cartItems);
+        int orderTotal = productTotal - discountTotal;
+        int finalPrice = orderTotal + shippingTotal;
+
+        model.addAttribute("cartItems", cartItems);
+        model.addAttribute("productTotal", productTotal);
+        model.addAttribute("discountTotal", discountTotal);
+        model.addAttribute("shippingTotal", shippingTotal);
+        model.addAttribute("earnPoint", earnPoint);
+        model.addAttribute("orderTotal", orderTotal);
+        model.addAttribute("finalPrice", finalPrice);
 
         return "product/cart";
     }
 
     // TODO: 테스트용 default, 실제 배포 전 제거
-    @GetMapping("/product/order")
+    @GetMapping("/order")
     public String order(@RequestParam(required = false) List<Integer> cartNoList,
                         @RequestParam(required = false, defaultValue = "109") Integer prodVariantId,
                         @RequestParam(required = false, defaultValue = "2") Integer count,
@@ -75,10 +107,14 @@ public class ProductController {
         // 1. 주문 상품 리스트 조회
         List<OrderItemViewDTO> orderItems;
         if (cartNoList != null && !cartNoList.isEmpty()) {
-            orderItems = orderService.getOrderItemsFromCart(cartNoList);
+            orderItems = orderService.getOrderItemsFromCart(cartNoList, memberUid);
         } else if (prodVariantId != null) {
             orderItems = orderService.getOrderItemsDirect(prodVariantId, count);
         } else {
+            return "redirect:/product/cart";
+        }
+
+        if (orderItems.isEmpty()) {
             return "redirect:/product/cart";
         }
 
@@ -131,9 +167,8 @@ public class ProductController {
         return "product/complete";
     }
 
-    @GetMapping("/product/search")
+    @GetMapping("/search")
     public String search() {
-
         return "product/search";
     }
 }

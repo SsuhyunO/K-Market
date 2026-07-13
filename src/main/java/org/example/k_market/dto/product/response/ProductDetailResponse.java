@@ -35,6 +35,9 @@ public class ProductDetailResponse {
     private FileInfo thumb3File;
     private FileInfo detailInfoFile;
     private String sellerUid;
+    private String seller;
+    private double rating;
+    private int reviewCount;
     private String infoNoticeType;
     private String infoNoticeTypeName;
     private String createdAt;
@@ -47,6 +50,19 @@ public class ProductDetailResponse {
 
     @Builder.Default
     private List<NoticeValue> noticeValues = new ArrayList<>();
+
+    public int getSalePrice() {
+        return (int)(price - ((double)price * discount / 100));
+    }
+
+    public boolean isFreeShipping() {
+        return deliveryFee <= 0;
+    }
+
+    public String getRatingStars() {
+        int star = (int)Math.round(rating);
+        return "★".repeat(star) + "☆".repeat(5 - star);
+    }
 
     @Getter
     @Setter
