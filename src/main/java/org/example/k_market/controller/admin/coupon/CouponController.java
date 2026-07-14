@@ -27,7 +27,7 @@ public class CouponController {
 
     @GetMapping({"/list", "", "/"})
     public String list(@RequestParam(defaultValue = "1") int page,
-                       @RequestParam(name = "search-type", required = false) String searchType,
+                       @RequestParam(required = false) String searchType,
                        @RequestParam(required = false) String keyword,
                        HttpSession session,
                        Model model) {
@@ -100,7 +100,7 @@ public class CouponController {
 
     @GetMapping("/used")
     public String used(@RequestParam(defaultValue = "1") int page,
-                       @RequestParam(name = "search-type", required = false) String searchType,
+                       @RequestParam(required = false) String searchType,
                        @RequestParam(required = false) String keyword,
                        Model model) {
         int totalCount = couponIssueService.getTotalCount(searchType, keyword);

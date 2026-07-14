@@ -33,6 +33,9 @@ public class OrderDTO {
     private String courierName;
     private String trackingNo;
     private String orderNote;
+    // 추가
+    private String memberName;
+    private int totalCount;
 
     public Order toEntity() {
         return Order.builder()
