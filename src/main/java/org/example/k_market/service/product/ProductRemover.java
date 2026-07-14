@@ -97,10 +97,7 @@ public class ProductRemover {
     }
 
     private Set<Integer> findOrderReferencedProdNos(List<Integer> prodNos) {
-        Set<Integer> referencedProdNos = new HashSet<>();
-        referencedProdNos.addAll(orderItemRepository.findReferencedProdNos(prodNos));
-
-        return referencedProdNos;
+        return new HashSet<>(orderItemRepository.findReferencedProdNos(prodNos));
     }
 
     private List<Integer> findVariantIdsByProdNos(List<Integer> prodNos) {

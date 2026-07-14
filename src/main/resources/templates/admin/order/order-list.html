@@ -24,9 +24,9 @@
 
 				<form th:replace="~{admin/fragments/search-form::search-form('/admin/order/order-list', ~{::options})}">
 					<th:block th:fragment="options">
-						<option value="orderNo" th:selected="${searchType == 'orderNo'}">주문번호</option>
-						<option value="memberUid" th:selected="${searchType == 'memberUid'}">주문자 ID</option>
-						<option value="memberName" th:selected="${searchType == 'memberName'}">주문자명</option>
+						<option value="orderNo" th:selected="${param.type != null and param.type[0] == 'orderNo'}">주문번호</option>
+						<option value="memberUid" th:selected="${param.type != null and param.type[0] == 'memberUid'}">주문자 ID</option>
+						<option value="memberName" th:selected="${param.type != null and param.type[0] == 'memberName'}">주문자명</option>
 					</th:block>
 				</form>
 
@@ -34,55 +34,13 @@
 					<th:block th:fragment="table-content">
 						<tr>
 							<th>주문번호</th> <th>주문자</th>   <th>주문자명</th> <th>주문건수</th> <th>주문합계</th> <th>결제수단</th> <th>주문상태</th> <th>주문일</th>   <th>배송</th>     </tr>
-
-						<tr th:if="${#lists.isEmpty(orderList)}">
-							<td colspan="9" style="text-align: center; padding: 30px 0;">조회된 주문 내역이 없습니다.</td>
-						</tr>
-
-						<tr th:each="order : ${orderList}">
-							<td>
-								<button class="order-detail-btn" type="button"
-								        th:text="${order.orderNo}"
-								        th:data-order-no="${order.orderNo}">123415215</button>
-							</td>
-							<td th:text="${order.memberUid}">abc123</td>
-							<td th:text="${order.memberName}">홍길동</td>
-							<td th:text="${order.totalCount}">10</td>
-							<td th:text="${#numbers.formatInteger(order.orderTotal, 0, 'COMMA')}">500,000</td>
-							<td th:switch="${order.payMethod}">
-								<span th:case="'CARD'">신용카드</span>
-								<span th:case="'CHECK_CARD'">체크카드</span>
-								<span th:case="'BANK'">계좌이체</span>
-								<span th:case="'VBANK'">무통장입금</span>
-								<span th:case="'PHONE'">휴대폰결제</span>
-								<span th:case="'KAKAO'">카카오페이</span>
-								<span th:case="*" th:text="${order.payMethod}">기타</span>
-							</td>
-							<td th:switch="${order.status}">
-								<span th:case="'PAID'">결제완료</span>
-								<span th:case="'READY'">상품준비중</span>
-								<span th:case="'SHIPPING'">배송중</span>
-								<span th:case="'DELIVERED'">배송완료</span>
-								<span th:case="'CANCEL'">주문취소</span>
-								<span th:case="*" th:text="${order.status}">상태</span>
-							</td>
-							<td th:text="${#strings.substring(order.createdAt, 0, 10)}">0000-00-00</td>
-							<td>
-								<button class="register-delivery-btn" type="button"
-								        th:if="${order.status == 'PAID' or order.status == 'READY'}"
-								        th:data-order-no="${order.orderNo}">배송하기</button>
-								<span th:unless="${order.status == 'PAID' or order.status == 'READY'}">-</span>
-							</td>
-						</tr>
 					</th:block>
 				</div>
 
 				<div th:replace="~{admin/fragments/action-bar::action-bar(~{::action-bar-content})}">
 					<th:block th:fragment="action-bar-content">
 						<span></span>
-						<nav th:replace="~{admin/fragments/admin-pagination::admin-pagination(
-                                      pageInfo=${pageInfo},
-                                      baseUrl='/admin/order/order-list')}"></nav>
+						<nav class="admin-pagination"></nav>
 						<span></span>
 					</th:block>
 				</div>
@@ -173,6 +131,19 @@
 				<div th:replace="~{admin/fragments/modal::modal('delivery-register-modal', '배송입력', ~{::delivery_register_modal_content})}">
 					<th:block th:fragment="delivery_register_modal_content">
 						<form th:action="@{/admin/order/delivery-register}" name="deliveryRegisterForm" method="post" novalidate>
+							<h4>배송상품</h4>
+							<div class="management-table-scroll">
+								<table class="management-table" id="delivery-items-table">
+									<tr>
+										<th>선택</th>
+										<th>상품번호</th>
+										<th>상품명</th>
+										<th>판매자</th>
+										<th>수량</th>
+										<th>상태</th>
+									</tr>
+								</table>
+							</div>
 							<table th:replace="~{admin/fragments/section-table::section-table(~{::rows})}">
 								<th:block th:fragment="rows">
 									<tr>

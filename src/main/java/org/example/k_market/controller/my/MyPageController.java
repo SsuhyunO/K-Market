@@ -3,6 +3,7 @@ package org.example.k_market.controller.my;
 import lombok.RequiredArgsConstructor;
 import org.example.k_market.dto.PointDTO;
 import org.example.k_market.dto.admin.BannerDTO;
+import org.example.k_market.service.PointService;
 import org.example.k_market.service.admin.BannerService;
 import jakarta.servlet.http.HttpSession;
 import org.example.k_market.service.admin.PointService;
@@ -35,6 +36,7 @@ public class MyPageController {
     public String home(HttpSession session, Model model) {
         String memberUid = (String) session.getAttribute("loginMember");
         if (memberUid != null && !memberUid.isBlank()) {
+            model.addAttribute("recentPoints", pointService.getRecentPointsByMemberUid(memberUid));
             model.addAttribute("recentReviews", reviewService.getRecentReviewsByMemberId(memberUid));
 
             // 최근 포인트 적립 내역 5건 조회

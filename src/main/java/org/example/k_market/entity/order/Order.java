@@ -32,12 +32,9 @@ public class Order {
     private String payMethod;
     private String status;
     private Long couponIssueId;
-    private int shippingFee;
 
     @CreationTimestamp
     private LocalDateTime createdAt;
-    private String courierName;
-    private String trackingNo;
     private String orderNote;
 
     public OrderDTO toDTO() {
@@ -56,8 +53,6 @@ public class Order {
                 .payMethod(payMethod)
                 .status(status)
                 .createdAt(createdAt.toString())
-                .courierName(courierName)
-                .trackingNo(trackingNo)
                 .orderNote(orderNote)
                 .build();
     }

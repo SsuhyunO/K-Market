@@ -4,7 +4,7 @@ import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.example.k_market.dto.pagination.response.PageResponse;
 import org.example.k_market.dto.point.response.PointListResponse;
-import org.example.k_market.service.point.PointService;
+import org.example.k_market.service.PointService;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,12 +17,12 @@ import org.springframework.web.server.ResponseStatusException;
 import java.time.LocalDate;
 
 @RestController
-@RequestMapping("/point")
+@RequestMapping("/point/api")
 @RequiredArgsConstructor
 public class PointApiController {
     private final PointService pointService;
 
-    @GetMapping("/my/list")
+    @GetMapping("/list")
     public ResponseEntity<PageResponse<PointListResponse>> getMyPoints(
         @RequestParam(defaultValue = "1") int page,
         @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,

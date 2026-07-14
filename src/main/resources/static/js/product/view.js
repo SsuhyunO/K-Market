@@ -243,7 +243,7 @@ async function loadProductReviews(productNo, page, reviewList) {
     params.set('page', page);
 
     const response = await fetch(
-        `${getContextPath()}product/api/${encodeURIComponent(productNo)}/reviews?${params.toString()}`,
+        `${getContextPath()}review/api/product/${encodeURIComponent(productNo)}/list?${params.toString()}`,
         { headers: { Accept: 'application/json' } }
     );
 

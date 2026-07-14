@@ -15,8 +15,12 @@ public class Claim {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int claimNo;
 
-    private int orderNo;
+    private int orderItemNo;
+    @Column(length = 30)
     private String claimType;
     private String claimContent;
-    private int fileId;
+    private Integer fileId;
+    private int quantity;
+    @Column(length = 30, nullable = false)
+    private String claimStatus;
 }

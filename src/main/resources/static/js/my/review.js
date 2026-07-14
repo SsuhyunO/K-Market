@@ -83,7 +83,7 @@ import { escapeHtml } from '../global/htmlUtils.js';
         const params = new URLSearchParams();
         params.set('page', page);
 
-        const response = await fetch(`${getContextPath()}review/my/list?${params.toString()}`, {
+        const response = await fetch(`${getContextPath()}review/api/list?${params.toString()}`, {
             headers: { Accept: 'application/json' }
         });
 

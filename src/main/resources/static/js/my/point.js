@@ -61,7 +61,7 @@ async function loadPoints(page = 1) {
         params.set('endDate', range.endDate);
     }
 
-    const response = await fetch(`${getContextPath()}point/my/list?${params.toString()}`, {
+    const response = await fetch(`${getContextPath()}point/api/list?${params.toString()}`, {
         headers: { Accept: 'application/json' }
     });
 
