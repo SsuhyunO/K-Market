@@ -34,6 +34,7 @@ document.addEventListener("DOMContentLoaded", function () {
     initCouponRegisterValidation();
     initCouponDetailModal();
     initCouponEndButtons();
+    initCouponBenefitToggle();
 });
 
 function initCouponRegisterValidation() {
@@ -268,6 +269,46 @@ function initCouponEndButtons() {
                     console.error(err);
                 }
             });
+    });
+}
+
+function initCouponBenefitToggle() {
+    const typeSelect = document.getElementById("coupon-register-type");
+
+    if (typeSelect) {
+        typeSelect.addEventListener("change", () => applyCouponBenefitVisibility(typeSelect.value));
+        applyCouponBenefitVisibility(typeSelect.value);
+    } else {
+        // SELLER: couponType이 hidden input으로 PRODUCT 고정
+        applyCouponBenefitVisibility("PRODUCT");
+    }
+}
+
+function applyCouponBenefitVisibility(couponType) {
+    const form = document.getElementById("coupon-register-form");
+    if (!form) return;
+
+    const amountLabels = form.querySelectorAll('[data-benefit-kind="amount"]');
+    const deliveryLabels = form.querySelectorAll('[data-benefit-kind="delivery"]');
+    const isDelivery = couponType === "DELIVERY";
+
+    toggleBenefitGroup(amountLabels, !isDelivery);
+    toggleBenefitGroup(deliveryLabels, isDelivery);
+
+    if (isDelivery) {
+        const deliveryInput = deliveryLabels[0]?.querySelector("input");
+        if (deliveryInput) deliveryInput.checked = true;
+    }
+
+    FormValidation.clearFieldError(form, "coupon-register-benefit");
+}
+
+function toggleBenefitGroup(labels, show) {
+    labels.forEach(label => {
+        label.style.display = show ? "" : "none";
+        const input = label.querySelector("input");
+        input.disabled = !show;
+        if (!show) input.checked = false;
     });
 }
 
