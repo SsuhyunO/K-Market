@@ -17,6 +17,7 @@ public class OrderItemDTO {
     private int price;
     private int total;
     private int prodNo;
+    private int shippingFee;
 
     public OrderItem toEntity() {
         return OrderItem.builder()

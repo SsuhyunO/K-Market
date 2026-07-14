@@ -157,7 +157,7 @@
             <section class="my-section">
                 <div class="section-header">
                     <span class="section-title">포인트적립내역</span>
-                    <a href="/my/points" class="btn-more">더보기 &gt;</a>
+                    <a th:href="@{/my/point}" class="btn-more">더보기 &gt;</a>
                 </div>
                 <table class="point-table">
                     <thead>
@@ -171,21 +171,25 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr>
-                        <td>2022-12-13</td>
-                        <td>적립</td>
-                        <td>2022121001</td>
-                        <td class="point-plus">340</td>
-                        <td>상품 구매확정</td>
-                        <td>2024-12-10</td>
+                    <tr th:if="${#lists.isEmpty(pointList)}">
+                        <td colspan="6" style="text-align: center; padding: 20px 0;">최근 적립된 포인트 내역이 없습니다.</td>
                     </tr>
-                    <tr>
-                        <td>2022-12-13</td>
-                        <td>적립</td>
-                        <td>2022120601</td>
-                        <td class="point-plus">120</td>
-                        <td>상품 구매확정</td>
-                        <td>2024-12-06</td>
+
+                    <tr th:each="point : ${pointList}">
+                        <td th:text="${#strings.substring(point.createdAt, 0, 10)}">2022-12-13</td>
+
+                        <td th:text="${point.content}">적립</td>
+
+                        <td th:text="${point.orderNo != null ? point.orderNo : '-'}">2022121001</td>
+
+                        <td class="point-plus" th:text="${#numbers.formatInteger(point.point, 0, 'COMMA')}">340</td>
+
+                        <td th:text="${point.note}">상품 구매확정</td>
+
+                        <td>
+                            <span th:if="${point.expireDate != null}" th:text="${#strings.substring(point.expireDate, 0, 10)}">2024-12-10</span>
+                            <span th:unless="${point.expireDate != null}">-</span>
+                        </td>
                     </tr>
                     </tbody>
                 </table>

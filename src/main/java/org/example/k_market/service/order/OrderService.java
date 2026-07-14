@@ -119,11 +119,28 @@ public class OrderService {
             return List.of();
         }
 
+        // 💡 추가: 같은 prodNo가 이미 배송비를 부과받았는지 체크
+        Set<Integer> shippingChargedProdNos = new HashSet<>();
+
         return cartRepository.findByMemberUidAndCartNoIn(memberUid, targetCartNos).stream()
-                .map(cart -> getOrderItemsDirect(cart.getProdVariantId(), cart.getCount()).getFirst().toBuilder()
-                        .cartNo(cart.getCartNo())
-                        .build())
+                .map(cart -> {
+                    OrderItemViewDTO baseItem = getOrderItemsDirect(cart.getProdVariantId(), cart.getCount()).getFirst();
+
+                    // 💡 추가: 이미 이 prodNo로 배송비가 부과됐으면 0원/무료로 덮어쓰기
+                    boolean alreadyCharged = !shippingChargedProdNos.add(baseItem.getProdNo());
+                    if (alreadyCharged) {
+                        baseItem = baseItem.toBuilder()
+                                .shippingFee(0)
+                                .freeShipping(true)
+                                .build();
+                    }
+
+                    return baseItem.toBuilder()
+                            .cartNo(cart.getCartNo())
+                            .build();
+                })
                 .toList();
+
     }
 
     public int calcProductTotal(List<OrderItemViewDTO> items) {
@@ -138,14 +155,7 @@ public class OrderService {
 
     public int calcShippingTotal(List<OrderItemViewDTO> items) {
         return items.stream()
-                .filter(i -> !i.isFreeShipping())
-                .collect(Collectors.toMap(
-                        OrderItemViewDTO::getProdNo,
-                        OrderItemViewDTO::getShippingFee,
-                        (a, b) -> a,          // 같은 prodNo면 첫 값 유지
-                        LinkedHashMap::new))
-                .values().stream()
-                .mapToInt(Integer::intValue)
+                .mapToInt(OrderItemViewDTO::getShippingFee)
                 .sum();
     }
 
@@ -167,8 +177,9 @@ public class OrderService {
         int productDiscount = 0;
         int totalEarnPoint = 0;
 
-        // 💡 prodNo별 배송비를 dedup해서 저장 (같은 상품의 옵션 여러 개 담아도 배송비는 1번만)
-        Map<Integer, Integer> shippingFeeByProdNo = new LinkedHashMap<>();
+        // 💡 변경: 같은 prodNo가 이미 배송비를 부과받았는지 체크
+        Set<Integer> shippingChargedProdNos = new HashSet<>();
+        int shippingFee = 0; // 💡 order 전체 합계는 여전히 필요 (포인트 계산 등에 사용)
 
         for (OrderItemRequestDTO itemReq : req.getItems()) {
             ProductVariant variant = variantRepository.findById(itemReq.getProdVariantId())
@@ -192,12 +203,21 @@ public class OrderService {
             int discountedUnitPrice = price * (100 - discountRate) / 100;
             int lineTotal = discountedUnitPrice * qty;
 
+            // 💡 추가: 같은 prodNo면 첫 아이템에만 배송비 부과, 나머지는 0
+            int itemShippingFee = 0;
+            if (shippingChargedProdNos.add(variant.getProdNo())) {
+                // add()가 true를 반환 = 이 prodNo가 처음 등장함
+                itemShippingFee = product.getDeliveryFee();
+                shippingFee += itemShippingFee;
+            }
+
             OrderItemDTO item = OrderItemDTO.builder()
                     .prodNo(variant.getProdNo())
                     .prodVariantId(variant.getId())
                     .count(qty)
                     .price(discountedUnitPrice)
                     .total(lineTotal)
+                    .shippingFee(itemShippingFee)   // 💡 추가
                     .build();
 
             orderItems.add(item);
@@ -205,12 +225,7 @@ public class OrderService {
             orderPrice += price * qty;
             productDiscount += (price - discountedUnitPrice) * qty;
             totalEarnPoint += point * qty;
-
-            // 💡 같은 prodNo면 한 번만 반영됨 (putIfAbsent)
-            shippingFeeByProdNo.putIfAbsent(variant.getProdNo(), product.getDeliveryFee());
         }
-
-        int shippingFee = shippingFeeByProdNo.values().stream().mapToInt(Integer::intValue).sum();
 
         // ===== 2. 쿠폰 검증 및 반영 =====
         int couponDiscount = 0;
@@ -296,6 +311,7 @@ public class OrderService {
 
             if (freeShipping) {
                 shippingFee = 0;
+                orderItems.forEach(item -> item.setShippingFee(0));  // 💡 추가
             }
 
             couponIssueService.markAsUsed(issueNo, memberUid);
@@ -327,7 +343,6 @@ public class OrderService {
                 .orderPrice(orderPrice)
                 .orderDiscount(productDiscount + couponDiscount)
                 .couponIssueId(req.getCouponIssueId())
-                .shippingFee(shippingFee)
                 .orderTotal(orderTotal)
                 .usedPoints(usedPoints)
                 .receiver(req.getReceiver())
@@ -445,6 +460,11 @@ public class OrderService {
         // 2. 주문에 속한 상품 리스트 조회 (orderDAO.selectOrderItemsByOrderNo)
         List<OrderItemDTO> savedItems = orderDAO.selectOrderItemsByOrderNo(orderNo);
 
+        // 💡 추가: order_item에서 직접 배송비 합산
+        int shippingTotal = savedItems.stream()
+                .mapToInt(OrderItemDTO::getShippingFee)
+                .sum();
+
         // 3. HTML(complete.html)에서 th:each="item : ${orderItems}" 구조에 맞게 View DTO로 가공
         List<OrderItemViewDTO> orderItems = savedItems.stream().map(item -> {
             // 기존 서비스 내 정의된 옵션 텍스트 및 썸네일 규칙 재활용
@@ -467,10 +487,10 @@ public class OrderService {
                     .optionText(optionText)
                     .quantity(item.getCount())
                     .price(product != null ? product.getPrice() : item.getPrice())
-                    // lineTotal은 쿠폰 배분 및 포인트 차감 등이 들어간 실제 DB의 아이템별 최종 total 금액 활용
                     .lineTotal(item.getTotal())
-                    // 수량별 할인 차액 계산용
                     .discountAmount(Math.max(0, discountAmount))
+                    .shippingFee(item.getShippingFee())          // 💡 추가 (선택)
+                    .freeShipping(item.getShippingFee() == 0)    // 💡 추가 (선택)
                     .build();
         }).collect(Collectors.toList());
 
@@ -512,11 +532,7 @@ public class OrderService {
         result.put("recvName", order.getReceiver());
         result.put("recvPhone", order.getPhone());
         result.put("recvFullAddr", recvFullAddr);
-
-        // 배송비는 전체 금액 공식 구조 상 역산 처리 가능 혹은 DB 컬럼 설계에 맞춰 세팅
-        // 공식: finalPrice = productTotal - discountTotal - usedPoints + shippingTotal
-        int shippingTotal = finalPrice - (productTotal - discountTotal - usedPoints);
-        result.put("shippingTotal", Math.max(0, shippingTotal));
+        result.put("shippingTotal", shippingTotal);
 
         return result;
     }
