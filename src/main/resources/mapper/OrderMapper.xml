@@ -6,22 +6,22 @@
             useGeneratedKeys="true" keyProperty="orderNo">
         INSERT INTO `order` (
             memberUid, orderPrice, orderDiscount, couponIssueId,
-            orderTotal, usedPoints, shippingFee,
+            orderTotal, usedPoints,
             receiver, phone, zipCode, addr1, addr2,
             payMethod, status, orderNote, createdAt
         ) VALUES (
                      #{memberUid}, #{orderPrice}, #{orderDiscount}, #{couponIssueId},
-                     #{orderTotal}, #{usedPoints}, #{shippingFee},
+                     #{orderTotal}, #{usedPoints},
                      #{receiver}, #{phone}, #{zipCode}, #{addr1}, #{addr2},
                      #{payMethod}, #{status}, #{orderNote}, NOW()
                  )
     </insert>
 
     <insert id="insertOrderItems">
-        INSERT INTO order_item (orderNo, prodVariantId, count, price, total)
+        INSERT INTO order_item (orderNo, prodVariantId, count, price, total, shipping_fee)
         VALUES
         <foreach collection="items" item="item" separator=",">
-            (#{item.orderNo}, #{item.prodVariantId}, #{item.count}, #{item.price}, #{item.total})
+            (#{item.orderNo}, #{item.prodVariantId}, #{item.count}, #{item.price}, #{item.total}, #{item.shippingFee})
         </foreach>
     </insert>
 
@@ -51,7 +51,8 @@
             prodVariantId,
             count,
             price,
-            total
+            total,
+            shipping_fee
         FROM `order_item`
         WHERE orderNo = #{orderNo}
     </select>

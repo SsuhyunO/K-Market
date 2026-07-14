@@ -28,7 +28,7 @@
             <div class="summary-divider"></div>
             <div class="summary-item">
                 <span class="summary-label">쿠폰</span>
-                <span class="summary-num" th:text="${#lists.size(coupons)}">1</span>
+                <span class="summary-num">1</span>
             </div>
             <div class="summary-divider"></div>
             <div class="summary-item">
@@ -75,48 +75,6 @@
             <section class="my-section">
                 <div class="section-header">
                     <span class="section-title">쿠폰내역</span>
-                </div>
-
-                <!-- 기간별조회 -->
-                <div class="period-search">
-                    <span class="period-search-label">기간별조회</span>
-
-                    <div class="period-group">
-                        <label class="period-radio">
-                            <input type="radio" name="periodType" value="week" data-days="7">
-                            1 주일
-                        </label>
-                        <label class="period-radio">
-                            <input type="radio" name="periodType" value="halfmonth" data-days="15">
-                            15 일
-                        </label>
-                        <label class="period-radio">
-                            <input type="radio" name="periodType" value="month" data-days="30" checked>
-                            1 개월
-                        </label>
-                    </div>
-
-                    <div class="period-divider"></div>
-
-                    <div class="period-group">
-                        <select id="periodMonthSelect" class="period-select">
-                            <option value="0">이번 달</option>
-                            <option value="1">1 개월 전</option>
-                            <option value="2">2 개월 전</option>
-                            <option value="3">3 개월 전</option>
-                            <option value="4">4 개월 전</option>
-                        </select>
-                    </div>
-
-                    <div class="period-divider"></div>
-
-                    <div class="period-group period-range">
-                        <input type="date" id="periodStartDate" class="period-date-input">
-                        <span class="period-range-tilde">~</span>
-                        <input type="date" id="periodEndDate" class="period-date-input">
-                    </div>
-
-                    <button type="button" class="btn-period-search" id="periodSearchBtn">조회</button>
                 </div>
 
                 <table class="coupon-table">
