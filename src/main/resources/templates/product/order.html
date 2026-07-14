@@ -93,7 +93,7 @@
                 <td>
                     <div class="product-cell">
                         <div class="product-thumb">
-                            <img th:if="${item.thumbnailUrl}" th:src="${item.thumbnailUrl}" alt="">
+                            <img th:if="${item.thumbnailUrl}" th:src="@{${item.thumbnailUrl}}" alt="">
                             <span th:unless="${item.thumbnailUrl}">📷</span>
                         </div>
                         <div class="product-name-wrap">

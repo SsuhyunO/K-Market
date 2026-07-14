@@ -1,3 +1,6 @@
+import { initPagination } from '../global/pagination.js';
+import { escapeHtml } from '../global/htmlUtils.js';
+
  // ===== 모달 스택 관리 (home.html과 동일) =====
     const modalStack = [];
 
@@ -65,54 +68,6 @@
         });
     }
 
-    // =====================================================
-    // ===== 나의리뷰: 더미 데이터 / 페이지네이션(5개 그룹 이동) =====
-    // =====================================================
-
-    const PAGE_SIZE = 10;
-    const TOTAL_REVIEWS = 150; // 총 15페이지 (10건씩)
-    const TOTAL_PAGES = Math.ceil(TOTAL_REVIEWS / PAGE_SIZE);
-    const PAGES_PER_GROUP = 5; // 페이지번호 5개씩 그룹 이동
-
-    const today = new Date();
-
-    function formatDate(d) {
-        const y = d.getFullYear();
-        const m = String(d.getMonth() + 1).padStart(2, '0');
-        const day = String(d.getDate()).padStart(2, '0');
-        return y + '-' + m + '-' + day;
-    }
-
-    const reviewContents = [
-        '배송이 빠릅니다. 잘 사용하겠습니다.',
-        '배송이 빠릅니다. 잘 사용하 겠습니다 .',
-        '생각보다 품질이 좋아서 만족합니다.',
-        '가격대비 괜찮은 것 같아요.',
-        '재구매 의사 있습니다.'
-    ];
-
-    // ---- 더미 리뷰 데이터 150건 생성 ----
-    const reviewData = [];
-
-    for (let i = 0; i < TOTAL_REVIEWS; i++) {
-        const d = new Date(today);
-        d.setDate(d.getDate() - i * 2); // 2일 간격으로 과거 분산
-
-        const rating = 3 + (i % 3); // 3~5점 사이 분산
-        const productCode = String(100000 + i);
-
-        reviewData.push({
-            no: i + 1,
-            productCode: productCode,
-            productName: '상품명',
-            content: reviewContents[i % reviewContents.length],
-            rating: rating,
-            date: formatDate(d)
-        });
-    }
-
-    let currentPage = 1;
-
     // ---- 별점 HTML 생성 (채워진 별 노란색 / 빈 별 회색) ----
     function buildStarHtml(rating) {
         let html = '';
@@ -124,30 +79,52 @@
         return html;
     }
 
+    async function loadReviews(page) {
+        const params = new URLSearchParams();
+        params.set('page', page);
+
+        const response = await fetch(`${getContextPath()}review/my/list?${params.toString()}`, {
+            headers: { Accept: 'application/json' }
+        });
+
+        if (!response.ok) {
+            throw new Error('리뷰 목록 조회 실패: ' + response.status);
+        }
+
+        const currentPageData = await response.json();
+        renderReviewRows(currentPageData);
+        return currentPageData;
+    }
+
     // ---- 리뷰 행 렌더링 ----
-    function renderReviewRows() {
+    function renderReviewRows(pageData) {
         const tbody = document.getElementById('reviewListBody');
         tbody.innerHTML = '';
 
-        const startIdx = (currentPage - 1) * PAGE_SIZE;
-        const pageItems = reviewData.slice(startIdx, startIdx + PAGE_SIZE);
+        const pageItems = pageData?.list || [];
+        if (pageItems.length === 0) {
+            const tr = document.createElement('tr');
+            tr.innerHTML = '<td colspan="5">작성한 상품평이 없습니다.</td>';
+            tbody.appendChild(tr);
+            return;
+        }
 
         pageItems.forEach(function (item) {
             const tr = document.createElement('tr');
             tr.className = 'js-review-row';
-            tr.setAttribute('data-no', item.no);
-            tr.setAttribute('data-product-code', item.productCode);
+            tr.setAttribute('data-no', item.reviewNo);
+            tr.setAttribute('data-product-code', item.productNo);
             tr.setAttribute('data-product-name', item.productName);
             tr.setAttribute('data-content', item.content);
             tr.setAttribute('data-rating', item.rating);
-            tr.setAttribute('data-date', item.date);
+            tr.setAttribute('data-date', item.createdAt);
 
             tr.innerHTML = `
-                <td class="review-no">${item.no}</td>
-                <td class="review-product"><a href="#" class="js-review-detail">상품번호 / 상품명</a></td>
-                <td class="review-content js-review-detail">${item.content}</td>
+                <td class="review-no">${escapeHtml(item.reviewNo)}</td>
+                <td class="review-product"><a href="#" class="js-review-detail">${escapeHtml(item.productNo)} / ${escapeHtml(item.productName)}</a></td>
+                <td class="review-content js-review-detail">${escapeHtml(item.content)}</td>
                 <td class="review-rating">${buildStarHtml(item.rating)}</td>
-                <td class="review-date">${item.date}</td>
+                <td class="review-date">${escapeHtml(item.createdAt)}</td>
             `;
 
             tbody.appendChild(tr);
@@ -156,63 +133,18 @@
         bindReviewDetailLinks();
     }
 
-    // ---- 페이지네이션 렌더링 (5개씩 그룹 이동) ----
-    function renderPagination() {
-        const pageNumbersEl = document.getElementById('pageNumbers');
-        pageNumbersEl.innerHTML = '';
-
-        const currentGroup = Math.ceil(currentPage / PAGES_PER_GROUP);
-        const groupStart = (currentGroup - 1) * PAGES_PER_GROUP + 1;
-        const groupEnd = Math.min(groupStart + PAGES_PER_GROUP - 1, TOTAL_PAGES);
-
-        for (let p = groupStart; p <= groupEnd; p++) {
-            const a = document.createElement('a');
-            a.href = '#';
-            a.textContent = p;
-            a.className = 'page-num' + (p === currentPage ? ' active' : '');
-            a.addEventListener('click', function (e) {
-                e.preventDefault();
-                currentPage = p;
-                renderReviewRows();
-                renderPagination();
-            });
-            pageNumbersEl.appendChild(a);
-        }
-
-        const isFirstGroup = groupStart === 1;
-        const isLastGroup = groupEnd === TOTAL_PAGES;
-
-        document.getElementById('pagePrev').classList.toggle('disabled', isFirstGroup);
-        document.getElementById('pageNext').classList.toggle('disabled', isLastGroup);
+    function getContextPath() {
+        return document.querySelector('meta[name="context-path"]')?.content || '/';
     }
 
-    // "이전" → 현재 그룹의 첫 페이지 이전 그룹 마지막 페이지로 이동 (그룹 단위 이동)
-    document.getElementById('pagePrev').addEventListener('click', function (e) {
-        e.preventDefault();
-        const currentGroup = Math.ceil(currentPage / PAGES_PER_GROUP);
-        const groupStart = (currentGroup - 1) * PAGES_PER_GROUP + 1;
+    function handleReviewLoadError(error) {
+        console.error(error);
+        const tbody = document.getElementById('reviewListBody');
+        tbody.innerHTML = '<tr><td colspan="5">작성한 상품평이 없습니다.</td></tr>';
+    }
 
-        if (groupStart === 1) return; // 이미 첫 그룹
-
-        currentPage = groupStart - 1; // 이전 그룹의 마지막 페이지
-        renderReviewRows();
-        renderPagination();
+    initPagination({
+        selector: '#pagination',
+        fetchPage: loadReviews,
+        onError: handleReviewLoadError
     });
-
-    // "다음" → 다음 그룹의 첫 페이지로 이동
-    document.getElementById('pageNext').addEventListener('click', function (e) {
-        e.preventDefault();
-        const currentGroup = Math.ceil(currentPage / PAGES_PER_GROUP);
-        const groupStart = (currentGroup - 1) * PAGES_PER_GROUP + 1;
-        const groupEnd = Math.min(groupStart + PAGES_PER_GROUP - 1, TOTAL_PAGES);
-
-        if (groupEnd === TOTAL_PAGES) return; // 이미 마지막 그룹
-
-        currentPage = groupEnd + 1; // 다음 그룹의 첫 페이지
-        renderReviewRows();
-        renderPagination();
-    });
-
-    // ---- 초기 렌더링 ----
-    renderReviewRows();
-    renderPagination();

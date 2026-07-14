@@ -240,17 +240,49 @@
             </table>
         </article>
 
-        <article id="review" class="content-section">
+        <article id="review" class="content-section" th:attr="data-product-no=${page.product().prodNo}">
             <h3 class="sec-title">상품리뷰</h3>
             <div class="review-empty">
                 <span class="stars" th:text="${page.product().ratingStars}">☆☆☆☆☆</span>
                 <span th:text="${#numbers.formatDecimal(page.product().rating, 1, 1)} + ' / 5.0'">0.0 / 5.0</span>
                 <span th:text="'리뷰 ' + ${#numbers.formatInteger(page.product().reviewCount, 0, 'COMMA')} + '건'">리뷰 0건</span>
             </div>
+            <div class="review-list" data-review-list></div>
+            <nav class="review-pagination" data-review-pagination></nav>
         </article>
 
         <footer th:replace="~{fragments/footer :: footer}"></footer>
     </main>
+</div>
+
+<div class="review-detail-modal" id="productReviewDetailModal" hidden>
+    <div class="review-detail-box" role="dialog" aria-modal="true" aria-labelledby="productReviewDetailTitle">
+        <div class="review-detail-header">
+            <strong id="productReviewDetailTitle">상품평 상세</strong>
+            <button type="button" class="review-detail-close" data-review-detail-close>&times;</button>
+        </div>
+        <div class="review-detail-body">
+            <div class="review-detail-meta">
+                <span id="productReviewDetailStars" class="stars"></span>
+                <span id="productReviewDetailMember"></span>
+                <span id="productReviewDetailDate"></span>
+            </div>
+            <dl class="review-detail-info">
+                <div>
+                    <dt>상품번호</dt>
+                    <dd id="productReviewDetailProductNo"></dd>
+                </div>
+                <div>
+                    <dt>상품명</dt>
+                    <dd id="productReviewDetailProductName"></dd>
+                </div>
+                <div>
+                    <dt>내용</dt>
+                    <dd id="productReviewDetailContent"></dd>
+                </div>
+            </dl>
+        </div>
+    </div>
 </div>
 
 <script th:src="@{/js/common.js}"></script>
