@@ -1,138 +1,56 @@
-<!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title>케이마켓 고객센터 - 문의하기</title>
-    <link rel="stylesheet" th:href="@{/css/cs/qnaList.css}">
-</head>
-<body>
-<div id="wrapper">
+<!DOCTYPE html><html lang="ko" xmlns:th="http://www.thymeleaf.org"><head><meta charset="UTF-8"><title>문의하기 - 케이마켓 고객센터</title>
+<link rel="stylesheet" th:href="@{/css/cs/cs-common.css}">
+<link rel="stylesheet" th:href="@{/css/cs/qnaList.css}"></head><body><div id="wrapper">
+<header>
+  <div class="header-top">
+    <a th:href="@{/member/login}">로그인</a>
+    <a th:href="@{/member/register}">회원가입</a>
+    <a th:href="@{/my/home}">마이페이지</a>
+    <a th:href="@{/cart}">장바구니</a>
+  </div>
+  <div class="logo-area"><a th:href="@{/}" class="logo-box">CI ( 로고 )</a></div>
+</header>
 
-    <header>
-        <div class="header-top">
-            <a href="#">로그인</a>
-            <a href="#">회원가입</a>
-            <a href="#">마이페이지</a>
-            <a href="#">장바구니</a>
-        </div>
-
-        <div class="logo-area">
-            <a href="./index.html" class="logo-box">CI ( 로고 )</a>
-        </div>
-    </header>
-
-    <div class="breadcrumb">
-        홈 &gt; 문의하기
+<div class="breadcrumb"><a th:href="@{/}">홈</a><span>&gt;</span><a th:href="@{/cs/index}">고객센터</a><span>&gt;</span><span>문의하기</span></div>
+<main><div class="cs-flex">
+<aside class="cs-aside"><h2>문의하기</h2><ul>
+<li><a th:href="@{/cs/qnaList}" th:classappend="${selectedCategory1==null or selectedCategory1.isBlank()}?' active':''">전체</a></li>
+<li><a th:href="@{/cs/qnaList(category1='회원')}" th:classappend="${selectedCategory1=='회원'}?' active':''">회원</a></li>
+<li><a th:href="@{/cs/qnaList(category1='쿠폰 / 이벤트')}" th:classappend="${selectedCategory1=='쿠폰 / 이벤트'}?' active':''">쿠폰 / 이벤트</a></li>
+<li><a th:href="@{/cs/qnaList(category1='주문 / 결제')}" th:classappend="${selectedCategory1=='주문 / 결제'}?' active':''">주문 / 결제</a></li>
+<li><a th:href="@{/cs/qnaList(category1='배송')}" th:classappend="${selectedCategory1=='배송'}?' active':''">배송</a></li>
+<li><a th:href="@{/cs/qnaList(category1='취소 / 반품 / 환불')}" th:classappend="${selectedCategory1=='취소 / 반품 / 환불'}?' active':''">취소 / 반품 / 환불</a></li>
+<li><a th:href="@{/cs/qnaList(category1='여행 / 숙박 / 항공')}" th:classappend="${selectedCategory1=='여행 / 숙박 / 항공'}?' active':''">여행 / 숙박 / 항공</a></li>
+<li><a th:href="@{/cs/qnaList(category1='안전거래')}" th:classappend="${selectedCategory1=='안전거래'}?' active':''">안전거래</a></li>
+</ul></aside>
+<section class="cs-content">
+<div class="content-heading"><div><h2 th:text="${selectedCategory1!=null and !selectedCategory1.isBlank()?selectedCategory1:'전체'}">전체</h2><p class="desc">고객 문의 내역을 확인할 수 있습니다.</p></div><a th:href="@{/cs/index}" class="cs-home-link">고객센터 홈</a></div>
+<table class="table"><thead><tr><th>문의 내용</th><th>상태</th><th>작성자</th><th>작성일</th></tr></thead><tbody>
+<tr th:each="qna:${qnaList}"><td class="title-cell"><a th:href="@{/cs/qnaView(boardNo=${qna.boardNo})}" th:text="|[${qna.category2}] ${qna.title}|">문의</a></td><td class="status-cell"><span class="status" th:classappend="${qna.answered}?' answered':' waiting'" th:text="${qna.status}">검토중</span></td><td class="writer-cell" th:text="${qna.maskedMemberUid}">-</td><td class="date-cell" th:text="${qna.createdAt!=null?#temporals.format(qna.createdAt,'yy.MM.dd'):'-'}">-</td></tr>
+<tr th:if="${qnaList==null or #lists.isEmpty(qnaList)}"><td colspan="4" class="empty-row">등록된 문의글이 없습니다.</td></tr>
+</tbody></table>
+<div class="pagination" th:if="${pageInfo!=null and pageInfo.totalPages>0}">
+<a th:if="${pageInfo.currentPage>1}" th:href="@{/cs/qnaList(page=${pageInfo.currentPage-1},category1=${selectedCategory1},category2=${selectedCategory2})}" class="page-direction">이전</a><span th:unless="${pageInfo.currentPage>1}" class="page-direction disabled">이전</span>
+<th:block th:each="n:${#numbers.sequence(pageInfo.startPage,pageInfo.endPage)}"><a th:href="@{/cs/qnaList(page=${n},category1=${selectedCategory1},category2=${selectedCategory2})}" th:text="${n}" th:classappend="${n==pageInfo.currentPage}?' active':''">1</a></th:block>
+<a th:if="${pageInfo.currentPage<pageInfo.totalPages}" th:href="@{/cs/qnaList(page=${pageInfo.currentPage+1},category1=${selectedCategory1},category2=${selectedCategory2})}" class="page-direction">다음</a><span th:unless="${pageInfo.currentPage<pageInfo.totalPages}" class="page-direction disabled">다음</span>
+</div><div class="btn-area"><a th:href="@{/cs/qnaWrite}" class="btn btn-red">문의하기</a></div>
+</section></div></main>
+<footer>
+  <div class="footer-menu">
+    <a th:href="@{/company/index}">회사소개</a>
+    <a th:href="@{/policy/terms}">서비스이용약관</a>
+    <a th:href="@{/policy/privacy}">개인정보처리방침</a>
+    <a th:href="@{/policy/finance}">전자금융거래약관</a>
+  </div>
+  <div class="footer-info">
+    <div class="footer-logo">이미지</div>
+    <div class="company-info">
+      <strong>(주)케이마켓</strong><br>
+      부산광역시 부산진구 중앙대로 300<br>
+      대표이사 : 홍길동<br>
+      사업자등록번호 : 123-45-12345
     </div>
-
-    <main>
-        <div class="cs-flex">
-
-            <aside class="cs-aside">
-                <h2>문의하기</h2>
-                <ul>
-                    <li><a href="#" class="active">회원</a></li>
-                    <li><a href="#">쿠폰 / 이벤트</a></li>
-                    <li><a href="#">주문 / 결제</a></li>
-                    <li><a href="#">배송</a></li>
-                    <li><a href="#">취소 / 반품 / 환불</a></li>
-                    <li><a href="#">여행 / 숙박 / 항공</a></li>
-                    <li><a href="#">안전거래</a></li>
-                </ul>
-            </aside>
-
-            <section class="cs-content">
-                <h2>회원</h2>
-                <p class="desc">회원 관련 문의 내용입니다.</p>
-
-                <table class="qna-table">
-                    <tbody>
-                    <tr>
-                        <td class="title">
-                            <a href="./qna-view.html">[가입] 가입 문의 내용</a>
-                        </td>
-                        <td class="state">검토중</td>
-                        <td class="writer">chh**</td>
-                        <td class="date">22.10.31</td>
-                    </tr>
-                    <tr>
-                        <td class="title">
-                            <a href="./qna-view.html">[탈퇴] 탈퇴 문의 내용</a>
-                        </td>
-                        <td class="state">검토중</td>
-                        <td class="writer">chh**</td>
-                        <td class="date">22.10.31</td>
-                    </tr>
-                    <tr>
-                        <td class="title">
-                            <a href="./qna-view.html">[회원정보] 회원정보 문의 내용</a>
-                        </td>
-                        <td class="state">답변완료</td>
-                        <td class="writer">chh**</td>
-                        <td class="date">22.10.31</td>
-                    </tr>
-                    <tr>
-                        <td class="title">
-                            <a href="./qna-view.html">[로그인] 로그인 문의 내용</a>
-                        </td>
-                        <td class="state">답변완료</td>
-                        <td class="writer">chh**</td>
-                        <td class="date">22.10.31</td>
-                    </tr>
-                    <tr>
-                        <td class="title">
-                            <a href="./qna-view.html">[회원정보] 비밀번호 변경 문의</a>
-                        </td>
-                        <td class="state">답변완료</td>
-                        <td class="writer">chh**</td>
-                        <td class="date">22.10.31</td>
-                    </tr>
-                    </tbody>
-                </table>
-
-                <div class="pagination">
-                    <a href="#">이전</a>
-                    <a href="#" class="active">1</a>
-                    <a href="#">2</a>
-                    <a href="#">3</a>
-                    <a href="#">4</a>
-                    <a href="#">5</a>
-                    <a href="#">다음</a>
-                </div>
-
-                <div class="qna-write-btn">
-                    <a href="./qna-write.html" class="btn btn-blue">문의하기</a>
-                </div>
-            </section>
-
-        </div>
-    </main>
-
-    <footer>
-        <div class="footer-menu">
-            <a href="#">회사소개</a>
-            <a href="#">서비스이용약관</a>
-            <a href="#">개인정보처리방침</a>
-            <a href="#">전자금융거래약관</a>
-        </div>
-
-        <div class="footer-info">
-            <div class="footer-logo">이미지</div>
-
-            <div class="company-info">
-                <strong>(주)케이마켓</strong><br>
-                부산광역시 부산진구 중앙대로 300<br>
-                대표이사 : 홍길동<br>
-                사업자등록번호 : 123-45-12345
-            </div>
-
-            <div class="customer-info">
-                <h3>고객센터</h3>
-                Tel : 1234-5678<br>
-                평일 09:00 ~ 18:00
-            </div>
-        </div>
-    </footer>
-</div>
-</body>
-</html>
+    <div class="customer-info"><h3>고객센터</h3>Tel : 1234-5678<br>평일 09:00 ~ 18:00</div>
+  </div>
+</footer>
+</div></body></html>

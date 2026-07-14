@@ -21,48 +21,127 @@ public class FaqService {
 
     private final FaqDAO faqDAO;
 
+
+    /* =========================================================
+       FAQ 목록
+       ========================================================= */
+
+    /**
+     * 기존 코드 호환용
+     */
     public List<FaqDTO> getFaqList(
             int page,
             String category1
     ) {
+        return getFaqList(
+                page,
+                category1,
+                null
+        );
+    }
+
+    /**
+     * FAQ 1차·2차 유형별 목록
+     */
+    public List<FaqDTO> getFaqList(
+            int page,
+            String category1,
+            String category2
+    ) {
         int safePage = Math.max(page, 1);
         int offset = (safePage - 1) * PAGE_SIZE;
 
-        String safeCategory = normalizeCategory(category1);
+        String safeCategory1 =
+                normalize(category1);
+
+        String safeCategory2 =
+                normalize(category2);
+
+        if (safeCategory1 == null) {
+            safeCategory2 = null;
+        }
 
         return faqDAO.getFaqList(
                 offset,
                 PAGE_SIZE,
-                safeCategory
+                safeCategory1,
+                safeCategory2
         );
     }
 
+
+    /* =========================================================
+       FAQ 페이징
+       ========================================================= */
+
+    /**
+     * 기존 코드 호환용
+     */
     public PageInfo getPageInfo(
             int page,
             String category1
     ) {
-        int safePage = Math.max(page, 1);
-        String safeCategory = normalizeCategory(category1);
-
-        int totalCount = faqDAO.getTotalCount(safeCategory);
-
-        Page<FaqDTO> pageResult = new PageImpl<>(
-                List.of(),
-                PageRequest.of(safePage - 1, PAGE_SIZE),
-                totalCount
+        return getPageInfo(
+                page,
+                category1,
+                null
         );
+    }
+
+    /**
+     * FAQ 1차·2차 유형별 페이징
+     */
+    public PageInfo getPageInfo(
+            int page,
+            String category1,
+            String category2
+    ) {
+        int safePage = Math.max(page, 1);
+
+        String safeCategory1 =
+                normalize(category1);
+
+        String safeCategory2 =
+                normalize(category2);
+
+        if (safeCategory1 == null) {
+            safeCategory2 = null;
+        }
+
+        int totalCount =
+                faqDAO.getTotalCount(
+                        safeCategory1,
+                        safeCategory2
+                );
+
+        Page<FaqDTO> pageResult =
+                new PageImpl<>(
+                        List.of(),
+                        PageRequest.of(
+                                safePage - 1,
+                                PAGE_SIZE
+                        ),
+                        totalCount
+                );
 
         return new PageInfo(pageResult);
     }
 
+
+    /* =========================================================
+       상세 조회
+       ========================================================= */
+
     public FaqDTO getFaq(int boardNo) {
+
         if (boardNo <= 0) {
             throw new IllegalArgumentException(
                     "FAQ 번호가 올바르지 않습니다."
             );
         }
 
-        FaqDTO faq = faqDAO.getFaqByNo(boardNo);
+        FaqDTO faq =
+                faqDAO.getFaqByNo(boardNo);
 
         if (faq == null) {
             throw new IllegalArgumentException(
@@ -73,16 +152,26 @@ public class FaqService {
         return faq;
     }
 
+
+    /* =========================================================
+       등록
+       ========================================================= */
+
     @Transactional
     public void insertFaq(FaqDTO dto) {
+
         validateFaq(dto);
 
-        if (dto.getMemberUid() == null
-                || dto.getMemberUid().isBlank()) {
-            dto.setMemberUid("admin");
-        }
+        dto.setTitle(
+                dto.getTitle().trim()
+        );
 
-        int result = faqDAO.insertFaq(dto);
+        dto.setContent(
+                dto.getContent().trim()
+        );
+
+        int result =
+                faqDAO.insertFaq(dto);
 
         if (result == 0) {
             throw new IllegalStateException(
@@ -91,9 +180,17 @@ public class FaqService {
         }
     }
 
+
+    /* =========================================================
+       수정
+       ========================================================= */
+
     @Transactional
     public void updateFaq(FaqDTO dto) {
-        if (dto == null || dto.getBoardNo() <= 0) {
+
+        if (dto == null ||
+                dto.getBoardNo() <= 0) {
+
             throw new IllegalArgumentException(
                     "FAQ 번호가 올바르지 않습니다."
             );
@@ -101,70 +198,118 @@ public class FaqService {
 
         validateFaq(dto);
 
-        int result = faqDAO.updateFaq(dto);
+        dto.setTitle(
+                dto.getTitle().trim()
+        );
+
+        dto.setContent(
+                dto.getContent().trim()
+        );
+
+        int result =
+                faqDAO.updateFaq(dto);
 
         if (result == 0) {
             throw new IllegalArgumentException(
-                    "수정할 FAQ가 존재하지 않습니다."
+                    "수정할 FAQ가 없습니다."
             );
         }
     }
 
+
+    /* =========================================================
+       삭제
+       ========================================================= */
+
     @Transactional
-    public void deleteFaqs(List<Integer> boardNoList) {
-        if (boardNoList == null || boardNoList.isEmpty()) {
+    public void deleteFaqs(
+            List<Integer> boardNoList
+    ) {
+        if (boardNoList == null ||
+                boardNoList.isEmpty()) {
             return;
         }
 
-        faqDAO.deleteFaqs(boardNoList);
-    }
+        List<Integer> validBoardNoList =
+                boardNoList.stream()
+                        .filter(boardNo ->
+                                boardNo != null &&
+                                        boardNo > 0
+                        )
+                        .distinct()
+                        .toList();
 
-    private String normalizeCategory(String category1) {
-        if (category1 == null || category1.isBlank()) {
-            return null;
+        if (validBoardNoList.isEmpty()) {
+            return;
         }
 
-        return category1.trim();
+        faqDAO.deleteFaqs(
+                validBoardNoList
+        );
     }
 
+
+    /* =========================================================
+       검증
+       ========================================================= */
+
     private void validateFaq(FaqDTO dto) {
+
         if (dto == null) {
             throw new IllegalArgumentException(
                     "FAQ 정보가 없습니다."
             );
         }
 
-        if (dto.getBoardType() == null
-                || !dto.getBoardType().startsWith("faq/")) {
+        if (dto.getBoardType() == null ||
+                dto.getBoardType().isBlank() ||
+                !dto.getBoardType().startsWith("faq/")) {
+
             throw new IllegalArgumentException(
                     "FAQ 유형을 선택해주세요."
             );
         }
 
-        if (dto.getCategory1().isBlank()) {
+        if (dto.getCategory1() == null ||
+                dto.getCategory1().isBlank()) {
+
             throw new IllegalArgumentException(
-                    "1차 유형을 선택해주세요."
+                    "1차 FAQ 유형을 선택해주세요."
             );
         }
 
-        if (dto.getCategory2().isBlank()) {
+        if (dto.getCategory2() == null ||
+                dto.getCategory2().isBlank()) {
+
             throw new IllegalArgumentException(
-                    "2차 유형을 선택해주세요."
+                    "2차 FAQ 유형을 선택해주세요."
             );
         }
 
-        if (dto.getTitle() == null
-                || dto.getTitle().isBlank()) {
+        if (dto.getTitle() == null ||
+                dto.getTitle().isBlank()) {
+
             throw new IllegalArgumentException(
                     "FAQ 제목을 입력해주세요."
             );
         }
 
-        if (dto.getContent() == null
-                || dto.getContent().isBlank()) {
+        if (dto.getContent() == null ||
+                dto.getContent().isBlank()) {
+
             throw new IllegalArgumentException(
                     "FAQ 내용을 입력해주세요."
             );
         }
+    }
+
+    private String normalize(String value) {
+
+        if (value == null ||
+                value.isBlank()) {
+            return null;
+        }
+
+        return value.trim();
     }
 }
