@@ -1,220 +1,60 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title>케이마켓 고객센터</title>
+<head><meta charset="UTF-8"><title>케이마켓 고객센터</title>
+<link rel="stylesheet" th:href="@{/css/cs/cs-common.css}">
+<link rel="stylesheet" th:href="@{/css/cs/index.css}"></head>
+<body><div id="wrapper">
+<header>
+  <div class="header-top">
+    <a th:href="@{/member/login}">로그인</a>
+    <a th:href="@{/member/register}">회원가입</a>
+    <a th:href="@{/my/home}">마이페이지</a>
+    <a th:href="@{/cart}">장바구니</a>
+  </div>
+  <div class="logo-area"><a th:href="@{/}" class="logo-box">CI ( 로고 )</a></div>
+</header>
 
-    <!-- CSS 연결 -->
-    <link rel="stylesheet" th:href="@{/css/cs/index.css}">
-</head>
-<body>
-<div id="wrapper">
-
-    <!-- 헤더 -->
-    <header>
-        <div class="header-top">
-            <a th:href="@{/member/login}">로그인</a>
-            <a th:href="@{/member/join}">회원가입</a>
-            <a th:href="@{/my/home}">마이페이지</a>
-            <a th:href="@{/cart}">장바구니</a>
-        </div>
-
-        <div class="logo-area">
-            <a th:href="@{/}" class="logo-box">CI ( 로고 )</a>
-        </div>
-    </header>
-
-    <!-- 고객센터 메인 -->
-    <main class="cs-main cs-index">
-
-        <h1 class="cs-index-title">
-            <span>케이마켓</span> 이 도와드릴게요 !
-        </h1>
-
-        <!-- 공지사항 -->
-        <section class="cs-section">
-            <div class="cs-section-title">
-                <h3>공지사항</h3>
-                <a th:href="@{/cs/noticeList}" class="more">전체보기</a>
-            </div>
-
-            <ul class="notice-preview">
-                <li>
-                    <a th:href="@{/cs/noticeView}">[ 안내 ] 해외결제 사칭 문자주의</a>
-                    <span class="date">22.10.31</span>
-                </li>
-                <li>
-                    <a th:href="@{/cs/noticeView}">[ 안내 ] 해외결제 사칭 문자주의</a>
-                    <span class="date">22.10.31</span>
-                </li>
-                <li>
-                    <a th:href="@{/cs/noticeView}">[ 안내 ] 해외결제 사칭 문자주의</a>
-                    <span class="date">22.10.31</span>
-                </li>
-                <li>
-                    <a th:href="@{/cs/noticeView}">[ 안내 ] 해외결제 사칭 문자주의</a>
-                    <span class="date">22.10.31</span>
-                </li>
-                <li>
-                    <a th:href="@{/cs/noticeView}">[ 안내 ] 해외결제 사칭 문자주의</a>
-                    <span class="date">22.10.31</span>
-                </li>
-            </ul>
-        </section>
-
-        <!-- 자주하는 질문 -->
-        <section class="cs-section">
-            <div class="cs-section-title">
-                <h3>자주하는 질문</h3>
-                <a th:href="@{/cs/faqList}" class="more">전체보기</a>
-            </div>
-
-            <div class="faq-icons">
-                <a th:href="@{/cs/faqList}" class="faq-icon">
-                    <div class="faq-img">△</div>
-                    <p>회원</p>
-                </a>
-
-                <a th:href="@{/cs/faqList}" class="faq-icon">
-                    <div class="faq-img">△</div>
-                    <p>쿠폰 / 이벤트</p>
-                </a>
-
-                <a th:href="@{/cs/faqList}" class="faq-icon">
-                    <div class="faq-img">△</div>
-                    <p>주문 / 결제</p>
-                </a>
-
-                <a th:href="@{/cs/faqList}" class="faq-icon">
-                    <div class="faq-img">△</div>
-                    <p>배송</p>
-                </a>
-
-                <a th:href="@{/cs/faqList}" class="faq-icon">
-                    <div class="faq-img">△</div>
-                    <p>취소 / 반품 / 환불</p>
-                </a>
-
-                <a th:href="@{/cs/faqList}" class="faq-icon">
-                    <div class="faq-img">△</div>
-                    <p>안전결제</p>
-                </a>
-            </div>
-        </section>
-
-        <!-- 문의하기 -->
-        <section class="cs-section">
-            <div class="cs-section-title">
-                <h3>문의하기</h3>
-                <a th:href="@{/cs/qnaList}" class="more">전체보기</a>
-            </div>
-
-            <ul class="qna-preview">
-                <li>
-                    <a th:href="@{/cs/qnaView}">[ 회원 ] 개인회원과 법인회원에 차이가 있나요 ?</a>
-                    <span class="writer">chh**</span>
-                    <span class="date">22.10.31</span>
-                </li>
-
-                <li>
-                    <a th:href="@{/cs/qnaView}">[ 쿠폰 / 이벤트 ] 스마일포인트는 어디서 사용하나요 ?</a>
-                    <span class="writer">chh**</span>
-                    <span class="date">22.10.31</span>
-                </li>
-
-                <li>
-                    <a th:href="@{/cs/qnaView}">[ 배송 ] 주문한 상품은 언제 배송되나요 ?</a>
-                    <span class="writer">chh**</span>
-                    <span class="date">22.10.31</span>
-                </li>
-
-                <li>
-                    <a th:href="@{/cs/qnaView}">[ 주문 / 결제 ] 신용카드결제 중 오류가 난 경우 어떻게 하나요 ?</a>
-                    <span class="writer">chh**</span>
-                    <span class="date">22.10.31</span>
-                </li>
-
-                <li>
-                    <a th:href="@{/cs/qnaView}">[ 취소 / 반품 / 교환 ] 주문을 취소하고 싶어요 .</a>
-                    <span class="writer">chh**</span>
-                    <span class="date">22.10.31</span>
-                </li>
-            </ul>
-
-            <div class="qna-write-area">
-                <a th:href="@{/cs/qnaWrite}" class="qna-write-btn">문의글 작성 &gt;</a>
-            </div>
-        </section>
-
-        <!-- 1:1 상담안내 -->
-        <section class="cs-section cs-info-section">
-            <h3 class="cs-info-title">1:1 상담안내</h3>
-
-            <div class="cs-info-box-wrap">
-
-                <div class="cs-info-box">
-                    <h4>이용안내</h4>
-
-                    <div class="cs-info-content">
-                        <p>일반회원 / 비회원</p>
-                        <strong>1566 - 0001</strong>
-                        <span>평일&nbsp;&nbsp;09:00 ~ 18:00</span>
-                    </div>
-
-                    <div class="cs-info-content">
-                        <p>스마일클럽 전용</p>
-                        <strong>1566 - 0002</strong>
-                        <span>365일&nbsp;&nbsp;09:00 ~ 18:00</span>
-                    </div>
-                </div>
-
-                <div class="cs-info-box">
-                    <h4>판매상담이용안내</h4>
-
-                    <div class="cs-info-content">
-                        <p>판매고객</p>
-                        <strong>1566 - 5700</strong>
-                        <span>평일&nbsp;&nbsp;09:00 ~ 18:00</span>
-                    </div>
-
-                    <div class="cs-info-content">
-                        <h5>판매자가입 및 서류접수안내</h5>
-                    </div>
-                </div>
-
-            </div>
-        </section>
-
-    </main>
-
-    <!-- 푸터 -->
-    <footer>
-        <div class="footer-menu">
-            <a th:href="@{/company/index}">회사소개</a>
-            <a th:href="@{/policy/terms}">서비스이용약관</a>
-            <a th:href="@{/policy/privacy}">개인정보처리방침</a>
-            <a th:href="@{/policy/finance}">전자금융거래약관</a>
-        </div>
-
-        <div class="footer-content">
-            <div class="footer-logo">
-                <div class="footer-img">이미지</div>
-            </div>
-
-            <div class="company-info">
-                <h4>(주)케이마켓</h4>
-                <p>부산광역시 부산진구 중앙대로 300</p>
-                <p>대표이사 : 홍길동</p>
-                <p>사업자등록번호 : 123-45-12345</p>
-            </div>
-
-            <div class="customer-info">
-                <h4>고객센터</h4>
-                <p>Tel : 1234-5678 평일 09:00~18:00</p>
-                <p>전자금융거래 분쟁 담당 : 1234-1234 평일 09:00~18:00</p>
-            </div>
-        </div>
-    </footer>
-</div>
-</body>
-</html>
+<main class="cs-index">
+<h1 class="cs-index-title"><span>케이마켓</span>이 도와드릴게요!</h1>
+<section class="cs-section"><div class="cs-section-title"><h3>공지사항</h3><a th:href="@{/cs/noticeList}" class="more">전체보기</a></div>
+<ul class="notice-preview">
+<li th:each="notice:${noticeList}"><a th:href="@{/cs/noticeView(boardNo=${notice.boardNo})}" th:text="|[${notice.type}] ${notice.title}|">공지</a><span class="date" th:text="${notice.createdAt!=null?#temporals.format(notice.createdAt,'yy.MM.dd'):'-'}">-</span></li>
+<li th:if="${noticeList==null or #lists.isEmpty(noticeList)}">등록된 공지사항이 없습니다.</li>
+</ul></section>
+<section class="cs-section"><div class="cs-section-title"><h3>자주하는 질문</h3><a th:href="@{/cs/faqList}" class="more">전체보기</a></div>
+<div class="faq-icons">
+<a th:href="@{/cs/faqList(category1='회원')}" class="faq-icon"><div class="faq-img">👤</div><p>회원</p></a>
+<a th:href="@{/cs/faqList(category1='쿠폰 / 이벤트')}" class="faq-icon"><div class="faq-img">🎟</div><p>쿠폰/이벤트</p></a>
+<a th:href="@{/cs/faqList(category1='주문 / 결제')}" class="faq-icon"><div class="faq-img">💳</div><p>주문/결제</p></a>
+<a th:href="@{/cs/faqList(category1='배송')}" class="faq-icon"><div class="faq-img">🚚</div><p>배송</p></a>
+<a th:href="@{/cs/faqList(category1='취소 / 반품 / 환불')}" class="faq-icon"><div class="faq-img">↩</div><p>취소/반품</p></a>
+<a th:href="@{/cs/faqList(category1='안전거래')}" class="faq-icon"><div class="faq-img">🛡</div><p>안전거래</p></a>
+</div></section>
+<section class="cs-section"><div class="cs-section-title"><h3>문의하기</h3><a th:href="@{/cs/qnaList}" class="more">전체보기</a></div>
+<ul class="qna-preview">
+<li th:each="qna:${qnaList}"><a th:href="@{/cs/qnaView(boardNo=${qna.boardNo})}" th:text="|[${qna.category1}] ${qna.title}|">문의</a><span class="writer" th:text="${qna.maskedMemberUid}">-</span><span class="date" th:text="${qna.createdAt!=null?#temporals.format(qna.createdAt,'yy.MM.dd'):'-'}">-</span></li>
+<li th:if="${qnaList==null or #lists.isEmpty(qnaList)}">등록된 문의글이 없습니다.</li>
+</ul><div class="qna-write-area"><a th:href="@{/cs/qnaWrite}" class="qna-write-btn">문의글 작성 &gt;</a></div></section>
+<section class="cs-section"><div class="cs-section-title"><h3>1:1 상담안내</h3></div><div class="cs-info-box-wrap">
+<div class="cs-info-box"><h4>이용안내</h4><div class="cs-info-content"><p>일반회원 / 비회원</p><strong>1566-0001</strong><span>평일 09:00 ~ 18:00</span></div></div>
+<div class="cs-info-box"><h4>판매상담 이용안내</h4><div class="cs-info-content"><p>판매고객</p><strong>1566-5700</strong><span>평일 09:00 ~ 18:00</span></div></div>
+</div></section></main>
+<footer>
+  <div class="footer-menu">
+    <a th:href="@{/company/index}">회사소개</a>
+    <a th:href="@{/policy/terms}">서비스이용약관</a>
+    <a th:href="@{/policy/privacy}">개인정보처리방침</a>
+    <a th:href="@{/policy/finance}">전자금융거래약관</a>
+  </div>
+  <div class="footer-info">
+    <div class="footer-logo">이미지</div>
+    <div class="company-info">
+      <strong>(주)케이마켓</strong><br>
+      부산광역시 부산진구 중앙대로 300<br>
+      대표이사 : 홍길동<br>
+      사업자등록번호 : 123-45-12345
+    </div>
+    <div class="customer-info"><h3>고객센터</h3>Tel : 1234-5678<br>평일 09:00 ~ 18:00</div>
+  </div>
+</footer>
+</div></body></html>

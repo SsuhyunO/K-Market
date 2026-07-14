@@ -43,10 +43,13 @@
                             <td th:text="${v.version}"></td>
                             <td th:text="${v.writerUid}"></td>
                             <td th:text="${#temporals.format(v.createdAt, 'yyyy.MM.dd HH:mm:ss')}"></td>
-                            <td>
+                            <td class="version-action-cell">
                                 <button class="version-detail-button" type="button"
                                         data-modal-target="version-detail-modal"
                                         th:attr="data-version=${v.version},data-content=${v.content}">[ 확인 ]</button>
+                                <button class="version-detail-button" type="button"
+                                        data-modal-target="version-edit-modal"
+                                        th:attr="data-id=${v.id},data-version=${v.version},data-content=${v.content}">[ 수정 ]</button>
                             </td>
                         </tr>
                     </th:block>
@@ -85,6 +88,34 @@
                             </table>
                             <div class="modal-form-actions">
                                 <button type="submit">등록하기</button>
+                            </div>
+                        </form>
+                    </th:block>
+                </div>
+
+                <div th:replace="~{admin/fragments/modal::modal('version-edit-modal', '버전수정', ~{::version_edit_modal_content})}">
+                    <th:block th:fragment="version_edit_modal_content">
+                        <form id="version-edit-form" th:action="@{/admin/version-management/update}" method="post" novalidate>
+                            <input type="hidden" id="edit-version-id" name="id">
+                            <table class="section-table version-modal-table">
+                                <tr>
+                                    <th><label for="edit-version-name">버전</label></th>
+                                    <td>
+                                        <input id="edit-version-name" type="text" name="version"
+                                               placeholder="버전입력하기 (예: 0.0.5-SNAPSHOT)">
+                                        <p class="field-error" data-error-for="edit-version-name"></p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th><label for="edit-version-change">변경내역</label></th>
+                                    <td>
+                                        <textarea id="edit-version-change" name="content" placeholder="변경내역작성하기 (한 줄에 하나씩)"></textarea>
+                                        <p class="field-error" data-error-for="edit-version-change"></p>
+                                    </td>
+                                </tr>
+                            </table>
+                            <div class="modal-form-actions">
+                                <button type="submit">수정하기</button>
                             </div>
                         </form>
                     </th:block>

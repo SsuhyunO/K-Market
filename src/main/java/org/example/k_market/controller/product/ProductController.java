@@ -59,8 +59,7 @@ public class ProductController {
         model.addAttribute("page", page);
         return "product/view";
     }
-
-    // TODO: 테스트용 default, 실제 배포 전 제거
+    
     @GetMapping("/order")
     public String order(@RequestParam(required = false) List<Integer> cartNoList,
                         @RequestParam(required = false) Integer prodVariantId,

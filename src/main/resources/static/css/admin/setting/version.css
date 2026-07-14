@@ -1,5 +1,6 @@
 .management-table {
-    min-width: 820px;
+    min-width: 860px;
+    table-layout: fixed;
 }
 
 .management-table th:nth-child(1),
@@ -29,22 +30,29 @@
 
 .management-table th:nth-child(6),
 .management-table td:nth-child(6) {
-    width: 96px;
+    width: 170px;
+}
+
+.version-action-cell {
+    text-align: center;
+    white-space: nowrap;
 }
 
 .version-detail-button {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    min-width: 54px;
+    min-width: 48px;
     height: 27px;
-    padding: 0 10px;
+    padding: 0 8px;
+    margin: 0 3px;
     border: 1px solid var(--adm-gray-300);
     border-radius: 4px;
     background: var(--adm-white);
     color: var(--adm-gray-700);
     font-size: 12px;
     font-weight: 700;
+    white-space: nowrap;
 }
 
 .version-detail-button:hover {
