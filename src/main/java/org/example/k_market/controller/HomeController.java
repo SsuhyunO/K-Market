@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.example.k_market.dto.category.CategoryTreeDTO;
 import org.example.k_market.enums.product.MainProductSortType;
 import org.example.k_market.service.CategoryService;
-import org.example.k_market.service.ProductService;
+import org.example.k_market.service.product.ProductService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;

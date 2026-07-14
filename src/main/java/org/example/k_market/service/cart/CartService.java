@@ -1,4 +1,4 @@
-package org.example.k_market.service;
+package org.example.k_market.service.cart;
 
 import lombok.RequiredArgsConstructor;
 import org.example.k_market.dto.cart.CartAddRequest;

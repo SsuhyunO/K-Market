@@ -4,6 +4,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.example.k_market.dao.PointDAO;
 import org.example.k_market.dto.PointDTO;
+import org.example.k_market.repository.PointRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -12,6 +13,7 @@ import java.time.LocalDateTime;
 @RequiredArgsConstructor
 public class PointService {
     private final PointDAO pointDAO;
+    private final PointRepository pointRepository;
 
     private static final int POINT_EXPIRE_MONTHS = 12; // 적립 포인트 유효기간 예시
 

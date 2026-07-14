@@ -1,9 +1,12 @@
 import { formatWon } from './format.js';
+import { escapeHtml } from '../global/htmlUtils.js';
+import { initPagination } from '../global/pagination.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     initViewTabsScroll();
     initVariantSelection();
     initQuantityControl();
+    initProductReviews();
     initPurchaseButtons();
 });
 
@@ -210,6 +213,124 @@ function initPurchaseButtons() {
             window.location.href = `${getContextPath()}product/order?prodVariantId=${selectedVariant.id}&count=${count}`;
         });
     }
+}
+
+function initProductReviews() {
+    const reviewSection = document.getElementById('review');
+    const reviewList = document.querySelector('[data-review-list]');
+    const pagination = document.querySelector('[data-review-pagination]');
+    const productNo = Number(reviewSection?.dataset.productNo || 0);
+
+    if (!reviewSection || !reviewList || !pagination || !productNo) return;
+
+    initProductReviewDetailModal(reviewList);
+
+    initPagination({
+        selector: '[data-review-pagination]',
+        fetchPage: page => loadProductReviews(productNo, page, reviewList),
+        updateUrl: false,
+        onError: error => {
+            console.error(error);
+            alert('상품평을 불러오지 못했습니다.');
+            reviewList.innerHTML = '<div class="review-empty">상품평을 불러오지 못했습니다.</div>';
+            pagination.innerHTML = '';
+        }
+    });
+}
+
+async function loadProductReviews(productNo, page, reviewList) {
+    const params = new URLSearchParams();
+    params.set('page', page);
+
+    const response = await fetch(
+        `${getContextPath()}product/api/${encodeURIComponent(productNo)}/reviews?${params.toString()}`,
+        { headers: { Accept: 'application/json' } }
+    );
+
+    if (!response.ok) {
+        throw new Error(`상품 리뷰 조회 실패: ${response.status}`);
+    }
+
+    const pageData = await response.json();
+    renderProductReviews(pageData, reviewList);
+    return pageData;
+}
+
+function renderProductReviews(pageData, reviewList) {
+    const reviews = pageData?.list || [];
+
+    if (reviews.length === 0) {
+        reviewList.innerHTML = '<div class="review-empty">작성한 상품평이 없습니다.</div>';
+        return;
+    }
+
+    reviewList.innerHTML = reviews
+        .map(review => `
+            <div class="review-item"
+                 data-review-detail
+                 data-review-no="${escapeHtml(review.reviewNo)}"
+                 data-product-no="${escapeHtml(review.productNo)}"
+                 data-product-name="${escapeHtml(review.productName)}"
+                 data-member-uid="${escapeHtml(review.memberUid || '')}"
+                 data-rating="${escapeHtml(review.rating)}"
+                 data-created-at="${escapeHtml(review.createdAt)}"
+                 data-content="${escapeHtml(review.content)}">
+                <div class="thumb"><span class="dummy-img">📷</span></div>
+                <div class="meta">
+                    <span class="stars">${buildStars(review.rating)}</span>
+                    <span>${escapeHtml(review.memberUid || '')}</span>
+                    <span>${escapeHtml(review.createdAt)}</span>
+                </div>
+                <div class="text">${escapeHtml(review.content)}</div>
+            </div>
+        `)
+        .join('');
+}
+
+function initProductReviewDetailModal(reviewList) {
+    const modal = document.getElementById('productReviewDetailModal');
+    if (!modal) return;
+
+    reviewList.addEventListener('click', event => {
+        const item = event.target.closest('[data-review-detail]');
+        if (!item) return;
+
+        document.getElementById('productReviewDetailStars').textContent = buildStars(item.dataset.rating);
+        document.getElementById('productReviewDetailMember').textContent = item.dataset.memberUid || '';
+        document.getElementById('productReviewDetailDate').textContent = item.dataset.createdAt || '';
+        document.getElementById('productReviewDetailProductNo').textContent = item.dataset.productNo || '';
+        document.getElementById('productReviewDetailProductName').textContent = item.dataset.productName || '';
+        document.getElementById('productReviewDetailContent').textContent = item.dataset.content || '';
+
+        modal.hidden = false;
+        document.body.classList.add('modal-open');
+    });
+
+    modal.querySelector('[data-review-detail-close]')?.addEventListener('click', () => {
+        closeProductReviewDetailModal(modal);
+    });
+
+    modal.addEventListener('click', event => {
+        if (event.target === modal) {
+            closeProductReviewDetailModal(modal);
+        }
+    });
+}
+
+function closeProductReviewDetailModal(modal) {
+    modal.hidden = true;
+    document.body.classList.remove('modal-open');
+}
+
+function buildStars(rating) {
+    const score = Number(rating || 0);
+    let stars = '';
+
+    for (let index = 1; index <= 5; index++) {
+        stars += index <= score ? '★' : '☆';
+    }
+
+    return stars;
 }
 
 function getProductVariants() {

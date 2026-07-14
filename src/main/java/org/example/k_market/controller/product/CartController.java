@@ -4,7 +4,7 @@ import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.example.k_market.dto.category.CategoryTreeDTO;
 import org.example.k_market.dto.product.response.ProductCartPageResponse;
-import org.example.k_market.service.CartService;
+import org.example.k_market.service.cart.CartService;
 import org.example.k_market.service.CategoryService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

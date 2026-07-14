@@ -3,7 +3,7 @@ package org.example.k_market.controller.product;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.example.k_market.dto.cart.CartAddRequest;
-import org.example.k_market.service.CartService;
+import org.example.k_market.service.cart.CartService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;

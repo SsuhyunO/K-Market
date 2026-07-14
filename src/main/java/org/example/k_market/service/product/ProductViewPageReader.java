@@ -5,7 +5,6 @@ import org.example.k_market.dto.category.CategoryContextResponse;
 import org.example.k_market.dto.product.response.ProductDetailResponse;
 import org.example.k_market.dto.product.response.ProductViewPageResponse;
 import org.example.k_market.service.CategoryService;
-import org.example.k_market.service.ProductService;
 import org.springframework.stereotype.Component;
 
 import java.time.Clock;
