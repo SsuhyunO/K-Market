@@ -1,0 +1,79 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>KMarket 매출현황</title>
+    <th:block th:replace="~{admin/fragments/head::head}"></th:block>
+    <link rel="stylesheet" th:href="@{/css/admin/global/management-table-form.css}">
+    <link rel="stylesheet" th:href="@{/css/admin/global/action-bar.css}">
+    <link rel="stylesheet" th:href="@{/css/admin/global/search-form.css}">
+    <script type="module" th:src="@{/js/admin/shop/sales-status.js}"></script>
+</head>
+<body>
+<header th:replace="~{admin/fragments/header::header}"></header>
+<div class="admin-layout">
+    <aside th:replace="~{admin/fragments/aside::aside}"></aside>
+
+    <main id="admin-main">
+        <div th:replace="~{admin/fragments/page-header::page-header}"></div>
+
+        <section th:replace="~{admin/fragments/dash-section::dash-section(null, null, null, ~{::main_content})}">
+            <th:block th:fragment="main_content">
+
+                <!-- 기간 선택 -->
+                <div class="search-form" style="justify-content:flex-end;">
+                    <select id="periodSelect">
+                        <option value="DAILY" th:selected="${period == 'DAILY'}">일별</option>
+                        <option value="WEEKLY" th:selected="${period == 'WEEKLY'}">주간</option>
+                        <option value="MONTHLY" th:selected="${period == 'MONTHLY'}">한달</option>
+                    </select>
+                </div>
+
+                <div th:replace="~{admin/fragments/management-table-form::management-table(~{::table-content})}">
+                    <th:block th:fragment="table-content">
+                        <tr>
+                            <th>번호</th>
+                            <th>상호명</th>
+                            <th>사업자등록번호</th>
+                            <th>주문건수</th>
+                            <th>결제완료</th>
+                            <th>배송중</th>
+                            <th>배송완료</th>
+                            <th>구매확정</th>
+                            <th>주문합계</th>
+                            <th>매출합계</th>
+                        </tr>
+                        <tr th:if="${#lists.isEmpty(salesResult.items)}">
+                            <td colspan="10" style="text-align:center;">데이터가 없습니다.</td>
+                        </tr>
+                        <tr th:each="row : ${salesResult.items}">
+                            <td th:text="${row.no}"></td>
+                            <td th:text="${row.companyName}"></td>
+                            <td th:text="${row.bizRegNo}"></td>
+                            <td th:text="${row.orderCount}"></td>
+                            <td th:text="${row.paidCount}"></td>
+                            <td th:text="${row.shippingCount}"></td>
+                            <td th:text="${row.deliveredCount}"></td>
+                            <td th:text="${row.confirmedCount}"></td>
+                            <td th:text="${#numbers.formatInteger(row.orderTotal, 0, 'COMMA')}"></td>
+                            <td th:text="${#numbers.formatInteger(row.salesTotal, 0, 'COMMA')}"></td>
+                        </tr>
+                    </th:block>
+                </div>
+
+                <div th:replace="~{admin/fragments/action-bar::action-bar(~{::action-bar-content})}">
+                    <th:block th:fragment="action-bar-content">
+                        <span></span>
+                        <nav th:replace="~{admin/fragments/admin-pagination::admin-pagination}"></nav>
+                        <span></span>
+                    </th:block>
+                </div>
+
+            </th:block>
+        </section>
+    </main>
+</div>
+
+<footer th:replace="~{admin/fragments/footer::footer}"></footer>
+</body>
+</html>

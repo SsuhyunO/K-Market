@@ -1,4 +1,4 @@
-package org.example.k_market.service;
+package org.example.k_market.service.product;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -14,7 +14,6 @@ import org.example.k_market.dto.product.response.ProductListResponse;
 import org.example.k_market.dto.product.response.ProductSearchResponse;
 import org.example.k_market.enums.product.MainProductSortType;
 import org.example.k_market.repository.product.ProductRepository;
-import org.example.k_market.service.product.*;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 

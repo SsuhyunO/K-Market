@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -17,10 +18,12 @@
 		<section th:replace="~{admin/fragments/dash-section::dash-section(null, null, null, ~{::main_content})}">
 			<th:block th:fragment="main_content">
 				<div class="sales-status-select">
-					<select>
-						<option value="일별">일별</option>
-						<option value="주간">주간</option>
-						<option value="한달">한달</option>
+					<select id="periodSelect"
+					        th:data-base-url="@{/admin/sales-status}"
+					        onchange="location.href = this.getAttribute('data-base-url') + '?period=' + this.value + '&page=1'">
+						<option value="DAILY" th:selected="${period == 'DAILY'}">일별</option>
+						<option value="WEEKLY" th:selected="${period == 'WEEKLY'}">주간</option>
+						<option value="MONTHLY" th:selected="${period == 'MONTHLY'}">한달</option>
 					</select>
 				</div>
 				<div th:replace="~{admin/fragments/management-table-form::management-table(~{::table-content})}">
@@ -37,9 +40,28 @@
 							<th>주문합계</th>
 							<th>매출합계</th>
 						</tr>
+
+						<!-- 데이터가 있을 때: result.items를 순회하며 행 출력 -->
+						<tr th:each="item : ${result.items}">
+							<td th:text="${item.no}"></td>
+							<td th:text="${item.companyName}"></td>
+							<td th:text="${item.bizRegNo}"></td>
+							<td th:text="${item.orderCount}"></td>
+							<td th:text="${item.paidCount}"></td>
+							<td th:text="${item.shippingCount}"></td>
+							<td th:text="${item.deliveredCount}"></td>
+							<td th:text="${item.confirmedCount}"></td>
+							<td th:text="${#numbers.formatInteger(item.orderTotal, 0, 'COMMA')}"></td>
+							<td th:text="${#numbers.formatInteger(item.salesTotal, 0, 'COMMA')}"></td>
+						</tr>
+
+						<!-- 데이터가 없을 때 안내 문구 -->
+						<tr th:if="${result.items == null or result.items.isEmpty()}">
+							<td colspan="10" style="text-align:center;">조회된 데이터가 없습니다.</td>
+						</tr>
 					</th:block>
 				</div>
-				<nav th:replace="~{admin/fragments/admin-pagination::admin-pagination}"></nav>
+				<nav th:replace="~{admin/fragments/admin-pagination::admin-pagination(${result.pageInfo}, @{/admin/sales-status(period=${period})})}"></nav>
 			</th:block>
 		</section>
 	</main>

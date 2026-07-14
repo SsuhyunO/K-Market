@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="context-path" th:content="@{/}">
     <title>장바구니 - KMarket</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;600;700;800&display=swap" rel="stylesheet">
@@ -69,7 +70,7 @@
                         <td><input type="checkbox" class="chk-item" th:value="${item.cartNo}" checked></td>
                         <td class="product-col">
                             <div class="prod-thumb">
-                                <img th:if="${item.thumbnailUrl}" th:src="${item.thumbnailUrl}" alt="">
+                                <img th:if="${item.thumbnailUrl}" th:src="@{${item.thumbnailUrl}}" alt="">
                                 <span th:unless="${item.thumbnailUrl}">이미지 없음</span>
                             </div>
                             <div class="prod-info">

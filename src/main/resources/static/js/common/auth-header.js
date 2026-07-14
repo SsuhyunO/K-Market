@@ -31,33 +31,44 @@ document.addEventListener('DOMContentLoaded', async function () {
                     const isSeller = member.memberType === 'SELLER';
                     const isAdmin = member.memberType === 'ADMIN';
 
-                    let sellerBadgeHtml = '';
+                    let welcomeHtml = '';
+
                     if (isAdmin) {
-                        sellerBadgeHtml =
+                        // 관리자: "관리자 | 로그아웃"만 표시
+                        welcomeHtml =
                             '<a href="/K_Market/admin/main" id="sellerAdminLink" ' +
                             'style="font-size:13px; color:#d33333; font-weight:700;">관리자</a>' +
-                            '<span style="color:var(--color-gray-200);">|</span>';
-                    } else if (isSeller) {
-                        sellerBadgeHtml =
-                            '<a href="/K_Market/admin/product/list" id="sellerAdminLink" ' +
-                            'style="font-size:13px; color:#1a6fd3; font-weight:700;">판매자</a>' +
-                            '<span style="color:var(--color-gray-200);">|</span>';
-                    }
+                            '<span style="color:var(--color-gray-200);">|</span>' +
+                            '<a href="#" id="navLogoutLink" style="font-size:13px; color:var(--color-gray-600);">로그아웃</a>';
+                    } else {
+                        let sellerBadgeHtml = '';
+                        if (isSeller) {
+                            sellerBadgeHtml =
+                                '<a href="/K_Market/admin/product/list" id="sellerAdminLink" ' +
+                                'style="font-size:13px; color:#1a6fd3; font-weight:700;">판매자</a>' +
+                                '<span style="color:var(--color-gray-200);">|</span>';
+                        }
 
-                    // 환영메시지 + 로그아웃을 authArea 끝에 추가 (기존 로그인/회원가입 링크는 숨김 상태로 유지)
-                    const welcomeHtml =
-                        '<span id="welcomeText" style="font-size:13px; color:var(--color-gray-600);">' +
-                        safeName + '님 환영합니다' +
-                        '</span>' +
-                        '<span style="color:var(--color-gray-200);">|</span>' +
-                        sellerBadgeHtml +
-                        '<a href="#" id="navLogoutLink" style="font-size:13px; color:var(--color-gray-600);">로그아웃</a>';
+                        // 환영메시지 + 로그아웃 (기존 로그인/회원가입 링크는 숨김 상태로 유지)
+                        welcomeHtml =
+                            '<span id="welcomeText" style="font-size:13px; color:var(--color-gray-600);">' +
+                            safeName + '님 환영합니다' +
+                            '</span>' +
+                            '<span style="color:var(--color-gray-200);">|</span>' +
+                            sellerBadgeHtml +
+                            '<a href="#" id="navLogoutLink" style="font-size:13px; color:var(--color-gray-600);">로그아웃</a>';
+                    }
 
                     authArea.insertAdjacentHTML('beforeend', welcomeHtml);
 
-                    // 로그인 상태 -> 마이페이지 노출
+                    // 관리자가 아닐 때만 마이페이지 노출
                     if (memberOnlyArea) {
-                        memberOnlyArea.style.display = 'flex';
+                        memberOnlyArea.style.display = isAdmin ? 'none' : 'flex';
+                    }
+
+                    const cartLinkEl = document.getElementById('cartLink');
+                    if (cartLinkEl && isAdmin) {
+                        cartLinkEl.style.display = 'none';
                     }
 
                     document.getElementById('navLogoutLink').addEventListener('click', async function (e) {

@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.example.k_market.controller.HomeController;
 import org.example.k_market.controller.product.ProductController;
 import org.example.k_market.dto.product.response.BestProductResponse;
-import org.example.k_market.service.ProductService;
+import org.example.k_market.service.product.ProductService;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ModelAttribute;
 

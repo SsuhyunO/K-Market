@@ -7,7 +7,7 @@ import org.example.k_market.dto.product.command.ManagementProductSearchCommand;
 import org.example.k_market.dto.product.request.ManagementProductSearchRequest;
 import org.example.k_market.dto.product.response.ProductDetailResponse;
 import org.example.k_market.dto.product.response.ManagementProductListResponse;
-import org.example.k_market.service.ProductService;
+import org.example.k_market.service.product.ProductService;
 import org.example.k_market.service.product.ProductRemovalResult;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;

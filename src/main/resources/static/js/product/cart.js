@@ -83,6 +83,9 @@ function getSelectedCartNos() {
 }
 
 function getContextPath() {
+    const contextPath = document.querySelector('meta[name="context-path"]')?.content;
+    if (contextPath) return contextPath;
+
     const path = window.location.pathname;
     const productIndex = path.indexOf('/product/');
     return productIndex >= 0 ? path.substring(0, productIndex + 1) : '/';

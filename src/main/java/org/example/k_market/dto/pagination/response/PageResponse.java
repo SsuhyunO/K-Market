@@ -14,8 +14,6 @@ public class PageResponse<T> {
     private List<T> list;
 
     private int page; // 현재 페이지
-    private int startNo;
-    private int size;
     private int totalPage;
     private int totalElements;
     private int startPage;

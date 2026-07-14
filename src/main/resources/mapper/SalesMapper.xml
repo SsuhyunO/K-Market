@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.example.k_market.dao.SalesDAO">
+
+    <!-- 기간 조건 (order.createdAt 기준) -->
+    <sql id="periodWhere">
+        <choose>
+            <when test="period == 'WEEKLY'">
+                AND YEARWEEK(o.createdAt, 1) = YEARWEEK(CURDATE(), 1)
+            </when>
+            <when test="period == 'MONTHLY'">
+                AND DATE_FORMAT(o.createdAt, '%Y-%m') = DATE_FORMAT(CURDATE(), '%Y-%m')
+            </when>
+            <otherwise>
+                AND DATE(o.createdAt) = CURDATE()
+            </otherwise>
+        </choose>
+    </sql>
+
+    <select id="selectSalesStatusList" resultType="org.example.k_market.dto.shop.SalesStatusDTO">
+        SELECT
+        s.uid AS sellerUid,
+        s.companyName AS companyName,
+        s.bizRegNo AS bizRegNo,
+        COUNT(DISTINCT o.orderNo) AS orderCount,
+        COUNT(DISTINCT CASE WHEN o.status = 'PAID' THEN o.orderNo END) AS paidCount,
+        COUNT(DISTINCT CASE WHEN o.status = 'SHIPPING' THEN o.orderNo END) AS shippingCount,
+        COUNT(DISTINCT CASE WHEN o.status = 'DELIVERED' THEN o.orderNo END) AS deliveredCount,
+        COUNT(DISTINCT CASE WHEN o.status = 'CONFIRMED' THEN o.orderNo END) AS confirmedCount,
+        COALESCE(SUM(oi.total), 0) AS orderTotal,
+        COALESCE(SUM(CASE WHEN o.status = 'CONFIRMED' THEN oi.total ELSE 0 END), 0) AS salesTotal
+        FROM order_item oi
+        JOIN `order` o ON o.orderNo = oi.orderNo
+        JOIN product_variant pv ON pv.id = oi.prodVariantId
+        JOIN product p ON p.prodNo = pv.prodNo
+        JOIN seller s ON s.uid = p.sellerUid
+        <where>
+            <include refid="periodWhere"/>
+        </where>
+        GROUP BY s.uid, s.companyName, s.bizRegNo
+        ORDER BY orderTotal DESC, s.uid ASC
+        LIMIT #{size}
+        OFFSET #{offset}
+    </select>
+
+    <select id="countSalesStatus" resultType="int">
+        SELECT COUNT(*) FROM (
+        SELECT s.uid
+        FROM order_item oi
+        JOIN `order` o ON o.orderNo = oi.orderNo
+        JOIN product_variant pv ON pv.id = oi.prodVariantId
+        JOIN product p ON p.prodNo = pv.prodNo
+        JOIN seller s ON s.uid = p.sellerUid
+        <where>
+            <include refid="periodWhere"/>
+        </where>
+        GROUP BY s.uid
+        ) t
+    </select>
+
+</mapper>

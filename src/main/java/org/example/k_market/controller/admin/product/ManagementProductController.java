@@ -5,7 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.example.k_market.common.product.ProductInfoNoticeTemplates;
 import org.example.k_market.dto.product.request.ProductRegisterRequest;
 import org.example.k_market.service.CategoryService;
-import org.example.k_market.service.ProductService;
+import org.example.k_market.service.product.ProductService;
 import org.example.k_market.service.product.ProductRemovalResult;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

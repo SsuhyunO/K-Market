@@ -16,7 +16,6 @@ public class PaginationService {
             currentPage = Math.min(currentPage, totalPage);
         }
         int offset = (currentPage - 1) * rowSize;
-        int startElementNum = total - (currentPage - 1) * rowSize; // 게시글이 55개 있을때 기준 첫번째 페이지의 첫번째 글은 55번글..
         int startPageNum = (currentPage - 1) / blockSize * blockSize + 1; // 현재 페이지 그룹의 시작 페이지 번호
         int lastPageNum = Math.min(startPageNum + blockSize - 1, totalPage); // 현재 페이지 그룹의 마지막 페이지 번호
         boolean hasNext = lastPageNum < totalPage; // 이전 페이지 그룹이 있는가?
@@ -25,9 +24,7 @@ public class PaginationService {
 
         return PageResponse.<T>builder()
             .list(content)
-            .startNo(startElementNum)
             .page(currentPage)
-            .size(rowSize)
             .totalPage(totalPage)
             .totalElements(total)
             .startPage(startPageNum)

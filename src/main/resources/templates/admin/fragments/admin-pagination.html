@@ -1,5 +1,6 @@
 <nav class="admin-pagination" aria-label="목록 페이지"
-     th:fragment="admin-pagination(pageInfo, baseUrl)">
+     th:fragment="admin-pagination(pageInfo, baseUrl)"
+     th:if="${pageInfo != null}">
 
 	<a th:if="${pageInfo.currentPage > 1}"
 	   th:href="@{${baseUrl}(page=${pageInfo.currentPage - 1})}">이전</a>
