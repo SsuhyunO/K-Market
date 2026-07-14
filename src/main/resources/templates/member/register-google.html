@@ -1,4 +1,5 @@
 
+
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
@@ -7,17 +8,12 @@
     <title>케이마켓 - 추가 정보 입력</title>
     <link rel="stylesheet" th:href="@{/css/member/register.css}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    <link rel="stylesheet" th:href="@{/css/common.css}">
 </head>
-<body>
+<body class="simple-header">
 
 <!-- 헤더 -->
-<header>
-    <div class="header-inner">
-        <a th:href="@{/}" class="logo">
-            <img th:src="@{/images/ci-logo.svg}" alt="케이마켓 로고">
-        </a>
-    </div>
-</header>
+<header th:replace="~{fragments/header :: header}"></header>
 
 <!-- 메인 -->
 <main>
@@ -84,11 +80,7 @@
 </main>
 
 <!-- 푸터 -->
-<footer>
-    <div class="footer-copyright">
-        Copyright © 2025 김철학 All rights reserved.
-    </div>
-</footer>
+<footer th:replace="~{fragments/footer :: footer}"></footer>
 
 <script th:inline="javascript">
     const indexUrl = /*[[@{/}]]*/ '/';

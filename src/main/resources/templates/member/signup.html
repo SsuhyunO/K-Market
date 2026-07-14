@@ -8,21 +8,12 @@
     <title>케이마켓 - 약관동의</title>
     <link rel="stylesheet" th:href="@{/css/member/singup.css}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    <link rel="stylesheet" th:href="@{/css/common.css}">
 </head>
-<body>
+<body class="simple-header">
 
 <!-- 헤더 -->
-<header>
-    <div class="header-inner">
-        <a th:href="@{/}" class="logo">
-            <img th:src="@{/images/ci-logo.svg}" alt="케이마켓 로고">
-        </a>
-        <nav class="header-nav">
-            <a th:href="@{/member/login}">로그인</a>
-            <a th:href="@{/member/join}">회원가입</a>
-        </nav>
-    </div>
-</header>
+<header th:replace="~{fragments/header :: header}"></header>
 
 <!-- 메인 -->
 <main>
@@ -36,7 +27,7 @@
                 <span class="terms-label-text">이용약관</span>
             </div>
             <label class="terms-agree">
-                <input type="checkbox" id="agree1"> 동의하기
+                <input type="checkbox" class="agree-item" id="agree1"> 동의하기
             </label>
         </div>
         <!-- 일반 회원용 이용약관 -->
@@ -53,7 +44,7 @@
                 <span class="terms-label-text">전자금융 이용약관</span>
             </div>
             <label class="terms-agree">
-                <input type="checkbox" id="agree2"> 동의하기
+                <input type="checkbox" class="agree-item" id="agree2"> 동의하기
             </label>
         </div>
         <!-- 일반 회원용 전자금융 약관 -->
@@ -70,7 +61,7 @@
                 <span class="terms-label-text">개인정보 수집 동의</span>
             </div>
             <label class="terms-agree">
-                <input type="checkbox" id="agree3"> 동의하기
+                <input type="checkbox" class="agree-item" id="agree3"> 동의하기
             </label>
         </div>
         <!-- 일반 회원용 개인정보 약관 -->
@@ -87,10 +78,17 @@
                 <span class="terms-label-text">위치정보 이용약관</span>
             </div>
             <label class="terms-agree">
-                <input type="checkbox" id="agree4"> 동의하기
+                <input type="checkbox" class="agree-item" id="agree4"> 동의하기
             </label>
         </div>
         <textarea class="terms-textarea" readonly th:text="${locationPolicy}"></textarea>
+    </div>
+
+    <!-- 전체 동의 -->
+    <div class="terms-all">
+        <label class="terms-agree-all">
+            <input type="checkbox" id="agreeAll"> 전체 동의하기
+        </label>
     </div>
 
     <!-- ⑤ 동의하기 버튼 -->
@@ -101,36 +99,12 @@
 
 <!-- 푸터 -->
 <footer>
-    <div class="footer-info">
-        <div class="footer-nav">
-            <a th:href="@{/company/index}">회사소개</a>
-            <a th:href="@{/policy/buyer}">서비스이용약관</a>
-            <a th:href="@{/policy/privacy}">개인정보처리방침</a>
-            <a th:href="@{/policy/finance}">전자금융거래약관</a>
-        </div>
-        <div class="footer-info-inner">
-            <div class="footer-logo-box">로고</div>
-            <div class="footer-company">
-                <strong>(주)케이마켓</strong>
-                부산광역시 부산진구 중앙대로 103<br>
-                대표이사 : 홍길동<br>
-                사업자등록번호 : 123-45-12345
-            </div>
-            <div class="footer-cs">
-                <strong>고객센터</strong>
-                Tel : 1234-5678 평일 09:00~18:00<br>
-                전자금융거래 분쟁 담당 : 1234-1234 (36팀) 09:00~18:00
-            </div>
-        </div>
-    </div>
     <div class="footer-copyright">
         Copyright © 2025 김철학 All rights reserved.
     </div>
 </footer>
 
-<script th:src="@{/js/member/singup.js}">
-
-</script>
+<script th:src="@{/js/member/singup.js}"></script>
 
 </body>
 </html>

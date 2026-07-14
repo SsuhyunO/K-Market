@@ -1,100 +1,49 @@
-<!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title>케이마켓 고객센터 - 자주하는 질문 보기</title>
-    <link rel="stylesheet" th:href="@{/css/cs/faqView.css}">
-</head>
-<body>
-<div id="wrapper">
+<!DOCTYPE html><html lang="ko" xmlns:th="http://www.thymeleaf.org"><head><meta charset="UTF-8"><title>FAQ 상세 - 케이마켓 고객센터</title>
+<link rel="stylesheet" th:href="@{/css/cs/cs-common.css}">
+<link rel="stylesheet" th:href="@{/css/cs/faqView.css}"></head><body><div id="wrapper">
+<header>
+  <div class="header-top">
+    <a th:href="@{/member/login}">로그인</a>
+    <a th:href="@{/member/register}">회원가입</a>
+    <a th:href="@{/my/home}">마이페이지</a>
+    <a th:href="@{/cart}">장바구니</a>
+  </div>
+  <div class="logo-area"><a th:href="@{/}" class="logo-box">CI ( 로고 )</a></div>
+</header>
 
-    <header>
-        <div class="header-top">
-            <a href="#">로그인</a>
-            <a href="#">회원가입</a>
-            <a href="#">마이페이지</a>
-            <a href="#">장바구니</a>
-        </div>
-
-        <div class="logo-area">
-            <a href="./index.html" class="logo-box">CI ( 로고 )</a>
-        </div>
-    </header>
-
-    <div class="breadcrumb">
-        홈 &gt; 자주하는 질문
+<div class="breadcrumb"><a th:href="@{/}">홈</a><span>&gt;</span><a th:href="@{/cs/index}">고객센터</a><span>&gt;</span><a th:href="@{/cs/faqList}">자주하는 질문</a><span>&gt;</span><span>상세보기</span></div>
+<main><div class="cs-flex">
+<aside class="cs-aside"><h2>자주하는 질문</h2><ul>
+<li><a th:href="@{/cs/faqList}" th:classappend="${selectedCategory1==null or selectedCategory1.isBlank()}?' active':''">전체</a></li>
+<li><a th:href="@{/cs/faqList(category1='회원')}" th:classappend="${selectedCategory1=='회원'}?' active':''">회원</a></li>
+<li><a th:href="@{/cs/faqList(category1='쿠폰 / 이벤트')}" th:classappend="${selectedCategory1=='쿠폰 / 이벤트'}?' active':''">쿠폰 / 이벤트</a></li>
+<li><a th:href="@{/cs/faqList(category1='주문 / 결제')}" th:classappend="${selectedCategory1=='주문 / 결제'}?' active':''">주문 / 결제</a></li>
+<li><a th:href="@{/cs/faqList(category1='배송')}" th:classappend="${selectedCategory1=='배송'}?' active':''">배송</a></li>
+<li><a th:href="@{/cs/faqList(category1='취소 / 반품 / 환불')}" th:classappend="${selectedCategory1=='취소 / 반품 / 환불'}?' active':''">취소 / 반품 / 환불</a></li>
+<li><a th:href="@{/cs/faqList(category1='여행 / 숙박 / 항공')}" th:classappend="${selectedCategory1=='여행 / 숙박 / 항공'}?' active':''">여행 / 숙박 / 항공</a></li>
+<li><a th:href="@{/cs/faqList(category1='안전거래')}" th:classappend="${selectedCategory1=='안전거래'}?' active':''">안전거래</a></li>
+</ul></aside>
+<section class="cs-content">
+<div class="content-heading"><div><h2 th:text="${faq.category1}">FAQ</h2><p class="desc">자주하는 질문 상세 내용입니다.</p></div><a th:href="@{/cs/index}" class="cs-home-link">고객센터 홈</a></div>
+<div class="view-box"><div class="view-title"><h3 th:text="|Q. [${faq.category2}] ${faq.title}|">질문</h3></div><div class="view-content" th:text="${faq.content}">답변</div></div>
+<div class="btn-area"><a th:href="@{/cs/faqList(category1=${faq.category1})}" class="btn btn-gray">목록</a></div>
+</section></div></main>
+<footer>
+  <div class="footer-menu">
+    <a th:href="@{/company/index}">회사소개</a>
+    <a th:href="@{/policy/terms}">서비스이용약관</a>
+    <a th:href="@{/policy/privacy}">개인정보처리방침</a>
+    <a th:href="@{/policy/finance}">전자금융거래약관</a>
+  </div>
+  <div class="footer-info">
+    <div class="footer-logo">이미지</div>
+    <div class="company-info">
+      <strong>(주)케이마켓</strong><br>
+      부산광역시 부산진구 중앙대로 300<br>
+      대표이사 : 홍길동<br>
+      사업자등록번호 : 123-45-12345
     </div>
-
-    <main>
-        <div class="cs-flex">
-
-            <aside class="cs-aside">
-                <h2>자주하는 질문</h2>
-                <ul>
-                    <li><a href="#" class="active">회원</a></li>
-                    <li><a href="#">쿠폰 / 이벤트</a></li>
-                    <li><a href="#">주문 / 결제</a></li>
-                    <li><a href="#">배송</a></li>
-                    <li><a href="#">취소 / 반품 / 환불</a></li>
-                    <li><a href="#">여행 / 숙박 / 항공</a></li>
-                    <li><a href="#">안전거래</a></li>
-                </ul>
-            </aside>
-
-            <section class="cs-content">
-                <h2>회원</h2>
-                <p class="desc">회원 관련 자주하는 질문입니다.</p>
-
-                <div class="view-box">
-                    <div class="view-title">
-                        <span class="q-mark">Q.</span>
-                        개인회원과 법인회원에 차이가 있나요?
-                    </div>
-
-                    <div class="view-content">
-                        개인회원은 일반 구매 고객을 위한 회원 유형입니다.<br>
-                        법인회원은 사업자 또는 법인 명의로 상품을 구매하거나 관리하기 위한 회원 유형입니다.<br><br>
-
-                        개인회원에서 법인회원으로 직접 전환은 불가능할 수 있으며,
-                        법인회원 이용이 필요한 경우 별도의 법인회원 가입 절차를 진행해야 합니다.<br><br>
-
-                        자세한 내용은 고객센터로 문의해주시기 바랍니다.
-                    </div>
-                </div>
-
-                <div class="btn-area">
-                    <a href="./faq-list.html" class="btn btn-gray">목록</a>
-                </div>
-            </section>
-
-        </div>
-    </main>
-
-    <footer>
-        <div class="footer-menu">
-            <a href="#">회사소개</a>
-            <a href="#">서비스이용약관</a>
-            <a href="#">개인정보처리방침</a>
-            <a href="#">전자금융거래약관</a>
-        </div>
-
-        <div class="footer-info">
-            <div class="footer-logo">이미지</div>
-
-            <div class="company-info">
-                <strong>(주)케이마켓</strong><br>
-                부산광역시 부산진구 중앙대로 300<br>
-                대표이사 : 홍길동<br>
-                사업자등록번호 : 123-45-12345
-            </div>
-
-            <div class="customer-info">
-                <h3>고객센터</h3>
-                Tel : 1234-5678<br>
-                평일 09:00 ~ 18:00
-            </div>
-        </div>
-    </footer>
-</div>
-</body>
-</html>
+    <div class="customer-info"><h3>고객센터</h3>Tel : 1234-5678<br>평일 09:00 ~ 18:00</div>
+  </div>
+</footer>
+</div></body></html>

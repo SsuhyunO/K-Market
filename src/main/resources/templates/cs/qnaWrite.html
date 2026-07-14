@@ -1,119 +1,61 @@
-<!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title>케이마켓 고객센터 - 문의글 작성</title>
-    <link rel="stylesheet" th:href="@{/css/cs/qnaWrite.css}">
-</head>
-<body>
-<div id="wrapper">
+<!DOCTYPE html><html lang="ko" xmlns:th="http://www.thymeleaf.org"><head><meta charset="UTF-8"><title>문의글 작성 - 케이마켓 고객센터</title>
+<link rel="stylesheet" th:href="@{/css/cs/cs-common.css}">
+<link rel="stylesheet" th:href="@{/css/cs/qnaWrite.css}"></head><body><div id="wrapper">
+<header>
+  <div class="header-top">
+    <a th:href="@{/member/login}">로그인</a>
+    <a th:href="@{/member/register}">회원가입</a>
+    <a th:href="@{/my/home}">마이페이지</a>
+    <a th:href="@{/cart}">장바구니</a>
+  </div>
+  <div class="logo-area"><a th:href="@{/}" class="logo-box">CI ( 로고 )</a></div>
+</header>
 
-    <header>
-        <div class="header-top">
-            <a href="#">로그인</a>
-            <a href="#">회원가입</a>
-            <a href="#">마이페이지</a>
-            <a href="#">장바구니</a>
-        </div>
-
-        <div class="logo-area">
-            <a href="./index.html" class="logo-box">CI ( 로고 )</a>
-        </div>
-    </header>
-
-    <div class="breadcrumb">
-        홈 &gt; 문의하기
+<div class="breadcrumb"><a th:href="@{/}">홈</a><span>&gt;</span><a th:href="@{/cs/index}">고객센터</a><span>&gt;</span><a th:href="@{/cs/qnaList}">문의하기</a><span>&gt;</span><span>문의글 작성</span></div>
+<main><div class="cs-flex">
+<aside class="cs-aside"><h2>문의하기</h2><ul>
+<li><a th:href="@{/cs/qnaList}" th:classappend="${selectedCategory1==null or selectedCategory1.isBlank()}?' active':''">전체</a></li>
+<li><a th:href="@{/cs/qnaList(category1='회원')}" th:classappend="${selectedCategory1=='회원'}?' active':''">회원</a></li>
+<li><a th:href="@{/cs/qnaList(category1='쿠폰 / 이벤트')}" th:classappend="${selectedCategory1=='쿠폰 / 이벤트'}?' active':''">쿠폰 / 이벤트</a></li>
+<li><a th:href="@{/cs/qnaList(category1='주문 / 결제')}" th:classappend="${selectedCategory1=='주문 / 결제'}?' active':''">주문 / 결제</a></li>
+<li><a th:href="@{/cs/qnaList(category1='배송')}" th:classappend="${selectedCategory1=='배송'}?' active':''">배송</a></li>
+<li><a th:href="@{/cs/qnaList(category1='취소 / 반품 / 환불')}" th:classappend="${selectedCategory1=='취소 / 반품 / 환불'}?' active':''">취소 / 반품 / 환불</a></li>
+<li><a th:href="@{/cs/qnaList(category1='여행 / 숙박 / 항공')}" th:classappend="${selectedCategory1=='여행 / 숙박 / 항공'}?' active':''">여행 / 숙박 / 항공</a></li>
+<li><a th:href="@{/cs/qnaList(category1='안전거래')}" th:classappend="${selectedCategory1=='안전거래'}?' active':''">안전거래</a></li>
+</ul></aside>
+<section class="cs-content">
+<div class="content-heading"><div><h2>문의글 작성</h2><p class="desc">문의 유형과 내용을 정확하게 입력해주세요.</p></div><a th:href="@{/cs/index}" class="cs-home-link">고객센터 홈</a></div>
+<form th:action="@{/cs/qnaWrite}" th:object="${qna}" method="post" class="write-form" id="qna-write-form">
+<div class="form-row"><label>문의유형 <span class="required">*</span></label><div class="select-group"><select id="category1" name="category1" required><option value="">1차 유형을 선택해주세요.</option><option value="회원">회원</option><option value="쿠폰 / 이벤트">쿠폰 / 이벤트</option><option value="주문 / 결제">주문 / 결제</option><option value="배송">배송</option><option value="취소 / 반품 / 환불">취소 / 반품 / 환불</option><option value="여행 / 숙박 / 항공">여행 / 숙박 / 항공</option><option value="안전거래">안전거래</option></select><select id="category2" name="category2" required><option value="">2차 유형을 선택해주세요.</option></select></div></div>
+<div class="form-row"><label for="title">제목 <span class="required">*</span></label><input id="title" name="title" maxlength="100" required placeholder="문의 제목을 입력해주세요."></div>
+<div class="form-row"><label for="content">내용 <span class="required">*</span></label><textarea id="content" name="content" maxlength="2000" required placeholder="문의 내용을 자세히 입력해주세요."></textarea><div class="textarea-info"><p class="field-help">민감한 개인정보는 입력하지 마세요.</p><span id="content-count">0 / 2000</span></div></div>
+<div class="qna-notice"><strong>문의 작성 안내</strong><ul><li>답변까지 시간이 소요될 수 있습니다.</li><li>관리자가 답변하면 상태가 답변완료로 변경됩니다.</li></ul></div>
+<div class="btn-area" style="padding:0 18px 22px"><a th:href="@{/cs/qnaList}" class="btn btn-gray">취소하기</a><button type="submit" class="btn btn-red">등록하기</button></div>
+</form></section></div></main>
+<footer>
+  <div class="footer-menu">
+    <a th:href="@{/company/index}">회사소개</a>
+    <a th:href="@{/policy/terms}">서비스이용약관</a>
+    <a th:href="@{/policy/privacy}">개인정보처리방침</a>
+    <a th:href="@{/policy/finance}">전자금융거래약관</a>
+  </div>
+  <div class="footer-info">
+    <div class="footer-logo">이미지</div>
+    <div class="company-info">
+      <strong>(주)케이마켓</strong><br>
+      부산광역시 부산진구 중앙대로 300<br>
+      대표이사 : 홍길동<br>
+      사업자등록번호 : 123-45-12345
     </div>
-
-    <main>
-        <div class="cs-flex">
-
-            <aside class="cs-aside">
-                <h2>문의하기</h2>
-                <ul>
-                    <li><a href="#" class="active">회원</a></li>
-                    <li><a href="#">쿠폰 / 이벤트</a></li>
-                    <li><a href="#">주문 / 결제</a></li>
-                    <li><a href="#">배송</a></li>
-                    <li><a href="#">취소 / 반품 / 환불</a></li>
-                    <li><a href="#">여행 / 숙박 / 항공</a></li>
-                    <li><a href="#">안전거래</a></li>
-                </ul>
-            </aside>
-
-            <section class="cs-content">
-                <h2>회원</h2>
-                <p class="desc">회원 관련 문의 내용입니다.</p>
-
-                <form action="#" method="post" class="write-form">
-
-                    <div class="form-row">
-                        <label for="type1">문의유형</label>
-
-                        <select id="type1" name="type1">
-                            <option value="">1차 선택</option>
-                            <option value="member">회원</option>
-                            <option value="coupon">쿠폰 / 이벤트</option>
-                            <option value="order">주문 / 결제</option>
-                            <option value="delivery">배송</option>
-                            <option value="cancel">취소 / 반품 / 환불</option>
-                        </select>
-
-                        <select id="type2" name="type2">
-                            <option value="">2차 선택</option>
-                            <option value="join">가입</option>
-                            <option value="leave">탈퇴</option>
-                            <option value="info">회원정보</option>
-                            <option value="login">로그인</option>
-                        </select>
-                    </div>
-
-                    <div class="form-row">
-                        <label for="title">제목</label>
-                        <input type="text" id="title" name="title" placeholder="제목을 입력하세요.">
-                    </div>
-
-                    <div class="form-row">
-                        <label for="content">내용</label>
-                        <textarea id="content" name="content" placeholder="내용을 입력하세요."></textarea>
-                    </div>
-
-                    <div class="btn-area">
-                        <a href="./qna-list.html" class="btn btn-gray">취소하기</a>
-                        <button type="submit" class="btn btn-blue">등록하기</button>
-                    </div>
-
-                </form>
-            </section>
-
-        </div>
-    </main>
-
-    <footer>
-        <div class="footer-menu">
-            <a href="#">회사소개</a>
-            <a href="#">서비스이용약관</a>
-            <a href="#">개인정보처리방침</a>
-            <a href="#">전자금융거래약관</a>
-        </div>
-
-        <div class="footer-info">
-            <div class="footer-logo">이미지</div>
-
-            <div class="company-info">
-                <strong>(주)케이마켓</strong><br>
-                부산광역시 부산진구 중앙대로 300<br>
-                대표이사 : 홍길동<br>
-                사업자등록번호 : 123-45-12345
-            </div>
-
-            <div class="customer-info">
-                <h3>고객센터</h3>
-                Tel : 1234-5678<br>
-                평일 09:00 ~ 18:00
-            </div>
-        </div>
-    </footer>
+    <div class="customer-info"><h3>고객센터</h3>Tel : 1234-5678<br>평일 09:00 ~ 18:00</div>
+  </div>
+</footer>
 </div>
-</body>
-</html>
+<script>
+document.addEventListener("DOMContentLoaded",()=>{
+const map={"회원":["가입","탈퇴","회원정보","로그인"],"쿠폰 / 이벤트":["쿠폰","포인트","이벤트","할인혜택"],"주문 / 결제":["주문","결제","결제오류","영수증"],"배송":["배송조회","배송지연","배송변경","배송완료"],"취소 / 반품 / 환불":["주문취소","반품","교환","환불"],"여행 / 숙박 / 항공":["여행","숙박","항공","예약변경"],"안전거래":["피해신고","안전결제","거래주의","기타"]};
+const c1=document.getElementById("category1"),c2=document.getElementById("category2"),content=document.getElementById("content"),count=document.getElementById("content-count");
+c1.addEventListener("change",()=>{c2.innerHTML='<option value="">2차 유형을 선택해주세요.</option>';(map[c1.value]||[]).forEach(v=>{const o=document.createElement("option");o.value=v;o.textContent=v;c2.appendChild(o)})});
+content.addEventListener("input",()=>count.textContent=content.value.length+" / 2000");
+});
+</script></body></html>

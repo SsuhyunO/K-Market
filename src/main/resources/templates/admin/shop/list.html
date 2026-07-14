@@ -24,8 +24,7 @@
 
 		<section th:replace="~{admin/fragments/dash-section::dash-section(null, null, null, ~{::main_content})}">
 			<th:block th:fragment="main_content">
-
-				<th:block th:replace="~{admin/fragments/search-form::search-form(~{::options})}">
+				<th:block th:replace="~{admin/fragments/search-form::search-form(@{/admin/shop-list}, ~{::options})}">
 					<th:block th:fragment="options">
 						<option value="상호명">상호명</option>
 						<option value="대표자">대표자</option>
