@@ -3,24 +3,42 @@ package org.example.k_market.service.order;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.k_market.dao.OrderDAO;
+import org.example.k_market.dto.ClaimDTO;
 import org.example.k_market.dto.coupon.CouponIssueDTO; // 실제 패키지/DTO명에 맞게 수정 필요
 import org.example.k_market.dto.order.OrderCreateRequestDTO;
 import org.example.k_market.dto.order.OrderDTO;
 import org.example.k_market.dto.order.OrderItemDTO;
 import org.example.k_market.dto.order.OrderItemRequestDTO;
 import org.example.k_market.dto.order.OrderItemViewDTO;
+import org.example.k_market.dto.order.ShipmentDTO;
+import org.example.k_market.dto.order.ShipmentItemDTO;
+import org.example.k_market.dto.order.request.ClaimRequest;
+import org.example.k_market.dto.order.request.DeliveryRegisterRequest;
+import org.example.k_market.dto.order.request.ManagementOrderSearchRequest;
+import org.example.k_market.dto.order.request.MyOrderSearchRequest;
+import org.example.k_market.dto.order.response.MyOrderItemResponse;
+import org.example.k_market.dto.order.response.OrderDetailResponse;
+import org.example.k_market.dto.order.response.OrderLineResponse;
+import org.example.k_market.dto.order.response.ManagementOrderListResponse;
+import org.example.k_market.dto.order.response.ShipmentDetailResponse;
+import org.example.k_market.dto.order.response.ShipmentListResponse;
+import org.example.k_market.dto.pagination.response.PageResponse;
+import org.example.k_market.entity.Claim;
 import org.example.k_market.entity.cart.Cart;
 import org.example.k_market.entity.product.Product;
 import org.example.k_market.entity.product.ProductOptionItem;
 import org.example.k_market.entity.product.ProductVariant;
 import org.example.k_market.entity.product.ProductVariantItem;
 import org.example.k_market.repository.cart.CartRepository;
+import org.example.k_market.repository.ClaimRepository;
 import org.example.k_market.repository.product.ProductOptionItemRepository;
 import org.example.k_market.repository.product.ProductRepository;
 import org.example.k_market.repository.product.ProductVariantItemRepository;
 import org.example.k_market.repository.product.ProductVariantRepository;
 import org.example.k_market.service.admin.CouponIssueService; // 이미 존재하는 서비스, findById/markAsUsed 메서드 추가 필요
 import org.example.k_market.service.PointService;
+import org.example.k_market.service.pagination.PageQuery;
+import org.example.k_market.service.pagination.PaginationService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,6 +50,8 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class OrderService {
+    private static final int MANAGEMENT_ORDER_LIST_SIZE = 10;
+    private static final int MANAGEMENT_ORDER_PAGE_BLOCK_SIZE = 10;
 
     private final ProductRepository productRepository;
     private final ProductVariantRepository variantRepository;
@@ -41,6 +61,8 @@ public class OrderService {
     private final OrderDAO orderDAO;
     private final CouponIssueService couponIssueService;  // 기존 서비스, 메서드 확장 필요
     private final PointService pointService;
+    private final PaginationService paginationService;
+    private final ClaimRepository claimRepository;
 
     // ─────────────────────────────────────────────
     // 기존 코드 (조회/계산용) - 그대로 유지
@@ -169,6 +191,7 @@ public class OrderService {
 
         // 💡 prodNo별 배송비를 dedup해서 저장 (같은 상품의 옵션 여러 개 담아도 배송비는 1번만)
         Map<Integer, Integer> shippingFeeByProdNo = new LinkedHashMap<>();
+        Set<Integer> chargedShippingProdNos = new HashSet<>();
 
         for (OrderItemRequestDTO itemReq : req.getItems()) {
             ProductVariant variant = variantRepository.findById(itemReq.getProdVariantId())
@@ -191,6 +214,9 @@ public class OrderService {
             int discountRate = product.getDiscount();
             int discountedUnitPrice = price * (100 - discountRate) / 100;
             int lineTotal = discountedUnitPrice * qty;
+            int lineShippingFee = chargedShippingProdNos.add(variant.getProdNo())
+                    ? product.getDeliveryFee()
+                    : 0;
 
             OrderItemDTO item = OrderItemDTO.builder()
                     .prodNo(variant.getProdNo())
@@ -198,6 +224,9 @@ public class OrderService {
                     .count(qty)
                     .price(discountedUnitPrice)
                     .total(lineTotal)
+                    .shippingFee(lineShippingFee)
+                    .sellerUid(product.getSellerUid())
+                    .itemStatus("PAID")
                     .build();
 
             orderItems.add(item);
@@ -296,6 +325,7 @@ public class OrderService {
 
             if (freeShipping) {
                 shippingFee = 0;
+                orderItems.forEach(item -> item.setShippingFee(0));
             }
 
             couponIssueService.markAsUsed(issueNo, memberUid);
@@ -547,5 +577,274 @@ public class OrderService {
         int offset = (page - 1) * pageSize;
 
         return orderDAO.selectOrders(searchType, keyword, offset, pageSize);
+    }
+
+    public PageResponse<ManagementOrderListResponse> getOrderPageInfoForManagement(ManagementOrderSearchRequest request) {
+        String searchType = normalizeBlank(request.getType());
+        String keyword = normalizeBlank(request.getKeyword());
+
+        return paginationService.getPageInfo(
+            request.getPage(),
+            MANAGEMENT_ORDER_LIST_SIZE,
+            MANAGEMENT_ORDER_PAGE_BLOCK_SIZE,
+            new PageQuery<>() {
+                @Override
+                public List<ManagementOrderListResponse> fetch(int offset, int size) {
+                    return orderDAO.selectOrders(searchType, keyword, offset, size)
+                        .stream()
+                        .map(ManagementOrderListResponse::from)
+                        .toList();
+                }
+
+                @Override
+                public int count() {
+                    return orderDAO.selectOrderCount(searchType, keyword);
+                }
+            }
+        );
+    }
+
+    private String normalizeBlank(String value) {
+        return value == null || value.isBlank() ? null : value.trim();
+    }
+
+    public OrderDetailResponse getOrderDetailForManagement(int orderNo) {
+        OrderDTO order = orderDAO.selectOrderByNo(orderNo);
+        if (order == null) {
+            throw new NoSuchElementException("주문을 찾을 수 없습니다. orderNo=" + orderNo);
+        }
+
+        return OrderDetailResponse.builder()
+            .order(order)
+            .items(orderDAO.selectOrderLinesByOrderNo(orderNo))
+            .build();
+    }
+
+    public List<OrderLineResponse> getShippableOrderLines(int orderNo) {
+        return orderDAO.selectShippableOrderLinesByOrderNo(orderNo);
+    }
+
+    @Transactional
+    public ShipmentDetailResponse registerDelivery(DeliveryRegisterRequest request) {
+        if (request.getOrderItemNos() == null || request.getOrderItemNos().isEmpty()) {
+            throw new IllegalArgumentException("배송할 주문상품을 선택해주세요.");
+        }
+
+        String courierName = normalizeBlank(request.getCourierName());
+        String trackingNo = normalizeBlank(request.getTrackingNo());
+        if (courierName == null || trackingNo == null) {
+            throw new IllegalArgumentException("택배사와 운송장번호를 입력해주세요.");
+        }
+
+        List<Integer> orderItemNos = request.getOrderItemNos().stream()
+            .filter(Objects::nonNull)
+            .distinct()
+            .toList();
+        List<OrderLineResponse> lines = orderDAO.selectOrderLinesByItemNos(orderItemNos);
+
+        if (lines.size() != orderItemNos.size()) {
+            throw new IllegalArgumentException("존재하지 않는 주문상품이 포함되어 있습니다.");
+        }
+
+        int orderNo = request.getOrderNo();
+        String sellerUid = lines.getFirst().getSellerUid();
+        Integer existingShipmentNo = resolveExistingShipmentNo(lines, courierName, trackingNo);
+        if (existingShipmentNo != null) {
+            return getShipmentDetail(existingShipmentNo);
+        }
+
+        for (OrderLineResponse line : lines) {
+            if (line.getOrderNo() != orderNo) {
+                throw new IllegalArgumentException("같은 주문의 상품만 배송 등록할 수 있습니다.");
+            }
+            if (!Objects.equals(sellerUid, line.getSellerUid())) {
+                throw new IllegalArgumentException("같은 판매자의 상품만 하나의 송장으로 묶을 수 있습니다.");
+            }
+            if (!List.of("PAID", "READY").contains(line.getItemStatus())) {
+                throw new IllegalStateException("이미 배송 처리됐거나 처리할 수 없는 주문상품이 포함되어 있습니다.");
+            }
+        }
+
+        ShipmentDTO shipment = ShipmentDTO.builder()
+            .orderNo(orderNo)
+            .sellerUid(sellerUid)
+            .courierName(courierName)
+            .trackingNo(trackingNo)
+            .status("SHIPPING")
+            .build();
+        orderDAO.insertShipment(shipment);
+
+        List<ShipmentItemDTO> shipmentItems = lines.stream()
+            .map(line -> ShipmentItemDTO.builder()
+                .shipmentNo(shipment.getShipmentNo())
+                .orderItemNo(line.getOrderItemNo())
+                .quantity(line.getCount())
+                .build())
+            .toList();
+        orderDAO.insertShipmentItems(shipmentItems);
+        orderDAO.updateOrderItemsStatus(orderItemNos, "SHIPPING");
+        refreshOrderStatus(orderNo);
+
+        return getShipmentDetail(shipment.getShipmentNo());
+    }
+
+    private Integer resolveExistingShipmentNo(List<OrderLineResponse> lines, String courierName, String trackingNo) {
+        Integer shipmentNo = null;
+        for (OrderLineResponse line : lines) {
+            if (line.getShipmentNo() == null) {
+                return null;
+            }
+            if (!Objects.equals(courierName, line.getCourierName())
+                || !Objects.equals(trackingNo, line.getTrackingNo())) {
+                return null;
+            }
+            if (shipmentNo == null) {
+                shipmentNo = line.getShipmentNo();
+            } else if (!Objects.equals(shipmentNo, line.getShipmentNo())) {
+                return null;
+            }
+        }
+        return shipmentNo;
+    }
+
+    public PageResponse<ShipmentListResponse> getShipmentPageInfo(ManagementOrderSearchRequest request) {
+        String searchType = normalizeBlank(request.getType());
+        String keyword = normalizeBlank(request.getKeyword());
+
+        return paginationService.getPageInfo(
+            request.getPage(),
+            MANAGEMENT_ORDER_LIST_SIZE,
+            MANAGEMENT_ORDER_PAGE_BLOCK_SIZE,
+            new PageQuery<>() {
+                @Override
+                public List<ShipmentListResponse> fetch(int offset, int size) {
+                    return orderDAO.selectShipments(searchType, keyword, offset, size);
+                }
+
+                @Override
+                public int count() {
+                    return orderDAO.selectShipmentCount(searchType, keyword);
+                }
+            }
+        );
+    }
+
+    public ShipmentDetailResponse getShipmentDetail(int shipmentNo) {
+        ShipmentListResponse shipment = orderDAO.selectShipmentByNo(shipmentNo);
+        if (shipment == null) {
+            throw new NoSuchElementException("배송 정보를 찾을 수 없습니다. shipmentNo=" + shipmentNo);
+        }
+
+        return ShipmentDetailResponse.builder()
+            .shipment(shipment)
+            .items(orderDAO.selectShipmentLines(shipmentNo))
+            .build();
+    }
+
+    public PageResponse<MyOrderItemResponse> getMyOrderItems(String memberUid, MyOrderSearchRequest request) {
+        if (memberUid == null || memberUid.isBlank()) {
+            throw new IllegalStateException("로그인이 필요합니다.");
+        }
+
+        String startDate = normalizeBlank(request.getStartDate());
+        String endDate = normalizeBlank(request.getEndDate());
+        int pageSize = Math.min(Math.max(request.getSize(), 1), 50);
+
+        return paginationService.getPageInfo(
+            request.getPage(),
+            pageSize,
+            MANAGEMENT_ORDER_PAGE_BLOCK_SIZE,
+            new PageQuery<>() {
+                @Override
+                public List<MyOrderItemResponse> fetch(int offset, int size) {
+                    return orderDAO.selectMyOrderItems(memberUid, startDate, endDate, offset, size);
+                }
+
+                @Override
+                public int count() {
+                    return orderDAO.selectMyOrderItemCount(memberUid, startDate, endDate);
+                }
+            }
+        );
+    }
+
+    @Transactional
+    public void confirmPurchase(String memberUid, int orderItemNo) {
+        MyOrderItemResponse item = getOwnedOrderItem(memberUid, orderItemNo);
+        if (!List.of("DELIVERED", "SHIPPING").contains(item.getItemStatus())) {
+            throw new IllegalStateException("구매확정할 수 없는 상태입니다.");
+        }
+        orderDAO.updateOrderItemStatus(orderItemNo, "CONFIRMED");
+        refreshOrderStatus(item.getOrderNo());
+    }
+
+    @Transactional
+    public void requestClaim(String memberUid, int orderItemNo, ClaimRequest request) {
+        MyOrderItemResponse item = getOwnedOrderItem(memberUid, orderItemNo);
+        String claimType = normalizeBlank(request.getClaimType());
+        if (claimType == null) {
+            throw new IllegalArgumentException("클레임 유형이 필요합니다.");
+        }
+
+        String nextStatus = switch (claimType) {
+            case "RETURN" -> "RETURN_REQUESTED";
+            case "EXCHANGE" -> "EXCHANGE_REQUESTED";
+            case "CANCEL" -> "CANCEL_REQUESTED";
+            default -> throw new IllegalArgumentException("지원하지 않는 클레임 유형입니다.");
+        };
+
+        Claim claim = Claim.builder()
+            .orderItemNo(orderItemNo)
+            .claimType(claimType)
+            .claimContent(normalizeBlank(request.getClaimContent()))
+            .fileId(request.getFileId())
+            .quantity(item.getQuantity())
+            .claimStatus("REQUESTED")
+            .build();
+        claimRepository.save(claim);
+        orderDAO.updateOrderItemStatus(orderItemNo, nextStatus);
+        refreshOrderStatus(item.getOrderNo());
+    }
+
+    private MyOrderItemResponse getOwnedOrderItem(String memberUid, int orderItemNo) {
+        List<MyOrderItemResponse> items = orderDAO.selectMyOrderItems(memberUid, null, null, 0, Integer.MAX_VALUE)
+            .stream()
+            .filter(item -> item.getOrderItemNo() == orderItemNo)
+            .toList();
+        if (items.isEmpty()) {
+            throw new NoSuchElementException("주문상품을 찾을 수 없습니다.");
+        }
+        return items.getFirst();
+    }
+
+    private void refreshOrderStatus(int orderNo) {
+        List<OrderLineResponse> lines = orderDAO.selectOrderLinesByOrderNo(orderNo);
+        if (lines.isEmpty()) return;
+
+        Set<String> statuses = lines.stream()
+            .map(OrderLineResponse::getItemStatus)
+            .collect(Collectors.toSet());
+
+        String status;
+        if (statuses.size() == 1) {
+            status = switch (statuses.iterator().next()) {
+                case "SHIPPING" -> "SHIPPING";
+                case "DELIVERED" -> "DELIVERED";
+                case "CONFIRMED" -> "CONFIRMED";
+                case "CANCELED" -> "CANCELED";
+                case "RETURNED", "REFUNDED" -> "RETURNED";
+                default -> "PAID";
+            };
+        } else if (statuses.stream().anyMatch(s -> s.contains("RETURN") || s.contains("EXCHANGE") || s.contains("CANCEL"))) {
+            status = "CLAIM_PARTIAL";
+        } else if (statuses.contains("SHIPPING")) {
+            status = "PARTIAL_SHIPPING";
+        } else if (statuses.contains("DELIVERED") || statuses.contains("CONFIRMED")) {
+            status = "PARTIAL_DELIVERED";
+        } else {
+            status = "PAID";
+        }
+
+        orderDAO.updateOrderStatus(orderNo, status);
     }
 }

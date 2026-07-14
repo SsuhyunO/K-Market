@@ -10,8 +10,10 @@ import lombok.*;
 @Builder
 public class ClaimDTO {
     private int claimNo;
-    private int orderNo;
+    private int orderItemNo;
     private String claimType;
     private String claimContent;
-    private int fileId;
+    private Integer fileId;
+    private int quantity;
+    private String claimStatus;
 }

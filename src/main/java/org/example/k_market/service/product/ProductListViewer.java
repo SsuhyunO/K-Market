@@ -156,11 +156,9 @@ public class ProductListViewer {
     }
 
     private String normalizeKeyword(String keyword) {
-        if (keyword == null || keyword.isBlank()) {
-            return null;
-        }
-
-        return keyword.trim();
+        return keyword == null || keyword.isBlank()
+            ? null :
+            keyword.trim();
     }
 
     private <T extends ProductListResponse> void applySellerGrades(List<T> products) {

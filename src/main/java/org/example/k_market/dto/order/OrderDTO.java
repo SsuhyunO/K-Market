@@ -30,8 +30,6 @@ public class OrderDTO {
     private String payMethod;
     private String status;
     private String createdAt;
-    private String courierName;
-    private String trackingNo;
     private String orderNote;
     // 추가
     private String memberName;
@@ -46,7 +44,6 @@ public class OrderDTO {
                 .couponIssueId(couponIssueId)
                 .orderTotal(orderTotal)
                 .usedPoints(usedPoints)
-                .shippingFee(shippingFee)
                 .receiver(receiver)
                 .phone(phone)
                 .zipCode(zipCode)
@@ -54,8 +51,6 @@ public class OrderDTO {
                 .addr2(addr2)
                 .payMethod(payMethod)
                 .status(status)
-                .courierName(courierName)
-                .trackingNo(trackingNo)
                 .orderNote(orderNote)
                 .build();
     }

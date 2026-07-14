@@ -20,6 +20,11 @@ public class OrderItem {
     private int count;
     private int price;
     private int total;
+    private int shippingFee;
+    @Column(length = 20, nullable = false)
+    private String sellerUid;
+    @Column(length = 30, nullable = false)
+    private String itemStatus;
 
     public OrderItemDTO toDTO() {
         return OrderItemDTO.builder()
@@ -29,6 +34,9 @@ public class OrderItem {
                 .count(count)
                 .price(price)
                 .total(total)
+                .shippingFee(shippingFee)
+                .sellerUid(sellerUid)
+                .itemStatus(itemStatus)
                 .build();
     }
 }

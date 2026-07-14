@@ -1,28 +1,41 @@
 .delivery-list-page .delivery-list-table .management-table {
-    min-width: 1060px;
+    min-width: 1180px;
 }
 
 .delivery-list-page .delivery-list-table .management-table th:nth-child(1),
-.delivery-list-page .delivery-list-table .management-table td:nth-child(1),
-.delivery-list-page .delivery-list-table .management-table th:nth-child(2),
-.delivery-list-page .delivery-list-table .management-table td:nth-child(2) {
-    width: 112px;
+.delivery-list-page .delivery-list-table .management-table td:nth-child(1) {
+    width: 120px;
 }
 
+.delivery-list-page .delivery-list-table .management-table th:nth-child(2),
+.delivery-list-page .delivery-list-table .management-table td:nth-child(2),
 .delivery-list-page .delivery-list-table .management-table th:nth-child(3),
 .delivery-list-page .delivery-list-table .management-table td:nth-child(3),
-.delivery-list-page .delivery-list-table .management-table th:nth-child(5),
-.delivery-list-page .delivery-list-table .management-table td:nth-child(5),
-.delivery-list-page .delivery-list-table .management-table th:nth-child(7),
-.delivery-list-page .delivery-list-table .management-table td:nth-child(7) {
-    width: 88px;
+.delivery-list-page .delivery-list-table .management-table th:nth-child(4),
+.delivery-list-page .delivery-list-table .management-table td:nth-child(4) {
+    width: 104px;
 }
 
-.delivery-list-page .delivery-list-table .management-table th:nth-child(4),
-.delivery-list-page .delivery-list-table .management-table td:nth-child(4),
+.delivery-list-page .delivery-list-table .management-table th:nth-child(5),
+.delivery-list-page .delivery-list-table .management-table td:nth-child(5) {
+    min-width: 180px;
+    text-align: left;
+}
+
+.delivery-list-page .delivery-list-table .management-table th:nth-child(6),
+.delivery-list-page .delivery-list-table .management-table td:nth-child(6),
+.delivery-list-page .delivery-list-table .management-table th:nth-child(7),
+.delivery-list-page .delivery-list-table .management-table td:nth-child(7),
 .delivery-list-page .delivery-list-table .management-table th:nth-child(8),
-.delivery-list-page .delivery-list-table .management-table td:nth-child(8) {
-    width: 116px;
+.delivery-list-page .delivery-list-table .management-table td:nth-child(8),
+.delivery-list-page .delivery-list-table .management-table th:nth-child(9),
+.delivery-list-page .delivery-list-table .management-table td:nth-child(9) {
+    width: 86px;
+}
+
+.delivery-list-page .delivery-list-table .management-table th:nth-child(10),
+.delivery-list-page .delivery-list-table .management-table td:nth-child(10) {
+    width: 112px;
 }
 
 .delivery-address {
@@ -84,6 +97,12 @@
     border: 1px solid #bbf7d0;
     background: #f0fdf4;
     color: #15803d;
+}
+
+.delivery-status.claim {
+    border: 1px solid #fed7aa;
+    background: #fff7ed;
+    color: #c2410c;
 }
 
 #delivery-detail-modal .modal-box {

@@ -17,6 +17,9 @@ public class OrderItemDTO {
     private int price;
     private int total;
     private int prodNo;
+    private int shippingFee;
+    private String sellerUid;
+    private String itemStatus;
 
     public OrderItem toEntity() {
         return OrderItem.builder()
@@ -26,6 +29,9 @@ public class OrderItemDTO {
                 .count(count)
                 .price(price)
                 .total(total)
+                .shippingFee(shippingFee)
+                .sellerUid(sellerUid)
+                .itemStatus(itemStatus)
                 .build();
     }
 }

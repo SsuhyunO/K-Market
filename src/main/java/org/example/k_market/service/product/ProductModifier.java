@@ -50,7 +50,6 @@ public class ProductModifier {
     private final OrderItemRepository orderItemRepository;
     private final ProductFormValidator productFormValidator;
     private final ProductFileUploader productFileUploader;
-    private final ProductNoticeWriter productNoticeWriter;
     private final ProductDetailViewer productDetailViewer;
 
     public void modify(int prodNo, ProductRegisterRequest request) {
@@ -209,11 +208,10 @@ public class ProductModifier {
             variantItemRepository.deleteByVariantIdAndOptionItemIdIn(variantId, removedOptionItemIds);
         }
 
-        for (Integer optionItemId : addedOptionItemIds) {
-            variantItemRepository.save(ProductVariantItem.builder()
-                .id(new ProductVariantItemId(variantId, optionItemId))
-                .build());
-        }
+        addedOptionItemIds
+            .forEach(id -> variantItemRepository.save(ProductVariantItem.builder()
+                .id(new ProductVariantItemId(variantId, id))
+                .build()));
     }
 
     private Set<Integer> resolveVariantOptionItemIds(
