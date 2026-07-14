@@ -1,6 +1,9 @@
-package org.example.k_market.service.point;
+package org.example.k_market.service;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.example.k_market.dao.PointDAO;
+import org.example.k_market.dto.PointDTO;
 import org.example.k_market.dto.pagination.response.PageResponse;
 import org.example.k_market.dto.point.response.PointListResponse;
 import org.example.k_market.entity.Point;
@@ -17,14 +20,67 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
 
-@Service("myPointService")
+@Service
 @RequiredArgsConstructor
 public class PointService {
+    private static final int POINT_EXPIRE_MONTHS = 12;
+    private static final int MY_PAGE_POINT_SIZE = 5;
     private static final int POINT_LIST_SIZE = 10;
     private static final int POINT_PAGE_BLOCK_SIZE = 5;
 
+    private final PointDAO pointDAO;
     private final PointRepository pointRepository;
     private final PaginationService paginationService;
+
+    @Transactional
+    public void usePoint(String memberUid, int usedPoints, Integer orderNo) {
+        if (usedPoints <= 0) return;
+
+        int balance = pointDAO.selectPointBalance(memberUid);
+        if (balance < usedPoints) {
+            throw new IllegalStateException("보유 포인트가 부족합니다.");
+        }
+
+        PointDTO usage = PointDTO.builder()
+            .memberUid(memberUid)
+            .orderNo(orderNo)
+            .point(-usedPoints)
+            .content("사용")
+            .note("주문 결제 시 포인트 사용")
+            .expireDate(null)
+            .build();
+
+        pointDAO.insertPoint(usage);
+    }
+
+    @Transactional
+    public void earnPoint(String memberUid, int earnedPoints, Integer orderNo) {
+        if (earnedPoints <= 0) return;
+
+        PointDTO earn = PointDTO.builder()
+            .memberUid(memberUid)
+            .orderNo(orderNo)
+            .point(earnedPoints)
+            .content("적립")
+            .note("주문 완료 적립")
+            .expireDate(LocalDateTime.now().plusMonths(POINT_EXPIRE_MONTHS))
+            .build();
+
+        pointDAO.insertPoint(earn);
+    }
+
+    public int getBalance(String memberUid) {
+        return pointDAO.selectPointBalance(memberUid);
+    }
+
+    public List<PointListResponse> getRecentPointsByMemberUid(String memberUid) {
+        Pageable pageable = PageRequest.of(0, MY_PAGE_POINT_SIZE, Sort.by("createdAt").descending());
+
+        return pointRepository.findByMemberUid(memberUid, pageable)
+            .stream()
+            .map(this::toPointListResponse)
+            .toList();
+    }
 
     public PageResponse<PointListResponse> getPointPageByMemberUid(
         String memberUid,

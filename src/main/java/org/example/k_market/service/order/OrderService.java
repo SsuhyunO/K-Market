@@ -20,7 +20,7 @@ import org.example.k_market.repository.product.ProductRepository;
 import org.example.k_market.repository.product.ProductVariantItemRepository;
 import org.example.k_market.repository.product.ProductVariantRepository;
 import org.example.k_market.service.admin.CouponIssueService; // 이미 존재하는 서비스, findById/markAsUsed 메서드 추가 필요
-import org.example.k_market.service.admin.PointService;
+import org.example.k_market.service.PointService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

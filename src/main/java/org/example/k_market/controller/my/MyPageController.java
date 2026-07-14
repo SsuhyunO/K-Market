@@ -2,6 +2,7 @@ package org.example.k_market.controller.my;
 
 import lombok.RequiredArgsConstructor;
 import org.example.k_market.dto.admin.BannerDTO;
+import org.example.k_market.service.PointService;
 import org.example.k_market.service.admin.BannerService;
 import jakarta.servlet.http.HttpSession;
 import org.example.k_market.service.review.ReviewService;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 @RequiredArgsConstructor
 public class MyPageController {
     private final ReviewService reviewService;
+    private final PointService pointService;
 
     private final BannerService bannerService;
 
@@ -30,6 +32,7 @@ public class MyPageController {
     public String home(HttpSession session, Model model) {
         String memberUid = (String) session.getAttribute("loginMember");
         if (memberUid != null && !memberUid.isBlank()) {
+            model.addAttribute("recentPoints", pointService.getRecentPointsByMemberUid(memberUid));
             model.addAttribute("recentReviews", reviewService.getRecentReviewsByMemberId(memberUid));
         }
 

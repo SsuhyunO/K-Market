@@ -9,10 +9,8 @@ import org.example.k_market.dto.product.request.ProductListRequest;
 import org.example.k_market.dto.product.request.ProductSearchRequest;
 import org.example.k_market.dto.product.response.ProductListResponse;
 import org.example.k_market.dto.product.response.ProductSearchResponse;
-import org.example.k_market.dto.review.response.ReviewListResponse;
 import org.example.k_market.service.product.ProductService;
 import org.example.k_market.service.order.OrderService;
-import org.example.k_market.service.review.ReviewService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,7 +23,6 @@ import java.util.Map;
 public class ProductApiController {
     private final ProductService productService;
     private final OrderService orderService;
-    private final ReviewService reviewService;
 
     @GetMapping("/list")
     public ResponseEntity<PageResponse<ProductListResponse>> getProducts(@ModelAttribute ProductListRequest request) {
@@ -35,13 +32,6 @@ public class ProductApiController {
     @GetMapping("/search")
     public ResponseEntity<PageResponse<ProductSearchResponse>> searchProducts(@ModelAttribute ProductSearchRequest request) {
         return ResponseEntity.ok(productService.getProductSearchPageInfo(request));
-    }
-
-    @GetMapping("/{prodNo}/reviews")
-    public ResponseEntity<PageResponse<ReviewListResponse>> getProductReviews(
-            @PathVariable int prodNo,
-            @RequestParam(defaultValue = "1") int page) {
-        return ResponseEntity.ok(reviewService.getReviewPageByProductNo(prodNo, page));
     }
 
     @PostMapping("/order")

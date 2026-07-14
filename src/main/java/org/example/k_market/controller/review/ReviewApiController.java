@@ -8,18 +8,19 @@ import org.example.k_market.service.review.ReviewService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 @RestController
-@RequestMapping("/review")
+@RequestMapping("/review/api")
 @RequiredArgsConstructor
 public class ReviewApiController {
     private final ReviewService reviewService;
 
-    @GetMapping("/my/list")
+    @GetMapping("/list")
     public ResponseEntity<PageResponse<ReviewListResponse>> getListByMyPage(
         @RequestParam(defaultValue = "1") int page,
         HttpSession session
@@ -27,6 +28,14 @@ public class ReviewApiController {
         String memberUid = getLoginMemberUid(session);
 
         return ResponseEntity.ok(reviewService.getReviewPageByMemberId(memberUid, page));
+    }
+
+    @GetMapping("/product/{prodNo}/list")
+    public ResponseEntity<PageResponse<ReviewListResponse>> getListByProduct(
+        @PathVariable int prodNo,
+        @RequestParam(defaultValue = "1") int page
+    ) {
+        return ResponseEntity.ok(reviewService.getReviewPageByProductNo(prodNo, page));
     }
 
     private String getLoginMemberUid(HttpSession session) {

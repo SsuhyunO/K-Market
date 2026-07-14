@@ -49,7 +49,7 @@
             <nav class="sidebar-menu">
                 <ul>
                     <li><a th:href="@{/my/order}" data-menu="orders">전체주문내역</a></li>
-                    <li><a th:href="@{/my/point}" data-menu="points">포인트내역</a></li>
+                    <li><a th:href="@{/point/list}" data-menu="points">포인트내역</a></li>
                     <li><a th:href="@{/my/coupon}" data-menu="coupons">쿠폰</a></li>
                     <li><a th:href="@{/review/list}" data-menu="reviews">나의리뷰</a></li>
                     <li><a th:href="@{/my/qna}" data-menu="inquiry">문의하기</a></li>
@@ -157,7 +157,7 @@
             <section class="my-section">
                 <div class="section-header">
                     <span class="section-title">포인트적립내역</span>
-                    <a href="/my/points" class="btn-more">더보기 &gt;</a>
+                    <a th:href="@{/point/list}" class="btn-more">더보기 &gt;</a>
                 </div>
                 <table class="point-table">
                     <thead>
@@ -171,21 +171,17 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr>
-                        <td>2022-12-13</td>
-                        <td>적립</td>
-                        <td>2022121001</td>
-                        <td class="point-plus">340</td>
-                        <td>상품 구매확정</td>
-                        <td>2024-12-10</td>
+                    <tr th:if="${recentPoints == null or #lists.isEmpty(recentPoints)}">
+                        <td colspan="6">조회된 포인트내역이 없습니다.</td>
                     </tr>
-                    <tr>
-                        <td>2022-12-13</td>
-                        <td>적립</td>
-                        <td>2022120601</td>
-                        <td class="point-plus">120</td>
-                        <td>상품 구매확정</td>
-                        <td>2024-12-06</td>
+                    <tr th:each="point : ${recentPoints}">
+                        <td th:text="${point.createdAt}">2022-12-13</td>
+                        <td th:text="${point.content}">적립</td>
+                        <td th:text="${point.orderNo > 0 ? point.orderNo : '-'}">2022121001</td>
+                        <td th:class="${point.point >= 0 ? 'point-plus' : 'point-minus'}"
+                            th:text="${point.point >= 0 ? '+' + #numbers.formatInteger(point.point, 1, 'COMMA') : '-' + #numbers.formatInteger(-point.point, 1, 'COMMA')}">340</td>
+                        <td th:text="${point.note}">상품 구매확정</td>
+                        <td th:text="${point.expireDate != null and !#strings.isEmpty(point.expireDate) ? point.expireDate : '-'}">2024-12-10</td>
                     </tr>
                     </tbody>
                 </table>
