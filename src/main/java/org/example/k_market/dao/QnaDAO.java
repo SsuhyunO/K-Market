@@ -34,6 +34,13 @@ public interface QnaDAO {
             @Param("boardNo") int boardNo
     );
 
+
+    /**
+     * 사용자 문의글 등록
+     */
+    int insertQna(QnaDTO dto);
+
+    
     /**
      * 관리자 답변 등록 및 수정
      */

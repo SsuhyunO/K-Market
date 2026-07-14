@@ -1,0 +1,81 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Malgun Gothic', '맑은 고딕', sans-serif;
+    background-color: #FFF6EE;
+    color: #333;
+}
+
+.error-wrap {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 40px 20px;
+}
+
+.error-mascot {
+    margin-bottom: 12px;
+}
+
+.error-code {
+    font-size: 16px;
+    font-weight: bold;
+    color: #F4511E;
+    letter-spacing: 2px;
+    margin-bottom: 8px;
+}
+
+.error-title {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 14px;
+}
+
+.error-desc {
+    font-size: 14px;
+    color: #777;
+    line-height: 1.7;
+    margin-bottom: 32px;
+}
+
+.error-btn-area {
+    display: flex;
+    gap: 12px;
+}
+
+.error-btn {
+    display: inline-block;
+    padding: 12px 28px;
+    font-size: 14px;
+    font-weight: bold;
+    border-radius: 4px;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.error-btn-primary {
+    background-color: #F4511E;
+    color: #fff;
+}
+
+.error-btn-primary:hover {
+    background-color: #D8430F;
+}
+
+.error-btn-secondary {
+    background-color: #fff;
+    color: #F4511E;
+    border: 1px solid #F4511E;
+}
+
+.error-btn-secondary:hover {
+    background-color: #FFEFE5;
+}

@@ -1,0 +1,15 @@
+.write-form{border-top:2px solid #333;border-bottom:1px solid #ddd}
+.form-row{padding:20px 18px;border-bottom:1px solid #e8e8e8}
+.form-row>label{display:block;margin-bottom:10px;font-weight:700}
+.required{color:var(--km-red)}
+.select-group{display:flex;gap:10px}
+.select-group select,.form-row input,.form-row textarea{width:100%;border:1px solid #ccc;border-radius:4px;outline:none}
+.select-group select,.form-row input{height:42px;padding:0 12px}
+.form-row textarea{min-height:260px;padding:14px;line-height:22px;resize:vertical}
+.select-group select:focus,.form-row input:focus,.form-row textarea:focus{border-color:var(--km-red)}
+.field-help{margin-top:8px;font-size:11px;color:#999}
+.field-error{min-height:16px;margin-top:6px;font-size:11px;color:#d93025}
+.textarea-info{display:flex;justify-content:space-between}
+.qna-notice{margin:20px 18px;padding:16px 18px;border:1px solid #eee0d9;border-radius:5px;background:#fff8f5}
+.qna-notice strong{display:block;margin-bottom:8px;color:#d73b0c}
+.qna-notice li{margin-top:6px;font-size:11px;color:#777}

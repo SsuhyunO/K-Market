@@ -5,41 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>케이마켓 - 아이디 찾기 결과</title>
     <link rel="stylesheet" th:href="@{/css/member/userid.css}">
+    <link rel="stylesheet" th:href="@{/css/common.css}">
 </head>
-<body>
+<body class="simple-header">
 
-<header>
-    <div class="header-inner">
-        <a th:href="@{/}" class="logo">CI ( 로고 )</a>
-        <nav class="header-nav">
-            <a th:href="@{/member/login}">로그인</a>
-            <a th:href="@{/member/join}">회원가입</a>
-            <a th:href="@{/my/home}">마이페이지</a>
-            <a th:href="@{/cart}">🛒 장바구니</a>
-        </nav>
-    </div>
-</header>
+<header th:replace="~{fragments/header :: header}"></header>
 
 <main class="result-wrapper">
     <h2 class="result-title">아이디 찾기 결과</h2>
 
     <table class="result-table">
-        <tr>
-            <th>이름</th>
-            <td id="resName"></td>
-        </tr>
-        <tr>
-            <th>아이디</th>
-            <td id="resUid"></td>
-        </tr>
-        <tr>
-            <th>이메일</th>
-            <td id="resEmail"></td>
-        </tr>
-        <tr>
-            <th>가입일</th>
-            <td id="resRegDate"></td>
-        </tr>
+        <tr><th>이름</th><td id="resName"></td></tr>
+        <tr><th>아이디</th><td id="resUid"></td></tr>
+        <tr><th>이메일</th><td id="resEmail"></td></tr>
+        <tr><th>가입일</th><td id="resRegDate"></td></tr>
     </table>
 
     <p class="guide-text">고객님의 정보와 일치하는 아이디 입니다.</p>
@@ -50,11 +29,7 @@
     </div>
 </main>
 
-<footer>
-    <div class="footer-copyright">
-        Copyright © 2025 김철학 All rights reserved.
-    </div>
-</footer>
+<footer th:replace="~{fragments/footer :: footer}"></footer>
 
 <script th:inline="javascript">
     const useridUrl = /*[[@{/member/userid}]]*/ '/member/userid';

@@ -19,4 +19,6 @@ public class PointDTO {
     private String note;
     private LocalDateTime createdAt;
     private LocalDateTime expireDate;
+    private String memberName;
+    private int pointBalance;  // 잔여 포인트 (추가)
 }

@@ -1,3 +1,4 @@
+
 <header th:fragment="header" id="header">
 
     <div class="header-banner">
@@ -65,8 +66,10 @@
                     <span style="color:var(--color-gray-200);">|</span>
                     <a th:href="@{/my/home}" id="myPageLink" style="font-size:13px; color:var(--color-gray-600);">마이페이지</a>
                 </span>
-                <span style="color:var(--color-gray-200);">|</span>
-                <a th:href="@{/cart}" id="cartLink" style="font-size:13px; color:var(--color-gray-600);">🛒 장바구니</a>
+                <span id="cartArea" style="display:flex; gap:16px; align-items:center;">
+                    <span style="color:var(--color-gray-200);">|</span>
+                    <a th:href="@{/cart}" id="cartLink" style="font-size:13px; color:var(--color-gray-600);">🛒 장바구니</a>
+                </span>
             </nav>
         </div>
     </div>

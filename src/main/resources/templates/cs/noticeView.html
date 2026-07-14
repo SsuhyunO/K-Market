@@ -1,149 +1,46 @@
-<!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title>케이마켓 고객센터 - 공지사항 보기</title>
+<!DOCTYPE html><html lang="ko" xmlns:th="http://www.thymeleaf.org"><head><meta charset="UTF-8"><title>공지사항 상세 - 케이마켓 고객센터</title>
+<link rel="stylesheet" th:href="@{/css/cs/cs-common.css}">
+<link rel="stylesheet" th:href="@{/css/cs/noticeView.css}"></head><body><div id="wrapper">
+<header>
+  <div class="header-top">
+    <a th:href="@{/member/login}">로그인</a>
+    <a th:href="@{/member/register}">회원가입</a>
+    <a th:href="@{/my/home}">마이페이지</a>
+    <a th:href="@{/cart}">장바구니</a>
+  </div>
+  <div class="logo-area"><a th:href="@{/}" class="logo-box">CI ( 로고 )</a></div>
+</header>
 
-    <!-- noticeView 전용 CSS -->
-    <link rel="stylesheet" th:href="@{/css/cs/noticeView.css}">
-</head>
-
-<body>
-<div id="wrapper">
-
-    <!-- =========================
-         헤더
-    ========================= -->
-    <header>
-        <div class="notice-view-header-top">
-            <a th:href="@{/member/login}">로그인</a>
-            <a th:href="@{/member/register}">회원가입</a>
-            <a th:href="@{/my/home}">마이페이지</a>
-            <a th:href="@{/cart}">장바구니</a>
-        </div>
-
-        <div class="notice-view-logo-area">
-            <a th:href="@{/cs/index}" class="notice-view-logo-box">CI ( 로고 )</a>
-        </div>
-    </header>
-
-
-    <!-- =========================
-         현재 위치
-    ========================= -->
-    <div class="notice-view-breadcrumb">
-        홈 &gt; 공지사항
+<div class="breadcrumb"><a th:href="@{/}">홈</a><span>&gt;</span><a th:href="@{/cs/index}">고객센터</a><span>&gt;</span><a th:href="@{/cs/noticeList}">공지사항</a><span>&gt;</span><span>상세보기</span></div>
+<main><div class="cs-flex">
+<aside class="cs-aside"><h2>공지사항</h2><ul>
+<li><a th:href="@{/cs/noticeList}" class="active">전체</a></li>
+<li><a th:href="@{/cs/noticeList}">고객서비스</a></li>
+<li><a th:href="@{/cs/noticeList}">안전거래</a></li>
+<li><a th:href="@{/cs/noticeList}">위해상품</a></li>
+<li><a th:href="@{/cs/noticeList}">이벤트당첨</a></li>
+</ul></aside>
+<section class="cs-content">
+<div class="content-heading"><div><h2 th:text="${notice.type}">공지사항</h2><p class="desc">공지사항 상세 내용입니다.</p></div><a th:href="@{/cs/index}" class="cs-home-link">고객센터 홈</a></div>
+<div class="view-box"><div class="view-title"><h3 th:text="|[${notice.type}] ${notice.title}|">제목</h3><span th:text="${notice.createdAt!=null?#temporals.format(notice.createdAt,'yyyy.MM.dd'):'-'}">-</span></div><div class="view-content" th:text="${notice.content}">내용</div></div>
+<div class="btn-area"><a th:href="@{/cs/noticeList}" class="btn btn-gray">목록</a></div>
+</section></div></main>
+<footer>
+  <div class="footer-menu">
+    <a th:href="@{/company/index}">회사소개</a>
+    <a th:href="@{/policy/terms}">서비스이용약관</a>
+    <a th:href="@{/policy/privacy}">개인정보처리방침</a>
+    <a th:href="@{/policy/finance}">전자금융거래약관</a>
+  </div>
+  <div class="footer-info">
+    <div class="footer-logo">이미지</div>
+    <div class="company-info">
+      <strong>(주)케이마켓</strong><br>
+      부산광역시 부산진구 중앙대로 300<br>
+      대표이사 : 홍길동<br>
+      사업자등록번호 : 123-45-12345
     </div>
-
-
-    <!-- =========================
-         메인
-    ========================= -->
-    <main>
-        <div class="notice-view-flex">
-
-            <!-- 좌측 메뉴 -->
-            <aside class="notice-view-aside">
-                <h2>공지사항</h2>
-
-                <ul>
-                    <li>
-                        <a th:href="@{/cs/noticeList}" class="active">전체</a>
-                    </li>
-                    <li>
-                        <a th:href="@{/cs/noticeList(type='service')}">고객서비스</a>
-                    </li>
-                    <li>
-                        <a th:href="@{/cs/noticeList(type='safe')}">안전거래</a>
-                    </li>
-                    <li>
-                        <a th:href="@{/cs/noticeList(type='danger')}">위해상품</a>
-                    </li>
-                    <li>
-                        <a th:href="@{/cs/noticeList(type='event')}">이벤트당첨</a>
-                    </li>
-                </ul>
-            </aside>
-
-
-            <!-- 공지사항 보기 -->
-            <section class="notice-view-content">
-                <h2>전체</h2>
-                <p class="notice-view-desc">공지사항 전체 내용입니다.</p>
-
-                <div class="notice-view-box">
-
-                    <div class="notice-view-title-area">
-                        <h3>[ 안내 ] 해외결제 사칭 문자주의</h3>
-                        <span class="notice-view-date">22.10.31</span>
-                    </div>
-
-                    <div class="notice-view-body">
-                        <p>
-                            안녕하세요. 케이마켓입니다.
-                        </p>
-
-                        <p>
-                            해외결제사를 사칭한 문자 메시지에 주의해주시기 바랍니다.
-                        </p>
-
-                        <p>
-                            최근 해외결제 승인, 결제 오류, 환불 안내 등을 가장하여
-                            개인정보 입력을 유도하는 사례가 발생하고 있습니다.
-                        </p>
-
-                        <p>
-                            케이마켓은 문자 메시지를 통해 고객님의 비밀번호,
-                            카드번호, 인증번호 등의 개인정보를 요구하지 않습니다.
-                        </p>
-
-                        <p>
-                            의심스러운 문자를 수신하신 경우 링크를 클릭하지 마시고
-                            고객센터로 문의해주시기 바랍니다.
-                        </p>
-                    </div>
-
-                </div>
-
-                <div class="notice-view-button-area">
-                    <a th:href="@{/cs/noticeList}" class="notice-view-list-btn">목록</a>
-                </div>
-            </section>
-
-        </div>
-    </main>
-
-
-    <!-- =========================
-         푸터
-    ========================= -->
-    <footer>
-        <div class="notice-view-footer-menu">
-            <a th:href="@{/company/about}">회사소개</a>
-            <a th:href="@{/policy/service}">서비스이용약관</a>
-            <a th:href="@{/policy/privacy}">개인정보처리방침</a>
-            <a th:href="@{/policy/finance}">전자금융거래약관</a>
-        </div>
-
-        <div class="notice-view-footer-info">
-            <div class="notice-view-footer-logo">
-                이미지
-            </div>
-
-            <div class="notice-view-company-info">
-                <strong>(주)케이마켓</strong><br>
-                부산광역시 부산진구 중앙대로 300<br>
-                대표이사 : 홍길동<br>
-                사업자등록번호 : 123-45-12345
-            </div>
-
-            <div class="notice-view-customer-info">
-                <h3>고객센터</h3>
-                Tel : 1234-5678<br>
-                평일 09:00 ~ 18:00
-            </div>
-        </div>
-    </footer>
-</div>
-</body>
-</html>
+    <div class="customer-info"><h3>고객센터</h3>Tel : 1234-5678<br>평일 09:00 ~ 18:00</div>
+  </div>
+</footer>
+</div></body></html>

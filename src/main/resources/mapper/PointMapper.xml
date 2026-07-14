@@ -28,4 +28,60 @@
         ORDER BY p.createdAt DESC, p.pointNo DESC
     </select>
 
+    <sql id="searchCondition">
+        <where>
+            <if test="searchType != null and keyword != null">
+                <choose>
+                    <when test="searchType == 'uid'">
+                        p.memberUid LIKE CONCAT('%', #{keyword}, '%')
+                    </when>
+                    <when test="searchType == 'name'">
+                        m.name LIKE CONCAT('%', #{keyword}, '%')
+                    </when>
+                    <when test="searchType == 'email'">
+                        m.email LIKE CONCAT('%', #{keyword}, '%')
+                    </when>
+                    <when test="searchType == 'phone'">
+                        m.hp LIKE CONCAT('%', #{keyword}, '%')
+                    </when>
+                </choose>
+            </if>
+        </where>
+    </sql>
+
+    <select id="selectPointCount" resultType="int">
+        SELECT COUNT(*)
+        FROM `point` p
+        LEFT JOIN `member` m ON p.memberUid = m.uid
+        <include refid="searchCondition"/>
+    </select>
+
+    <select id="selectPointList" resultType="org.example.k_market.dto.PointDTO">
+        SELECT
+        p.*,
+        m.name AS memberName,
+        (SELECT SUM(p2.point)
+        FROM `point` p2
+        WHERE p2.memberUid = p.memberUid AND p2.pointNo &lt;= p.pointNo) AS pointBalance
+        FROM `point` p
+        LEFT JOIN `member` m ON p.memberUid = m.uid
+        <include refid="searchCondition"/>
+        ORDER BY p.pointNo DESC
+        LIMIT #{limit} OFFSET #{offset}
+    </select>
+
+    <delete id="deletePoints">
+        DELETE FROM `point`
+        WHERE pointNo IN
+        <foreach collection="pointNos" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <select id="selectRecentEarnedPoints" resultType="org.example.k_market.dto.PointDTO">
+        SELECT * FROM `point`
+        WHERE memberUid = #{memberUid}
+          AND content = '적립'        ORDER BY pointNo DESC
+            LIMIT #{limit}
+    </select>
 </mapper>

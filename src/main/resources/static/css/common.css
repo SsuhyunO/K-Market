@@ -632,3 +632,40 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
 ::-webkit-scrollbar { width: 6px; }
 ::-webkit-scrollbar-track { background: var(--color-gray-100); }
 ::-webkit-scrollbar-thumb { background: var(--color-gray-400); border-radius: 3px; }
+/* 인증 관련 페이지(로그인/회원가입/비밀번호찾기 등)에서
+   공용 헤더 중 로고 + 로그인|회원가입 링크만 남기고 나머지를 숨김.
+   body 태그에 class="simple-header" 를 추가하면 적용됨. */
+
+body.simple-header .search-box,
+body.simple-header #cartArea,
+body.simple-header #memberOnlyArea {
+    display: none !important;
+}
+body.simple-header .header-nav a {
+    display: none !important;
+}
+body.simple-header .header-main .container {
+    justify-content: space-between;
+}
+
+#footer, #footer .footer-links, #footer .footer-info, #footer .footer-info .footer-inner {
+    background: var(--color-white) !important;
+}
+
+
+
+#footer .footer-info .container {
+    justify-content: center;
+}
+
+body.simple-header .header-nav {
+    border-bottom-color: #e8380d !important;
+}
+
+#header .logo a {
+    border-color: var(--color-gray-200) !important;
+}
+
+#footer, #footer * {
+    background-color: var(--color-white) !important;
+}
