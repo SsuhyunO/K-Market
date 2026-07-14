@@ -4,7 +4,7 @@
    ============================================= */
 .admin-layout {
     display: flex;
-    flex: 1 0 auto;
+    flex: 1 1 auto;
     min-height: calc(100vh - var(--header-h) - var(--footer-h));
     margin-top: var(--header-h);
 }
@@ -12,8 +12,9 @@
 #admin-main {
     flex: 1;
     min-width: 0;
+    min-height: calc(100vh - var(--header-h) - var(--footer-h));
     padding: 24px;
-    overflow-x: auto;
+    overflow-x: hidden;
     margin-left: var(--aside-w);   /* fixed aside 너비만큼 밀기 */
 }
 

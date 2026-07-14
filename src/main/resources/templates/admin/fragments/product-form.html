@@ -172,6 +172,58 @@
 	
 	<section th:replace="~{admin/fragments/dash-section::dash-section(null, '상품정보 제공고시', '[전자상거래에 관한 상품정보 제공에 관한 고시] 항목에 의거 등록하는 정보입니다.', ~{::prod_info_notice})}">
 		<th:block th:fragment="prod_info_notice">
+			<div class="product-info-notice-group">
+				<h3 class="product-info-notice-subtitle">공통 상품정보 제공고시</h3>
+				<p class="product-info-notice-subtext">모든 상품에 공통으로 노출되는 정보입니다. 상품 기본정보와 겹치는 값은 자동으로 반영됩니다.</p>
+				<th:block th:replace="~{admin/fragments/section-table::section-table(~{::common_product_notice_rows})}">
+					<th:block th:fragment="common_product_notice_rows">
+						<tr>
+							<th><label for="notice-product-no">상품번호</label></th>
+							<td><input id="notice-product-no" type="text" th:value="${product != null ? product.prodNo : '등록 후 자동 발급'}" readonly></td>
+						</tr>
+						<tr>
+							<th><label for="notice-product-status">상품상태</label></th>
+							<td><input id="notice-product-status" type="text" th:value="${product != null and product.status != null ? (product.status == 'ON_SALE' ? '새상품' : product.status) : '새상품'}" readonly></td>
+						</tr>
+						<tr>
+							<th><label for="tax-type-id">부가세 면세여부</label></th>
+							<td>
+								<select id="tax-type-id" name="taxType" required>
+									<option value="">선택</option>
+									<option value="과세상품" th:selected="${product == null or product?.taxType == '과세상품'}">과세상품</option>
+									<option value="면세상품" th:selected="${product?.taxType == '면세상품'}">면세상품</option>
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<th><label for="receipt-issue-type-id">영수증 발행</label></th>
+							<td><input id="receipt-issue-type-id" type="text" name="receiptIssueType" th:value="${product != null ? product.receiptIssueType : '발행가능 - 신용카드 전표, 온라인 현금영수증'}" placeholder="예: 발행가능 - 신용카드 전표, 온라인 현금영수증" required/></td>
+						</tr>
+						<tr>
+							<th><label for="business-type-id">사업자 구분</label></th>
+							<td>
+								<select id="business-type-id" name="businessType" required>
+									<option value="">선택</option>
+									<option value="개인사업자" th:selected="${product == null or product?.businessType == '개인사업자'}">개인사업자</option>
+									<option value="법인사업자" th:selected="${product?.businessType == '법인사업자'}">법인사업자</option>
+									<option value="일반판매자" th:selected="${product?.businessType == '일반판매자'}">일반판매자</option>
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<th><label for="brand-id">브랜드</label></th>
+							<td><input id="brand-id" type="text" name="brand" th:value="${product?.brand}" required/></td>
+						</tr>
+						<tr>
+							<th><label for="origin-id">원산지</label></th>
+							<td><input id="origin-id" type="text" name="origin" th:value="${product?.origin}" required/></td>
+						</tr>
+					</th:block>
+				</th:block>
+			</div>
+
+			<div class="product-info-notice-group product-info-notice-group-category">
+				<h3 class="product-info-notice-subtitle">상품군별 상품정보 제공고시</h3>
 				<div class="product-info-notice-toolbar">
 					<label for="product-info-notice-type">상품군</label>
 					<input id="product-info-notice-type-value" type="hidden" name="infoNoticeType"
@@ -184,29 +236,30 @@
 						의류
 					</option>
 				</select>
-			</div>
+				</div>
 			
-			<th:block th:with="selectedTemplate=${product != null and productInfoNoticeTemplates[product.infoNoticeType] != null ? productInfoNoticeTemplates[product.infoNoticeType] : productInfoNoticeTemplates.values().iterator().next()}">
-				<th:block th:replace="~{admin/fragments/section-table::section-table(~{::prod_info_notice_rows})}">
-					<th:block th:fragment="prod_info_notice_rows">
-						<tbody id="product-info-notice-fields">
-						<tr th:each="field : ${selectedTemplate.fields}">
-							<th>
-								<label th:for="|notice-${field.key}|" th:text="${field.label}">항목명</label>
-								<span class="notice-required-mark" th:if="${field.required}">*</span>
-							</th>
-							<td>
-								<input th:id="|notice-${field.key}|"
-								       type="text"
-								       th:name="|informationNoticeValues[${field.key}]|"
-								       th:placeholder="${field.placeholder}"
-								       th:required="${field.required}">
-							</td>
-						</tr>
-						</tbody>
+				<th:block th:with="selectedTemplate=${product != null and productInfoNoticeTemplates[product.infoNoticeType] != null ? productInfoNoticeTemplates[product.infoNoticeType] : productInfoNoticeTemplates.values().iterator().next()}">
+					<th:block th:replace="~{admin/fragments/section-table::section-table(~{::prod_info_notice_rows})}">
+						<th:block th:fragment="prod_info_notice_rows">
+							<tbody id="product-info-notice-fields">
+							<tr th:each="field : ${selectedTemplate.fields}">
+								<th>
+									<label th:for="|notice-${field.key}|" th:text="${field.label}">항목명</label>
+									<span class="notice-required-mark" th:if="${field.required}">*</span>
+								</th>
+								<td>
+									<input th:id="|notice-${field.key}|"
+									       type="text"
+									       th:name="|informationNoticeValues[${field.key}]|"
+									       th:placeholder="${field.placeholder}"
+									       th:required="${field.required}">
+								</td>
+							</tr>
+							</tbody>
+						</th:block>
 					</th:block>
 				</th:block>
-			</th:block>
+			</div>
 			
 			<p class="product-info-notice-guide">
 				상품군을 선택하면 전자상거래 상품정보 제공고시 기준에 맞는 입력 항목이 자동으로 변경됩니다.

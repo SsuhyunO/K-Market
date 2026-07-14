@@ -21,8 +21,13 @@ public class ProductDetailResponse {
     private int price;
     private int discount;
     private int point;
-    private int sold;
+    private int hit;
     private int stock;
+    private String taxType;
+    private String receiptIssueType;
+    private String businessType;
+    private String brand;
+    private String origin;
     private Integer rootCategoryId;
     private String rootCategoryName;
     private String subCategoryName;
@@ -40,6 +45,7 @@ public class ProductDetailResponse {
     private int reviewCount;
     private String infoNoticeType;
     private String infoNoticeTypeName;
+    private String status;
     private String createdAt;
 
     @Builder.Default

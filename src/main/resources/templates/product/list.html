@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta name="context-path" th:content="@{/}">
-    <title th:text="${categoryName} + ' - KMarket'">상품목록 - KMarket</title>
+    <title th:text="${page.categoryName()} + ' - KMarket'">상품목록 - KMarket</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" th:href="@{/css/common.css}">
@@ -30,20 +30,20 @@
         <div class="list-header">
 
             <!-- 메인 타이틀 -->
-            <h1 class="list-title" th:text="${subCate.name}">상품목록</h1>
+            <h1 class="list-title" th:text="${page.subCate().name}">상품목록</h1>
 
             <nav class="breadcrumb">
                 <a th:href="@{/}">HOME</a>
 
                 <!-- 1차 카테고리 (매핑된 이름이 있을 때만 노출) -->
-                <th:block th:if="${parentCate != null}">
+                <th:block th:if="${page.parentCate() != null}">
                     <span class="sep">&gt;</span>
-                    <a href="#" th:text="${parentCate.name}">1차 카테고리</a>
+                    <a href="#" th:text="${page.parentCate().name}">1차 카테고리</a>
                 </th:block>
 
                 <!-- 2차 (현재) 카테고리 -->
                 <span class="sep">&gt;</span>
-                <span class="current" th:text="${subCate.name}">현재 카테고리</span>
+                <span class="current" th:text="${page.subCate().name}">현재 카테고리</span>
             </nav>
         </div>
 

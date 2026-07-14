@@ -83,7 +83,8 @@ public class ProductService {
     }
 
     public List<BestProductResponse> getBestProducts() {
-        return productRepository.findBestProducts(PageRequest.of(0, 5)).stream()
+        return productRepository.findBestProducts(PageRequest.of(0, 5))
+            .stream()
             .map(BestProductResponse::from)
             .toList();
     }

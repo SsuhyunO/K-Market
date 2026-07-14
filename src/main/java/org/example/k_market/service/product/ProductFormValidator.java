@@ -2,6 +2,7 @@ package org.example.k_market.service.product;
 
 import lombok.RequiredArgsConstructor;
 import org.example.k_market.common.CategoryCodes;
+import org.example.k_market.common.product.ProductCommonNoticeKeys;
 import org.example.k_market.common.product.ProductInfoNoticeField;
 import org.example.k_market.common.product.ProductInfoNoticeTemplate;
 import org.example.k_market.common.product.ProductInfoNoticeTemplates;
@@ -90,7 +91,12 @@ public class ProductFormValidator {
             request.getPrice() < 0 ||
             isBlank(request.getDescription()) ||
             isBlank(request.getMaker()) ||
-            request.getDeliveryFee() < 0) {
+            request.getDeliveryFee() < 0 ||
+            isBlank(request.getTaxType()) ||
+            isBlank(request.getReceiptIssueType()) ||
+            isBlank(request.getBusinessType()) ||
+            isBlank(request.getBrand()) ||
+            isBlank(request.getOrigin())) {
             throw new IllegalArgumentException("상품정보가 유효하지 않습니다.");
         }
     }
@@ -110,7 +116,7 @@ public class ProductFormValidator {
         for (ProductInfoNoticeField field : template.fields()) {
             allowedKeys.add(field.key());
 
-            if (field.required() && isBlank(noticeValues.get(field.key()))) {
+            if (!ProductCommonNoticeKeys.contains(field.key()) && field.required() && isBlank(noticeValues.get(field.key()))) {
                 throw new IllegalArgumentException("필수 상품정보 제공고시 항목을 입력해주세요: " + field.label());
             }
         }

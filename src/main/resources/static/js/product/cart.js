@@ -40,7 +40,7 @@ function initDeleteSelected() {
         const params = new URLSearchParams();
         cartNos.forEach(cartNo => params.append('cartNo', cartNo));
 
-        const response = await fetch(`${getContextPath()}product/api/cart?${params.toString()}`, {
+        const response = await fetch(`${getContextPath()}cart/api?${params.toString()}`, {
             method: 'DELETE'
         });
 

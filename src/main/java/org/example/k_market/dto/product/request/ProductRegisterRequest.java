@@ -23,6 +23,11 @@ public class ProductRegisterRequest {
     private int discount;
     private int point;
     private int deliveryFee;
+    private String taxType;
+    private String receiptIssueType;
+    private String businessType;
+    private String brand;
+    private String origin;
 
     private MultipartFile thumb1;
     private MultipartFile thumb2;

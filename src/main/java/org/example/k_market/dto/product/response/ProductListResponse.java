@@ -17,6 +17,7 @@ public class ProductListResponse {
     private int discount; // 할인율
     private int deliveryFee; // 배송비
     private Integer thumb1FileId;
+    private Integer thumb2FileId;
     private String seller;
     private String sellerUid;
 

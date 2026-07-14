@@ -45,7 +45,7 @@ function renderProductDetail(product) {
         productCode: product.prodNo,
         productName: product.prodName,
         seller: product.sellerUid,
-        viewCount: formatNumber(product.sold),
+        viewCount: formatNumber(product.hit),
         rootCategory: product.rootCategoryName || "-",
         subCategory: product.subCategoryName || product.cateId || "-",
         description: product.description,
@@ -157,6 +157,8 @@ function renderProductDetailVariants(variants) {
 }
 
 function renderProductDetailNoticeValues(product) {
+    renderProductDetailCommonNoticeValues(product);
+
     const listTarget = document.getElementById("product-detail-notice-values");
     if (!listTarget) return;
 
@@ -172,7 +174,7 @@ function renderProductDetailNoticeValues(product) {
         listTarget.innerHTML = typeRow + `
             <div>
                 <dt>제공고시</dt>
-                <dd>등록된 상품정보 제공고시가 없습니다.</dd>
+                <dd>등록된 상품군별 상품정보 제공고시가 없습니다.</dd>
             </div>
         `;
         return;
@@ -184,6 +186,38 @@ function renderProductDetailNoticeValues(product) {
             <dd>${escapeHtml(notice.value || "-")}</dd>
         </div>
     `).join("");
+}
+
+function renderProductDetailCommonNoticeValues(product) {
+    const listTarget = document.getElementById("product-detail-common-notice-values");
+    if (!listTarget) return;
+
+    const rows = [
+        ["상품번호", product.prodNo],
+        ["상품상태", formatProductStatus(product.status)],
+        ["부가세 면세여부", product.taxType],
+        ["영수증 발행", product.receiptIssueType],
+        ["사업자 구분", product.businessType],
+        ["브랜드", product.brand],
+        ["원산지", product.origin]
+    ];
+
+    listTarget.innerHTML = rows.map(([label, value]) => `
+        <div>
+            <dt>${escapeHtml(label)}</dt>
+            <dd>${escapeHtml(value || "-")}</dd>
+        </div>
+    `).join("");
+}
+
+function formatProductStatus(status) {
+    const labels = {
+        ON_SALE: "새상품",
+        STOPPED: "판매중지",
+        DELETED: "삭제"
+    };
+
+    return labels[status] || status || "-";
 }
 
 

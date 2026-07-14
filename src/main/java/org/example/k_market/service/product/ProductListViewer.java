@@ -54,7 +54,8 @@ public class ProductListViewer {
                         command.getSellerUid(),
                         command.getRole(),
                         type,
-                        request.getKeyword());
+                        request.getKeyword(),
+                        request.isUncategorizedOnly());
                 }
                 @Override
                 public int count() {
@@ -62,7 +63,8 @@ public class ProductListViewer {
                         command.getSellerUid(),
                         command.getRole(),
                         type,
-                        request.getKeyword());
+                        request.getKeyword(),
+                        request.isUncategorizedOnly());
                 }
             }
         );

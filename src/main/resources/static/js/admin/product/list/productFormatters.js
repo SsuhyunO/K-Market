@@ -60,4 +60,3 @@ export function formatDeliveryFee(value) {
     const number = Number(value || 0);
     return number > 0 ? formatNumber(number) : "무료배송";
 }
-

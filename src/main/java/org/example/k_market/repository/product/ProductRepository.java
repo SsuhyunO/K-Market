@@ -13,18 +13,25 @@ import java.util.List;
 
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Integer> {
-    @Query("""
-        select p
-        from Product p
-        where p.status = 'ON_SALE'
-            and exists (
-                select 1
-                from ProductVariant pv
-                where pv.prodNo = p.prodNo
-                    and pv.status = 'ON_SALE'
+    @Query(value = """
+        SELECT p.*
+        FROM product p
+        WHERE p.status = 'ON_SALE'
+            AND EXISTS (
+                SELECT 1
+                FROM product_variant pv
+                WHERE pv.prodNo = p.prodNo
+                    AND pv.status = 'ON_SALE'
             )
-        order by p.sold desc, p.prodNo desc
-    """)
+        ORDER BY (
+            SELECT COALESCE(SUM(oi.count), 0)
+            FROM order_item oi
+            JOIN product_variant pv_sales ON pv_sales.id = oi.prodVariantId
+            JOIN `order` o ON o.orderNo = oi.orderNo
+            WHERE pv_sales.prodNo = p.prodNo
+                AND o.status NOT IN ('CANCELLED', 'REFUNDED')
+        ) DESC, p.prodNo DESC
+    """, nativeQuery = true)
     List<Product> findBestProducts(Pageable pageable);
 
     @Modifying
@@ -60,6 +67,11 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
             p.price = :price,
             p.discount = :discount,
             p.point = :point,
+            p.taxType = :taxType,
+            p.receiptIssueType = :receiptIssueType,
+            p.businessType = :businessType,
+            p.brand = :brand,
+            p.origin = :origin,
             p.thumb1FileId = :thumb1FileId,
             p.thumb2FileId = :thumb2FileId,
             p.thumb3FileId = :thumb3FileId,
@@ -77,6 +89,11 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
         @Param("price") int price,
         @Param("discount") int discount,
         @Param("point") int point,
+        @Param("taxType") String taxType,
+        @Param("receiptIssueType") String receiptIssueType,
+        @Param("businessType") String businessType,
+        @Param("brand") String brand,
+        @Param("origin") String origin,
         @Param("thumb1FileId") Integer thumb1FileId,
         @Param("thumb2FileId") Integer thumb2FileId,
         @Param("thumb3FileId") Integer thumb3FileId,

@@ -9,7 +9,7 @@
             p.price,
             p.discount,
             p.point,
-            p.sold,
+            p.hit,
             (
                 SELECT COALESCE(SUM(pv_stock.stock), 0)
                 FROM product_variant pv_stock
@@ -17,14 +17,22 @@
                     AND pv_stock.status != 'DELETED'
             ) AS stock,
             p.thumb1FileId,
-            p.sellerUid
+            p.sellerUid,
+            parent.name AS rootCategoryName,
+            c.name AS subCategoryName,
+            CASE WHEN c.code = 'UNCATEGORIZED' THEN 1 ELSE 0 END AS uncategorized
         FROM product p
         LEFT JOIN product_variant pv ON pv.prodNo = p.prodNo
             AND pv.status != 'DELETED'
+        LEFT JOIN category c ON c.cateId = p.cateId
+        LEFT JOIN category parent ON parent.cateId = c.parentId
         <where>
             p.status = 'ON_SALE'
             <if test="role != 'ADMIN'">
                 AND p.sellerUid = #{seller}
+            </if>
+            <if test="uncategorizedOnly == true">
+                AND c.code = 'UNCATEGORIZED'
             </if>
 
             <if test="keyword != null and keyword != ''">
@@ -52,9 +60,12 @@
             p.price,
             p.discount,
             p.point,
-            p.sold,
+            p.hit,
             p.thumb1FileId,
-            p.sellerUid
+            p.sellerUid,
+            parent.name,
+            c.name,
+            c.code
         ORDER BY p.prodNo DESC
         LIMIT #{size}
         OFFSET #{offset}
@@ -63,10 +74,14 @@
     <select id="totalCountForManagement" resultType="int">
         SELECT COUNT(prodNo)
         FROM product p
+        LEFT JOIN category c ON c.cateId = p.cateId
         <where>
             p.status = 'ON_SALE'
             <if test="role != 'ADMIN'">
                 AND sellerUid = #{seller}
+            </if>
+            <if test="uncategorizedOnly == true">
+                AND c.code = 'UNCATEGORIZED'
             </if>
 
             <if test="keyword != null and keyword != ''">
@@ -130,7 +145,14 @@
             m.name
         <choose>
             <when test="type == 'SALES'">
-                ORDER BY p.sold DESC, p.prodNo DESC
+                ORDER BY (
+                    SELECT COALESCE(SUM(oi.count), 0)
+                    FROM order_item oi
+                    JOIN product_variant pv_sales ON pv_sales.id = oi.prodVariantId
+                    JOIN `order` o ON o.orderNo = oi.orderNo
+                    WHERE pv_sales.prodNo = p.prodNo
+                        AND o.status NOT IN ('CANCELLED', 'REFUNDED')
+                ) DESC, p.prodNo DESC
             </when>
             <when test="type == 'PRICE_ASC'">
                 ORDER BY (p.price * (100 - p.discount) / 100) ASC,
@@ -243,7 +265,14 @@
             m.name
         <choose>
             <when test="type == 'SALES'">
-                ORDER BY p.sold DESC, p.prodNo DESC
+                ORDER BY (
+                    SELECT COALESCE(SUM(oi.count), 0)
+                    FROM order_item oi
+                    JOIN product_variant pv_sales ON pv_sales.id = oi.prodVariantId
+                    JOIN `order` o ON o.orderNo = oi.orderNo
+                    WHERE pv_sales.prodNo = p.prodNo
+                        AND o.status NOT IN ('CANCELLED', 'REFUNDED')
+                ) DESC, p.prodNo DESC
             </when>
             <when test="type == 'PRICE_ASC'">
                 ORDER BY (p.price * (100 - p.discount) / 100) ASC,
@@ -306,6 +335,7 @@
             p.discount,
             p.deliveryFee,
             p.thumb1FileId,
+            p.thumb2FileId,
             p.sellerUid,
             m.name,
             p.hit,
@@ -341,7 +371,12 @@
             p.price,
             p.discount,
             p.point,
-            p.sold,
+            p.taxType,
+            p.receiptIssueType,
+            p.businessType,
+            p.brand,
+            p.origin,
+            p.hit,
             (
                 SELECT COALESCE(SUM(pv_stock.stock), 0)
                 FROM product_variant pv_stock
@@ -360,6 +395,7 @@
             COALESCE(AVG(r.rating), 0) AS rating,
             COUNT(DISTINCT r.reviewNo) AS reviewCount,
             p.infoNoticeType,
+            p.status,
             p.createdAt
         FROM product p
             LEFT JOIN category c ON c.cateId = p.cateId
@@ -377,7 +413,12 @@
             p.price,
             p.discount,
             p.point,
-            p.sold,
+            p.taxType,
+            p.receiptIssueType,
+            p.businessType,
+            p.brand,
+            p.origin,
+            p.hit,
             parent.cateId,
             parent.name,
             c.name,
@@ -388,6 +429,7 @@
             p.sellerUid,
             m.name,
             p.infoNoticeType,
+            p.status,
             p.createdAt
     </select>
 </mapper>

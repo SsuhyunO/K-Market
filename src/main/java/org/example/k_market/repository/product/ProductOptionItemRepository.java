@@ -24,4 +24,8 @@ public interface ProductOptionItemRepository extends JpaRepository<ProductOption
     @Modifying
     @Query("update ProductOptionItem poi set poi.deleted = true where poi.id in :ids")
     int markDeletedByIdIn(@Param("ids") List<Integer> ids);
+
+    @Modifying
+    @Query("update ProductOptionItem poi set poi.deleted = true where poi.groupId in :groupIds")
+    int markDeletedByGroupIdIn(@Param("groupIds") List<Integer> groupIds);
 }

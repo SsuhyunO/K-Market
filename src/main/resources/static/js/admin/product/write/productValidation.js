@@ -9,6 +9,7 @@ document.addEventListener("DOMContentLoaded", function () {
             ...validateCategories(productForm),
             ...validateBasicInfo(productForm),
             ...validateFiles(productForm),
+            ...validateCommonNoticeFields(productForm),
             ...validateNoticeFields(productForm),
             ...validateOptions(productForm)
         ];
@@ -52,6 +53,18 @@ function validateBasicInfo(form) {
     requireNumber(errors, form, "[name='discount']", "할인율은 0 이상 100 이하이어야 합니다.", { min: 0, max: 100 });
     requireNumber(errors, form, "[name='point']", "포인트는 0 이상이어야 합니다.", { min: 0 });
     requireNumber(errors, form, "[name='deliveryFee']", "배송비는 0 이상이어야 합니다.", { min: 0 });
+
+    return errors;
+}
+
+function validateCommonNoticeFields(form) {
+    const errors = [];
+
+    requireText(errors, form, "[name='taxType']", "부가세 면세여부를 선택해주세요.");
+    requireText(errors, form, "[name='receiptIssueType']", "영수증 발행 정보를 입력해주세요.");
+    requireText(errors, form, "[name='businessType']", "사업자 구분을 선택해주세요.");
+    requireText(errors, form, "[name='brand']", "브랜드를 입력해주세요.");
+    requireText(errors, form, "[name='origin']", "원산지를 입력해주세요.");
 
     return errors;
 }

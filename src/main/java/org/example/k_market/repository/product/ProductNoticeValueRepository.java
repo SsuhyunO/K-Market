@@ -28,4 +28,6 @@ public interface ProductNoticeValueRepository extends JpaRepository<ProductNotic
         @Param("prodNo") int prodNo,
         @Param("noticeKeys") List<String> noticeKeys
     );
+
+    long countByIdNoticeKeyIn(List<String> noticeKeys);
 }
