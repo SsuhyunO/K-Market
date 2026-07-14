@@ -77,6 +77,7 @@ public class MemberApiController {
         session.setAttribute("loginMember", member.getUid());
         // ===== 추가된 부분: 역할(권한) 기반 화면/접근 제어를 위해 memberType도 세션에 저장 =====
         session.setAttribute("loginMemberType", member.getMemberType()); // "MEMBER" / "SELLER" / "ADMIN"
+        session.setAttribute("loginMemberLevel", member.getMemberLevel());
 
         // ===== 추가된 부분: 최근 로그인 시각 갱신 =====
         memberService.updateLastLoginAt(member.getUid());
