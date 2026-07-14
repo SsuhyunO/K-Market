@@ -82,6 +82,31 @@
 
     </select>
 
+    <!-- 사용자 문의글 등록 -->
+    <insert id="insertQna"
+            parameterType="org.example.k_market.dto.admin.QnaDTO"
+            useGeneratedKeys="true"
+            keyProperty="boardNo">
+
+        INSERT INTO board (
+            memberUid,
+            boardType,
+            title,
+            content,
+            fileId,
+            createdAt
+        )
+        VALUES (
+                   #{memberUid},
+                   #{boardType},
+                   #{title},
+                   #{content},
+                   #{fileId},
+                   NOW()
+               )
+
+    </insert>
+
     <!-- 관리자 답변 등록 및 수정 -->
     <update id="updateAnswer">
 

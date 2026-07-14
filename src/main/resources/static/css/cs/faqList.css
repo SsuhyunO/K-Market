@@ -1,0 +1,374 @@
+/* ========================================
+   FAQ 목록 전용 CSS
+   공통 레이아웃은 cs-common.css에서 처리
+======================================== */
+
+
+/* ========================================
+   FAQ 제목 영역
+======================================== */
+
+.content-heading {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 22px;
+}
+
+.content-heading h2 {
+    margin-bottom: 8px;
+    font-size: 20px;
+    font-weight: 700;
+    color: #111;
+}
+
+.content-heading .desc {
+    font-size: 12px;
+    line-height: 18px;
+    color: #888;
+}
+
+
+/* ========================================
+   고객센터 홈 버튼
+======================================== */
+
+.cs-home-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+
+    height: 32px;
+    padding: 0 14px;
+
+    border: 1px solid #ddd;
+    border-radius: 4px;
+
+    color: #555;
+    font-size: 12px;
+    background: #fff;
+
+    transition:
+            color 0.15s ease,
+            border-color 0.15s ease,
+            background-color 0.15s ease;
+}
+
+.cs-home-link:hover {
+    color: #e8380d;
+    border-color: #e8380d;
+    background: #fff8f5;
+}
+
+
+/* ========================================
+   FAQ 2차 유형 필터
+======================================== */
+
+.faq-subcategory-filter {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 7px;
+
+    width: 100%;
+    margin-bottom: 18px;
+    padding: 14px;
+
+    border: 1px solid #e5e5e5;
+    border-radius: 5px;
+
+    background: #fafafa;
+}
+
+.faq-subcategory-filter a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    min-width: 64px;
+    height: 30px;
+    padding: 0 11px;
+
+    border: 1px solid #ddd;
+    border-radius: 4px;
+
+    color: #555;
+    font-size: 12px;
+    white-space: nowrap;
+    background: #fff;
+
+    transition:
+            color 0.15s ease,
+            border-color 0.15s ease,
+            background-color 0.15s ease;
+}
+
+.faq-subcategory-filter a:hover {
+    color: #e8380d;
+    border-color: #e8380d;
+    background: #fff8f5;
+}
+
+.faq-subcategory-filter a.active {
+    color: #fff;
+    border-color: #e8380d;
+    background: #e8380d;
+    font-weight: 700;
+}
+
+
+/* ========================================
+   FAQ 목록
+======================================== */
+
+.faq-list-box {
+    width: 100%;
+
+    overflow: hidden;
+
+    border-top: 2px solid #333;
+    border-bottom: 1px solid #ddd;
+
+    background: #fff;
+}
+
+.faq-list-box > li {
+    width: 100%;
+    border-bottom: 1px solid #e8e8e8;
+}
+
+.faq-list-box > li:last-child {
+    border-bottom: none;
+}
+
+.faq-list-box > li > a {
+    position: relative;
+
+    display: flex;
+    align-items: center;
+
+    width: 100%;
+    min-height: 54px;
+    padding: 12px 48px 12px 15px;
+
+    color: #222;
+    background: #fff;
+
+    transition:
+            color 0.15s ease,
+            background-color 0.15s ease;
+}
+
+.faq-list-box > li > a:hover {
+    color: #e8380d;
+    background: #fff8f5;
+}
+
+
+/* ========================================
+   FAQ Q 아이콘
+======================================== */
+
+.q-mark {
+    flex-shrink: 0;
+
+    margin-right: 10px;
+
+    color: #e8380d;
+    font-size: 16px;
+    font-weight: 800;
+    line-height: 1;
+}
+
+
+/* ========================================
+   FAQ 2차 유형 표시
+======================================== */
+
+.faq-category {
+    flex-shrink: 0;
+
+    margin-right: 8px;
+
+    color: #777;
+    font-size: 12px;
+    line-height: 18px;
+}
+
+
+/* ========================================
+   FAQ 제목
+======================================== */
+
+.faq-title {
+    display: block;
+    flex: 1;
+    min-width: 0;
+
+    overflow: hidden;
+
+    color: #222;
+    font-size: 13px;
+    line-height: 20px;
+
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.faq-list-box > li > a:hover .faq-title {
+    color: #e8380d;
+}
+
+
+/* ========================================
+   FAQ 오른쪽 화살표
+======================================== */
+
+.faq-arrow {
+    position: absolute;
+    top: 50%;
+    right: 17px;
+
+    color: #aaa;
+    font-size: 16px;
+    line-height: 1;
+
+    transform: translateY(-50%);
+}
+
+.faq-list-box > li > a:hover .faq-arrow {
+    color: #e8380d;
+}
+
+
+/* ========================================
+   FAQ 목록 없음
+======================================== */
+
+.empty-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    width: 100%;
+    min-height: 220px;
+
+    border-top: 2px solid #333;
+    border-bottom: 1px solid #ddd;
+
+    color: #888;
+    text-align: center;
+
+    background: #fff;
+}
+
+.empty-box strong {
+    margin-bottom: 8px;
+
+    color: #555;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.empty-box p {
+    color: #999;
+    font-size: 12px;
+    line-height: 18px;
+}
+
+
+/* ========================================
+   페이지네이션
+======================================== */
+
+.pagination {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+
+    width: 100%;
+    margin-top: 30px;
+}
+
+.pagination a,
+.pagination span {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    min-width: 30px;
+    height: 30px;
+    padding: 0 8px;
+
+    border: 1px solid #ddd;
+    border-radius: 3px;
+
+    color: #555;
+    font-size: 12px;
+
+    background: #fff;
+}
+
+.pagination a {
+    transition:
+            color 0.15s ease,
+            border-color 0.15s ease,
+            background-color 0.15s ease;
+}
+
+.pagination a:hover {
+    color: #e8380d;
+    border-color: #e8380d;
+}
+
+.pagination a.active {
+    color: #fff;
+    border-color: #e8380d;
+    background: #e8380d;
+    font-weight: 700;
+}
+
+.pagination .page-direction {
+    min-width: 48px;
+}
+
+.pagination .disabled {
+    color: #bbb;
+    border-color: #e5e5e5;
+    background: #f7f7f7;
+    cursor: default;
+}
+
+
+/* ========================================
+   좌측 메뉴 긴 문구 처리
+======================================== */
+
+.cs-aside ul li a {
+    word-break: keep-all;
+    line-height: 18px;
+}
+
+.cs-aside ul li a.active {
+    color: #fff;
+    border-color: #e8380d;
+    background: #e8380d;
+}
+
+
+/* ========================================
+   좁은 영역에서 레이아웃 보호
+======================================== */
+
+.cs-content {
+    min-width: 0;
+}
+
+.faq-list-box,
+.faq-subcategory-filter {
+    min-width: 0;
+}
