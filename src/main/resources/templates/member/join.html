@@ -8,20 +8,11 @@
     <title>케이마켓 - 회원가입</title>
     <link rel="stylesheet" th:href="@{/css/member/join.css}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    <link rel="stylesheet" th:href="@{/css/common.css}">
 </head>
-<body>
+<body class="simple-header">
 
-<header>
-    <div class="header-inner">
-        <a th:href="@{/}" class="logo">
-            <img th:src="@{/images/ci-logo.svg}" alt="케이마켓 로고">
-        </a>
-        <nav class="header-nav">
-            <a th:href="@{/member/login}">로그인</a>
-            <a th:href="@{/member/join}">회원가입</a>
-        </nav>
-    </div>
-</header>
+<header th:replace="~{fragments/header :: header}"></header>
 
 <!-- 메인 -->
 <main>
@@ -58,36 +49,7 @@
     </div>
 </main>
 
-<footer>
-    <div class="footer-info">
-        <div class="footer-nav">
-            <a th:href="@{/company/index}">회사소개</a>
-            <a th:href="@{/policy/buyer}">서비스이용약관</a>
-            <a th:href="@{/policy/privacy}">개인정보처리방침</a>
-            <a th:href="@{/policy/finance}">전자금융거래약관</a>
-        </div>
-
-        <div class="footer-info-inner">
-            <div class="footer-logo-box">
-                <img th:src="@{/images/ci-icon-animated-large.svg}" alt="케이마켓 로고">
-            </div>
-            <div class="footer-company">
-                <strong>(주)케이마켓</strong>
-                부산광역시 부산진구 중앙대로 103<br>
-                대표이사 : 홍길동<br>
-                사업자등록번호 : 123-45-12345
-            </div>
-            <div class="footer-cs">
-                <strong>고객센터</strong>
-                Tel : 1234-5678 평일 09:00~18:00<br>
-                전자금융거래 분쟁 담당 : 1234-1234 (36팀) 09:00~18:00
-            </div>
-        </div>
-    </div>
-    <div class="footer-copyright">
-        Copyright © 2025 김철학 All rights reserved.
-    </div>
-</footer>
+<footer th:replace="~{fragments/footer :: footer}"></footer>
 
 </body>
 </html>

@@ -54,11 +54,12 @@ public class VersionService {
                 .collect(Collectors.toList());
     }
 
-    // 배포 자동등록된 버전의 상세 변경내역을 관리자가 나중에 채워넣기 위한 수정 기능 (새로 추가)
-    public void updateContent(String id, String content) {
-        Version version = versionRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 버전 정보입니다. id=" + id));
-        version.setContent(content);
+    // 등록된 버전 내역 수정 (버전명 + 변경내역) - 수정 기능 추가
+    public void update(VersionDTO dto) {
+        Version version = versionRepository.findById(dto.getId())
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 버전 정보입니다. id=" + dto.getId()));
+        version.setVersion(dto.getVersion());
+        version.setContent(dto.getContent());
         // JPA dirty checking 으로 트랜잭션 종료 시 자동 UPDATE
     }
 }

@@ -17,6 +17,14 @@
     width: 78px;
 }
 
+.management-table td:nth-child(3),
+.management-table td:nth-child(8) {
+    max-width: 0;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
 .management-table th:nth-child(4),
 .management-table td:nth-child(4) {
     width: 72px;

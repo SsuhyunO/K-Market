@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>케이마켓 - 페이지를 찾을 수 없습니다</title>
+    <title>케이마켓 - 서버에 문제가 발생했습니다</title>
     <link rel="stylesheet" th:href="@{/css/error/error.css}">
 </head>
 <body>
@@ -19,28 +19,28 @@
         <ellipse cx="90" cy="100" rx="62" ry="58" fill="#FF9E68"/>
         <ellipse cx="90" cy="112" rx="34" ry="26" fill="#FFE1C7"/>
         <ellipse cx="90" cy="108" rx="9" ry="7" fill="#5A3A22"/>
-        <path d="M78 118 Q90 126 102 118" fill="none" stroke="#5A3A22" stroke-width="4" stroke-linecap="round"/>
+        <ellipse cx="90" cy="124" rx="12" ry="15" fill="#5A3A22"/>
         <ellipse cx="66" cy="86" rx="8" ry="10" fill="#3B2A20"/>
         <ellipse cx="114" cy="86" rx="8" ry="10" fill="#3B2A20"/>
-        <path d="M52 72 Q66 62 80 72" fill="none" stroke="#3B2A20" stroke-width="4" stroke-linecap="round"/>
-        <path d="M100 72 Q114 62 128 72" fill="none" stroke="#3B2A20" stroke-width="4" stroke-linecap="round"/>
+        <path d="M54 76 Q66 68 78 78" fill="none" stroke="#3B2A20" stroke-width="4" stroke-linecap="round"/>
+        <path d="M102 78 Q114 68 126 76" fill="none" stroke="#3B2A20" stroke-width="4" stroke-linecap="round"/>
         <path d="M64 96 C58 112 46 108 42 122" fill="none" stroke="#6EC1F4" stroke-width="6" stroke-linecap="round">
-            <animate attributeName="d" values="M64 96 C58 112 46 108 42 122;M64 96 C58 114 46 112 40 130;M64 96 C58 112 46 108 42 122" dur="1.8s" repeatCount="indefinite"/>
+            <animate attributeName="d" values="M64 96 C58 112 46 108 42 122;M64 96 C58 114 46 112 40 130;M64 96 C58 112 46 108 42 122" dur="1.5s" repeatCount="indefinite"/>
         </path>
         <path d="M116 96 C122 112 134 108 138 122" fill="none" stroke="#6EC1F4" stroke-width="6" stroke-linecap="round">
-            <animate attributeName="d" values="M116 96 C122 112 134 108 138 122;M116 96 C122 114 134 112 140 130;M116 96 C122 112 134 108 138 122" dur="1.8s" repeatCount="indefinite"/>
+            <animate attributeName="d" values="M116 96 C122 112 134 108 138 122;M116 96 C122 114 134 112 140 130;M116 96 C122 112 134 108 138 122" dur="1.5s" repeatCount="indefinite"/>
         </path>
         <circle cx="46" cy="98" r="7" fill="#FFB98A" opacity="0.7"/>
         <circle cx="134" cy="98" r="7" fill="#FFB98A" opacity="0.7"/>
     </svg>
 
-    <p class="error-code">404</p>
-    <h1 class="error-title">이 페이지, 어디 갔지...</h1>
-    <p class="error-desc">찾으시는 페이지가 삭제되었거나 주소가 바뀌었어요.<br>주소를 다시 확인해 주세요.</p>
+    <p class="error-code">500</p>
+    <h1 class="error-title">잠깐, 저도 놀랐어요...</h1>
+    <p class="error-desc">서버에 일시적인 문제가 발생했어요.<br>잠시 후 다시 시도해 주세요.</p>
 
     <div class="error-btn-area">
         <a th:href="@{/}" class="error-btn error-btn-primary">홈으로 가기</a>
-        <a href="javascript:history.back()" class="error-btn error-btn-secondary">이전 페이지</a>
+        <a href="javascript:location.reload()" class="error-btn error-btn-secondary">다시 시도</a>
     </div>
 </main>
 

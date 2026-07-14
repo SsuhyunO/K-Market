@@ -47,11 +47,10 @@ public class VersionController {
         return "redirect:/admin/version-management";
     }
 
-    // 배포 시 자동 등록된 버전의 변경내역(content)을 관리자가 나중에 채워넣기 위한 수정 API (새로 추가)
-    @PostMapping("/update-content")
-    public String updateContent(@RequestParam("id") String id,
-                                @RequestParam("content") String content) {
-        versionService.updateContent(id, content);
-        return "redirect:/admin/version-management";
+    // 등록된 버전 내역 수정 (버전명 + 변경내역을 관리자가 직접 고침) - 새로 추가
+    @PostMapping("/update")
+    public String update(@ModelAttribute VersionDTO dto) {
+        versionService.update(dto);
+        return "redirect:/admin/version-management?updated=true";
     }
 }
