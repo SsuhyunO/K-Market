@@ -4,14 +4,12 @@ import lombok.RequiredArgsConstructor;
 import org.example.k_market.dto.admin.BannerDTO;
 import org.example.k_market.service.admin.BannerService;
 import jakarta.servlet.http.HttpSession;
-import lombok.RequiredArgsConstructor;
 import org.example.k_market.service.review.ReviewService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
-@RequiredArgsConstructor
 @Controller
 @RequiredArgsConstructor
 public class MyPageController {
