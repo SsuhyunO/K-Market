@@ -16,4 +16,12 @@ public interface OrderDAO {
 
     OrderDTO selectOrderByNo(int orderNo);
     List<OrderItemDTO> selectOrderItemsByOrderNo(int orderNo);
+
+    int selectOrderCount(@Param("searchType") String searchType,
+                         @Param("keyword") String keyword);
+
+    List<OrderDTO> selectOrders(@Param("searchType") String searchType,
+                                @Param("keyword") String keyword,
+                                @Param("offset") int offset,
+                                @Param("limit") int limit);
 }

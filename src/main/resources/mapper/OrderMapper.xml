@@ -56,4 +56,42 @@
         WHERE orderNo = #{orderNo}
     </select>
 
+    <sql id="searchCondition">
+        <where>
+            <if test="searchType != null and keyword != null">
+                <choose>
+                    <when test="searchType == 'orderNo'">
+                        o.orderNo = #{keyword}
+                    </when>
+                    <when test="searchType == 'memberUid'">
+                        o.memberUid LIKE CONCAT('%', #{keyword}, '%')
+                    </when>
+                    <when test="searchType == 'memberName'">
+                        m.name LIKE CONCAT('%', #{keyword}, '%')
+                    </when>
+                </choose>
+            </if>
+        </where>
+    </sql>
+
+    <select id="selectOrders" resultType="org.example.k_market.dto.order.OrderDTO">
+        SELECT
+        o.*,
+        m.name AS memberName,
+        (SELECT SUM(oi.count)
+        FROM `order_item` oi
+        WHERE oi.orderNo = o.orderNo) AS totalCount
+        FROM `order` o
+        LEFT JOIN `member` m ON o.memberUid = m.uid
+        <include refid="searchCondition"/>
+        ORDER BY o.orderNo DESC
+        LIMIT #{limit} OFFSET #{offset}
+    </select>
+
+    <select id="selectOrderCount" resultType="int">
+        SELECT COUNT(*)
+        FROM `order`
+        <include refid="searchCondition"/>
+    </select>
+
 </mapper>

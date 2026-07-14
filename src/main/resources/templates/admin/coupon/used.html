@@ -24,7 +24,7 @@
 
         <section th:replace="~{admin/fragments/dash-section::dash-section(null, null, null, ~{::main_content})}">
             <th:block th:fragment="main_content">
-                <th:block th:replace="~{admin/fragments/search-form::search-form(~{::options})}">
+                <th:block th:replace="~{admin/fragments/search-form::search-form('/admin/coupon/used',~{::options})}">
                     <th:block th:fragment="options">
                         <option value="발급번호" th:selected="${searchType == '발급번호'}">발급번호</option>
                         <option value="쿠폰번호" th:selected="${searchType == '쿠폰번호'}">쿠폰번호</option>

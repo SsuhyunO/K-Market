@@ -520,4 +520,32 @@ public class OrderService {
 
         return result;
     }
+
+    // =================================================================
+    // 관리자 페이지용: 주문 목록 조회 및 페이징 처리를 위한 메서드
+    // =================================================================
+
+    /**
+     * 조건에 맞는 전체 주문 건수 조회
+     */
+    public int getTotalCount(String searchType, String keyword) {
+        // 검색 조건이 비어있으면 null로 처리하여 DAO로 넘김 (동적 쿼리 처리를 위해)
+        if (searchType != null && searchType.isBlank()) searchType = null;
+        if (keyword != null && keyword.isBlank()) keyword = null;
+
+        return orderDAO.selectOrderCount(searchType, keyword);
+    }
+
+    /**
+     * 조건에 맞는 페이징된 주문 목록 조회
+     */
+    public List<OrderDTO> getOrderList(String searchType, String keyword, int page, int pageSize) {
+        if (searchType != null && searchType.isBlank()) searchType = null;
+        if (keyword != null && keyword.isBlank()) keyword = null;
+
+        // DB에서 가져올 시작 위치(offset) 계산
+        int offset = (page - 1) * pageSize;
+
+        return orderDAO.selectOrders(searchType, keyword, offset, pageSize);
+    }
 }
