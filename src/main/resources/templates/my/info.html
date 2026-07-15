@@ -8,6 +8,8 @@
 <head>
     <meta charset="UTF-8">
     <title>나의설정 | K-Market</title>
+    <link rel="stylesheet" th:href="@{/css/common.css}">
+    <link rel="stylesheet" th:href="@{/css/index.css}">
     <link rel="stylesheet" th:href="@{/css/my/info.css}">
     <script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
     <meta id="ctxPath" th:content="@{/}" content="/">
@@ -18,7 +20,10 @@
 <div th:replace="~{fragments/header :: header}"></div>
 
 <!-- ===== MAIN ===== -->
-<main>
+<div class="page-wrapper">
+    <aside th:replace="~{fragments/aside :: aside}"></aside>
+    <div class="main-content">
+        <main>
 
     <!-- 1번 영역: 요약 정보 (가로 풀폭, 회색바탕) -->
     <section class="my-summary">
@@ -68,8 +73,13 @@
 
             <!-- 3번 영역: 배너 광고 -->
             <div class="my-banner">
-                <a th:href="@{/event/summer-sale}" target="_blank" style="display:block; width:100%; height:100%;">
-                    <img th:src="@{/images/banner/banner_810x86.svg}" alt="K마켓 여름 신상 의류 세일" style="width:100%; height:100%; object-fit:cover; display:block;">
+                <a th:if="${myPageBanner != null}"
+                   th:href="${myPageBanner.link != null and !#strings.isEmpty(myPageBanner.link) ? myPageBanner.link : '#'}"
+                   target="_blank">
+                    <img th:src="@{|/files/${myPageBanner.fileId}|}" th:alt="${myPageBanner.name}">
+                </a>
+                <a th:unless="${myPageBanner != null}" th:href="@{/event/summer-sale}" target="_blank">
+                    <img th:src="@{/images/banner/banner_810x86.png}" alt="K-Market 이벤트 배너">
                 </a>
             </div>
 
@@ -172,6 +182,12 @@
         </div>
     </div>
 </main>
+
+                <footer th:replace="~{fragments/footer :: footer}"></footer>
+    </div>
+</div>
+    </div>
+</div>
 
 <!-- 비밀번호 변경 모달 -->
 <div class="modal-overlay" id="pwModal">

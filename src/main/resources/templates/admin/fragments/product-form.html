@@ -90,19 +90,19 @@
 							<div>
 								<div th:replace="~{admin/fragments/product-form::current_file(${product?.thumb1File})}"></div>
 								<input type="file" name="thumb1" accept="image/*" th:attr="data-existing-file-id=${product?.thumb1FileId}" th:required="${product == null}"/>
-								<label>크기 190 x 190, 상품 목록에 출력 될 이미지 입니다.</label>
+								<label>크기 190 x 190, 상품 목록에서 보여줄 이미지입니다.</label>
 							</div>
 							
 							<div>
 								<div th:replace="~{admin/fragments/product-form::current_file(${product?.thumb2File})}"></div>
 								<input type="file" name="thumb2" accept="image/*" th:attr="data-existing-file-id=${product?.thumb2FileId}" th:required="${product == null}"/>
-								<label>크기 230 x 230, 상품 목록에 출력 될 이미지 입니다.</label>
+								<label>크기 230 x 230, 메인페이지에서 출력할 이미지입니다.</label>
 							</div>
 							
 							<div>
 								<div th:replace="~{admin/fragments/product-form::current_file(${product?.thumb3File})}"></div>
 								<input type="file" name="thumb3" accept="image/*" th:attr="data-existing-file-id=${product?.thumb3FileId}" th:required="${product == null}"/>
-								<label>크기 456 x 456, 상품 목록에 출력 될 이미지 입니다.</label>
+								<label>크기 456 x 456, 상품상세에서 보여줄 이미지입니다.</label>
 							</div>
 						</td>
 					</tr>

@@ -1,14 +1,5 @@
 /* 고객센터 공통 스타일 */
 
-/* 기본 초기화 */
-*,
-*::before,
-*::after {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
 :root {
   --km-red: #e8380d;
   --km-red-dark: #c92d08;
@@ -25,107 +16,11 @@
   --km-white: #fff;
 }
 
-html,
-body {
-  min-height: 100%;
-}
-
-body {
-  min-width: 980px;
-  font-family: "Malgun Gothic", "맑은 고딕", Arial, sans-serif;
-  font-size: 13px;
-  line-height: 1.5;
-  color: var(--km-text);
-  background: var(--km-white);
-}
-
-a {
-  color: inherit;
-  text-decoration: none;
-}
-
-ul,
-ol,
-li {
-  list-style: none;
-}
-
-button,
-input,
-select,
-textarea {
-  font: inherit;
-  color: inherit;
-}
-
-button {
-  border: 0;
-  background: none;
-}
-
-img {
-  display: block;
-  max-width: 100%;
-}
-
 /* 전체 레이아웃 */
 #wrapper {
   width: 980px;
   margin: 0 auto;
   background: var(--km-white);
-}
-
-/* 헤더 영역 */
-header {
-  position: relative;
-  width: 100%;
-  height: 145px;
-  border: 1px solid var(--km-line);
-  border-bottom: 0;
-  background: var(--km-white);
-}
-
-.header-top {
-  position: absolute;
-  top: 24px;
-  right: 20px;
-}
-
-.header-top a {
-  margin-left: 12px;
-  font-size: 12px;
-  color: var(--km-text-sub);
-}
-
-.header-top a:hover {
-  color: var(--km-red);
-  text-decoration: underline;
-}
-
-.logo-area {
-  position: absolute;
-  top: 58px;
-  left: 20px;
-}
-
-.logo-box {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 230px;
-  height: 72px;
-  overflow: hidden;
-  border: 1px solid var(--km-line);
-  color: var(--km-red);
-  font-size: 16px;
-  font-weight: 700;
-  background: var(--km-white);
-}
-
-.logo-box img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
 }
 
 /* 현재 페이지 경로 */
@@ -158,7 +53,7 @@ header {
 }
 
 /* 메인 콘텐츠 영역 */
-main {
+#wrapper > main {
   width: 100%;
   min-height: 610px;
   padding: 0 45px 50px;
@@ -422,76 +317,3 @@ textarea:focus-visible {
   outline-offset: 2px;
 }
 
-/* 푸터 영역 */
-footer {
-  width: 100%;
-  min-height: 150px;
-  border: 1px solid var(--km-line);
-  background: var(--km-bg);
-}
-
-.footer-menu {
-  height: 34px;
-  line-height: 34px;
-  text-align: center;
-  border-bottom: 1px solid var(--km-line);
-  white-space: nowrap;
-}
-
-.footer-menu a {
-  margin: 0 25px;
-  font-size: 12px;
-  color: #333;
-}
-
-.footer-menu a:hover {
-  color: var(--km-red);
-  text-decoration: underline;
-}
-
-.footer-info {
-  display: flex;
-  align-items: center;
-  min-height: 116px;
-  padding: 20px 35px;
-}
-
-.footer-logo {
-  display: flex;
-  flex-shrink: 0;
-  align-items: center;
-  justify-content: center;
-  width: 140px;
-  height: 75px;
-  margin-right: 35px;
-  overflow: hidden;
-  border: 1px solid #ccc;
-  color: var(--km-muted);
-  background: var(--km-white);
-}
-
-.footer-logo img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-}
-
-.company-info {
-  width: 360px;
-  margin-right: 25px;
-  line-height: 18px;
-  color: #333;
-}
-
-.customer-info {
-  flex: 1;
-  min-width: 0;
-  line-height: 18px;
-  color: #333;
-}
-
-.customer-info h3 {
-  margin-bottom: 5px;
-  font-size: 15px;
-  color: #222;
-}

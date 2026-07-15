@@ -273,9 +273,10 @@ function renderProductReviews(pageData, reviewList) {
                  data-product-name="${escapeHtml(review.productName)}"
                  data-member-uid="${escapeHtml(review.memberUid || '')}"
                  data-rating="${escapeHtml(review.rating)}"
+                 data-file-id="${escapeHtml(review.fileId || '')}"
                  data-created-at="${escapeHtml(review.createdAt)}"
                  data-content="${escapeHtml(review.content)}">
-                <div class="thumb"><span class="dummy-img">📷</span></div>
+                <div class="thumb">${renderReviewImage(review.fileId, '상품평 이미지')}</div>
                 <div class="meta">
                     <span class="stars">${buildStars(review.rating)}</span>
                     <span>${escapeHtml(review.memberUid || '')}</span>
@@ -301,6 +302,7 @@ function initProductReviewDetailModal(reviewList) {
         document.getElementById('productReviewDetailProductNo').textContent = item.dataset.productNo || '';
         document.getElementById('productReviewDetailProductName').textContent = item.dataset.productName || '';
         document.getElementById('productReviewDetailContent').textContent = item.dataset.content || '';
+        renderProductReviewDetailImage(item.dataset.fileId);
 
         modal.hidden = false;
         document.body.classList.add('modal-open');
@@ -331,6 +333,30 @@ function buildStars(rating) {
     }
 
     return stars;
+}
+
+function renderReviewImage(fileId, altText) {
+    return fileId
+        ? `<img src="${getReviewFileUrl(fileId)}" alt="${escapeHtml(altText)}">`
+        : '<span class="dummy-img">이미지 없음</span>';
+}
+
+function renderProductReviewDetailImage(fileId) {
+    const imageWrap = document.getElementById('productReviewDetailImage');
+    if (!imageWrap) return;
+
+    if (!fileId) {
+        imageWrap.hidden = true;
+        imageWrap.innerHTML = '';
+        return;
+    }
+
+    imageWrap.hidden = false;
+    imageWrap.innerHTML = renderReviewImage(fileId, '상품평 첨부 이미지');
+}
+
+function getReviewFileUrl(fileId) {
+    return `${getContextPath()}files/${encodeURIComponent(fileId)}`;
 }
 
 function getProductVariants() {

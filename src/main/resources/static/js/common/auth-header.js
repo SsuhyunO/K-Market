@@ -40,22 +40,22 @@ document.addEventListener('DOMContentLoaded', async function () {
                             'style="font-size:13px; color:#d33333; font-weight:700;">관리자</a>' +
                             '<span style="color:var(--color-gray-200);">|</span>' +
                             '<a href="#" id="navLogoutLink" style="font-size:13px; color:var(--color-gray-600);">로그아웃</a>';
-                    } else {
-                        let sellerBadgeHtml = '';
-                        if (isSeller) {
-                            sellerBadgeHtml =
-                                '<a href="/K_Market/admin/product/list" id="sellerAdminLink" ' +
-                                'style="font-size:13px; color:#1a6fd3; font-weight:700;">판매자</a>' +
-                                '<span style="color:var(--color-gray-200);">|</span>';
-                        }
 
-                        // 환영메시지 + 로그아웃 (기존 로그인/회원가입 링크는 숨김 상태로 유지)
+                    } else if (isSeller) {
+                        // 판매자: "판매자 | 로그아웃"만 표시
+                        welcomeHtml =
+                            '<a href="/K_Market/admin/product/list" id="sellerAdminLink" ' +
+                            'style="font-size:13px; color:#1a6fd3; font-weight:700;">판매자</a>' +
+                            '<span style="color:var(--color-gray-200);">|</span>' +
+                            '<a href="#" id="navLogoutLink" style="font-size:13px; color:var(--color-gray-600);">로그아웃</a>';
+
+                    } else {
+                        // 일반 회원: 환영메시지 | 로그아웃 | 고객센터
                         welcomeHtml =
                             '<span id="welcomeText" style="font-size:13px; color:var(--color-gray-600);">' +
                             safeName + '님 환영합니다' +
                             '</span>' +
                             '<span style="color:var(--color-gray-200);">|</span>' +
-                            sellerBadgeHtml +
                             '<a href="#" id="navLogoutLink" style="font-size:13px; color:var(--color-gray-600);">로그아웃</a>' +
                             '<span style="color:var(--color-gray-200);">|</span>' +
                             '<a href="/K_Market/cs" id="navCsLink" style="font-size:13px; color:var(--color-gray-600);">고객센터</a>';
@@ -63,13 +63,14 @@ document.addEventListener('DOMContentLoaded', async function () {
 
                     authArea.insertAdjacentHTML('beforeend', welcomeHtml);
 
-                    // 관리자가 아닐 때만 마이페이지 노출
+                    // 관리자가 아닐 때만 마이페이지 노출 (MEMBER, SELLER 둘 다 노출)
                     if (memberOnlyArea) {
                         memberOnlyArea.style.display = isAdmin ? 'none' : 'flex';
                     }
 
+                    // 관리자 또는 판매자면 장바구니 숨기기 (MEMBER만 장바구니 노출)
                     const cartLinkEl = document.getElementById('cartLink');
-                    if (cartLinkEl && isAdmin) {
+                    if (cartLinkEl && (isAdmin || isSeller)) {
                         cartLinkEl.style.display = 'none';
                     }
 

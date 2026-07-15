@@ -7,6 +7,8 @@
     <meta charset="UTF-8">
     <meta name="context-path" th:content="@{/}">
     <title>포인트내역 | K-Market</title>
+    <link rel="stylesheet" th:href="@{/css/common.css}">
+    <link rel="stylesheet" th:href="@{/css/index.css}">
     <link rel="stylesheet" th:href="@{/css/my/point.css}">
 </head>
 <body>
@@ -15,7 +17,10 @@
 <div th:replace="~{fragments/header :: header}"></div>
 
 <!-- ===== MAIN ===== -->
-<main>
+<div class="page-wrapper">
+    <aside th:replace="~{fragments/aside :: aside}"></aside>
+    <div class="main-content">
+        <main>
 
     <!-- 1번 영역: 요약 정보 (가로 풀폭, 회색바탕) -->
     <section class="my-summary">
@@ -65,8 +70,13 @@
 
             <!-- 3번 영역: 배너 광고 -->
             <div class="my-banner">
-                <a th:href="@{/event/summer-sale}" target="_blank" style="display:block; width:100%; height:100%;">
-                    <img th:src="@{/images/banner/banner_810x86.svg}" alt="K마켓 여름 신상 의류 세일" style="width:100%; height:100%; object-fit:cover; display:block;">
+                <a th:if="${myPageBanner != null}"
+                   th:href="${myPageBanner.link != null and !#strings.isEmpty(myPageBanner.link) ? myPageBanner.link : '#'}"
+                   target="_blank">
+                    <img th:src="@{|/files/${myPageBanner.fileId}|}" th:alt="${myPageBanner.name}">
+                </a>
+                <a th:unless="${myPageBanner != null}" th:href="@{/event/summer-sale}" target="_blank">
+                    <img th:src="@{/images/banner/banner_810x86.png}" alt="K-Market 이벤트 배너">
                 </a>
             </div>
 
@@ -143,11 +153,11 @@
 </main>
 
 <!-- ===== FOOTER (축약형) ===== -->
-<footer class="footer-simple">
-    <div class="footer-copyright">
-        Copyright &copy; 김철학(개발에반하다.) All rights reserved.
+                <footer th:replace="~{fragments/footer :: footer}"></footer>
     </div>
-</footer>
+</div>
+    </div>
+</div>
 
 
 <!-- =========================================================
@@ -200,9 +210,6 @@
 
 
 <script type="module" th:src="@{/js/my/point.js}"></script>
-
-</body>
-</html>
 
 </body>
 </html>

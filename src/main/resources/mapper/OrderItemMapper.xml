@@ -192,6 +192,7 @@
             o.createdAt,
             oi.sellerUid,
             s.companyName AS sellerName,
+            oi.prodNo,
             oi.productName AS productName,
             oi.optionText,
             p.thumb1FileId,
@@ -202,7 +203,12 @@
             sh.shipmentNo,
             sh.courierName,
             sh.trackingNo,
-            sh.status AS shipmentStatus
+            sh.status AS shipmentStatus,
+            EXISTS (
+                SELECT 1
+                FROM review r
+                WHERE r.orderItemNo = oi.orderItemNo
+            ) AS reviewed
         FROM order_item oi
         JOIN `order` o ON o.orderNo = oi.orderNo
         LEFT JOIN product p ON p.prodNo = oi.prodNo
@@ -218,6 +224,40 @@
         </if>
         ORDER BY o.createdAt DESC, oi.orderItemNo DESC
         LIMIT #{limit} OFFSET #{offset}
+    </select>
+
+    <select id="selectMyOrderItemByOrderItemNo" resultType="org.example.k_market.dto.order.response.MyOrderItemResponse">
+        SELECT
+            oi.orderItemNo,
+            oi.orderNo,
+            o.createdAt,
+            oi.sellerUid,
+            s.companyName AS sellerName,
+            oi.prodNo,
+            oi.productName AS productName,
+            oi.optionText,
+            p.thumb1FileId,
+            oi.count AS quantity,
+            oi.price,
+            oi.total,
+            oi.itemStatus,
+            sh.shipmentNo,
+            sh.courierName,
+            sh.trackingNo,
+            sh.status AS shipmentStatus,
+            EXISTS (
+                SELECT 1
+                FROM review r
+                WHERE r.orderItemNo = oi.orderItemNo
+            ) AS reviewed
+        FROM order_item oi
+        JOIN `order` o ON o.orderNo = oi.orderNo
+        LEFT JOIN product p ON p.prodNo = oi.prodNo
+        LEFT JOIN seller s ON s.uid = oi.sellerUid
+        LEFT JOIN shipment_item si ON si.orderItemNo = oi.orderItemNo
+        LEFT JOIN shipment sh ON sh.shipmentNo = si.shipmentNo
+        WHERE o.memberUid = #{memberUid}
+          AND oi.orderItemNo = #{orderItemNo}
     </select>
 
     <select id="selectMyOrderItemCount" resultType="int">

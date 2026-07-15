@@ -4,13 +4,18 @@
     <meta charset="UTF-8">
     <meta name="context-path" th:content="@{/}">
     <title>전체주문내역 | K-Market</title>
+    <link rel="stylesheet" th:href="@{/css/common.css}">
+    <link rel="stylesheet" th:href="@{/css/index.css}">
     <link rel="stylesheet" th:href="@{/css/my/order.css}">
 </head>
 <body>
 
 <div th:replace="~{fragments/header :: header}"></div>
 
-<main>
+<div class="page-wrapper">
+    <aside th:replace="~{fragments/aside :: aside}"></aside>
+    <div class="main-content">
+        <main>
     <section class="my-summary">
         <span class="my-summary-title">나의 쇼핑정보</span>
         <div class="summary-items">
@@ -40,8 +45,13 @@
 
         <div class="my-content">
             <div class="my-banner">
-                <a th:href="@{/event/summer-sale}" target="_blank" style="display:block; width:100%; height:100%;">
-                    <img th:src="@{/images/banner/banner_810x86.svg}" alt="K-Market 이벤트 배너" style="width:100%; height:100%; object-fit:cover; display:block;">
+                <a th:if="${myPageBanner != null}"
+                   th:href="${myPageBanner.link != null and !#strings.isEmpty(myPageBanner.link) ? myPageBanner.link : '#'}"
+                   target="_blank">
+                    <img th:src="@{|/files/${myPageBanner.fileId}|}" th:alt="${myPageBanner.name}">
+                </a>
+                <a th:unless="${myPageBanner != null}" th:href="@{/event/summer-sale}" target="_blank">
+                    <img th:src="@{/images/banner/banner_810x86.png}" alt="K-Market 이벤트 배너">
                 </a>
             </div>
 
@@ -90,9 +100,9 @@
     </div>
 </main>
 
-<footer class="footer-simple">
-    <div class="footer-copyright">Copyright &copy; K-Market. All rights reserved.</div>
-</footer>
+        <footer th:replace="~{fragments/footer :: footer}"></footer>
+    </div>
+</div>
 
 <div class="modal-overlay" id="orderDetailModal">
     <div class="modal-box">
@@ -153,6 +163,59 @@
             <div class="modal-confirm-btn-group">
                 <button type="button" class="modal-btn-submit js-confirm-ok">확인</button>
                 <button type="button" class="modal-btn-cancel" data-close="confirmPurchaseModal">취소</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal-overlay" id="reviewWriteModal">
+    <div class="modal-box">
+        <div class="modal-header modal-header-blue">
+            <span class="modal-title">리뷰쓰기</span>
+            <button type="button" class="modal-close" data-close="reviewWriteModal">&times;</button>
+        </div>
+        <div class="modal-body">
+            <table class="modal-review-table">
+                <tbody>
+                <tr>
+                    <th>상품명</th>
+                    <td id="reviewProductName">상품명 출력</td>
+                </tr>
+                <tr>
+                    <th>만족도</th>
+                    <td>
+                        <div class="star-rating" id="reviewStarRating">
+                            <span class="star" data-value="1">★</span>
+                            <span class="star" data-value="2">★</span>
+                            <span class="star" data-value="3">★</span>
+                            <span class="star" data-value="4">★</span>
+                            <span class="star" data-value="5">★</span>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th>내용</th>
+                    <td>
+                        <textarea class="review-textarea" id="reviewContent" maxlength="200" placeholder="최소 10자 이상 200자 이내로 작성해주세요."></textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <th>사진</th>
+                    <td>
+                        <div class="review-file-row">
+                            <label class="review-file-btn">
+                                파일선택
+                                <input type="file" class="review-file-input" data-index="1" accept="image/*">
+                            </label>
+                            <span class="review-file-name" id="reviewFileName1">선택된파일없음</span>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <div class="modal-confirm-btn-group">
+                <button type="button" class="modal-btn-submit" id="reviewSubmitBtn">작성완료</button>
+                <button type="button" class="modal-btn-cancel" data-close="reviewWriteModal">취소</button>
             </div>
         </div>
     </div>
