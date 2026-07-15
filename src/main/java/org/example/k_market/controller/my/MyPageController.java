@@ -1,13 +1,16 @@
 package org.example.k_market.controller.my;
 
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.example.k_market.dto.PointDTO;
 import org.example.k_market.dto.admin.BannerDTO;
+import org.example.k_market.dto.admin.QnaDTO;
 import org.example.k_market.service.PointService;
 import org.example.k_market.service.admin.BannerService;
 import jakarta.servlet.http.HttpSession;
 import org.example.k_market.service.admin.CouponIssueService;
 import org.example.k_market.service.order.OrderService;
+import org.example.k_market.service.admin.QnaService;
 import org.example.k_market.service.review.ReviewService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,19 +22,30 @@ import java.util.List;
 @Controller
 @RequiredArgsConstructor
 public class MyPageController {
+
     private final ReviewService reviewService;
     private final PointService pointService;
     private final OrderService orderService;
     private final BannerService bannerService;
     private final CouponIssueService couponIssueService;
+    private final QnaService qnaService;
 
+
+    /**
+     * 마이페이지 공통 배너
+     */
     @ModelAttribute
     public void addMyPageBanner(Model model) {
 
         BannerDTO myPageBanner =
-                bannerService.findFirstEnabledBannerByType("myPage");
+                bannerService.findFirstEnabledBannerByType(
+                        "myPage"
+                );
 
-        model.addAttribute("myPageBanner", myPageBanner);
+        model.addAttribute(
+                "myPageBanner",
+                myPageBanner
+        );
     }
 
     @ModelAttribute
@@ -68,27 +82,112 @@ public class MyPageController {
             // 최근 포인트 적립 내역 5건 조회
             List<PointDTO> pointList = pointService.getRecentEarnedPoints(memberUid, 5);
 
-            model.addAttribute("pointList", pointList);
+    /**
+     * 마이페이지 홈
+     */
+    @GetMapping("/my/home")
+    public String home(
+            HttpSession session,
+            Model model
+    ) {
+        String memberUid =
+                (String) session.getAttribute("loginMember");
+
+        if (memberUid == null || memberUid.isBlank()) {
+            return "redirect:/member/login";
         }
+
+        String safeMemberUid = memberUid.trim();
+
+        model.addAttribute(
+                "recentPoints",
+                pointService.getRecentPointsByMemberUid(
+                        safeMemberUid
+                )
+        );
+
+        model.addAttribute(
+                "recentReviews",
+                reviewService.getRecentReviewsByMemberId(
+                        safeMemberUid
+                )
+        );
+
+        List<PointDTO> pointList =
+                pointService.getRecentEarnedPoints(
+                        safeMemberUid,
+                        5
+                );
+
+        model.addAttribute(
+                "pointList",
+                pointList
+        );
+
+        /*
+         * 마이페이지 홈 하단 최근 문의 5개
+         */
+        model.addAttribute(
+                "recentQnaList",
+                qnaService.getRecentQnaListByMemberUid(
+                        safeMemberUid
+                )
+        );
 
         return "my/home";
     }
 
+
+    /**
+     * 전체 주문내역
+     */
     @GetMapping("/my/order")
     public String order() {
         return "my/order";
     }
 
+
+    /**
+     * 쿠폰
+     */
     @GetMapping("/my/coupon")
     public String coupon() {
         return "my/coupon";
     }
 
+
+    /**
+     * 로그인 회원의 전체 문의내역
+     */
     @GetMapping("/my/qna")
-    public String qna() {
+    public String qna(
+            HttpSession session,
+            Model model
+    ) {
+        String memberUid =
+                (String) session.getAttribute("loginMember");
+
+        if (memberUid == null || memberUid.isBlank()) {
+            return "redirect:/member/login";
+        }
+
+        List<QnaDTO> qnaList =
+                qnaService.getQnaListByMemberUid(
+                        memberUid.trim()
+                );
+
+        model.addAttribute(
+                "qnaList",
+                qnaList
+        );
+
         return "my/qna";
     }
 
+
+    /**
+     * 나의 설정
+     */
     @GetMapping("/my/info")
     public String info() {
         return "my/info";

@@ -7,6 +7,8 @@
     <meta charset="UTF-8">
     <meta name="context-path" th:content="@{/}">
     <title>나의리뷰 | K-Market</title>
+    <link rel="stylesheet" th:href="@{/css/common.css}">
+    <link rel="stylesheet" th:href="@{/css/index.css}">
     <link rel="stylesheet" th:href="@{/css/my/review.css}">
 </head>
 <body>
@@ -15,7 +17,10 @@
 <div th:replace="~{fragments/header :: header}"></div>
 
 <!-- ===== MAIN ===== -->
-<main>
+<div class="page-wrapper">
+    <aside th:replace="~{fragments/aside :: aside}"></aside>
+    <div class="main-content">
+        <main>
 
     <!-- 1번 영역: 요약 정보 (가로 풀폭, 회색바탕) -->
     <section class="my-summary">
@@ -102,11 +107,11 @@
 </main>
 
 <!-- ===== FOOTER (축약형) ===== -->
-<footer class="footer-simple">
-    <div class="footer-copyright">
-        Copyright &copy; 김철학(개발에반하다.) All rights reserved.
+                <footer th:replace="~{fragments/footer :: footer}"></footer>
     </div>
-</footer>
+</div>
+    </div>
+</div>
 
 
 <!-- =========================================================

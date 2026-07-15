@@ -4,13 +4,18 @@
     <meta charset="UTF-8">
     <meta name="context-path" th:content="@{/}">
     <title>마이페이지 | K-Market</title>
+    <link rel="stylesheet" th:href="@{/css/common.css}">
+    <link rel="stylesheet" th:href="@{/css/index.css}">
     <link rel="stylesheet" th:href="@{/css/my/home.css}">
 </head>
 <body>
 
 <div th:replace="~{fragments/header :: header}"></div>
 
-<main>
+<div class="page-wrapper">
+    <aside th:replace="~{fragments/aside :: aside}"></aside>
+    <div class="main-content">
+        <main>
     <section class="my-summary">
         <span class="my-summary-title">나의 쇼핑정보</span>
         <div class="summary-items">
@@ -146,36 +151,150 @@
                 </table>
             </section>
 
+            <!-- 문의내역 -->
             <section class="my-section">
+
                 <div class="section-header">
-                    <span class="section-title">문의내역</span>
-                    <a th:href="@{/my/qna}" class="btn-more" id="moreInquiryBtn">더보기 &gt;</a>
+
+        <span class="section-title">
+            문의내역
+        </span>
+
+                    <a th:href="@{/my/qna}"
+                       class="btn-more"
+                       id="moreInquiryBtn">
+                        더보기 &gt;
+                    </a>
+
                 </div>
+
+
                 <table class="inquiry-list-table">
+
                     <thead>
                     <tr>
-                        <th style="width:60px;">번호</th>
-                        <th style="width:100px;">문의채널</th>
-                        <th style="width:100px;">문의유형</th>
-                        <th>제목</th>
-                        <th style="width:110px;">작성일</th>
-                        <th style="width:80px;">상태</th>
+
+                        <th style="width:60px;">
+                            번호
+                        </th>
+
+                        <th style="width:100px;">
+                            문의채널
+                        </th>
+
+                        <th style="width:150px;">
+                            문의유형
+                        </th>
+
+                        <th>
+                            제목
+                        </th>
+
+                        <th style="width:110px;">
+                            작성일
+                        </th>
+
+                        <th style="width:80px;">
+                            상태
+                        </th>
+
                     </tr>
                     </thead>
+
+
                     <tbody>
-                    <tr>
-                        <td colspan="6">조회된 문의내역이 없습니다.</td>
+
+                    <!-- 문의내역이 없는 경우 -->
+                    <tr th:if="${recentQnaList == null
+                    or #lists.isEmpty(recentQnaList)}">
+
+                        <td colspan="6">
+                            조회된 문의내역이 없습니다.
+                        </td>
+
                     </tr>
+
+
+                    <!-- 로그인 회원의 최근 문의내역 5개 -->
+                    <tr th:each="qna, stat : ${recentQnaList}">
+
+                        <!-- 번호 -->
+                        <td th:text="${stat.count}">
+                            1
+                        </td>
+
+
+                        <!-- 문의채널 -->
+                        <td>
+                            고객센터
+                        </td>
+
+
+                        <!-- 문의유형 -->
+                        <td th:text="${qna.category2 != null
+                          and !#strings.isEmpty(qna.category2)
+                          ? qna.category1 + ' / ' + qna.category2
+                          : qna.category1}">
+                            주문 / 주문변경
+                        </td>
+
+
+                        <!-- 제목 -->
+                        <td class="inquiry-title">
+
+                            <a th:href="@{/my/qna}"
+                               th:text="${qna.title}">
+                                문의 제목
+                            </a>
+
+                        </td>
+
+
+                        <!-- 작성일 -->
+                        <td th:text="${qna.createdAt != null
+                          ? #temporals.format(
+                              qna.createdAt,
+                              'yyyy-MM-dd'
+                            )
+                          : '-'}">
+                            2026-07-15
+                        </td>
+
+
+                        <!-- 상태 -->
+                        <td>
+
+                            <!-- 답변 완료 -->
+                            <span class="inquiry-status-done"
+                                  th:if="${qna.answer != null
+                             and !#strings.isEmpty(qna.answer)}">
+                    답변완료
+                </span>
+
+
+                            <!-- 답변 대기 -->
+                            <span class="inquiry-status-checking"
+                                  th:unless="${qna.answer != null
+                                 and !#strings.isEmpty(qna.answer)}">
+                    답변대기
+                </span>
+
+                        </td>
+
+                    </tr>
+
                     </tbody>
+
                 </table>
+
             </section>
         </div>
     </div>
 </main>
 
-<footer class="footer-simple">
-    <div class="footer-copyright">Copyright &copy; K-Market. All rights reserved.</div>
-</footer>
+        <footer th:replace="~{fragments/footer :: footer}"></footer>
+    </div>
+</div>
 
 <div class="modal-overlay" id="orderDetailModal">
     <div class="modal-box">

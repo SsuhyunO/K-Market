@@ -8,6 +8,8 @@
 <head>
     <meta charset="UTF-8">
     <title>나의설정 | K-Market</title>
+    <link rel="stylesheet" th:href="@{/css/common.css}">
+    <link rel="stylesheet" th:href="@{/css/index.css}">
     <link rel="stylesheet" th:href="@{/css/my/info.css}">
     <script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
     <meta id="ctxPath" th:content="@{/}" content="/">
@@ -18,7 +20,10 @@
 <div th:replace="~{fragments/header :: header}"></div>
 
 <!-- ===== MAIN ===== -->
-<main>
+<div class="page-wrapper">
+    <aside th:replace="~{fragments/aside :: aside}"></aside>
+    <div class="main-content">
+        <main>
 
     <!-- 1번 영역: 요약 정보 (가로 풀폭, 회색바탕) -->
     <section class="my-summary">
@@ -174,6 +179,12 @@
         </div>
     </div>
 </main>
+
+                <footer th:replace="~{fragments/footer :: footer}"></footer>
+    </div>
+</div>
+    </div>
+</div>
 
 <!-- 비밀번호 변경 모달 -->
 <div class="modal-overlay" id="pwModal">

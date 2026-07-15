@@ -21,7 +21,14 @@ public class QnaService {
 
     private final QnaDAO qnaDAO;
 
-    /* 문의글 목록 조회 */
+
+    /* =========================================================
+       문의글 목록
+       ========================================================= */
+
+    /**
+     * 문의글 목록 조회
+     */
     public List<QnaDTO> getQnaList(
             int page,
             String category1,
@@ -33,7 +40,6 @@ public class QnaService {
         String safeCategory1 = normalize(category1);
         String safeCategory2 = normalize(category2);
 
-        /* 1차 유형이 없으면 2차 유형 조건도 제거 */
         if (safeCategory1 == null) {
             safeCategory2 = null;
         }
@@ -46,7 +52,10 @@ public class QnaService {
         );
     }
 
-    /* 문의글 페이지네이션 정보 조회 */
+
+    /**
+     * 문의글 페이징 정보 조회
+     */
     public PageInfo getPageInfo(
             int page,
             String category1,
@@ -57,7 +66,6 @@ public class QnaService {
         String safeCategory1 = normalize(category1);
         String safeCategory2 = normalize(category2);
 
-        /* 1차 유형이 없으면 2차 유형 조건도 제거 */
         if (safeCategory1 == null) {
             safeCategory2 = null;
         }
@@ -79,8 +87,48 @@ public class QnaService {
         return new PageInfo(pageResult);
     }
 
-    /* 문의글 상세 조회 */
+
+    /**
+     * 로그인 회원의 문의글 전체 조회
+     */
+    public List<QnaDTO> getQnaListByMemberUid(
+            String memberUid
+    ) {
+        if (memberUid == null || memberUid.isBlank()) {
+            return List.of();
+        }
+
+        return qnaDAO.getQnaListByMemberUid(
+                memberUid.trim()
+        );
+    }
+
+
+    /**
+     * 로그인 회원의 최근 문의글 5개 조회
+     */
+    public List<QnaDTO> getRecentQnaListByMemberUid(
+            String memberUid
+    ) {
+        if (memberUid == null || memberUid.isBlank()) {
+            return List.of();
+        }
+
+        return qnaDAO.getRecentQnaListByMemberUid(
+                memberUid.trim()
+        );
+    }
+
+
+    /* =========================================================
+       문의글 상세
+       ========================================================= */
+
+    /**
+     * 문의글 한 건 조회
+     */
     public QnaDTO getQna(int boardNo) {
+
         validateBoardNo(boardNo);
 
         QnaDTO qna = qnaDAO.getQnaByNo(boardNo);
@@ -94,9 +142,17 @@ public class QnaService {
         return qna;
     }
 
-    /* 사용자 문의글 등록 */
+
+    /* =========================================================
+       사용자 문의글 등록
+       ========================================================= */
+
+    /**
+     * 사용자 문의글 등록
+     */
     @Transactional
     public void insertQna(QnaDTO dto) {
+
         validateQna(dto);
 
         if (dto.getMemberUid() == null ||
@@ -129,14 +185,21 @@ public class QnaService {
 
         int result = qnaDAO.insertQna(dto);
 
-        if (result != 1) {
+        if (result == 0) {
             throw new IllegalStateException(
                     "문의글 등록에 실패했습니다."
             );
         }
     }
 
-    /* 관리자 답변 등록 및 수정 */
+
+    /* =========================================================
+       관리자 답변
+       ========================================================= */
+
+    /**
+     * 관리자 답변 등록 및 수정
+     */
     @Transactional
     public void updateAnswer(
             int boardNo,
@@ -144,54 +207,87 @@ public class QnaService {
     ) {
         validateBoardNo(boardNo);
 
-        String normalizedAnswer = normalize(answer);
-
-        if (normalizedAnswer == null) {
+        if (answer == null || answer.isBlank()) {
             throw new IllegalArgumentException(
                     "답변 내용을 입력해주세요."
             );
         }
 
-        if (normalizedAnswer.length() > 3000) {
+        QnaDTO qna = qnaDAO.getQnaByNo(boardNo);
+
+        if (qna == null) {
             throw new IllegalArgumentException(
-                    "답변 내용은 3000자 이하로 입력해주세요."
+                    "답변할 문의글이 존재하지 않습니다."
             );
         }
 
         int result = qnaDAO.updateAnswer(
                 boardNo,
-                normalizedAnswer
+                answer.trim()
         );
 
-        if (result != 1) {
-            throw new IllegalArgumentException(
-                    "답변할 문의글이 존재하지 않습니다."
+        if (result == 0) {
+            throw new IllegalStateException(
+                    "문의 답변 등록에 실패했습니다."
             );
         }
     }
 
-    /* 관리자 답변 삭제 */
+
+    /**
+     * 관리자 문의 답변 삭제
+     *
+     * 문의글 자체는 유지하고
+     * answer, answeredAt 값만 NULL로 초기화한다.
+     */
     @Transactional
     public void deleteAnswer(int boardNo) {
+
         validateBoardNo(boardNo);
+
+        QnaDTO qna = qnaDAO.getQnaByNo(boardNo);
+
+        if (qna == null) {
+            throw new IllegalArgumentException(
+                    "존재하지 않는 문의글입니다."
+            );
+        }
+
+        if (qna.getAnswer() == null ||
+                qna.getAnswer().isBlank()) {
+
+            throw new IllegalStateException(
+                    "삭제할 답변이 없습니다."
+            );
+        }
 
         int result = qnaDAO.deleteAnswer(boardNo);
 
-        if (result != 1) {
-            throw new IllegalArgumentException(
-                    "답변을 삭제할 문의글이 존재하지 않습니다."
+        if (result == 0) {
+            throw new IllegalStateException(
+                    "문의 답변 삭제에 실패했습니다."
             );
         }
     }
 
-    /* 문의글 단일 및 선택 삭제 */
+
+    /* =========================================================
+       문의글 삭제
+       ========================================================= */
+
+    /**
+     * 문의글 단일 및 선택 삭제
+     */
     @Transactional
     public void deleteQnas(
             List<Integer> boardNoList
     ) {
         if (boardNoList == null ||
                 boardNoList.isEmpty()) {
-            return;
+
+            throw new IllegalArgumentException(
+                    "삭제할 문의글을 선택해주세요."
+            );
         }
 
         List<Integer> validBoardNoList =
@@ -204,23 +300,32 @@ public class QnaService {
                         .toList();
 
         if (validBoardNoList.isEmpty()) {
-            return;
+            throw new IllegalArgumentException(
+                    "삭제할 문의글 번호가 올바르지 않습니다."
+            );
         }
 
-        qnaDAO.deleteQnas(validBoardNoList);
-    }
+        int result = qnaDAO.deleteQnas(
+                validBoardNoList
+        );
 
-    /* 문의글 번호 검증 */
-    private void validateBoardNo(int boardNo) {
-        if (boardNo <= 0) {
-            throw new IllegalArgumentException(
-                    "문의글 번호가 올바르지 않습니다."
+        if (result == 0) {
+            throw new IllegalStateException(
+                    "문의글 삭제에 실패했습니다."
             );
         }
     }
 
-    /* 문의글 등록값 검증 */
+
+    /* =========================================================
+       입력값 검증
+       ========================================================= */
+
+    /**
+     * 문의글 등록값 검증
+     */
     private void validateQna(QnaDTO dto) {
+
         if (dto == null) {
             throw new IllegalArgumentException(
                     "문의글 정보가 없습니다."
@@ -272,8 +377,25 @@ public class QnaService {
         }
     }
 
-    /* 검색 조건값 정리 */
+
+    /**
+     * 문의글 번호 검증
+     */
+    private void validateBoardNo(int boardNo) {
+
+        if (boardNo <= 0) {
+            throw new IllegalArgumentException(
+                    "문의글 번호가 올바르지 않습니다."
+            );
+        }
+    }
+
+
+    /**
+     * 검색 조건값 정리
+     */
     private String normalize(String value) {
+
         if (value == null || value.isBlank()) {
             return null;
         }
