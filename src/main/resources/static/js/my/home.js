@@ -129,6 +129,8 @@ function actionButtons(item) {
         buttons.push('<a href="#" class="btn-blue js-confirm-purchase">구매확정</a>');
         buttons.push('<a href="#" class="btn-white js-return-request">반품요청</a>');
         buttons.push('<a href="#" class="btn-white js-exchange-request">교환요청</a>');
+    } else if (item.itemStatus === 'CONFIRMED' && !item.reviewed) {
+        buttons.push('<a href="#" class="btn-blue js-write-review">리뷰작성</a>');
     }
     return buttons.length ? buttons.join('') : '-';
 }
@@ -207,6 +209,7 @@ async function submitReview() {
     }
 
     const formData = new FormData();
+    formData.append('orderItemNo', activeItem.orderItemNo);
     formData.append('prodNo', prodNo);
     formData.append('rating', rating);
     formData.append('content', content);

@@ -517,7 +517,17 @@
     color: var(--color-gray-400);
 }
 .review-item .thumb .dummy-img {
-    font-size: 22px;
+    font-size: 12px;
+    line-height: 1.3;
+    text-align: center;
+    padding: 0 6px;
+}
+.review-item .thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    border-radius: var(--radius-sm);
 }
 
 /* 메타(별점/아이디/날짜): 썸네일 옆 첫 줄 전체 차지 */
@@ -616,6 +626,24 @@
 .review-detail-meta .stars {
     color: #f5a623;
     letter-spacing: -2px;
+}
+.review-detail-image {
+    margin: 16px 0 0;
+    width: 100%;
+    max-height: 360px;
+    overflow: hidden;
+    border: 1px solid var(--color-gray-200);
+    border-radius: var(--radius-sm);
+    background: var(--color-gray-100);
+}
+.review-detail-image[hidden] {
+    display: none;
+}
+.review-detail-image img {
+    width: 100%;
+    max-height: 360px;
+    object-fit: contain;
+    display: block;
 }
 .review-detail-info {
     margin: 0;

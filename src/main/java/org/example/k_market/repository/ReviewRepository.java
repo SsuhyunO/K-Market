@@ -19,4 +19,6 @@ public interface ReviewRepository extends JpaRepository<Review, Integer> {
     List<Review> findByProductProdNo(int productNo, Pageable pageable);
 
     int countByProductProdNo(int productNo);
+
+    boolean existsByOrderItemOrderItemNo(int orderItemNo);
 }

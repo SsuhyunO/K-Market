@@ -3,8 +3,8 @@
 <mapper namespace="org.example.k_market.dao.ReviewDAO">
 
     <insert id="insertReview" parameterType="org.example.k_market.dto.ReviewDTO">
-        INSERT INTO review (prodNo, memberUid, rating, content, fileId, createdAt)
-        VALUES (#{prodNo}, #{memberUid}, #{rating}, #{content}, #{fileId}, NOW())
+        INSERT INTO review (orderItemNo, prodNo, memberUid, rating, content, fileId, createdAt)
+        VALUES (#{orderItemNo}, #{prodNo}, #{memberUid}, #{rating}, #{content}, #{fileId}, NOW())
     </insert>
 
 </mapper>

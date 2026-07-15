@@ -637,6 +637,18 @@ main {
     color: #ccc;
 }
 
+.product-img.has-image {
+    padding: 0;
+    overflow: hidden;
+}
+
+.product-img.has-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
 /* ===== 상품평 리스트 테이블 (home 메인 화면) ===== */
 .review-list-table {
     width: 100%;
