@@ -164,53 +164,71 @@ main {
     background-color: #f9fff9;
 }
 
-/* ===== 1번 영역: 요약 정보 (가로 풀폭, 회색바탕) ===== */
+/* ===== 1번 영역: 요약 정보 (가로 풀폭, 브랜드 컬러 배경) ===== */
 .my-summary {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    border: 1px solid #ddd;
-    padding: 15px 24px;
-    background-color: #f7f7f7;
+    border: 1px solid #eee;
+    border-radius: 10px;
+    padding: 20px 28px;
+    background-color: #fff;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
     margin-bottom: 20px;
 }
 
 .my-summary-title {
     font-size: 15px;
-    font-weight: bold;
+    font-weight: 800;
     color: #333;
+    position: relative;
+    padding-left: 12px;
+}
+
+.my-summary-title::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 4px;
+    height: 14px;
+    border-radius: 2px;
+    background-color: #ff5a1f;
 }
 
 .summary-items {
     display: flex;
     align-items: center;
+    gap: 6px;
 }
 
 .summary-item {
-    width: 100px;
+    width: 96px;
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 6px;
+    padding: 6px 0;
 }
 
 .summary-label {
-    font-size: 13px;
-    color: #555;
-    font-weight: normal;
+    font-size: 12px;
+    color: #888;
+    font-weight: 500;
 }
 
 .summary-num {
-    font-size: 14px;
-    color: #555;
+    font-size: 16px;
+    color: #ff5a1f;
+    font-weight: 700;
 }
 
 .summary-divider {
     width: 1px;
-    height: 30px;
-    background-color: #ddd;
+    height: 28px;
+    background-color: #eee;
 }
-
 /* ===== CONTENT AREA ===== */
 .my-content {
     flex: 1;
@@ -444,6 +462,89 @@ main {
     font-weight: bold;
 }
 
+/* ===== 연동 로그인 영역 ===== */
+.social-login-area {
+    display: flex;
+    align-items: flex-start;
+    gap: 18px;
+}
+
+.social-login-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    opacity: 0.35;
+    filter: grayscale(60%);
+    transition: opacity 0.15s ease, filter 0.15s ease;
+}
+
+.social-login-item.active {
+    opacity: 1;
+    filter: none;
+}
+
+.social-icon {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 13px;
+    color: #fff;
+    background-color: #ccc;
+}
+
+.social-icon-local {
+    background-color: #6b7280;
+    font-size: 11px;
+}
+
+.social-login-item.active .social-icon-local {
+    background-color: #4a90d9;
+    box-shadow: 0 0 0 3px rgba(74, 144, 217, 0.18);
+}
+
+.social-icon-naver {
+    background-color: #03C75A;
+}
+
+.social-login-item.active .social-icon-naver {
+    box-shadow: 0 0 0 3px rgba(3, 199, 90, 0.18);
+}
+
+.social-icon-kakao {
+    background-color: #FEE500;
+    color: #3C1E1E;
+}
+
+.social-login-item.active .social-icon-kakao {
+    box-shadow: 0 0 0 3px rgba(254, 229, 0, 0.35);
+}
+
+.social-icon-google {
+    background-color: #fff;
+    color: #444;
+    border: 1px solid #ddd;
+}
+
+.social-login-item.active .social-icon-google {
+    box-shadow: 0 0 0 3px rgba(66, 133, 244, 0.18);
+}
+
+.social-badge {
+    font-size: 11px;
+    font-weight: 600;
+    color: #4CAF50;
+    visibility: hidden;
+}
+
+.social-login-item.active .social-badge {
+    visibility: visible;
+}
+
 /* ===== 나의설정 폼 ===== */
 .info-table {
     width: 100%;
@@ -505,89 +606,127 @@ main {
 
 /* ===== 버튼 공통 ===== */
 .btn-info-action {
-    padding: 7px 16px;
+    padding: 8px 18px;
     font-size: 13px;
-    background-color: #f5f5f5;
-    color: #555;
-    border: 1px solid #ccc;
-    border-radius: 2px;
+    font-weight: 600;
+    background-color: #fff;
+    color: #ff5a1f;
+    border: 1.5px solid #ff5a1f;
+    border-radius: 20px;
     cursor: pointer;
     font-family: inherit;
+    transition: all 0.15s ease;
 }
 
 .btn-info-action:hover {
-    background-color: #e0e0e0;
+    background-color: #ff5a1f;
+    color: #fff;
+    box-shadow: 0 4px 10px rgba(255, 90, 31, 0.28);
+    transform: translateY(-1px);
 }
 
 .btn-info-edit {
-    padding: 7px 14px;
+    padding: 8px 16px;
     font-size: 13px;
+    font-weight: 600;
     background-color: #4a90d9;
     color: #fff;
     border: none;
-    border-radius: 2px;
+    border-radius: 20px;
     cursor: pointer;
     font-family: inherit;
     white-space: nowrap;
+    box-shadow: 0 2px 6px rgba(74, 144, 217, 0.35);
+    transition: all 0.15s ease;
 }
 
 .btn-info-edit:hover {
     background-color: #357abd;
+    box-shadow: 0 4px 10px rgba(74, 144, 217, 0.45);
+    transform: translateY(-1px);
+}
+
+.btn-info-edit:active,
+.btn-info-action:active {
+    transform: translateY(0);
+    box-shadow: none;
 }
 
 .btn-info-save {
     background-color: #4CAF50 !important;
+    box-shadow: 0 2px 6px rgba(76, 175, 80, 0.35) !important;
 }
 
 .btn-info-save:hover {
     background-color: #3d9140 !important;
+    box-shadow: 0 4px 10px rgba(76, 175, 80, 0.45) !important;
 }
 
 /* ===== 비밀번호 수정 영역 ===== */
 .pw-edit-section {
-    margin-top: 10px;
-    padding: 16px;
-    background-color: #f9f9f9;
-    border: 1px solid #eee;
-    border-radius: 4px;
-    max-width: 340px;
+    margin-top: 12px;
+    padding: 20px;
+    background-color: #f9fafb;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    max-width: 380px;
 }
 
 .pw-check-row {
     display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.pw-check-row-inputs {
+    display: flex;
     align-items: center;
-    flex-wrap: wrap;
     gap: 8px;
 }
 
 .pw-check-row .info-input {
-    width: 100%;
-    max-width: 220px;
+    flex: 1;
+    width: auto;
+    max-width: none;
+    padding: 9px 12px;
+}
+
+.pw-check-row .btn-info-edit {
+    flex-shrink: 0;
+    padding: 9px 16px;
 }
 
 .pw-new-row {
     display: flex;
     flex-direction: column;
-    gap: 4px;
-    margin-top: 14px;
-    padding-top: 14px;
+    gap: 10px;
+    margin-top: 16px;
+    padding-top: 16px;
     border-top: 1px dashed #ddd;
 }
 
 .pw-new-row .info-input {
     width: 100%;
+    padding: 9px 12px;
+}
+
+.pw-field {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
 }
 
 .pw-new-row .btn-info-save {
-    align-self: flex-start;
-    margin-top: 8px;
+    align-self: flex-end;
+    margin-top: 4px;
+    padding: 9px 20px;
 }
 
 .pw-msg {
     font-size: 12px;
-    font-weight: bold;
+    font-weight: 600;
     min-height: 14px;
-    display: inline-block;
+    display: block;
 }
 
 .pw-msg.pw-msg-success {
@@ -696,19 +835,29 @@ main {
 
 .btn-info-submit {
     width: 260px;
-    padding: 14px 0;
+    padding: 15px 0;
     font-size: 15px;
-    font-weight: bold;
-    background-color: #4a90d9;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+    background: linear-gradient(135deg, #ff7a3d, #ff5a1f);
     color: #fff;
     border: none;
-    border-radius: 3px;
+    border-radius: 26px;
     cursor: pointer;
     font-family: inherit;
+    box-shadow: 0 6px 16px rgba(255, 90, 31, 0.35);
+    transition: all 0.15s ease;
 }
 
 .btn-info-submit:hover {
-    background-color: #357abd;
+    background: linear-gradient(135deg, #ff6a28, #f04f16);
+    box-shadow: 0 8px 20px rgba(255, 90, 31, 0.45);
+    transform: translateY(-2px);
+}
+
+.btn-info-submit:active {
+    transform: translateY(0);
+    box-shadow: 0 4px 10px rgba(255, 90, 31, 0.35);
 }
 
 /* ===== 상품평 리스트 테이블 (home 메인 화면) ===== */
@@ -1295,9 +1444,161 @@ main {
     background-color: #d5d5d5;
 }
 
+/* ===== 비밀번호 변경 모달 ===== */
+.modal-box-pw {
+    width: 400px;
+    position: relative;
+    border-radius: 12px;
+    overflow: visible;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.18);
+}
+
+.modal-body-pw {
+    padding: 32px 28px 28px;
+}
+
+.modal-title-left {
+    text-align: left;
+    font-size: 17px;
+    margin-bottom: 20px;
+}
+
+.modal-body-pw .pw-check-row {
+    margin-bottom: 4px;
+}
+
+.modal-body-pw .modal-confirm-btn-group {
+    margin-top: 22px;
+    padding-bottom: 0;
+    gap: 10px;
+}
+
+.modal-body-pw .modal-btn-cancel,
+.modal-btn-primary {
+    flex: 1;
+    padding: 12px 0;
+    font-size: 14px;
+    font-weight: 700;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-family: inherit;
+}
+
+.modal-body-pw .modal-btn-cancel {
+    background-color: #f1f2f4;
+    color: #555;
+}
+
+.modal-body-pw .modal-btn-cancel:hover {
+    background-color: #e4e5e8;
+}
+
+.modal-btn-primary {
+    background-color: #4a90d9;
+    color: #fff;
+}
+
+.modal-btn-primary:hover {
+    background-color: #357abd;
+}
+
 /* ===== 구매확정 모달 ===== */
 .modal-box-confirm {
     width: 600px;
+}
+
+/* ===== 탈퇴 확인 모달 ===== */
+.modal-box-withdraw {
+    width: 380px;
+    position: relative;
+    border-radius: 12px;
+    overflow: visible;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.18);
+}
+
+.modal-close-plain {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    background: none;
+    border: none;
+    color: #aaa;
+    font-size: 20px;
+    line-height: 1;
+    cursor: pointer;
+}
+
+.modal-close-plain:hover {
+    color: #666;
+}
+
+.modal-body-withdraw {
+    padding: 44px 32px 28px;
+    text-align: center;
+}
+
+.modal-warning-icon {
+    width: 52px;
+    height: 52px;
+    margin: 0 auto 18px;
+    border-radius: 50%;
+    background-color: #fdecea;
+    color: #e53935;
+    font-size: 26px;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-confirm-title {
+    font-size: 17px;
+    font-weight: 700;
+    color: #222;
+    margin-bottom: 10px;
+}
+
+.modal-box-withdraw .modal-confirm-text {
+    font-size: 13px;
+    color: #888;
+    line-height: 1.6;
+    padding: 0 0 28px;
+}
+
+.modal-box-withdraw .modal-confirm-btn-group {
+    padding-bottom: 0;
+    gap: 10px;
+}
+
+.modal-box-withdraw .modal-btn-cancel,
+.modal-btn-danger {
+    flex: 1;
+    padding: 12px 0;
+    font-size: 14px;
+    font-weight: 700;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-family: inherit;
+}
+
+.modal-box-withdraw .modal-btn-cancel {
+    background-color: #f1f2f4;
+    color: #555;
+}
+
+.modal-box-withdraw .modal-btn-cancel:hover {
+    background-color: #e4e5e8;
+}
+
+.modal-btn-danger {
+    background-color: #e53935;
+    color: #fff;
+}
+
+.modal-btn-danger:hover {
+    background-color: #c62828;
 }
 
 .modal-confirm-text {
