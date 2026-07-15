@@ -790,6 +790,17 @@ public class OrderService {
         );
     }
 
+    public List<MyOrderItemResponse> getMyOrderItemsByOrderNo(String memberUid, int orderNo) {
+        if (memberUid == null || memberUid.isBlank()) {
+            throw new IllegalStateException("로그인이 필요합니다.");
+        }
+        List<MyOrderItemResponse> items = orderItemDAO.selectMyOrderItemsByOrderNo(memberUid, orderNo);
+        if (items.isEmpty()) {
+            throw new NoSuchElementException("주문을 찾을 수 없습니다.");
+        }
+        return items;
+    }
+
     @Transactional
     public void confirmPurchase(String memberUid, int orderItemNo) {
         MyOrderItemResponse item = getOwnedOrderItem(memberUid, orderItemNo);

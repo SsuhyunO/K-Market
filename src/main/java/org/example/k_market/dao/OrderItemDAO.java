@@ -38,6 +38,9 @@ public interface OrderItemDAO {
                                                  @Param("offset") int offset,
                                                  @Param("limit") int limit);
 
+    List<MyOrderItemResponse> selectMyOrderItemsByOrderNo(@Param("memberUid") String memberUid,
+                                                          @Param("orderNo") int orderNo);
+
     MyOrderItemResponse selectMyOrderItemByOrderItemNo(@Param("memberUid") String memberUid,
                                                        @Param("orderItemNo") int orderItemNo);
 
