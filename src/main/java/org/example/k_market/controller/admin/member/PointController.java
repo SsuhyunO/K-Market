@@ -2,7 +2,7 @@ package org.example.k_market.controller.admin.member;
 
 import lombok.RequiredArgsConstructor;
 import org.example.k_market.dto.PointDTO;
-import org.example.k_market.service.admin.PointService;
+import org.example.k_market.service.PointService;
 import org.example.k_market.util.PageInfo;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
