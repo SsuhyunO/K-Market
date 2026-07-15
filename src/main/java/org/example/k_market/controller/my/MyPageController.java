@@ -131,4 +131,9 @@ public class MyPageController {
     public String list() {
         return "my/review";
     }
+
+    @GetMapping("/point/list")
+    public String point() {
+        return "my/point";
+    }
 }
