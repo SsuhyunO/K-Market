@@ -127,6 +127,7 @@ public class CartService {
 
         return OrderItemViewDTO.builder()
             .cartNo(cart.getCartNo())
+            .prodNo(variant.getProdNo())
             .prodVariantId(variant.getId())
             .thumbnailUrl(product.getThumb1FileId() != null ? "/files/" + product.getThumb1FileId() : null)
             .productName(product.getProdName())

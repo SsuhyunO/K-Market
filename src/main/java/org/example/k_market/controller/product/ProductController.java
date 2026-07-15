@@ -67,8 +67,11 @@ public class ProductController {
                         HttpSession session,
                         Model model) {
         String memberUid = (String) session.getAttribute("loginMember");
-        int loginMemberLevel = (Integer) session.getAttribute("loginMemberLevel");
         Member member = memberService.findByUid(memberUid);
+        Integer sessionMemberLevel = (Integer) session.getAttribute("loginMemberLevel");
+        int loginMemberLevel = sessionMemberLevel != null
+                ? sessionMemberLevel
+                : (member.getMemberLevel() != null ? member.getMemberLevel() : 1);
 
         // 1. 주문 상품 리스트 조회
         List<OrderItemViewDTO> orderItems;
