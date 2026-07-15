@@ -1,24 +1,245 @@
-.cs-index{padding:34px 55px 50px}
-.cs-index-title{text-align:center;margin-bottom:30px;font-size:24px}
-.cs-index-title span{color:var(--km-red)}
-.cs-section{margin-bottom:30px}
-.cs-section-title{display:flex;align-items:center;justify-content:space-between;padding-bottom:10px;border-bottom:2px solid #333}
-.cs-section-title h3{font-size:17px}
-.more{font-size:12px;color:#666}
-.more:hover{color:var(--km-red)}
-.notice-preview li,.qna-preview li{display:flex;align-items:center;min-height:34px;border-bottom:1px solid #eee}
-.notice-preview a,.qna-preview a{flex:1;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
-.notice-preview a:hover,.qna-preview a:hover{color:var(--km-red)}
-.notice-preview .date,.qna-preview .date{width:72px;text-align:right;color:#888;font-size:11px}
-.qna-preview .writer{width:70px;text-align:center;color:#777;font-size:11px}
-.faq-icons{display:grid;grid-template-columns:repeat(6,1fr);gap:10px;padding-top:20px}
-.faq-icon{text-align:center}
-.faq-img{display:flex;align-items:center;justify-content:center;width:62px;height:62px;margin:0 auto 8px;border:1px solid #ddd;border-radius:50%;background:#fff8f5;font-size:26px}
-.faq-icon:hover .faq-img{border-color:var(--km-red)}
-.qna-write-area{margin-top:10px;text-align:right}
-.qna-write-btn{color:var(--km-red);font-weight:700}
-.cs-info-box-wrap{display:flex;gap:16px}
-.cs-info-box{flex:1;padding:20px;border:1px solid #ddd;border-radius:6px;background:#fafafa}
-.cs-info-box h4{margin-bottom:16px;font-size:15px}
-.cs-info-content{margin-top:12px}
-.cs-info-content strong{display:block;margin:4px 0;font-size:20px}
+/* 고객센터 메인 영역 */
+.cs-index {
+    padding: 34px 55px 50px;
+}
+
+/* 고객센터 메인 제목 */
+.cs-index-title {
+    margin-bottom: 30px;
+    text-align: center;
+    font-size: 24px;
+    font-weight: 700;
+    color: #222;
+}
+
+.cs-index-title span {
+    color: var(--km-red);
+}
+
+/* 고객센터 공통 섹션 */
+.cs-section {
+    margin-bottom: 30px;
+}
+
+.cs-section:last-child {
+    margin-bottom: 0;
+}
+
+/* 고객센터 섹션 제목 */
+.cs-section-title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #333;
+}
+
+.cs-section-title h3 {
+    font-size: 17px;
+    font-weight: 700;
+    color: #222;
+}
+
+/* 전체보기 링크 */
+.more {
+    flex-shrink: 0;
+    font-size: 12px;
+    color: #666;
+}
+
+.more:hover {
+    color: var(--km-red);
+    text-decoration: underline;
+}
+
+/* 공지사항 및 문의 미리보기 목록 */
+.notice-preview,
+.qna-preview {
+    width: 100%;
+}
+
+.notice-preview li,
+.qna-preview li {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    min-height: 38px;
+    padding: 0 4px;
+    border-bottom: 1px solid #eee;
+}
+
+/* 미리보기 제목 링크 */
+.notice-preview a,
+.qna-preview a {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    color: #333;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.notice-preview a:hover,
+.qna-preview a:hover {
+    color: var(--km-red);
+    text-decoration: underline;
+}
+
+/* 미리보기 작성일 */
+.notice-preview .date,
+.qna-preview .date {
+    flex-shrink: 0;
+    width: 72px;
+    text-align: right;
+    font-size: 11px;
+    color: #888;
+    white-space: nowrap;
+}
+
+/* 문의 미리보기 작성자 */
+.qna-preview .writer {
+    flex-shrink: 0;
+    width: 70px;
+    overflow: hidden;
+    text-align: center;
+    font-size: 11px;
+    color: #777;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+/* 미리보기 목록 없음 */
+.notice-preview .preview-empty,
+.qna-preview .preview-empty {
+    justify-content: center;
+    min-height: 80px;
+    padding: 20px;
+    color: #888;
+    font-size: 12px;
+    text-align: center;
+}
+
+/* FAQ 바로가기 목록 */
+.faq-icons {
+    display: grid;
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+    gap: 10px;
+    width: 100%;
+    padding-top: 20px;
+}
+
+/* FAQ 바로가기 항목 */
+.faq-icon {
+    display: block;
+    min-width: 0;
+    text-align: center;
+    color: #444;
+}
+
+.faq-icon p {
+    overflow: hidden;
+    font-size: 12px;
+    line-height: 18px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.faq-icon:hover {
+    color: var(--km-red);
+}
+
+/* FAQ 바로가기 아이콘 */
+.faq-img {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 62px;
+    height: 62px;
+    margin: 0 auto 8px;
+    border: 1px solid #ddd;
+    border-radius: 50%;
+    font-size: 26px;
+    background: #fff8f5;
+    transition:
+            border-color 0.15s ease,
+            background-color 0.15s ease,
+            transform 0.15s ease;
+}
+
+.faq-icon:hover .faq-img {
+    border-color: var(--km-red);
+    background: var(--km-soft);
+    transform: translateY(-2px);
+}
+
+/* 문의 작성 버튼 영역 */
+.qna-write-area {
+    margin-top: 12px;
+    text-align: right;
+}
+
+/* 문의 작성 버튼 */
+.qna-write-btn {
+    display: inline-flex;
+    align-items: center;
+    min-height: 30px;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--km-red);
+}
+
+.qna-write-btn:hover {
+    color: var(--km-red-dark);
+    text-decoration: underline;
+}
+
+/* 고객센터 안내 박스 영역 */
+.cs-info-box-wrap {
+    display: flex;
+    gap: 16px;
+    padding-top: 20px;
+}
+
+/* 고객센터 안내 박스 */
+.cs-info-box {
+    flex: 1;
+    min-width: 0;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    background: #fafafa;
+}
+
+.cs-info-box h4 {
+    margin-bottom: 16px;
+    font-size: 15px;
+    font-weight: 700;
+    color: #222;
+}
+
+/* 고객센터 안내 내용 */
+.cs-info-content {
+    margin-top: 12px;
+    font-size: 12px;
+    line-height: 20px;
+    color: #666;
+}
+
+.cs-info-content p {
+    color: #777;
+}
+
+.cs-info-content strong {
+    display: block;
+    margin: 4px 0;
+    font-size: 20px;
+    line-height: 28px;
+    color: #222;
+}
+
+.cs-info-content span {
+    display: block;
+    color: #777;
+}
