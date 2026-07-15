@@ -29,4 +29,6 @@ public interface CouponIssueDAO {
 
     // CouponIssueDAO.java (인터페이스)
     void markAsUsed(@Param("issueNo") int issueNo, @Param("status") int status);
+
+    int getMyAvailableCouponCount(String memberUid);
 }

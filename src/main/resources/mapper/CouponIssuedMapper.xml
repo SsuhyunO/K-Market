@@ -123,4 +123,11 @@
         SET status = #{status}, updatedAt = NOW()
         WHERE issueNo = #{issueNo}
     </update>
+
+    <select id="getMyAvailableCouponCount" resultType="int">
+        SELECT COUNT(*)
+        FROM coupon_issue ci
+        WHERE ci.memberUid = #{memberUid}
+          AND ci.status = 0
+    </select>
 </mapper>
