@@ -357,7 +357,6 @@ public class OrderService {
                 .orderPrice(orderPrice)
                 .orderDiscount(productDiscount + couponDiscount)
                 .couponIssueId(req.getCouponIssueId())
-                .shippingFee(shippingFee)
                 .orderTotal(orderTotal)
                 .usedPoints(usedPoints)
                 .receiver(req.getReceiver())
