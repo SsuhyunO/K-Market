@@ -79,4 +79,8 @@ public class CouponIssueService {
 
         couponIssueDAO.markAsUsed(issueNo, STATUS_USED);
     }
+
+    public int getMyAvailableCouponCount(String memberUid) {
+        return couponIssueDAO.getMyAvailableCouponCount(memberUid);
+    }
 }

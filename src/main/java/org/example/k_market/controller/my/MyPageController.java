@@ -6,6 +6,8 @@ import org.example.k_market.dto.admin.BannerDTO;
 import org.example.k_market.service.PointService;
 import org.example.k_market.service.admin.BannerService;
 import jakarta.servlet.http.HttpSession;
+import org.example.k_market.service.admin.CouponIssueService;
+import org.example.k_market.service.order.OrderService;
 import org.example.k_market.service.review.ReviewService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,8 +21,9 @@ import java.util.List;
 public class MyPageController {
     private final ReviewService reviewService;
     private final PointService pointService;
-
+    private final OrderService orderService;
     private final BannerService bannerService;
+    private final CouponIssueService couponIssueService;
 
     @ModelAttribute
     public void addMyPageBanner(Model model) {
@@ -29,6 +32,30 @@ public class MyPageController {
                 bannerService.findFirstEnabledBannerByType("myPage");
 
         model.addAttribute("myPageBanner", myPageBanner);
+    }
+
+    @ModelAttribute
+    public void addMyPageSummary(HttpSession session, Model model) {
+        String memberUid = (String) session.getAttribute("loginMember");
+
+        int totalOrderCount = 0;
+        if (memberUid != null && !memberUid.isBlank()) {
+            totalOrderCount = orderService.getTotalCount("memberUid", memberUid);
+        }
+
+        int myCouponCount = 0;
+        if (memberUid != null && !memberUid.isBlank()) {
+            myCouponCount = couponIssueService.getMyAvailableCouponCount(memberUid);
+        }
+
+        int myPointBalance = 0;
+        if (memberUid != null && !memberUid.isBlank()) {
+            myPointBalance = pointService.getBalance(memberUid);
+        }
+
+        model.addAttribute("totalOrderCount", totalOrderCount);
+        model.addAttribute("myCouponCount", myCouponCount);
+        model.addAttribute("myPointBalance", myPointBalance);
     }
 
     @GetMapping("/my/home")
@@ -65,6 +92,11 @@ public class MyPageController {
     @GetMapping("/my/info")
     public String info() {
         return "my/info";
+    }
+
+    @GetMapping("/review/list")
+    public String list() {
+        return "my/review";
     }
 
 }
