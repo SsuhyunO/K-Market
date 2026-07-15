@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.example.k_market.dao.ReviewDAO">
 
-    <insert id="insertReview" parameterType="ReviewDTO">
+    <insert id="insertReview" parameterType="org.example.k_market.dto.ReviewDTO">
         INSERT INTO review (prodNo, memberUid, rating, content, fileId, createdAt)
         VALUES (#{prodNo}, #{memberUid}, #{rating}, #{content}, #{fileId}, NOW())
     </insert>
