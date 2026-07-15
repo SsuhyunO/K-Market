@@ -47,13 +47,16 @@ public class MyPageController {
         int totalOrderCount = 0;
         int myCouponCount = 0;
         int myPointBalance = 0;
+        List<QnaDTO> qnaList = null;
 
         if (memberUid != null && !memberUid.isBlank()) {
             totalOrderCount = orderService.getTotalCount("memberUid", memberUid);
             myCouponCount = couponIssueService.getMyAvailableCouponCount(memberUid);
             myPointBalance = pointService.getBalance(memberUid);
+            qnaList = qnaService.getQnaListByMemberUid(memberUid.trim());
         }
 
+        model.addAttribute("qnaList", qnaList);
         model.addAttribute("totalOrderCount", totalOrderCount);
         model.addAttribute("myCouponCount", myCouponCount);
         model.addAttribute("myPointBalance", myPointBalance);

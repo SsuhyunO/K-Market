@@ -43,7 +43,18 @@
                 <span class="summary-num" th:text="${myPointBalance}">0</span>
             </div>
             <div class="summary-divider"></div>
-            <div class="summary-item"><span class="summary-label">문의</span><span class="summary-num">0</span></div>
+            <div class="summary-item">
+                <span class="summary-label">
+                    문의
+                </span>
+
+                <span class="summary-num"
+                      th:text="${qnaList != null
+                                ? #lists.size(qnaList)
+                                : 0}">
+                    0
+                </span>
+            </div>
         </div>
     </section>
 
