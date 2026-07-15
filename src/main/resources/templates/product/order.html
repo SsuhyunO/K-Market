@@ -103,11 +103,11 @@
                     </div>
                 </td>
                 <td th:text="${item.quantity}">1</td>
-                <td th:text="${item.price} + '원'">27,000원</td>
+                <td th:text="${#numbers.formatInteger(item.price, 1, 'COMMA')} + '원'">27,000원</td>
                 <td  class="discount" th:text="${item.discountRate} + '%'">5%</td>
                 <td th:text="${item.point}">270</td>
-                <td th:text="${item.freeShipping} ? '무료' : ${item.shippingFee} + '원'">무료</td>
-                <td class="total-cell" th:text="${item.lineTotal} + '원'">25,650원</td>
+                <td th:text="${item.freeShipping} ? '무료' : ${#numbers.formatInteger(item.shippingFee, 1, 'COMMA')} + '원'">무료</td>
+                <td class="total-cell" th:text="${#numbers.formatInteger(item.lineTotal, 1, 'COMMA')} + '원'">25,650원</td>
             </tr>
 
             </tbody>
@@ -235,13 +235,13 @@
                         <span class="label">상품금액</span>
                         <span class="value" id="summaryProductPrice"
                               th:attr="data-raw=${productTotal != null ? productTotal : 167000}"
-                              th:text="(${productTotal} != null ? ${productTotal} : 167000) + '원'">167,000원</span>
+                              th:text="${#numbers.formatInteger(productTotal != null ? productTotal : 167000, 1, 'COMMA')} + '원'">167,000원</span>
                     </div>
                     <div class="summary-row">
                         <span class="label">할인금액</span>
                         <span class="value minus" id="summaryDiscount"
                               th:attr="data-raw=${discountTotal != null ? discountTotal : 34500}"
-                              th:text="'-' + (${discountTotal} != null ? ${discountTotal} : 34500) + '원'">-34,500원</span>
+                              th:text="'-' + ${#numbers.formatInteger(discountTotal != null ? discountTotal : 34500, 1, 'COMMA')} + '원'">-34,500원</span>
                     </div>
 
                     <hr class="summary-divider">
@@ -264,7 +264,7 @@
                         <span class="label">전체주문금액</span>
                         <span class="value" id="summaryOrderTotal"
                               th:attr="data-raw=${orderTotal != null ? orderTotal : 131500}"
-                              th:text="(${orderTotal} != null ? ${orderTotal} : 131500) + '원'">131,500원</span>
+                              th:text="${#numbers.formatInteger(orderTotal != null ? orderTotal : 131500, 1, 'COMMA')} + '원'">131,500원</span>
                     </div>
 
                     <hr class="summary-divider">
@@ -273,7 +273,7 @@
                         <span class="label">배송비</span>
                         <span class="value" id="summaryShipping"
                               th:attr="data-raw=${shippingTotal != null ? shippingTotal : 3000}"
-                              th:text="(${shippingTotal} != null ? ${shippingTotal} : 3000) + '원'">3,000원</span>
+                              th:text="${#numbers.formatInteger(shippingTotal != null ? shippingTotal : 3000, 1, 'COMMA')} + '원'">3,000원</span>
                     </div>
                     <div class="summary-row">
                         <span class="label">적립포인트</span>
@@ -286,7 +286,7 @@
                         <span class="label">최종결제금액</span>
                         <span class="value" id="summaryFinalPrice"
                               th:attr="data-raw=${finalPrice != null ? finalPrice : 134500}"
-                              th:text="(${finalPrice} != null ? ${finalPrice} : 134500) + '원'">134,500원</span>
+                              th:text="${#numbers.formatInteger(finalPrice != null ? finalPrice : 134500, 1, 'COMMA')} + '원'">134,500원</span>
                     </div>
 
                     <button type="button" class="btn-pay" id="btnPay">결제하기</button>

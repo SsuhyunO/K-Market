@@ -11,6 +11,8 @@ import org.example.k_market.service.order.OrderService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/my/order/api")
 @RequiredArgsConstructor
@@ -24,6 +26,14 @@ public class MyOrderApiController {
         HttpSession session
     ) {
         return ResponseEntity.ok(orderService.getMyOrderItems(getMemberUid(session), request));
+    }
+
+    @GetMapping("/orders/{orderNo}/items")
+    public ResponseEntity<List<MyOrderItemResponse>> getMyOrderItemsByOrderNo(
+        @PathVariable int orderNo,
+        HttpSession session
+    ) {
+        return ResponseEntity.ok(orderService.getMyOrderItemsByOrderNo(getMemberUid(session), orderNo));
     }
 
     @PostMapping("/{orderItemNo}/confirm")

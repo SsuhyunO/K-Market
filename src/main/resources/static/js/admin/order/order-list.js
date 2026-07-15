@@ -76,7 +76,7 @@ function initOrderTableEvents() {
                 const orderNo = deliveryButton.dataset.orderNo;
                 selectedDeliveryOrder = await getOrderDetail(orderNo);
                 renderDeliveryOrder(selectedDeliveryOrder, await getShippableItems(orderNo));
-                openModal(deliveryModal);
+                openDeliveryModal(deliveryModal);
             } catch (error) {
                 errorHandler(error);
             }
@@ -167,16 +167,27 @@ function initDeliveryForm() {
         if (submitButton) submitButton.disabled = true;
 
         try {
+            const orderNo = Number.parseInt(form.orderNo.value, 10);
             await registerDelivery({
-                orderNo: Number.parseInt(form.orderNo.value, 10),
+                orderNo,
                 courierName: form.deliveryCompany.value,
                 trackingNo: form.trackingNumber.value.trim(),
                 orderItemNos: checked.map(input => Number.parseInt(input.value, 10))
             });
-            forceCloseModal('delivery-register-modal');
-            form.reset();
-            alert('\ubc30\uc1a1\uc774 \ub4f1\ub85d\ub418\uc5c8\uc2b5\ub2c8\ub2e4.');
+
+            const remainingItems = await getShippableItems(orderNo);
             window.dispatchEvent(new CustomEvent('pagination:refresh'));
+
+            if (remainingItems.length > 0) {
+                selectedDeliveryOrder = await getOrderDetail(orderNo);
+                renderDeliveryOrder(selectedDeliveryOrder, remainingItems);
+                openDeliveryModal(document.getElementById('delivery-register-modal'));
+                alert('\ubc30\uc1a1\uc774 \ub4f1\ub85d\ub418\uc5c8\uc2b5\ub2c8\ub2e4. \ub0a8\uc740 \uc0c1\ud488\uc758 \ubc30\uc1a1\uc744 \uacc4\uc18d \ub4f1\ub85d\ud560 \uc218 \uc788\uc2b5\ub2c8\ub2e4.');
+            } else {
+                closeDeliveryModal('delivery-register-modal');
+                form.reset();
+                alert('\ubc30\uc1a1\uc774 \ub4f1\ub85d\ub418\uc5c8\uc2b5\ub2c8\ub2e4.');
+            }
         } catch (error) {
             errorHandler(error);
         } finally {
@@ -186,12 +197,17 @@ function initDeliveryForm() {
     });
 }
 
-function forceCloseModal(id) {
+function openDeliveryModal(modal) {
+    if (!modal) return;
+    modal.style.display = '';
+    openModal(modal);
+}
+
+function closeDeliveryModal(id) {
     const modal = document.getElementById(id);
     if (!modal) return;
     closeModal(modal);
-    modal.classList.add('hidden');
-    modal.style.display = 'none';
+    modal.style.display = '';
 }
 
 function createProductRow(item) {

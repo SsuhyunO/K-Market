@@ -32,7 +32,7 @@ function initModals() {
 }
 
 function initRecentOrderActions() {
-    document.getElementById('recentOrderListBody')?.addEventListener('click', event => {
+    document.getElementById('recentOrderListBody')?.addEventListener('click', async event => {
         const row = event.target.closest('[data-order-item-no]');
         if (!row) return;
 
@@ -41,8 +41,13 @@ function initRecentOrderActions() {
 
         if (event.target.closest('.js-order-detail')) {
             event.preventDefault();
-            fillOrderModal(activeItem);
-            openModal('orderDetailModal');
+            try {
+                const orderItems = await fetchOrderItemsByOrderNo(activeItem.orderNo);
+                fillOrderModal(orderItems);
+                openModal('orderDetailModal');
+            } catch (error) {
+                errorHandler(error);
+            }
         } else if (event.target.closest('.js-confirm-purchase')) {
             event.preventDefault();
             openModal('confirmPurchaseModal');
@@ -135,21 +140,53 @@ function actionButtons(item) {
     return buttons.length ? buttons.join('') : '-';
 }
 
-function fillOrderModal(item) {
-    setText('detailDate', formatDateText(item.createdAt));
-    setText('detailDate2', formatDateText(item.createdAt));
-    setText('detailOrderNo', `주문번호 : ${item.orderNo}`);
-    setText('detailCompany', item.sellerName || item.sellerUid || '-');
-    setText('detailProduct', item.productName || '-');
-    setText('detailQty', `수량 : ${item.quantity || 0}개`);
-    setText('detailPrice', `${formatNumber(item.total)}원`);
-    setText('detailPayBase', `${formatNumber(item.price)}원`);
-    setText('detailPayTotal', `${formatNumber(item.total)}원`);
-    setText('detailStatus', renderStatus(item.itemStatus));
+function fillOrderModal(items) {
+    const orderItems = Array.isArray(items) ? items : [];
+    const firstItem = orderItems[0] || activeItem;
+
+    setText('detailDate', formatDateText(firstItem?.createdAt));
+    const tbody = document.getElementById('orderDetailItemsBody');
+    if (tbody) {
+        tbody.innerHTML = orderItems.length > 0
+            ? orderItems.map(renderDetailItemRow).join('')
+            : '<tr><td colspan="4">주문정보를 찾을 수 없습니다.</td></tr>';
+    }
+
     const cancelButton = document.getElementById('orderCancelBtn');
     if (cancelButton) {
-        cancelButton.hidden = !['PAID', 'READY', 'SHIPPING'].includes(item.itemStatus);
+        cancelButton.hidden = !isOrderCancelable(orderItems);
     }
+}
+
+function renderDetailItemRow(item) {
+    return `
+        <tr>
+            <td class="modal-order-date">${escapeHtml(formatDateText(item.createdAt))}</td>
+            <td class="modal-order-product">
+                <div class="product-inner">
+                    <div class="product-img">${renderThumb(item.thumb1FileId)}</div>
+                    <div class="product-info">
+                        <p class="order-no">주문번호 : ${escapeHtml(item.orderNo)}</p>
+                        <p class="company-name">${escapeHtml(item.sellerName || item.sellerUid || '-')}</p>
+                        <p class="product-name">${escapeHtml(item.productName || '-')}</p>
+                        ${item.optionText ? `<p class="product-qty">옵션 : ${escapeHtml(item.optionText)}</p>` : ''}
+                        <p class="product-qty">수량 : ${escapeHtml(item.quantity || 0)}개</p>
+                        <p class="product-price">${formatNumber(item.total)}원</p>
+                    </div>
+                </div>
+            </td>
+            <td class="modal-pay-info">
+                <p>판매가 <span>${formatNumber(item.price)}원</span></p>
+                <p class="modal-pay-total">결제금액 <span>${formatNumber(item.total)}원</span></p>
+            </td>
+            <td class="modal-order-status">${escapeHtml(renderStatus(item.itemStatus))}</td>
+        </tr>
+    `;
+}
+
+function isOrderCancelable(items) {
+    const cancellableStatuses = ['PAID', 'READY', 'SHIPPING', 'PARTIAL_SHIPPING'];
+    return items.length > 0 && items.every(item => cancellableStatuses.includes(item.itemStatus));
 }
 
 function fillClaimModal(type, item) {
@@ -250,6 +287,10 @@ async function fetchJson(url) {
     const json = await response.json().catch(() => ({}));
     if (!response.ok) throw new Error(json.message || `Request failed: ${response.status}`);
     return json;
+}
+
+function fetchOrderItemsByOrderNo(orderNo) {
+    return fetchJson(`${contextPath()}my/order/api/orders/${encodeURIComponent(orderNo)}/items`);
 }
 
 async function postJson(url, body) {
