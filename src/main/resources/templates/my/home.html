@@ -19,11 +19,20 @@
     <section class="my-summary">
         <span class="my-summary-title">나의 쇼핑정보</span>
         <div class="summary-items">
-            <div class="summary-item"><span class="summary-label">주문</span><span class="summary-num">0</span></div>
+            <div class="summary-item">
+                <span class="summary-label">주문</span>
+                <span class="summary-num" th:text="${totalOrderCount}">0</span>
+            </div>
             <div class="summary-divider"></div>
-            <div class="summary-item"><span class="summary-label">쿠폰</span><span class="summary-num">0</span></div>
+            <div class="summary-item">
+                <span class="summary-label">쿠폰</span>
+                <span class="summary-num" th:text="${myCouponCount}">0</span>
+            </div>
             <div class="summary-divider"></div>
-            <div class="summary-item"><span class="summary-label">포인트</span><span class="summary-num">0</span></div>
+            <div class="summary-item">
+                <span class="summary-label">포인트</span>
+                <span class="summary-num" th:text="${myPointBalance}">0</span>
+            </div>
             <div class="summary-divider"></div>
             <div class="summary-item"><span class="summary-label">문의</span><span class="summary-num">0</span></div>
         </div>

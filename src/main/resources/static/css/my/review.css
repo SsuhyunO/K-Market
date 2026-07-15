@@ -105,6 +105,22 @@
 .my-banner {
     width: 100%;
     height: 86px;
+    border: 1px solid #ddd;
+    overflow: hidden;
+    background-color: #fff;
+}
+
+.my-banner a {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+.my-banner img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: fill;
 }
 
 /* ===== 공통 섹션 스타일 ===== */
