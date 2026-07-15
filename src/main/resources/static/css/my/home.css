@@ -1113,3 +1113,82 @@ footer {
     font-size: 12px;
     color: #888;
 }
+
+/* =========================================================
+   마이페이지 홈 최근 문의내역
+   ========================================================= */
+
+.inquiry-list-table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+}
+
+.inquiry-list-table th {
+    padding: 10px 8px;
+    border-bottom: 1px solid #ddd;
+    background-color: #f7f7f7;
+    color: #555;
+    font-size: 13px;
+    font-weight: 700;
+    text-align: center;
+}
+
+.inquiry-list-table td {
+    height: 42px;
+    padding: 10px 8px;
+    overflow: hidden;
+    border-bottom: 1px solid #f0f0f0;
+    color: #555;
+    font-size: 13px;
+    text-align: center;
+    text-overflow: ellipsis;
+    vertical-align: middle;
+    white-space: nowrap;
+}
+
+.inquiry-list-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.inquiry-list-table tbody tr:hover td {
+    background-color: #fafafa;
+}
+
+.inquiry-list-table .inquiry-empty {
+    height: auto;
+    padding: 18px 0;
+    color: #777;
+    text-align: center;
+}
+
+.inquiry-title {
+    text-align: center;
+}
+
+.inquiry-title a {
+    display: inline-block;
+    max-width: 100%;
+    overflow: hidden;
+    color: #333;
+    text-decoration: none;
+    text-overflow: ellipsis;
+    vertical-align: middle;
+    white-space: nowrap;
+}
+
+.inquiry-title a:hover {
+    color: #4a90d9;
+    text-decoration: underline;
+}
+
+.inquiry-status-checking {
+    color: #aaa;
+    font-size: 12px;
+}
+
+.inquiry-status-done {
+    color: #4caf50;
+    font-size: 12px;
+    font-weight: 700;
+}
