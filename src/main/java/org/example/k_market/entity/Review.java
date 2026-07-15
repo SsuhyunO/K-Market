@@ -20,7 +20,7 @@ public class Review {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int reviewNo;
 
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "orderItemNo")
     private OrderItem orderItem;
 
@@ -34,6 +34,7 @@ public class Review {
 
     private int rating;
     private String content;
+    private Integer fileId;
 
     @CreationTimestamp
     private LocalDateTime createdAt;

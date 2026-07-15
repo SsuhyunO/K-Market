@@ -15,5 +15,6 @@ public class ReviewListResponse {
     private String memberUid;
     private String content;
     private int rating;
+    private Integer fileId;
     private String createdAt;
 }

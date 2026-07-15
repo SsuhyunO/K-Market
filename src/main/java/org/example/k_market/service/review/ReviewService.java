@@ -1,9 +1,11 @@
 package org.example.k_market.service.review;
 
 import lombok.RequiredArgsConstructor;
+import org.example.k_market.dao.OrderItemDAO;
 import org.example.k_market.dao.ReviewDAO;
 import org.example.k_market.dto.ReviewDTO;
 import org.example.k_market.dto.admin.FileDTO;
+import org.example.k_market.dto.order.response.MyOrderItemResponse;
 import org.example.k_market.dto.pagination.response.PageResponse;
 import org.example.k_market.dto.review.response.ReviewListResponse;
 import org.example.k_market.entity.Review;
@@ -15,6 +17,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -31,6 +34,7 @@ public class ReviewService {
     private final PaginationService paginationService;
     private final ReviewDAO reviewDAO;
     private final FileService fileService;
+    private final OrderItemDAO orderItemDAO;
 
     public List<ReviewListResponse> getRecentReviewsByMemberId(String memberUid) {
         Pageable pageable = PageRequest.of(0, MY_PAGE_REVIEW_SIZE, Sort.by("createdAt").descending());
@@ -108,6 +112,7 @@ public class ReviewService {
             .memberUid(maskMemberUid(review.getMember() != null ? review.getMember().getUid() : null))
             .content(review.getContent())
             .rating(review.getRating())
+            .fileId(review.getFileId())
             .createdAt(review.getCreatedAt().toLocalDate().toString())
             .build();
     }
@@ -122,10 +127,30 @@ public class ReviewService {
         return memberUid.substring(0, 2) + "*".repeat(memberUid.length() - 2);
     }
 
+    @Transactional
     public void writeReview(ReviewDTO reviewDTO, MultipartFile photo) {
+        MyOrderItemResponse orderItem = orderItemDAO.selectMyOrderItemByOrderItemNo(
+            reviewDTO.getMemberUid(),
+            reviewDTO.getOrderItemNo()
+        );
+
+        if (orderItem == null) {
+            throw new IllegalArgumentException("리뷰를 작성할 주문상품을 찾을 수 없습니다.");
+        }
+        if (!"CONFIRMED".equals(orderItem.getItemStatus())) {
+            throw new IllegalStateException("구매확정된 상품만 리뷰를 작성할 수 있습니다.");
+        }
+        if (orderItem.isReviewed() || reviewRepository.existsByOrderItemOrderItemNo(orderItem.getOrderItemNo())) {
+            throw new IllegalStateException("이미 리뷰를 작성한 주문상품입니다.");
+        }
+        if (orderItem.getProdNo() <= 0) {
+            throw new IllegalStateException("리뷰를 작성할 상품 정보가 없습니다.");
+        }
 
         FileDTO fileDTO = fileService.uploadFile(photo); // 사진 없으면 null 반환
 
+        reviewDTO.setOrderItemNo(orderItem.getOrderItemNo());
+        reviewDTO.setProdNo(orderItem.getProdNo());
         if (fileDTO != null) {
             reviewDTO.setFileId(fileDTO.getId());
         }

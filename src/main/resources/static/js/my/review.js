@@ -58,6 +58,7 @@ import { escapeHtml } from '../global/htmlUtils.js';
                     document.getElementById('reviewDetailDate').textContent = row.getAttribute('data-date');
                     document.getElementById('reviewDetailWriteDate').textContent = row.getAttribute('data-date');
                     document.getElementById('reviewDetailContent').textContent = row.getAttribute('data-content');
+                    renderReviewDetailImage(row.getAttribute('data-file-id'));
 
                     const starWrap = document.getElementById('reviewDetailStars');
                     const rating = parseInt(row.getAttribute('data-rating'), 10);
@@ -117,6 +118,7 @@ import { escapeHtml } from '../global/htmlUtils.js';
             tr.setAttribute('data-product-name', item.productName);
             tr.setAttribute('data-content', item.content);
             tr.setAttribute('data-rating', item.rating);
+            tr.setAttribute('data-file-id', item.fileId || '');
             tr.setAttribute('data-date', item.createdAt);
 
             tr.innerHTML = `
@@ -135,6 +137,20 @@ import { escapeHtml } from '../global/htmlUtils.js';
 
     function getContextPath() {
         return document.querySelector('meta[name="context-path"]')?.content || '/';
+    }
+
+    function renderReviewDetailImage(fileId) {
+        const imageWrap = document.getElementById('reviewDetailImage');
+        if (!imageWrap) return;
+
+        if (!fileId) {
+            imageWrap.textContent = '상품이미지';
+            imageWrap.classList.remove('has-image');
+            return;
+        }
+
+        imageWrap.classList.add('has-image');
+        imageWrap.innerHTML = `<img src="${getContextPath()}files/${encodeURIComponent(fileId)}" alt="상품평 첨부 이미지">`;
     }
 
     function handleReviewLoadError(error) {
