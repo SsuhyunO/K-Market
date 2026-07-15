@@ -14,6 +14,7 @@ public class MyOrderItemResponse {
     private String createdAt;
     private String sellerUid;
     private String sellerName;
+    private int prodNo;
     private String productName;
     private String optionText;
     private Integer thumb1FileId;

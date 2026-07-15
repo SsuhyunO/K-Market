@@ -56,7 +56,9 @@ document.addEventListener('DOMContentLoaded', async function () {
                             '</span>' +
                             '<span style="color:var(--color-gray-200);">|</span>' +
                             sellerBadgeHtml +
-                            '<a href="#" id="navLogoutLink" style="font-size:13px; color:var(--color-gray-600);">로그아웃</a>';
+                            '<a href="#" id="navLogoutLink" style="font-size:13px; color:var(--color-gray-600);">로그아웃</a>' +
+                            '<span style="color:var(--color-gray-200);">|</span>' +
+                            '<a href="/K_Market/cs" id="navCsLink" style="font-size:13px; color:var(--color-gray-600);">고객센터</a>';
                     }
 
                     authArea.insertAdjacentHTML('beforeend', welcomeHtml);

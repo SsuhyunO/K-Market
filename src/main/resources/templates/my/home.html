@@ -232,6 +232,59 @@
     </div>
 </div>
 
+<div class="modal-overlay" id="reviewWriteModal">
+    <div class="modal-box">
+        <div class="modal-header modal-header-blue">
+            <span class="modal-title">상품평작성하기</span>
+            <button type="button" class="modal-close" data-close="reviewWriteModal">&times;</button>
+        </div>
+        <div class="modal-body">
+            <table class="modal-review-table">
+                <tbody>
+                <tr>
+                    <th>상품명</th>
+                    <td id="reviewProductName">상품명 출력</td>
+                </tr>
+                <tr>
+                    <th>만족도</th>
+                    <td>
+                        <div class="star-rating" id="reviewStarRating">
+                            <span class="star" data-value="1">★</span>
+                            <span class="star" data-value="2">★</span>
+                            <span class="star" data-value="3">★</span>
+                            <span class="star" data-value="4">★</span>
+                            <span class="star" data-value="5">★</span>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th>내용</th>
+                    <td>
+                        <textarea class="review-textarea" id="reviewContent" maxlength="200" placeholder="최소 10자이상 200자내 외로작성해세요 ."></textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <th>사진</th>
+                    <td>
+                        <div class="review-file-row">
+                            <label class="review-file-btn">
+                                파일선택
+                                <input type="file" class="review-file-input" data-index="1">
+                            </label>
+                            <span class="review-file-name" id="reviewFileName1">선택된파일없음</span>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <div class="modal-confirm-btn-group">
+                <button type="button" class="modal-btn-submit" id="reviewSubmitBtn">작성완료</button>
+                <button type="button" class="modal-btn-cancel" data-close="reviewWriteModal">취소</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="modal-overlay" id="returnRequestModal">
     <div class="modal-box">
         <div class="modal-header modal-header-blue">

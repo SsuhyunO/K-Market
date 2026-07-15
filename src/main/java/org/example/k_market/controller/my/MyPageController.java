@@ -52,11 +52,6 @@ public class MyPageController {
         return "my/order";
     }
 
-    @GetMapping("/my/point")
-    public String point() {
-        return "my/point";
-    }
-
     @GetMapping("/my/coupon")
     public String coupon() {
         return "my/coupon";
