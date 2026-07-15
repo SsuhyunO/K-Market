@@ -1,0 +1,33 @@
+<section th:fragment="section(sectionId, title, products)" class="main-section" th:id="${sectionId}">
+    <h2 class="section-title" th:text="${title}">상품 섹션</h2>
+
+    <div class="product-grid-8">
+        <a th:each="product : ${products}"
+           th:href="@{/product/view(prodNo=${product.no})}"
+           th:attr="data-id=${product.no}"
+           class="product-card">
+
+            <div class="product-thumb">
+                <img th:if="${product.thumb2FileId != null}"
+                     th:src="@{/files/{id}(id=${product.thumb2FileId})}"
+                     alt="">
+                <span th:unless="${product.thumb2FileId != null}">🖼️</span>
+            </div>
+
+            <div class="product-info">
+                <div class="product-name" th:text="${product.name}">상품명</div>
+                <div class="product-price-del"
+                     th:if="${product.discount > 0}"
+                     th:text="${#numbers.formatInteger(product.price, 0, 'COMMA')} + '원'">30,000원</div>
+                <div class="product-sale-row">
+                    <span class="product-sale-rate"
+                          th:if="${product.discount > 0}"
+                          th:text="${product.discount} + '%↓'">10%↓</span>
+                    <span class="btn-free-ship" th:if="${product.freeShipping}">무료배송</span>
+                </div>
+                <div class="product-price"
+                     th:text="${#numbers.formatInteger(product.salePrice, 0, 'COMMA')} + '원'">27,000원</div>
+            </div>
+        </a>
+    </div>
+</section>
