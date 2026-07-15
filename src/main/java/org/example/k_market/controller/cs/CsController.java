@@ -1,5 +1,6 @@
 package org.example.k_market.controller.cs;
 
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.example.k_market.dto.admin.FaqDTO;
 import org.example.k_market.dto.admin.NoticeDTO;
@@ -15,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.security.Principal;
 import java.util.List;
 
 @Controller
@@ -27,22 +27,28 @@ public class CsController {
     private final FaqService faqService;
     private final QnaService qnaService;
 
-
-    /* =========================================================
-       고객센터 메인
-       ========================================================= */
-
+    /* 고객센터 메인 */
     @GetMapping({"", "/", "/index"})
     public String index(Model model) {
 
         List<NoticeDTO> noticeList =
-                noticeService.getNoticeList(1, null);
+                noticeService.getNoticeList(
+                        1,
+                        null
+                );
 
         List<FaqDTO> faqList =
-                faqService.getFaqList(1, null);
+                faqService.getFaqList(
+                        1,
+                        null
+                );
 
         List<QnaDTO> qnaList =
-                qnaService.getQnaList(1, null, null);
+                qnaService.getQnaList(
+                        1,
+                        null,
+                        null
+                );
 
         model.addAttribute(
                 "noticeList",
@@ -68,11 +74,7 @@ public class CsController {
         return "cs/index";
     }
 
-
-    /* =========================================================
-       공지사항
-       ========================================================= */
-
+    /* 공지사항 목록 */
     @GetMapping("/noticeList")
     public String noticeList(
             @RequestParam(
@@ -85,12 +87,11 @@ public class CsController {
             ) String type,
             Model model
     ) {
-        int safePage = Math.max(page, 1);
+        int safePage =
+                Math.max(page, 1);
 
         String selectedType =
-                type == null
-                        ? ""
-                        : type.trim();
+                normalize(type);
 
         model.addAttribute(
                 "noticeList",
@@ -116,6 +117,7 @@ public class CsController {
         return "cs/noticeList";
     }
 
+    /* 공지사항 상세 */
     @GetMapping("/noticeView")
     public String noticeView(
             @RequestParam("boardNo") int boardNo,
@@ -129,43 +131,32 @@ public class CsController {
         return "cs/noticeView";
     }
 
-
-/* =========================================================
-   자주하는 질문
-   ========================================================= */
-
+    /* 자주 묻는 질문 목록 */
     @GetMapping("/faqList")
     public String faqList(
             @RequestParam(
                     name = "page",
                     defaultValue = "1"
             ) int page,
-
             @RequestParam(
                     name = "category1",
                     required = false
             ) String category1,
-
             @RequestParam(
                     name = "category2",
                     required = false
             ) String category2,
-
             Model model
     ) {
-        int safePage = Math.max(page, 1);
+        int safePage =
+                Math.max(page, 1);
 
         String selectedCategory1 =
-                category1 == null
-                        ? ""
-                        : category1.trim();
+                normalize(category1);
 
         String selectedCategory2 =
-                category2 == null
-                        ? ""
-                        : category2.trim();
+                normalize(category2);
 
-        // 1차 유형이 없으면 2차 유형만 단독 검색하지 않도록 초기화
         if (selectedCategory1.isBlank()) {
             selectedCategory2 = "";
         }
@@ -201,6 +192,7 @@ public class CsController {
         return "cs/faqList";
     }
 
+    /* 자주 묻는 질문 상세 */
     @GetMapping("/faqView")
     public String faqView(
             @RequestParam("boardNo") int boardNo,
@@ -214,10 +206,7 @@ public class CsController {
         return "cs/faqView";
     }
 
-    /* =========================================================
-       문의하기
-       ========================================================= */
-
+    /* 문의글 목록 */
     @GetMapping("/qnaList")
     public String qnaList(
             @RequestParam(
@@ -234,17 +223,14 @@ public class CsController {
             ) String category2,
             Model model
     ) {
-        int safePage = Math.max(page, 1);
+        int safePage =
+                Math.max(page, 1);
 
         String selectedCategory1 =
-                category1 == null
-                        ? ""
-                        : category1.trim();
+                normalize(category1);
 
         String selectedCategory2 =
-                category2 == null
-                        ? ""
-                        : category2.trim();
+                normalize(category2);
 
         if (selectedCategory1.isBlank()) {
             selectedCategory2 = "";
@@ -281,6 +267,7 @@ public class CsController {
         return "cs/qnaList";
     }
 
+    /* 문의글 상세 */
     @GetMapping("/qnaView")
     public String qnaView(
             @RequestParam("boardNo") int boardNo,
@@ -294,13 +281,19 @@ public class CsController {
         return "cs/qnaView";
     }
 
+    /* 문의글 작성 화면 */
     @GetMapping("/qnaWrite")
     public String qnaWrite(
-            Principal principal,
+            HttpSession session,
             Model model,
             RedirectAttributes redirectAttributes
     ) {
-        if (principal == null) {
+        String memberUid =
+                (String) session.getAttribute("loginMember");
+
+        if (memberUid == null ||
+                memberUid.isBlank()) {
+
             redirectAttributes.addFlashAttribute(
                     "message",
                     "로그인 후 문의글을 작성할 수 있습니다."
@@ -309,21 +302,32 @@ public class CsController {
             return "redirect:/member/login";
         }
 
+        QnaDTO qna =
+                new QnaDTO();
+
+        qna.setMemberUid(memberUid);
+
         model.addAttribute(
                 "qna",
-                new QnaDTO()
+                qna
         );
 
         return "cs/qnaWrite";
     }
 
+    /* 문의글 등록 */
     @PostMapping("/qnaWrite")
     public String qnaWrite(
             QnaDTO dto,
-            Principal principal,
+            HttpSession session,
             RedirectAttributes redirectAttributes
     ) {
-        if (principal == null) {
+        String memberUid =
+                (String) session.getAttribute("loginMember");
+
+        if (memberUid == null ||
+                memberUid.isBlank()) {
+
             redirectAttributes.addFlashAttribute(
                     "message",
                     "로그인 후 문의글을 작성할 수 있습니다."
@@ -332,7 +336,7 @@ public class CsController {
             return "redirect:/member/login";
         }
 
-        dto.setMemberUid(principal.getName());
+        dto.setMemberUid(memberUid);
 
         qnaService.insertQna(dto);
 
@@ -342,5 +346,12 @@ public class CsController {
         );
 
         return "redirect:/cs/qnaList";
+    }
+
+    /* 문자열 공백 정리 */
+    private String normalize(String value) {
+        return value == null
+                ? ""
+                : value.trim();
     }
 }

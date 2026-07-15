@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.example.k_market.dao.OrderItemDAO">
+
+    <insert id="insertOrderItems">
+        INSERT INTO order_item (
+            orderNo, prodVariantId, count, price, total,
+            prodNo, productName, optionText, originalPrice, discountRate,
+            shippingFee, sellerUid, itemStatus
+        )
+        VALUES
+        <foreach collection="items" item="item" separator=",">
+            (
+                #{item.orderNo},
+                #{item.prodVariantId},
+                #{item.count},
+                #{item.price},
+                #{item.total},
+                #{item.prodNo},
+                #{item.productName},
+                #{item.optionText},
+                #{item.originalPrice},
+                #{item.discountRate},
+                #{item.shippingFee},
+                #{item.sellerUid},
+                #{item.itemStatus}
+            )
+        </foreach>
+    </insert>
+
+    <select id="selectOrderItemsByOrderNo" parameterType="int" resultType="org.example.k_market.dto.order.OrderItemDTO">
+        SELECT
+            orderItemNo,
+            orderNo,
+            prodVariantId,
+            count,
+            price,
+            total,
+            prodNo,
+            productName,
+            optionText,
+            originalPrice,
+            discountRate,
+            shippingFee,
+            sellerUid,
+            itemStatus
+        FROM order_item
+        WHERE orderNo = #{orderNo}
+    </select>
+
+    <select id="selectOrderLinesByOrderNo" resultType="org.example.k_market.dto.order.response.OrderLineResponse">
+        SELECT
+            oi.orderItemNo,
+            oi.orderNo,
+            oi.prodVariantId,
+            oi.prodNo AS prodNo,
+            oi.productName AS prodName,
+            oi.optionText,
+            p.thumb1FileId,
+            oi.sellerUid,
+            s.companyName AS sellerName,
+            oi.count,
+            oi.originalPrice AS originalPrice,
+            oi.discountRate AS discountRate,
+            GREATEST((oi.originalPrice * oi.count) - oi.total, 0) AS discountAmount,
+            oi.price,
+            oi.total,
+            oi.shippingFee,
+            oi.itemStatus,
+            sh.shipmentNo,
+            sh.courierName,
+            sh.trackingNo,
+            sh.status AS shipmentStatus,
+            o.createdAt
+        FROM order_item oi
+        JOIN `order` o ON o.orderNo = oi.orderNo
+        LEFT JOIN product p ON p.prodNo = oi.prodNo
+        LEFT JOIN seller s ON s.uid = oi.sellerUid
+        LEFT JOIN shipment_item si ON si.orderItemNo = oi.orderItemNo
+        LEFT JOIN shipment sh ON sh.shipmentNo = si.shipmentNo
+        WHERE oi.orderNo = #{orderNo}
+        <if test="sellerUid != null and sellerUid != ''">
+            AND oi.sellerUid = #{sellerUid}
+        </if>
+        ORDER BY oi.orderItemNo ASC
+    </select>
+
+    <select id="selectShippableOrderLinesByOrderNo" resultType="org.example.k_market.dto.order.response.OrderLineResponse">
+        SELECT
+            oi.orderItemNo,
+            oi.orderNo,
+            oi.prodVariantId,
+            oi.prodNo AS prodNo,
+            oi.productName AS prodName,
+            oi.optionText,
+            p.thumb1FileId,
+            oi.sellerUid,
+            s.companyName AS sellerName,
+            oi.count,
+            oi.originalPrice AS originalPrice,
+            oi.discountRate AS discountRate,
+            GREATEST((oi.originalPrice * oi.count) - oi.total, 0) AS discountAmount,
+            oi.price,
+            oi.total,
+            oi.shippingFee,
+            oi.itemStatus,
+            sh.shipmentNo,
+            sh.courierName,
+            sh.trackingNo,
+            sh.status AS shipmentStatus,
+            o.createdAt
+        FROM order_item oi
+        JOIN `order` o ON o.orderNo = oi.orderNo
+        LEFT JOIN product p ON p.prodNo = oi.prodNo
+        LEFT JOIN seller s ON s.uid = oi.sellerUid
+        LEFT JOIN shipment_item si ON si.orderItemNo = oi.orderItemNo
+        LEFT JOIN shipment sh ON sh.shipmentNo = si.shipmentNo
+        WHERE oi.orderNo = #{orderNo}
+          AND si.shipmentItemNo IS NULL
+          AND oi.itemStatus = 'PAID'
+        <if test="sellerUid != null and sellerUid != ''">
+            AND oi.sellerUid = #{sellerUid}
+        </if>
+        ORDER BY oi.sellerUid ASC, oi.orderItemNo ASC
+    </select>
+
+    <select id="selectOrderLinesByItemNos" resultType="org.example.k_market.dto.order.response.OrderLineResponse">
+        SELECT
+            oi.orderItemNo,
+            oi.orderNo,
+            oi.prodVariantId,
+            oi.prodNo AS prodNo,
+            oi.productName AS prodName,
+            oi.optionText,
+            p.thumb1FileId,
+            oi.sellerUid,
+            s.companyName AS sellerName,
+            oi.count,
+            oi.originalPrice AS originalPrice,
+            oi.discountRate AS discountRate,
+            GREATEST((oi.originalPrice * oi.count) - oi.total, 0) AS discountAmount,
+            oi.price,
+            oi.total,
+            oi.shippingFee,
+            oi.itemStatus,
+            sh.shipmentNo,
+            sh.courierName,
+            sh.trackingNo,
+            sh.status AS shipmentStatus,
+            o.createdAt
+        FROM order_item oi
+        JOIN `order` o ON o.orderNo = oi.orderNo
+        LEFT JOIN product p ON p.prodNo = oi.prodNo
+        LEFT JOIN seller s ON s.uid = oi.sellerUid
+        LEFT JOIN shipment_item si ON si.orderItemNo = oi.orderItemNo
+        LEFT JOIN shipment sh ON sh.shipmentNo = si.shipmentNo
+        WHERE oi.orderItemNo IN
+        <foreach collection="orderItemNos" item="orderItemNo" open="(" separator="," close=")">
+            #{orderItemNo}
+        </foreach>
+        <if test="sellerUid != null and sellerUid != ''">
+            AND oi.sellerUid = #{sellerUid}
+        </if>
+        ORDER BY oi.orderItemNo ASC
+    </select>
+
+    <update id="updateOrderItemsStatus">
+        UPDATE order_item
+        SET itemStatus = #{itemStatus}
+        WHERE orderItemNo IN
+        <foreach collection="orderItemNos" item="orderItemNo" open="(" separator="," close=")">
+            #{orderItemNo}
+        </foreach>
+    </update>
+
+    <update id="updateOrderItemStatus">
+        UPDATE order_item
+        SET itemStatus = #{itemStatus}
+        WHERE orderItemNo = #{orderItemNo}
+    </update>
+
+    <update id="updateOrderItemsStatusByOrderNo">
+        UPDATE order_item
+        SET itemStatus = #{itemStatus}
+        WHERE orderNo = #{orderNo}
+    </update>
+
+    <select id="selectMyOrderItems" resultType="org.example.k_market.dto.order.response.MyOrderItemResponse">
+        SELECT
+            oi.orderItemNo,
+            oi.orderNo,
+            o.createdAt,
+            oi.sellerUid,
+            s.companyName AS sellerName,
+            oi.productName AS productName,
+            oi.optionText,
+            p.thumb1FileId,
+            oi.count AS quantity,
+            oi.price,
+            oi.total,
+            oi.itemStatus,
+            sh.shipmentNo,
+            sh.courierName,
+            sh.trackingNo,
+            sh.status AS shipmentStatus
+        FROM order_item oi
+        JOIN `order` o ON o.orderNo = oi.orderNo
+        LEFT JOIN product p ON p.prodNo = oi.prodNo
+        LEFT JOIN seller s ON s.uid = oi.sellerUid
+        LEFT JOIN shipment_item si ON si.orderItemNo = oi.orderItemNo
+        LEFT JOIN shipment sh ON sh.shipmentNo = si.shipmentNo
+        WHERE o.memberUid = #{memberUid}
+        <if test="startDate != null">
+            AND DATE(o.createdAt) &gt;= #{startDate}
+        </if>
+        <if test="endDate != null">
+            AND DATE(o.createdAt) &lt;= #{endDate}
+        </if>
+        ORDER BY o.createdAt DESC, oi.orderItemNo DESC
+        LIMIT #{limit} OFFSET #{offset}
+    </select>
+
+    <select id="selectMyOrderItemCount" resultType="int">
+        SELECT COUNT(*)
+        FROM order_item oi
+        JOIN `order` o ON o.orderNo = oi.orderNo
+        WHERE o.memberUid = #{memberUid}
+        <if test="startDate != null">
+            AND DATE(o.createdAt) &gt;= #{startDate}
+        </if>
+        <if test="endDate != null">
+            AND DATE(o.createdAt) &lt;= #{endDate}
+        </if>
+    </select>
+
+</mapper>

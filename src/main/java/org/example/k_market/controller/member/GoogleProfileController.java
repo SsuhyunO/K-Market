@@ -79,6 +79,7 @@ public class GoogleProfileController {
         session.removeAttribute("pendingGoogleUid");
         session.setAttribute("loginMember", member.getUid());
         session.setAttribute("loginMemberType", member.getMemberType());
+        session.setAttribute("loginMemberLevel", member.getMemberLevel());
 
         return Map.of("success", true);
     }

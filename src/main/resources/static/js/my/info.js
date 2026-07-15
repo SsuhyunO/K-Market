@@ -19,18 +19,11 @@ document.addEventListener('DOMContentLoaded', function () {
             const provider = member.provider || 'LOCAL';
             document.getElementById('infoUid').textContent = providerLabelMap[provider] || (member.uid || '-');
 
-            // 연동 로그인 아이콘/뱃지 표시
-            const iconMap = { NAVER: 'naverIcon', KAKAO: 'kakaoIcon', GOOGLE: 'googleIcon' };
-            const badgeMap = { NAVER: 'naverBadge', KAKAO: 'kakaoBadge', GOOGLE: 'googleBadge' };
-            if (iconMap[provider]) {
-                const iconEl = document.getElementById(iconMap[provider]);
-                const badgeEl = document.getElementById(badgeMap[provider]);
-                if (iconEl) {
-                    iconEl.style.opacity = '1';
-                    iconEl.style.boxShadow = '0 0 0 2px currentColor';
-                }
-                if (badgeEl) badgeEl.style.visibility = 'visible';
-            }
+            // 연동 로그인 상태 표시 (일반/네이버/카카오/구글 중 해당 항목만 활성화)
+            const itemMap = { LOCAL: 'localItem', NAVER: 'naverItem', KAKAO: 'kakaoItem', GOOGLE: 'googleItem' };
+            const activeItemId = itemMap[provider] || 'localItem';
+            const activeItem = document.getElementById(activeItemId);
+            if (activeItem) activeItem.classList.add('active');
 
             document.getElementById('infoName').textContent = member.name || '-';
             document.getElementById('infoBirth').textContent = member.birthDate || '-';
@@ -85,9 +78,15 @@ document.querySelectorAll('.modal-overlay').forEach(function (overlay) {
     });
 });
 
+document.querySelectorAll('[data-close="pwModal"]').forEach(function (btn) {
+    btn.addEventListener('click', resetPwSection);
+});
+document.getElementById('pwModal').addEventListener('click', function (e) {
+    if (e.target === this) resetPwSection();
+});
+
 // ===== 비밀번호 수정 =====
 const pwChangeBtn = document.getElementById('pwChangeBtn');
-const pwEditSection = document.getElementById('pwEditSection');
 const currentPwInput = document.getElementById('currentPwInput');
 const pwVerifyBtn = document.getElementById('pwVerifyBtn');
 const pwCheckMsg = document.getElementById('pwCheckMsg');
@@ -118,9 +117,8 @@ function resetPwSection() {
 }
 
 pwChangeBtn.addEventListener('click', function () {
-    const isHidden = pwEditSection.style.display === 'none';
-    pwEditSection.style.display = isHidden ? 'block' : 'none';
-    if (!isHidden) resetPwSection();
+    resetPwSection();
+    openModal('pwModal');
 });
 
 // 입력값 바뀌면 재확인 필요 -> 초기화 (자동확인 아님, 버튼 눌러야 확인됨)
@@ -224,7 +222,7 @@ pwSaveBtn.addEventListener('click', function () {
         .then(data => {
             if (data.success) {
                 alert('비밀번호가 변경되었습니다.');
-                pwEditSection.style.display = 'none';
+                closeModal('pwModal');
                 resetPwSection();
             } else {
                 alert(data.message || '변경에 실패했습니다.');

@@ -20,6 +20,13 @@ public class OrderItem {
     private int count;
     private int price;
     private int total;
+    private Integer prodNo;
+    @Column(length = 255)
+    private String productName;
+    @Column(length = 500)
+    private String optionText;
+    private Integer originalPrice;
+    private Integer discountRate;
     private int shippingFee;
     @Column(length = 20, nullable = false)
     private String sellerUid;
@@ -34,6 +41,11 @@ public class OrderItem {
                 .count(count)
                 .price(price)
                 .total(total)
+                .prodNo(prodNo)
+                .productName(productName)
+                .optionText(optionText)
+                .originalPrice(originalPrice)
+                .discountRate(discountRate)
                 .shippingFee(shippingFee)
                 .sellerUid(sellerUid)
                 .itemStatus(itemStatus)

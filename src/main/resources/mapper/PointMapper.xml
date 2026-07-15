@@ -13,6 +13,16 @@
         WHERE memberUid = #{memberUid}
     </select>
 
+    <update id="updateMemberPointBalance">
+        UPDATE `member`
+        SET pointBalance = (
+            SELECT COALESCE(SUM(p.point), 0)
+            FROM point p
+            WHERE p.memberUid = #{memberUid}
+        )
+        WHERE uid = #{memberUid}
+    </update>
+
     <select id="selectPointHistory" resultType="org.example.k_market.dto.PointDTO">
         SELECT
             p.pointNo,

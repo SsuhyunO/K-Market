@@ -45,6 +45,25 @@ public class MyOrderApiController {
         return ResponseEntity.ok(new SimpleMessageResponse("요청이 접수되었습니다."));
     }
 
+    @PostMapping("/{orderItemNo}/claims")
+    public ResponseEntity<SimpleMessageResponse> requestClaims(
+        @PathVariable int orderItemNo,
+        @RequestBody ClaimRequest request,
+        HttpSession session
+    ) {
+        orderService.requestClaim(getMemberUid(session), orderItemNo, request);
+        return ResponseEntity.ok(new SimpleMessageResponse("요청이 접수되었습니다."));
+    }
+
+    @PostMapping("/orders/{orderNo}/cancel")
+    public ResponseEntity<SimpleMessageResponse> cancelOrder(
+        @PathVariable int orderNo,
+        HttpSession session
+    ) {
+        orderService.cancelOrder(getMemberUid(session), orderNo);
+        return ResponseEntity.ok(new SimpleMessageResponse("주문취소가 완료되었습니다."));
+    }
+
     private String getMemberUid(HttpSession session) {
         String memberUid = (String) session.getAttribute("loginMember");
         if (memberUid == null || memberUid.isBlank()) {

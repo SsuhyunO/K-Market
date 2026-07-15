@@ -17,4 +17,9 @@ public class OrderController {
     public String deliveryList() {
         return "admin/order/delivery-list";
     }
+
+    @GetMapping("/claim-list")
+    public String claimList() {
+        return "admin/order/claim-list";
+    }
 }

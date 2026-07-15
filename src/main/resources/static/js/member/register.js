@@ -18,6 +18,10 @@ let idChecked = false;
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const PHONE_PATTERN = /^01[016789]-?\d{3,4}-?\d{4}$/;
+// 영문 + 숫자를 각각 최소 1개 이상 포함, 영문/숫자 외 문자 불가, 4~12자
+const USERID_PATTERN = /^(?=.*[a-zA-Z])(?=.*[0-9])[a-zA-Z0-9]{4,12}$/;
+// 영문 + 숫자 + 특수문자 각각 최소 1개 이상 포함, 8~12자
+const USERPW_PATTERN = /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&*(),.?":{}|<>])[A-Za-z0-9!@#$%^&*(),.?":{}|<>]{8,12}$/;
 
 // 이메일 형식 검증 + 중복확인
 async function checkEmailDuplicate() {
@@ -137,6 +141,24 @@ async function verifyEmailCode() {
     }
 }
 
+// 아이디 값이 바뀌면 기존 중복확인 결과 무효화
+document.getElementById('userId').addEventListener('input', function () {
+    idChecked = false;
+    const msg = document.getElementById('userId-msg');
+    msg.style.color = '#c0392b';
+    msg.textContent = '아이디 중복확인을 다시 해주세요.';
+});
+
+// 이메일 값이 바뀌면 기존 중복확인/인증 결과 무효화
+document.getElementById('userEmail').addEventListener('input', function () {
+    emailChecked = false;
+    emailVerified = false;
+    const msg = document.getElementById('email-msg');
+    msg.style.color = '#c0392b';
+    msg.textContent = '이메일 중복확인을 다시 해주세요.';
+    document.getElementById('emailCodeRow').style.display = 'none';
+});
+
 // 아이디 중복확인
 async function checkUserId() {
     const id = document.getElementById('userId').value.trim();
@@ -145,6 +167,13 @@ async function checkUserId() {
     if (!id || id.length < 4 || id.length > 12) {
         msg.style.color = '#c0392b';
         msg.textContent = '아이디는 4~12자로 입력해 주세요.';
+        idChecked = false;
+        return;
+    }
+
+    if (!USERID_PATTERN.test(id)) {
+        msg.style.color = '#c0392b';
+        msg.textContent = '아이디는 영문, 숫자를 모두 포함해야 합니다.';
         idChecked = false;
         return;
     }
@@ -178,6 +207,8 @@ document.getElementById('userPw').addEventListener('input', function () {
     const pw = this.value;
     const msg = document.getElementById('pw-msg');
     const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(pw);
+    const hasLetter = /[a-zA-Z]/.test(pw);
+    const hasNumber = /[0-9]/.test(pw);
     const validLength = pw.length >= 8 && pw.length <= 12;
 
     if (pw.length === 0) {
@@ -188,6 +219,12 @@ document.getElementById('userPw').addEventListener('input', function () {
     if (!validLength) {
         msg.style.color = '#c0392b';
         msg.textContent = '비밀번호는 8~12자로 입력해 주세요.';
+    } else if (!hasLetter) {
+        msg.style.color = '#c0392b';
+        msg.textContent = '영문을 포함해 주세요.';
+    } else if (!hasNumber) {
+        msg.style.color = '#c0392b';
+        msg.textContent = '숫자를 포함해 주세요.';
     } else if (!hasSpecialChar) {
         msg.style.color = '#c0392b';
         msg.textContent = '특수문자를 포함해 주세요.';
@@ -271,6 +308,11 @@ async function submitJoin() {
 
     if (!idChecked) {
         alert('아이디 중복확인을 해주세요.');
+        return;
+    }
+
+    if (!USERPW_PATTERN.test(pw)) {
+        alert('비밀번호는 8~12자, 영문/숫자/특수문자를 모두 포함해야 합니다.');
         return;
     }
 

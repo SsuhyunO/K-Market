@@ -1,11 +1,77 @@
-.table{width:100%;border-collapse:collapse;border-top:2px solid #333}
-.table th,.table td{border-bottom:1px solid #e8e8e8;padding:13px 12px}
-.table th{background:#fafafa;font-size:12px;color:#555}
-.table a:hover{color:var(--km-red)}
-.title-cell{text-align:left}
-.date-cell{width:100px;text-align:center;color:#777;font-size:12px}
-.status-cell{width:90px;text-align:center}
-.writer-cell{width:90px;text-align:center;color:#777}
-.status{display:inline-block;padding:5px 9px;border-radius:12px;font-size:11px;font-weight:700}
-.status.waiting{color:#a56600;background:#fff5d6}
-.status.answered{color:#167443;background:#e9f8ef}
+/* 공지사항 목록 테이블 */
+.table {
+    width: 100%;
+    table-layout: fixed;
+    border-collapse: collapse;
+    border-top: 2px solid #333;
+    background: var(--km-white);
+}
+
+/* 테이블 셀 */
+.table th,
+.table td {
+    padding: 13px 12px;
+    border-bottom: 1px solid #e8e8e8;
+    vertical-align: middle;
+}
+
+/* 테이블 헤더 */
+.table th {
+    font-size: 12px;
+    font-weight: 700;
+    text-align: center;
+    color: #555;
+    background: #fafafa;
+}
+
+/* 테이블 본문 */
+.table td {
+    font-size: 13px;
+    color: var(--km-text);
+}
+
+/* 테이블 링크 */
+.table a {
+    color: inherit;
+}
+
+.table a:hover {
+    color: var(--km-red);
+    text-decoration: underline;
+}
+
+/* 제목 열 */
+.title-cell {
+    min-width: 0;
+    text-align: left;
+}
+
+.title-cell a {
+    display: block;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+/* 작성일 열 */
+.date-cell {
+    width: 100px;
+    text-align: center;
+    font-size: 12px;
+    color: var(--km-muted);
+    white-space: nowrap;
+}
+
+/* 목록 없음 */
+.empty-row {
+    height: 160px;
+    text-align: center;
+    color: #888;
+}
+
+.empty-row td {
+    height: 160px;
+    text-align: center;
+    vertical-align: middle;
+    color: #888;
+}

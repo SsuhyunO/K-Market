@@ -3,7 +3,9 @@ package org.example.k_market.service.order;
 import org.example.k_market.dto.order.OrderItemViewDTO;
 import org.springframework.stereotype.Component;
 
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class OrderItemTotalCalculator {
@@ -19,7 +21,14 @@ public class OrderItemTotalCalculator {
             .sum();
         int shippingTotal = safeItems.stream()
             .filter(item -> !item.isFreeShipping())
-            .mapToInt(OrderItemViewDTO::getShippingFee)
+            .collect(Collectors.toMap(
+                OrderItemViewDTO::getProdNo,
+                OrderItemViewDTO::getShippingFee,
+                (a, b) -> a,
+                LinkedHashMap::new
+            ))
+            .values().stream()
+            .mapToInt(Integer::intValue)
             .sum();
         int earnPoint = safeItems.stream()
             .mapToInt(item -> item.getPoint() * item.getQuantity())

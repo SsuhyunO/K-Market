@@ -1,10 +1,11 @@
 <!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org">
 
 <head>
   <meta charset="UTF-8">
 
-  <title th:text="${selectedType != null and !selectedType.isBlank()
+  <title th:text="${!#strings.isEmpty(selectedType)
             ? selectedType + ' 공지사항 - 케이마켓 고객센터'
             : '공지사항 - 케이마켓 고객센터'}">
     공지사항 - 케이마켓 고객센터
@@ -18,11 +19,10 @@
 </head>
 
 <body>
+
 <div id="wrapper">
 
-  <!-- =========================
-       헤더
-  ========================= -->
+  <!-- 헤더 -->
   <header>
     <div class="header-top">
       <a th:href="@{/member/login}">
@@ -50,12 +50,8 @@
     </div>
   </header>
 
-
-  <!-- =========================
-       현재 위치
-  ========================= -->
+  <!-- 현재 위치 -->
   <div class="breadcrumb">
-
     <a th:href="@{/}">
       홈
     </a>
@@ -69,103 +65,81 @@
     <span>&gt;</span>
 
     <span>공지사항</span>
-
   </div>
 
-
-  <!-- =========================
-       메인
-  ========================= -->
+  <!-- 메인 영역 -->
   <main>
     <div class="cs-flex">
 
-      <!-- =========================
-           좌측 공지사항 유형
-      ========================= -->
+      <!-- 공지사항 유형 메뉴 -->
       <aside class="cs-aside">
-
         <h2>공지사항</h2>
 
         <ul>
           <li>
             <a th:href="@{/cs/noticeList}"
-               th:classappend="${selectedType == null
-                                          or selectedType.isBlank()}
-                                          ? ' active'
-                                          : ''">
+               th:classappend="${#strings.isEmpty(selectedType)}
+                               ? ' active'
+                               : ''">
               전체
             </a>
           </li>
 
           <li>
-            <a th:href="@{/cs/noticeList(
-                                type='고객서비스'
-                           )}"
+            <a th:href="@{/cs/noticeList(type='고객서비스')}"
                th:classappend="${selectedType == '고객서비스'}
-                                          ? ' active'
-                                          : ''">
+                               ? ' active'
+                               : ''">
               고객서비스
             </a>
           </li>
 
           <li>
-            <a th:href="@{/cs/noticeList(
-                                type='안전거래'
-                           )}"
+            <a th:href="@{/cs/noticeList(type='안전거래')}"
                th:classappend="${selectedType == '안전거래'}
-                                          ? ' active'
-                                          : ''">
+                               ? ' active'
+                               : ''">
               안전거래
             </a>
           </li>
 
           <li>
-            <a th:href="@{/cs/noticeList(
-                                type='위해상품'
-                           )}"
+            <a th:href="@{/cs/noticeList(type='위해상품')}"
                th:classappend="${selectedType == '위해상품'}
-                                          ? ' active'
-                                          : ''">
+                               ? ' active'
+                               : ''">
               위해상품
             </a>
           </li>
 
           <li>
-            <a th:href="@{/cs/noticeList(
-                                type='이벤트 당첨'
-                           )}"
+            <a th:href="@{/cs/noticeList(type='이벤트 당첨')}"
                th:classappend="${selectedType == '이벤트 당첨'}
-                                          ? ' active'
-                                          : ''">
-              이벤트당첨
+                               ? ' active'
+                               : ''">
+              이벤트 당첨
             </a>
           </li>
         </ul>
-
       </aside>
 
-
-      <!-- =========================
-           공지사항 내용
-      ========================= -->
+      <!-- 공지사항 콘텐츠 -->
       <section class="cs-content">
 
+        <!-- 제목 영역 -->
         <div class="content-heading">
-
           <div>
-            <h2 th:text="${selectedType == null
-                                     or selectedType.isBlank()
-                                     ? '전체'
-                                     : selectedType}">
+            <h2 th:text="${#strings.isEmpty(selectedType)
+                                ? '전체'
+                                : selectedType}">
               전체
             </h2>
 
             <p class="desc"
-               th:text="${selectedType == null
-                                    or selectedType.isBlank()
-                                    ? '케이마켓의 새로운 소식과 주요 안내를 확인할 수 있습니다.'
-                                    : selectedType + ' 관련 공지사항입니다.'}">
-              공지사항 안내
+               th:text="${#strings.isEmpty(selectedType)
+                               ? '케이마켓의 새로운 소식과 주요 안내를 확인할 수 있습니다.'
+                               : selectedType + ' 관련 공지사항입니다.'}">
+              케이마켓의 새로운 소식과 주요 안내를 확인할 수 있습니다.
             </p>
           </div>
 
@@ -173,27 +147,36 @@
              class="cs-home-link">
             고객센터 홈
           </a>
-
         </div>
 
-
-        <!-- =========================
-             공지사항 목록
-        ========================= -->
+        <!-- 공지사항 목록 -->
         <table class="table">
+          <colgroup>
+            <col>
+            <col style="width: 100px;">
+          </colgroup>
+
+          <thead>
+          <tr>
+            <th scope="col">
+              제목
+            </th>
+
+            <th scope="col">
+              작성일
+            </th>
+          </tr>
+          </thead>
 
           <tbody>
 
           <tr th:each="notice : ${noticeList}">
-
             <td class="title-cell">
-
               <a th:href="@{/cs/noticeView(
                                     boardNo=${notice.boardNo}
                                )}">
 
-                                <span th:if="${notice.type != null
-                                             and !notice.type.isBlank()}"
+                                <span th:if="${!#strings.isEmpty(notice.type)}"
                                       th:text="|[${notice.type}]|">
                                     [유형]
                                 </span>
@@ -201,55 +184,45 @@
                 <span th:text="${notice.title}">
                                     공지사항 제목
                                 </span>
-
               </a>
-
             </td>
 
             <td class="date-cell"
                 th:text="${notice.createdAt != null
-                                    ? #temporals.format(
-                                        notice.createdAt,
-                                        'yy.MM.dd'
-                                      )
-                                    : '-'}">
+                                ? #temporals.format(
+                                    notice.createdAt,
+                                    'yy.MM.dd'
+                                  )
+                                : '-'}">
               26.07.14
             </td>
-
           </tr>
 
-
-          <!-- 등록된 공지사항 없음 -->
+          <!-- 공지사항 없음 -->
           <tr th:if="${noticeList == null
-                               or #lists.isEmpty(noticeList)}">
+                        or #lists.isEmpty(noticeList)}">
 
             <td colspan="2"
                 class="empty-row">
 
-                            <span th:text="${selectedType == null
-                                           or selectedType.isBlank()
-                                           ? '등록된 공지사항이 없습니다.'
-                                           : selectedType
-                                             + ' 유형에 등록된 공지사항이 없습니다.'}">
+                            <span th:text="${#strings.isEmpty(selectedType)
+                                ? '등록된 공지사항이 없습니다.'
+                                : selectedType
+                                    + ' 유형에 등록된 공지사항이 없습니다.'}">
                                 등록된 공지사항이 없습니다.
                             </span>
-
             </td>
-
           </tr>
 
           </tbody>
         </table>
 
-
-        <!-- =========================
-             페이지네이션
-        ========================= -->
+        <!-- 페이지네이션 -->
         <div class="pagination"
              th:if="${pageInfo != null
-                            and pageInfo.totalPages > 0}">
+                        and pageInfo.totalPages > 0}">
 
-          <!-- 이전 -->
+          <!-- 이전 페이지 -->
           <a th:if="${pageInfo.currentPage > 1}"
              th:href="@{/cs/noticeList(
                             page=${pageInfo.currentPage - 1},
@@ -264,7 +237,6 @@
                         이전
                     </span>
 
-
           <!-- 페이지 번호 -->
           <th:block th:each="pageNumber :
                         ${#numbers.sequence(
@@ -278,18 +250,16 @@
                            )}"
                th:text="${pageNumber}"
                th:classappend="${pageNumber
-                                           == pageInfo.currentPage}
-                                           ? ' active'
-                                           : ''">
+                               == pageInfo.currentPage}
+                               ? ' active'
+                               : ''">
               1
             </a>
-
           </th:block>
 
-
-          <!-- 다음 -->
+          <!-- 다음 페이지 -->
           <a th:if="${pageInfo.currentPage
-                              < pageInfo.totalPages}"
+                        < pageInfo.totalPages}"
              th:href="@{/cs/noticeList(
                             page=${pageInfo.currentPage + 1},
                             type=${selectedType}
@@ -299,23 +269,18 @@
           </a>
 
           <span th:unless="${pageInfo.currentPage
-                                    < pageInfo.totalPages}"
+                        < pageInfo.totalPages}"
                 class="page-direction disabled">
                         다음
                     </span>
-
         </div>
 
       </section>
     </div>
   </main>
 
-
-  <!-- =========================
-       푸터
-  ========================= -->
+  <!-- 푸터 -->
   <footer>
-
     <div class="footer-menu">
       <a th:href="@{/company/index}">
         회사소개
@@ -335,7 +300,6 @@
     </div>
 
     <div class="footer-info">
-
       <div class="footer-logo">
         이미지
       </div>
@@ -349,13 +313,14 @@
 
       <div class="customer-info">
         <h3>고객센터</h3>
+
         Tel : 1234-5678<br>
         평일 09:00 ~ 18:00
       </div>
-
     </div>
   </footer>
 
 </div>
+
 </body>
 </html>

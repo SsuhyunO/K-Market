@@ -26,7 +26,7 @@ function createOrderRow(order) {
     const row = document.createElement("tr");
     const orderNo = escapeHtml(order.orderNo);
     const status = order.status || "";
-    const canRegisterDelivery = ["PAID", "READY", "PARTIAL_SHIPPING"].includes(status);
+    const canRegisterDelivery = isSeller() && ["PAID", "PARTIAL_SHIPPING"].includes(status);
 
     row.dataset.orderNo = orderNo;
     row.innerHTML = `
@@ -62,14 +62,16 @@ function renderPayMethod(payMethod) {
 function renderStatus(status) {
     const labels = {
         PAID: "\uacb0\uc81c\uc644\ub8cc",
-        READY: "\uc0c1\ud488\uc900\ube44\uc911",
+        READY: "\ubc30\uc1a1\uc900\ube44",
         SHIPPING: "\ubc30\uc1a1\uc911",
         PARTIAL_SHIPPING: "\ubd80\ubd84\ubc30\uc1a1\uc911",
         PARTIAL_DELIVERED: "\ubd80\ubd84\ubc30\uc1a1\uc644\ub8cc",
         CLAIM_PARTIAL: "\ud074\ub808\uc784\ucc98\ub9ac\uc911",
         CONFIRMED: "\uad6c\ub9e4\ud655\uc815",
         DELIVERED: "\ubc30\uc1a1\uc644\ub8cc",
-        CANCEL: "\uc8fc\ubb38\ucde8\uc18c"
+        RETURNED: "반품완료",
+        CANCEL: "\uc8fc\ubb38\ucde8\uc18c",
+        CANCELED: "\uc8fc\ubb38\ucde8\uc18c"
     };
 
     return escapeHtml(labels[status] || status || "-");
@@ -81,6 +83,10 @@ function renderDeliveryAction(orderNo, canRegisterDelivery) {
     }
 
     return `<button class="register-delivery-btn" type="button" data-order-no="${orderNo}">\ubc30\uc1a1\ud558\uae30</button>`;
+}
+
+function isSeller() {
+    return document.querySelector('meta[name="login-member-type"]')?.content === 'SELLER';
 }
 
 function formatNumber(value) {
