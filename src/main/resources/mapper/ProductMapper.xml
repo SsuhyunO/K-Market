@@ -247,6 +247,7 @@
             p.discount,
             p.deliveryFee,
             p.thumb1FileId,
+            p.thumb2FileId,
             p.sellerUid,
             m.name AS seller,
             COALESCE(AVG(r.rating), 0) AS rating
@@ -315,6 +316,7 @@
             p.discount,
             p.deliveryFee,
             p.thumb1FileId,
+            p.thumb2FileId,
             p.sellerUid,
             m.name AS seller,
             COALESCE(AVG(r.rating), 0) AS rating
