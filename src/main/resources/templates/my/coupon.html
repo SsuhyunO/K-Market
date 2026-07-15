@@ -66,8 +66,13 @@
             <!-- 3번 영역: 배너 광고 -->
             <!-- 3번 영역: 배너 광고 -->
             <div class="my-banner">
-                <a th:href="@{/event/summer-sale}" target="_blank" style="display:block; width:100%; height:100%;">
-                    <img th:src="@{/images/banner/banner_810x86.svg}" alt="K마켓 여름 신상 의류 세일" style="width:100%; height:100%; object-fit:cover; display:block;">
+                <a th:if="${myPageBanner != null}"
+                   th:href="${myPageBanner.link != null and !#strings.isEmpty(myPageBanner.link) ? myPageBanner.link : '#'}"
+                   target="_blank">
+                    <img th:src="@{|/files/${myPageBanner.fileId}|}" th:alt="${myPageBanner.name}">
+                </a>
+                <a th:unless="${myPageBanner != null}" th:href="@{/event/summer-sale}" target="_blank">
+                    <img th:src="@{/images/banner/banner_810x86.png}" alt="K-Market 이벤트 배너">
                 </a>
             </div>
 
