@@ -61,7 +61,7 @@ function renderProductDetail(product) {
         setText(`product-detail-${toKebabCase(field)}`, detailValues[field]);
     });
 
-    renderProductDetailHeroImage(product.thumb2FileId || product.thumb1FileId);
+    renderProductDetailHeroImage(product.thumb2FileId);
     renderProductDetailImages(product);
     renderProductDetailOptions(product);
     renderProductDetailNoticeValues(product);
