@@ -2,6 +2,7 @@
 
 
 
+
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -84,18 +85,22 @@
                     <tr>
                         <th>연동 로그인</th>
                         <td>
-                            <div id="socialLoginArea" style="display:flex; align-items:center; gap:14px;">
-                                <div style="text-align:center;">
-                                    <div id="naverIcon" style="width:36px; height:36px; border-radius:50%; background:#03C75A; color:#fff; display:flex; align-items:center; justify-content:center; font-weight:700; opacity:0.3;">N</div>
-                                    <div id="naverBadge" style="font-size:11px; color:#03C75A; margin-top:4px; visibility:hidden;">로그인됨</div>
+                            <div class="social-login-area">
+                                <div class="social-login-item" id="localItem">
+                                    <div class="social-icon social-icon-local">일반</div>
+                                    <div class="social-badge">로그인됨</div>
                                 </div>
-                                <div style="text-align:center;">
-                                    <div id="kakaoIcon" style="width:36px; height:36px; border-radius:50%; background:#FEE500; color:#3C1E1E; display:flex; align-items:center; justify-content:center; font-weight:700; opacity:0.3;">K</div>
-                                    <div id="kakaoBadge" style="font-size:11px; color:#3C1E1E; margin-top:4px; visibility:hidden;">로그인됨</div>
+                                <div class="social-login-item" id="naverItem">
+                                    <div class="social-icon social-icon-naver">N</div>
+                                    <div class="social-badge">로그인됨</div>
                                 </div>
-                                <div style="text-align:center;">
-                                    <div id="googleIcon" style="width:36px; height:36px; border-radius:50%; background:#fff; border:1px solid #ddd; color:#444; display:flex; align-items:center; justify-content:center; font-weight:700; opacity:0.3;">G</div>
-                                    <div id="googleBadge" style="font-size:11px; color:#4285F4; margin-top:4px; visibility:hidden;">로그인됨</div>
+                                <div class="social-login-item" id="kakaoItem">
+                                    <div class="social-icon social-icon-kakao">K</div>
+                                    <div class="social-badge">로그인됨</div>
+                                </div>
+                                <div class="social-login-item" id="googleItem">
+                                    <div class="social-icon social-icon-google">G</div>
+                                    <div class="social-badge">로그인됨</div>
                                 </div>
                             </div>
                         </td>
@@ -105,28 +110,11 @@
                         <th>사용자 ID</th>
                         <td><span class="info-value" id="infoUid">-</span></td>
                     </tr>
-                    <!-- 비밀번호: 현재 비밀번호 확인 후에만 인라인으로 변경 가능 -->
+                    <!-- 비밀번호: 버튼 클릭 시 팝업으로 변경 -->
                     <tr>
                         <th>비밀번호</th>
                         <td>
                             <button type="button" class="btn-info-action" id="pwChangeBtn">비밀번호수정</button>
-
-                            <div class="pw-edit-section" id="pwEditSection" style="display:none;">
-                                <div class="pw-check-row">
-                                    <input type="password" class="info-input" id="currentPwInput" placeholder="현재 비밀번호 확인">
-                                    <button type="button" class="btn-info-edit" id="pwVerifyBtn">확인</button>
-                                    <span class="pw-msg" id="pwCheckMsg"></span>
-                                </div>
-
-                                <!-- 현재 비밀번호가 확인된 경우에만 나타남 -->
-                                <div class="pw-new-row" id="pwNewSection" style="display:none;">
-                                    <input type="password" class="info-input" id="newPwInput" placeholder="새 비밀번호">
-                                    <span class="pw-msg" id="pwRuleMsg"></span>
-                                    <input type="password" class="info-input" id="newPwConfirmInput" placeholder="새 비밀번호 확인">
-                                    <span class="pw-msg" id="pwMatchMsg"></span>
-                                    <button type="button" class="btn-info-save" id="pwSaveBtn">저장</button>
-                                </div>
-                            </div>
                         </td>
                     </tr>
                     <!-- 이름 -->
@@ -185,21 +173,55 @@
     </div>
 </main>
 
+<!-- 비밀번호 변경 모달 -->
+<div class="modal-overlay" id="pwModal">
+    <div class="modal-box modal-box-pw">
+        <button type="button" class="modal-close modal-close-plain" data-close="pwModal">&times;</button>
+        <div class="modal-body modal-body-pw">
+            <p class="modal-confirm-title modal-title-left">비밀번호 변경</p>
+
+            <div class="pw-check-row">
+                <div class="pw-check-row-inputs">
+                    <input type="password" class="info-input" id="currentPwInput" placeholder="현재 비밀번호 확인">
+                    <button type="button" class="btn-info-edit" id="pwVerifyBtn">확인</button>
+                </div>
+                <span class="pw-msg" id="pwCheckMsg"></span>
+            </div>
+
+            <!-- 현재 비밀번호가 확인된 경우에만 나타남 -->
+            <div class="pw-new-row" id="pwNewSection" style="display:none;">
+                <div class="pw-field">
+                    <input type="password" class="info-input" id="newPwInput" placeholder="새 비밀번호">
+                    <span class="pw-msg" id="pwRuleMsg"></span>
+                </div>
+                <div class="pw-field">
+                    <input type="password" class="info-input" id="newPwConfirmInput" placeholder="새 비밀번호 확인">
+                    <span class="pw-msg" id="pwMatchMsg"></span>
+                </div>
+            </div>
+
+            <div class="modal-confirm-btn-group">
+                <button type="button" class="modal-btn-cancel" data-close="pwModal">취소</button>
+                <button type="button" class="modal-btn-primary" id="pwSaveBtn">저장</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- 탈퇴 확인 모달 -->
 <div class="modal-overlay" id="withdrawModal">
-    <div class="modal-box modal-box-confirm">
-        <div class="modal-header modal-header-blue">
-            <span class="modal-title">회원 탈퇴</span>
-            <button type="button" class="modal-close" data-close="withdrawModal">&times;</button>
-        </div>
-        <div class="modal-body">
+    <div class="modal-box modal-box-confirm modal-box-withdraw">
+        <button type="button" class="modal-close modal-close-plain" data-close="withdrawModal">&times;</button>
+        <div class="modal-body modal-body-withdraw">
+            <div class="modal-warning-icon">!</div>
+            <p class="modal-confirm-title">정말 탈퇴하시겠어요?</p>
             <p class="modal-confirm-text">
-                정말 탈퇴하시겠습니까?<br>
-                탈퇴 시 모든 정보가 삭제되며 복구가 불가능합니다.
+                탈퇴 시 모든 정보가 삭제되며<br>
+                복구가 불가능합니다.
             </p>
             <div class="modal-confirm-btn-group">
-                <button type="button" class="modal-btn-submit" id="withdrawConfirmBtn">확인</button>
                 <button type="button" class="modal-btn-cancel" data-close="withdrawModal">취소</button>
+                <button type="button" class="modal-btn-danger" id="withdrawConfirmBtn">탈퇴하기</button>
             </div>
         </div>
     </div>
