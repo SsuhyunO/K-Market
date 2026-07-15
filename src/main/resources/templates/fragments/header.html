@@ -1,272 +1,89 @@
-<header th:fragment="header"
-        id="header"
-        xmlns:th="http://www.thymeleaf.org">
+
+<header th:fragment="header" id="header">
 
     <div class="header-banner">
 
-        <!-- DB에 등록된 메인 상단 배너 출력 -->
+        <!-- DB에 등록된 메인상단 배너가 있으면 출력 -->
         <a th:if="${mainTopBanners != null and !#lists.isEmpty(mainTopBanners)}"
            th:href="${mainTopBanners[0].link}"
            target="_blank">
-
             <img th:src="@{/files/{id}(id=${mainTopBanners[0].fileId})}"
                  th:alt="${mainTopBanners[0].name}"
-                 style="width:1063px;
-                        height:90px;
-                        object-fit:cover;
-                        display:block;
-                        margin:0 auto;">
+                 style="width:1063px; height:90px; object-fit:cover; display:block; margin:0 auto;">
         </a>
 
-        <!-- 등록된 상단 배너가 없을 때 -->
+        <!-- 배너가 없으면 기존 안내문 출력 -->
         <span th:if="${mainTopBanners == null or #lists.isEmpty(mainTopBanners)}"
               class="banner-placeholder">
-            🛍️ 가로 × 세로 크기 배너광고 (1063 × 90)
+        🛍️ 가로 × 세로 크기 배너광고 (1063 × 90)
         </span>
 
     </div>
 
     <div class="header-main">
-
-        <div class="container"
-             style="display:flex;
-                    align-items:center;
-                    gap:20px;
-                    height:100%;">
+        <div class="container" style="display:flex; align-items:center; gap:20px; height:100%;">
 
             <!-- 로고 영역 -->
             <div class="logo">
-
                 <a th:href="@{/}">
 
-                    <!-- DB에 저장된 헤더 로고 출력 -->
+                    <!-- DB에 저장된 헤더 로고가 있으면 이미지 출력 -->
                     <img th:if="${siteConfig != null and siteConfig.headerLogoFiled != 0}"
                          th:src="@{/files/{id}(id=${siteConfig.headerLogoFiled})}"
                          alt="Kmarket"
-                         style="width:185px;
-                                height:60px;
-                                object-fit:contain;
-                                display:block;">
+                         style="width:185px; height:60px; object-fit:contain; display:block;">
 
-                    <!-- DB에 로고가 없을 때 기본 로고 출력 -->
+                    <!-- DB에 로고가 없으면 기존 텍스트 로고 출력 -->
                     <div th:if="${siteConfig == null or siteConfig.headerLogoFiled == 0}">
-
                         <div class="logo-text">
-                            K<span style="color:#222;
-                                          font-weight:400;">
-                                market
-                            </span>
+                            K<span style="color:#222;font-weight:400;">market</span>
                         </div>
-
-                        <div class="logo-sub">
-                            ㈜케이마켓
-                        </div>
-
+                        <div class="logo-sub">㈜케이마켓</div>
                     </div>
 
                 </a>
-
             </div>
 
             <!-- 검색창 -->
-            <form th:action="@{/product/search}"
-                  method="get"
-                  class="search-box">
-
-                <input type="text"
-                       name="keyword"
-                       placeholder="검색어를 입력하세요"
-                       id="searchInput"
-                       required>
-
-                <button type="submit"
-                        aria-label="검색">
-
-                    <svg width="18"
-                         height="18"
-                         viewBox="0 0 24 24"
-                         fill="none"
-                         stroke="currentColor"
-                         stroke-width="2.5">
-
-                        <circle cx="11"
-                                cy="11"
-                                r="8">
-                        </circle>
-
-                        <path d="m21 21-4.35-4.35">
-                        </path>
-
+            <form th:action="@{/product/search}" method="GET" class="search-box">
+                <input type="text" name="keyword" placeholder="검색어를 입력하세요" id="searchInput" required>
+                <button type="submit" aria-label="검색">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                        <circle cx="11" cy="11" r="8"/>
+                        <path d="m21 21-4.35-4.35"/>
                     </svg>
-
                 </button>
-
             </form>
 
             <!-- 사용자 메뉴 -->
-            <nav class="util-nav"
-                 style="display:flex;
-                        gap:16px;
-                        white-space:nowrap;
-                        flex-shrink:0;
-                        align-items:center;">
-
-                <!-- 비로그인 상태 -->
-                <th:block th:if="${session.loginMember == null}">
-
-                    <a th:href="@{/member/login}"
-                       style="font-size:13px;
-                              color:var(--color-gray-600);">
-                        로그인
-                    </a>
-
-                    <span style="color:var(--color-gray-200);">
-                        |
-                    </span>
-
-                    <a th:href="@{/member/join}"
-                       style="font-size:13px;
-                              color:var(--color-gray-600);">
-                        회원가입
-                    </a>
-
-                </th:block>
-
-                <!-- 로그인 상태 -->
-                <th:block th:if="${session.loginMember != null}">
-
-                    <span style="font-size:13px;
-                                 color:var(--color-gray-600);">
-
-                        <strong th:text="${session.loginMember}"
-                                style="color:#ef3d2f;">
-                            회원
-                        </strong>
-                        님
-
-                    </span>
-
-                    <span style="color:var(--color-gray-200);">
-                        |
-                    </span>
-
-                    <a href="#"
-                       id="headerLogoutButton"
-                       style="font-size:13px;
-                              color:var(--color-gray-600);">
-                        로그아웃
-                    </a>
-
-                    <span style="color:var(--color-gray-200);">
-                        |
-                    </span>
-
-                    <a th:href="@{/my/home}"
-                       style="font-size:13px;
-                              color:var(--color-gray-600);">
-                        마이페이지
-                    </a>
-
-                </th:block>
-
-                <!-- 장바구니 -->
-                <span style="color:var(--color-gray-200);">
-                    |
+            <nav class="util-nav" style="display:flex; gap:16px; white-space:nowrap; flex-shrink:0; align-items:center;">
+                <span id="authArea" style="display:flex; gap:16px; align-items:center;">
+                    <a th:href="@{/member/login}" id="navLoginLink" style="font-size:13px; color:var(--color-gray-600);">로그인</a>
+                    <span style="color:var(--color-gray-200);">|</span>
+                    <a th:href="@{/member/join}" id="navJoinLink" style="font-size:13px; color:var(--color-gray-600);">회원가입</a>
                 </span>
-
-                <a th:href="@{/cart}"
-                   style="font-size:13px;
-                          color:var(--color-gray-600);">
-                    🛒 장바구니
-                </a>
-
+                <span id="memberOnlyArea" style="display:none; gap:16px; align-items:center;">
+                    <span style="color:var(--color-gray-200);">|</span>
+                    <a th:href="@{/my/home}" id="myPageLink" style="font-size:13px; color:var(--color-gray-600);">마이페이지</a>
+                </span>
+                <span id="cartArea" style="display:flex; gap:16px; align-items:center;">
+                    <span style="color:var(--color-gray-200);">|</span>
+                    <a th:href="@{/cart}" id="cartLink" style="font-size:13px; color:var(--color-gray-600);">🛒 장바구니</a>
+                </span>
             </nav>
-
         </div>
-
     </div>
 
     <!-- 상품 메뉴 -->
     <nav class="header-nav">
-
         <div class="container">
-
-            <a th:href="@{/} + '#section-hit'"
-               data-section="hit">
-                히트상품
-            </a>
-
-            <a th:href="@{/} + '#section-recommend'"
-               data-section="recommend">
-                추천상품
-            </a>
-
-            <a th:href="@{/} + '#section-new'"
-               data-section="new">
-                최신상품
-            </a>
-
-            <a th:href="@{/} + '#section-discount'"
-               data-section="discount">
-                할인상품
-            </a>
-
+            <a th:href="@{/}+'#section-hit'"       data-section="hit">히트상품</a>
+            <a th:href="@{/}+'#section-recommend'" data-section="recommend">추천상품</a>
+            <a th:href="@{/}+'#section-new'"       data-section="new">최신상품</a>
+            <a th:href="@{/}+'#section-discount'"  data-section="discount">할인상품</a>
         </div>
-
     </nav>
 
-    <!-- 로그아웃 처리 -->
-    <script th:inline="javascript">
-        document.addEventListener("DOMContentLoaded", () => {
-
-            const logoutButton =
-                document.getElementById(
-                    "headerLogoutButton"
-                );
-
-            const logoutUrl =
-                /*[[@{/api/member/logout}]]*/ "";
-
-            const homeUrl =
-                /*[[@{/}]]*/ "";
-
-            logoutButton?.addEventListener(
-                "click",
-                async (event) => {
-
-                    event.preventDefault();
-
-                    const confirmed = confirm(
-                        "로그아웃하시겠습니까?"
-                    );
-
-                    if (!confirmed) {
-                        return;
-                    }
-
-                    try {
-                        const response = await fetch(
-                            logoutUrl,
-                            {
-                                method: "POST",
-                                credentials: "same-origin"
-                            }
-                        );
-
-                        if (!response.ok) {
-                            throw new Error(
-                                "로그아웃 처리에 실패했습니다."
-                            );
-                        }
-
-                        location.href = homeUrl;
-
-                    } catch (error) {
-                        alert(error.message);
-                    }
-                }
-            );
-        });
-    </script>
+    <script th:src="@{/js/common/auth-header.js}"></script>
 
 </header>
