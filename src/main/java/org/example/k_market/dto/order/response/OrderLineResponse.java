@@ -14,6 +14,7 @@ public class OrderLineResponse {
     private int prodVariantId;
     private Integer prodNo;
     private String prodName;
+    private String optionText;
     private Integer thumb1FileId;
     private String sellerUid;
     private String sellerName;

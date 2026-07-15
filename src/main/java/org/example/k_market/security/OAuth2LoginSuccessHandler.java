@@ -61,6 +61,7 @@ public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
         //  (String) session.getAttribute("loginMember") 캐스팅 시 ClassCastException 발생 -> 헤더 표시 안 됨)
         session.setAttribute("loginMember", member.getUid());
         session.setAttribute("loginMemberType", member.getMemberType());
+        session.setAttribute("loginMemberLevel", member.getMemberLevel());
 
         response.sendRedirect(request.getContextPath() + "/");
     }

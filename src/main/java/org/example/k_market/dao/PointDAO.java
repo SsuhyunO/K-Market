@@ -10,6 +10,7 @@ import java.util.List;
 public interface PointDAO {
     void insertPoint(PointDTO point);
     int selectPointBalance(String memberUid);
+    void updateMemberPointBalance(String memberUid);
     List<PointDTO> selectPointHistory(String memberUid);
     int selectPointCount(@Param("searchType") String searchType,
                          @Param("keyword") String keyword);

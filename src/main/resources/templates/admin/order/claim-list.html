@@ -1,0 +1,114 @@
+﻿<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <title>KMarket 클레임관리</title>
+    <th:block th:replace="~{admin/fragments/head::head}"></th:block>
+    <link rel="stylesheet" th:href="@{/css/admin/global/management-table-form.css}">
+    <link rel="stylesheet" th:href="@{/css/admin/global/action-bar.css}">
+    <link rel="stylesheet" th:href="@{/css/admin/global/modal-form.css}">
+    <link rel="stylesheet" th:href="@{/css/admin/global/section-table.css}">
+    <link rel="stylesheet" th:href="@{/css/admin/global/search-form.css}">
+    <link rel="stylesheet" th:href="@{/css/admin/order/claim-list.css}">
+    <script type="module" th:src="@{/js/admin/order/claim-list.js}"></script>
+</head>
+<body class="claim-list-page">
+<header th:replace="~{admin/fragments/header::header}"></header>
+<div class="admin-layout">
+    <aside th:replace="~{admin/fragments/aside::aside}"></aside>
+
+    <main id="admin-main">
+        <div th:replace="~{admin/fragments/page-header::page-header}"></div>
+
+        <section th:replace="~{admin/fragments/dash-section::dash-section(null, null, null, ~{::main_content})}">
+            <th:block th:fragment="main_content">
+                <form class="search-form claim-type-form" name="searchForm" th:action="@{/admin/order/claim-list}" method="get">
+                    <label class="search-form-label" for="claim-type">클레임유형</label>
+                    <select id="claim-type" name="type" aria-label="클레임유형">
+                        <option value="ALL" th:selected="${param.type == null or param.type[0] == 'ALL'}">전체</option>
+                        <option value="RETURN" th:selected="${param.type != null and param.type[0] == 'RETURN'}">반품</option>
+                        <option value="EXCHANGE" th:selected="${param.type != null and param.type[0] == 'EXCHANGE'}">교환</option>
+                    </select>
+                    <button type="submit">조회</button>
+                </form>
+
+                <div class="claim-list-table">
+                    <div th:replace="~{admin/fragments/management-table-form::management-table(~{::table-content})}">
+                        <th:block th:fragment="table-content">
+                            <tr>
+                                <th>클레임번호</th>
+                                <th>유형</th>
+                                <th>주문번호</th>
+                                <th>주문자</th>
+                                <th>상품명</th>
+                                <th>수량</th>
+                                <th>클레임상태</th>
+                                <th>배송상태</th>
+                                <th>요청일</th>
+                                <th>처리</th>
+                            </tr>
+                        </th:block>
+                    </div>
+                </div>
+
+                <div th:replace="~{admin/fragments/action-bar::action-bar(~{::action-bar-content})}">
+                    <th:block th:fragment="action-bar-content">
+                        <span></span>
+                        <nav class="admin-pagination"></nav>
+                        <span></span>
+                    </th:block>
+                </div>
+
+                <div th:replace="~{admin/fragments/modal::modal('claim-detail-modal', '클레임상세', ~{::claim_detail_modal_content})}">
+                    <th:block th:fragment="claim_detail_modal_content">
+                        <table class="section-table">
+                            <tr><th>클레임번호</th><td id="claim-detail-no">-</td></tr>
+                            <tr><th>유형</th><td id="claim-detail-type">-</td></tr>
+                            <tr><th>상태</th><td id="claim-detail-status">-</td></tr>
+                            <tr><th>주문번호</th><td id="claim-detail-order-no">-</td></tr>
+                            <tr><th>주문자</th><td id="claim-detail-member">-</td></tr>
+                            <tr><th>상품</th><td id="claim-detail-product">-</td></tr>
+                            <tr><th>수량</th><td id="claim-detail-quantity">-</td></tr>
+                            <tr><th>요청내용</th><td id="claim-detail-content">-</td></tr>
+                            <tr><th>배송상태</th><td id="claim-detail-shipment">-</td></tr>
+                            <tr><th>배송지</th><td id="claim-detail-address">-</td></tr>
+                            <tr><th>요청일</th><td id="claim-detail-requested-at">-</td></tr>
+                            <tr><th>처리일</th><td id="claim-detail-processed-at">-</td></tr>
+                        </table>
+
+                        <form name="claimReshipForm" class="claim-reship-form" novalidate>
+                            <h4>교환 재배송</h4>
+                            <table class="section-table">
+                                <tr>
+                                    <th><label for="claim-delivery-company">택배사</label></th>
+                                    <td>
+                                        <select id="claim-delivery-company" name="courierName" required>
+                                            <option value="로젠택배">로젠택배</option>
+                                            <option value="CJ대한통운">CJ대한통운</option>
+                                            <option value="한진택배">한진택배</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th><label for="claim-tracking-no">운송장번호</label></th>
+                                    <td><input id="claim-tracking-no" name="trackingNo" type="text" required></td>
+                                </tr>
+                            </table>
+                        </form>
+
+                        <div th:replace="~{admin/fragments/action-bar::action-bar(~{::modal-action-bar-content})}">
+                            <th:block th:fragment="modal-action-bar-content">
+                                <button type="button" id="claim-reject-btn" hidden style="display: none;">거절</button>
+                                <button type="button" id="claim-reship-btn" data-action-variant="primary" hidden style="display: none;">배송하기</button>
+                                <button type="button" id="claim-approve-btn" data-action-variant="primary" hidden style="display: none;">승인</button>
+                            </th:block>
+                        </div>
+                    </th:block>
+                </div>
+            </th:block>
+        </section>
+    </main>
+</div>
+
+<footer th:replace="~{admin/fragments/footer::footer}"></footer>
+</body>
+</html>

@@ -249,15 +249,20 @@ function renderPayMethod(payMethod) {
 function renderStatus(status) {
     return {
         PAID: '\uacb0\uc81c\uc644\ub8cc',
-        READY: '\uc0c1\ud488\uc900\ube44\uc911',
+        READY: '\ubc30\uc1a1\uc900\ube44',
         SHIPPING: '\ubc30\uc1a1\uc911',
         PARTIAL_SHIPPING: '\ubd80\ubd84\ubc30\uc1a1\uc911',
         DELIVERED: '\ubc30\uc1a1\uc644\ub8cc',
         CONFIRMED: '\uad6c\ub9e4\ud655\uc815',
         CLAIM_PARTIAL: '\ud074\ub808\uc784\ucc98\ub9ac\uc911',
         RETURN_REQUESTED: '\ubc18\ud488\uc694\uccad',
+        RETURN_SHIPPING: '반품 반송중',
+        RETURNED: '반품완료',
         EXCHANGE_REQUESTED: '\uad50\ud658\uc694\uccad',
-        CANCEL_REQUESTED: '\ucde8\uc18c\uc694\uccad'
+        EXCHANGE_SHIPPING: '교환 반송중',
+        EXCHANGE_WAITING: '상품대기중',
+        CANCEL_REQUESTED: '\ucde8\uc18c\uc694\uccad',
+        CANCELED: '\uc8fc\ubb38\ucde8\uc18c'
     }[status] || status || '-';
 }
 

@@ -40,6 +40,7 @@ public class AutoLoginFilter extends OncePerRequestFilter {
                     HttpSession newSession = request.getSession(true);
                     newSession.setAttribute("loginMember", member.getUid());
                     newSession.setAttribute("loginMemberType", member.getMemberType());
+                    newSession.setAttribute("loginMemberLevel", member.getMemberLevel());
                 }
             }
         }

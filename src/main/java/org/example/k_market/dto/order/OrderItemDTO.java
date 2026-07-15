@@ -16,7 +16,11 @@ public class OrderItemDTO {
     private int count;
     private int price;
     private int total;
-    private int prodNo;
+    private Integer prodNo;
+    private String productName;
+    private String optionText;
+    private Integer originalPrice;
+    private Integer discountRate;
     private int shippingFee;
     private String sellerUid;
     private String itemStatus;
@@ -29,6 +33,11 @@ public class OrderItemDTO {
                 .count(count)
                 .price(price)
                 .total(total)
+                .prodNo(prodNo)
+                .productName(productName)
+                .optionText(optionText)
+                .originalPrice(originalPrice)
+                .discountRate(discountRate)
                 .shippingFee(shippingFee)
                 .sellerUid(sellerUid)
                 .itemStatus(itemStatus)

@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.example.k_market.dao.ClaimDAO">
+
+    <sql id="claimBaseSelect">
+        SELECT
+            c.claimNo,
+            c.orderNo,
+            c.orderItemNo,
+            o.memberUid,
+            m.name AS memberName,
+            oi.productName,
+            oi.optionText,
+            c.quantity,
+            c.claimType,
+            c.claimContent,
+            c.fileId,
+            c.claimStatus,
+            oi.itemStatus,
+            sh.shipmentNo,
+            sh.status AS shipmentStatus,
+            sh.courierName,
+            sh.trackingNo,
+            o.receiver,
+            o.phone,
+            o.zipCode,
+            o.addr1,
+            o.addr2,
+            c.requestedAt,
+            c.processedAt
+        FROM claim c
+        JOIN order_item oi ON oi.orderItemNo = c.orderItemNo
+        JOIN `order` o ON o.orderNo = c.orderNo
+        LEFT JOIN `member` m ON m.uid = o.memberUid
+        LEFT JOIN shipment_item si ON si.orderItemNo = c.orderItemNo
+        LEFT JOIN shipment sh ON sh.shipmentNo = si.shipmentNo
+        LEFT JOIN shipment newer_sh ON newer_sh.shipmentNo &gt; sh.shipmentNo
+            AND EXISTS (
+                SELECT 1
+                FROM shipment_item newer_si
+                WHERE newer_si.shipmentNo = newer_sh.shipmentNo
+                  AND newer_si.orderItemNo = c.orderItemNo
+            )
+        WHERE newer_sh.shipmentNo IS NULL
+    </sql>
+
+    <select id="selectClaims" resultType="org.example.k_market.dto.order.response.ClaimListResponse">
+        <include refid="claimBaseSelect"/>
+        <if test="claimType != null and claimType != ''">
+            AND c.claimType = #{claimType}
+        </if>
+        <if test="sellerUid != null and sellerUid != ''">
+            AND oi.sellerUid = #{sellerUid}
+        </if>
+        ORDER BY c.claimNo DESC
+        LIMIT #{limit} OFFSET #{offset}
+    </select>
+
+    <select id="selectClaimCount" resultType="int">
+        SELECT COUNT(*)
+        FROM claim c
+        JOIN order_item oi ON oi.orderItemNo = c.orderItemNo
+        <where>
+            <if test="claimType != null and claimType != ''">
+                c.claimType = #{claimType}
+            </if>
+            <if test="sellerUid != null and sellerUid != ''">
+                <if test="claimType != null and claimType != ''">
+                    AND
+                </if>
+                oi.sellerUid = #{sellerUid}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectClaimByNo" resultType="org.example.k_market.dto.order.response.ClaimListResponse">
+        <include refid="claimBaseSelect"/>
+        AND c.claimNo = #{claimNo}
+        <if test="sellerUid != null and sellerUid != ''">
+            AND oi.sellerUid = #{sellerUid}
+        </if>
+    </select>
+
+    <update id="updateClaimStatus">
+        UPDATE claim
+        SET claimStatus = #{claimStatus},
+            processedAt = CASE
+                WHEN #{claimStatus} IN ('APPROVED', 'REJECTED', 'COMPLETED') THEN NOW()
+                ELSE processedAt
+            END
+        WHERE claimNo = #{claimNo}
+    </update>
+
+    <update id="updateReshippingExchangeClaimsToCompleted">
+        UPDATE claim c
+        JOIN order_item oi ON oi.orderItemNo = c.orderItemNo
+        SET c.claimStatus = 'COMPLETED',
+            c.processedAt = NOW()
+        WHERE c.claimType = 'EXCHANGE'
+          AND c.claimStatus = 'RESHIPPING'
+          AND oi.itemStatus = 'DELIVERED'
+    </update>
+
+    <update id="updateReturnedClaimsToCompleted">
+        UPDATE claim c
+        JOIN order_item oi ON oi.orderItemNo = c.orderItemNo
+        SET c.claimStatus = 'COMPLETED',
+            c.processedAt = NOW()
+        WHERE c.claimType = 'RETURN'
+          AND c.claimStatus = 'APPROVED'
+          AND oi.itemStatus = 'RETURNED'
+    </update>
+
+</mapper>

@@ -15,6 +15,7 @@ public class MyOrderItemResponse {
     private String sellerUid;
     private String sellerName;
     private String productName;
+    private String optionText;
     private Integer thumb1FileId;
     private int quantity;
     private int price;

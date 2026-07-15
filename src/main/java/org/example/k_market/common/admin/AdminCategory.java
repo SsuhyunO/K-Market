@@ -31,6 +31,7 @@ public enum AdminCategory {
 
     ORDER_STATUS("/admin/order/order-list", "주문현황", "HOME &rsaquo; 주문관리 &rsaquo; 주문현황"),
     DELIVERY_STATUS("/admin/order/delivery-list", "배송현황", "HOME &rsaquo; 주문관리 &rsaquo; 배송현황"),
+    CLAIM_STATUS("/admin/order/claim-list", "클레임관리", "HOME &rsaquo; 주문관리 &rsaquo; 클레임관리"),
 
     COUPON_LIST("/admin/coupon/list", "쿠폰목록", "HOME &rsaquo; 쿠폰관리 &rsaquo; 쿠폰목록"),
     COUPON_ISSUED("/admin/coupon/used", "쿠폰발급현황", "HOME &rsaquo; 쿠폰관리 &rsaquo; 쿠폰발급현황"),
