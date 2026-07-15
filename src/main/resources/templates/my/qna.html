@@ -1,113 +1,384 @@
-
-
-
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <title>문의하기 | K-Market</title>
-    <link rel="stylesheet" th:href="@{/css/common.css}">
-    <link rel="stylesheet" th:href="@{/css/index.css}">
-    <link rel="stylesheet" th:href="@{/css/my/qna.css}">
+
+    <link rel="stylesheet"
+          th:href="@{/css/my/qna.css}">
 </head>
+
 <body>
 
-<!-- ===== HEADER ===== -->
+<!-- HEADER -->
 <div th:replace="~{fragments/header :: header}"></div>
 
-<!-- ===== MAIN ===== -->
-<div class="page-wrapper">
-    <aside th:replace="~{fragments/aside :: aside}"></aside>
-    <div class="main-content">
-        <main>
 
-    <!-- 1번 영역: 요약 정보 (가로 풀폭, 회색바탕) -->
+<!-- MAIN -->
+<main>
+
+    <!-- 나의 쇼핑 정보 요약 -->
     <section class="my-summary">
-        <span class="my-summary-title">나의쇼핑정보</span>
+
+        <span class="my-summary-title">
+            나의쇼핑정보
+        </span>
+
         <div class="summary-items">
+
             <div class="summary-item">
-                <span class="summary-label">주문</span>
-                <span class="summary-num">2</span>
+                <span class="summary-label">
+                    주문
+                </span>
+
+                <span class="summary-num">
+                    2
+                </span>
             </div>
+
             <div class="summary-divider"></div>
+
             <div class="summary-item">
-                <span class="summary-label">쿠폰</span>
-                <span class="summary-num">1</span>
+                <span class="summary-label">
+                    쿠폰
+                </span>
+
+                <span class="summary-num">
+                    1
+                </span>
             </div>
+
             <div class="summary-divider"></div>
+
             <div class="summary-item">
-                <span class="summary-label">포인트</span>
-                <span class="summary-num">1,000</span>
+                <span class="summary-label">
+                    포인트
+                </span>
+
+                <span class="summary-num">
+                    1,000
+                </span>
             </div>
+
             <div class="summary-divider"></div>
+
             <div class="summary-item">
-                <span class="summary-label">문의</span>
-                <span class="summary-num">1</span>
+                <span class="summary-label">
+                    문의
+                </span>
+
+                <span class="summary-num"
+                      th:text="${qnaList != null
+                                ? #lists.size(qnaList)
+                                : 0}">
+                    0
+                </span>
             </div>
+
         </div>
     </section>
 
-    <!-- 2번 영역(사이드바) + 콘텐츠 영역을 나란히 배치 -->
+
+    <!-- 사이드바 + 콘텐츠 -->
     <div class="my-wrapper">
 
-        <!-- 2번 영역: 사이드바 (전체주문내역 active) -->
+        <!-- SIDEBAR -->
         <aside class="sidebar">
+
             <nav class="sidebar-menu">
                 <ul>
-                    <li><a th:href="@{/my/order}" data-menu="orders">전체주문내역</a></li>
-                    <li><a th:href="@{/point/list}" data-menu="points">포인트내역</a></li>
-                    <li><a th:href="@{/my/coupon}"  data-menu="coupons">쿠폰</a></li>
-                    <li><a th:href="@{/review/list}" data-menu="reviews">나의리뷰</a></li>
-                    <li><a th:href="@{/my/qna}" class="active" data-menu="inquiry">문의하기</a></li>
-                    <li><a th:href="@{/my/info}"  data-menu="settings">나의설정</a></li>
+
+                    <li>
+                        <a th:href="@{/my/order}"
+                           data-menu="orders">
+                            전체주문내역
+                        </a>
+                    </li>
+
+                    <li>
+                        <a th:href="@{/point/list}"
+                           data-menu="points">
+                            포인트내역
+                        </a>
+                    </li>
+
+                    <li>
+                        <a th:href="@{/my/coupon}"
+                           data-menu="coupons">
+                            쿠폰
+                        </a>
+                    </li>
+
+                    <li>
+                        <a th:href="@{/review/list}"
+                           data-menu="reviews">
+                            나의리뷰
+                        </a>
+                    </li>
+
+                    <li>
+                        <a th:href="@{/my/qna}"
+                           class="active"
+                           data-menu="inquiry">
+                            문의하기
+                        </a>
+                    </li>
+
+                    <li>
+                        <a th:href="@{/my/info}"
+                           data-menu="settings">
+                            나의설정
+                        </a>
+                    </li>
+
                 </ul>
             </nav>
+
         </aside>
 
-        <!-- 콘텐츠 영역 -->
+
+        <!-- CONTENT -->
         <div class="my-content">
 
-            <!-- 3번 영역: 배너 광고 -->
+            <!-- 마이페이지 배너 -->
             <div class="my-banner">
+
+                <!-- 관리자 등록 배너가 있는 경우 -->
                 <a th:if="${myPageBanner != null}"
-                   th:href="${myPageBanner.link != null and !#strings.isEmpty(myPageBanner.link) ? myPageBanner.link : '#'}"
-                   target="_blank">
-                    <img th:src="@{|/files/${myPageBanner.fileId}|}" th:alt="${myPageBanner.name}">
+                   th:href="${myPageBanner.link != null
+                             and !#strings.isEmpty(myPageBanner.link)
+                             ? myPageBanner.link
+                             : '#'}"
+                   target="_blank"
+                   class="my-banner-link">
+
+                    <img th:src="@{/files/{id}(id=${myPageBanner.fileId})}"
+                         th:alt="${myPageBanner.name != null
+                                  ? myPageBanner.name
+                                  : '마이페이지 배너'}"
+                         class="my-banner-image">
                 </a>
-                <a th:unless="${myPageBanner != null}" th:href="@{/event/summer-sale}" target="_blank">
-                    <img th:src="@{/images/banner/banner_810x86.png}" alt="K-Market 이벤트 배너">
+
+                <!-- 관리자 등록 배너가 없는 경우 -->
+                <a th:unless="${myPageBanner != null}"
+                   th:href="@{/event/summer-sale}"
+                   target="_blank"
+                   class="my-banner-link">
+
+                    <img th:src="@{/images/banner/banner_810x86.svg}"
+                         alt="K마켓 이벤트 배너"
+                         class="my-banner-image">
                 </a>
+
             </div>
 
-            <!-- 4번 영역: 문의하기 -->
+
+            <!-- 문의 목록 -->
             <section class="my-section">
+
                 <div class="section-header">
-                    <span class="section-title">문의하기</span>
-                    <button type="button" class="btn-write-inquiry" id="openInquiryBtn">문의 등록</button>
+
+                    <span class="section-title">
+                        문의하기
+                    </span>
+
                 </div>
+
 
                 <table class="qna-table">
+
                     <thead>
                     <tr>
-                        <th style="width:60px;">번호</th>
-                        <th style="width:110px;">문의채널</th>
-                        <th style="width:110px;">문의유형</th>
-                        <th>제목</th>
-                        <th style="width:110px;">작성일</th>
-                        <th style="width:90px;">상태</th>
+
+                        <th style="width:60px;">
+                            번호
+                        </th>
+
+                        <th style="width:110px;">
+                            문의채널
+                        </th>
+
+                        <th style="width:150px;">
+                            문의유형
+                        </th>
+
+                        <th>
+                            제목
+                        </th>
+
+                        <th style="width:110px;">
+                            작성일
+                        </th>
+
+                        <th style="width:90px;">
+                            상태
+                        </th>
+
                     </tr>
                     </thead>
+
+
                     <tbody id="qnaListBody">
-                    <!-- JS로 동적 렌더링 -->
+
+                    <!-- 문의 내역이 없는 경우 -->
+                    <tr th:if="${qnaList == null
+                                or #lists.isEmpty(qnaList)}">
+
+                        <td colspan="6"
+                            class="qna-empty">
+                            조회된 문의내역이 없습니다.
+                        </td>
+
+                    </tr>
+
+
+                    <!-- 로그인 회원의 문의 내역 -->
+                    <tr th:each="qna, stat : ${qnaList}">
+
+                        <!-- 번호 -->
+                        <td th:text="${stat.count}">
+                            1
+                        </td>
+
+
+                        <!-- 문의 채널 -->
+                        <td>
+                            고객센터
+                        </td>
+
+
+                        <!-- 문의 유형 -->
+                        <td th:text="${qna.category2 != null
+                                      and !#strings.isEmpty(qna.category2)
+                                      ? qna.category1 + ' / ' + qna.category2
+                                      : qna.category1}">
+                            주문 / 결제
+                        </td>
+
+
+                        <!-- 문의 제목 -->
+                        <td class="qna-title-cell">
+
+                            <button type="button"
+                                    class="qna-title-button"
+
+                                    th:text="${qna.title}"
+
+                                    th:data-board-no="${qna.boardNo}"
+                                    th:data-channel="고객센터"
+                                    th:data-category1="${qna.category1}"
+                                    th:data-category2="${qna.category2}"
+                                    th:data-title="${qna.title}"
+                                    th:data-content="${qna.content}"
+
+                                    th:data-created-at="${qna.createdAt != null
+                                                        ? #temporals.format(
+                                                            qna.createdAt,
+                                                            'yyyy-MM-dd HH:mm'
+                                                          )
+                                                        : ''}"
+
+                                    th:data-answer="${qna.answer}"
+
+                                    th:data-answered-at="${qna.answeredAt != null
+                                                         ? #temporals.format(
+                                                             qna.answeredAt,
+                                                             'yyyy-MM-dd HH:mm'
+                                                           )
+                                                         : ''}">
+                                문의 제목
+                            </button>
+
+                        </td>
+
+
+                        <!-- 작성일 -->
+                        <td th:text="${qna.createdAt != null
+                                      ? #temporals.format(
+                                          qna.createdAt,
+                                          'yyyy-MM-dd'
+                                        )
+                                      : '-'}">
+                            2026-07-15
+                        </td>
+
+
+                        <!-- 답변 상태 -->
+                        <td>
+
+                            <!-- 답변 완료 -->
+                            <button type="button"
+                                    class="qna-status-button status-complete"
+
+                                    th:if="${qna.answer != null
+                                           and !#strings.isEmpty(qna.answer)}"
+
+                                    th:data-channel="고객센터"
+                                    th:data-category1="${qna.category1}"
+                                    th:data-category2="${qna.category2}"
+                                    th:data-title="${qna.title}"
+                                    th:data-content="${qna.content}"
+
+                                    th:data-created-at="${qna.createdAt != null
+                                                        ? #temporals.format(
+                                                            qna.createdAt,
+                                                            'yyyy-MM-dd HH:mm'
+                                                          )
+                                                        : ''}"
+
+                                    th:data-answer="${qna.answer}"
+
+                                    th:data-answered-at="${qna.answeredAt != null
+                                                         ? #temporals.format(
+                                                             qna.answeredAt,
+                                                             'yyyy-MM-dd HH:mm'
+                                                           )
+                                                         : ''}">
+                                답변완료
+                            </button>
+
+
+                            <!-- 답변 대기 -->
+                            <span class="qna-status-button status-waiting"
+                                  th:unless="${qna.answer != null
+                                             and !#strings.isEmpty(qna.answer)}">
+                                답변대기
+                            </span>
+
+                        </td>
+
+                    </tr>
+
                     </tbody>
+
                 </table>
 
-                <!-- 페이지네이션 -->
-                <div class="pagination" id="pagination">
-                    <a href="#" class="page-prev" id="pagePrev">이전</a>
-                    <span class="page-numbers" id="pageNumbers"></span>
-                    <a href="#" class="page-next" id="pageNext">다음</a>
+
+                <!-- 현재 전체 목록 조회 방식 -->
+                <div class="pagination"
+                     id="pagination"
+                     style="display:none;">
+
+                    <a href="#"
+                       class="page-prev"
+                       id="pagePrev">
+                        이전
+                    </a>
+
+                    <span class="page-numbers"
+                          id="pageNumbers">
+                    </span>
+
+                    <a href="#"
+                       class="page-next"
+                       id="pageNext">
+                        다음
+                    </a>
+
                 </div>
+
             </section>
 
         </div>
@@ -116,156 +387,259 @@
 
 
 <!-- ===== FOOTER (축약형) ===== -->
-                <footer th:replace="~{fragments/footer :: footer}"></footer>
+<footer class="footer-simple">
+    <div class="footer-copyright">
+        Copyright &copy; 김철학(개발에반하다.) All rights reserved.
     </div>
-</div>
-    </div>
-</div>
+</footer>
 
 
-<!-- =========================================================
-     모달 영역 (home.html과 동일한 모달 시스템 재사용)
-     ========================================================= -->
+<!-- 문의 상세 모달 -->
+<div class="modal-overlay"
+     id="qnaDetailModal">
 
-<!-- 문의하기 모달 (No 6-1-3) -->
-<div class="modal-overlay" id="inquiryModal">
-    <div class="modal-box modal-box-small">
+    <div class="modal-box">
+
         <div class="modal-header modal-header-blue">
-            <span class="modal-title">문의하기</span>
-            <button type="button" class="modal-close" data-close="inquiryModal">&times;</button>
+
+            <span class="modal-title">
+                문의상세
+            </span>
+
+            <button type="button"
+                    class="modal-close"
+                    data-close="qnaDetailModal"
+                    aria-label="문의 상세 닫기">
+                &times;
+            </button>
+
         </div>
 
+
         <div class="modal-body">
-            <table class="modal-inquiry-table">
+
+            <table class="modal-delivery-table">
                 <tbody>
+
                 <tr>
-                    <th>문의종류</th>
-                    <td>
-                        <label class="inquiry-radio"><input type="radio" name="inquiryType" value="product"> 상품</label>
-                        <label class="inquiry-radio"><input type="radio" name="inquiryType" value="delivery"> 배송</label>
-                        <label class="inquiry-radio"><input type="radio" name="inquiryType" value="return"> 반품/취소</label>
-                        <label class="inquiry-radio"><input type="radio" name="inquiryType" value="exchange"> 교환</label>
-                        <label class="inquiry-radio"><input type="radio" name="inquiryType" value="etc"> 기타</label>
+                    <th>
+                        문의채널
+                    </th>
+
+                    <td id="qnaDetailChannel">
+                        고객센터
                     </td>
                 </tr>
+
+
                 <tr>
-                    <th>Email</th>
-                    <td><input type="email" class="inquiry-input" id="inquiryEmail" value="chh**@gmail.com"></td>
+                    <th>
+                        문의유형
+                    </th>
+
+                    <td id="qnaDetailType">
+                        -
+                    </td>
                 </tr>
+
+
                 <tr>
-                    <th>제목</th>
-                    <td><input type="text" class="inquiry-input" id="inquiryTitle"></td>
+                    <th>
+                        작성일
+                    </th>
+
+                    <td id="qnaDetailDate">
+                        -
+                    </td>
                 </tr>
+
+
                 <tr>
-                    <th>내용</th>
-                    <td><textarea class="inquiry-textarea" id="inquiryContent"></textarea></td>
+                    <th>
+                        제목
+                    </th>
+
+                    <td id="qnaDetailTitle">
+                        -
+                    </td>
                 </tr>
+
+
+                <tr>
+                    <th>
+                        내용
+                    </th>
+
+                    <td id="qnaDetailContent"
+                        class="modal-pre-wrap">
+                        -
+                    </td>
+                </tr>
+
+
+                <tr>
+                    <th>
+                        상태
+                    </th>
+
+                    <td id="qnaDetailStatus">
+                        답변대기
+                    </td>
+                </tr>
+
+
+                <tr id="qnaDetailAnswerRow"
+                    style="display:none;">
+
+                    <th>
+                        답변
+                    </th>
+
+                    <td id="qnaDetailAnswer"
+                        class="modal-pre-wrap">
+                    </td>
+
+                </tr>
+
                 </tbody>
             </table>
 
-            <div class="modal-inquiry-btn-group">
-                <button type="button" class="modal-btn-submit" id="inquirySubmitBtn">등록하기</button>
-                <button type="button" class="modal-btn-cancel" data-close="inquiryModal">취소</button>
+        </div>
+    </div>
+</div>
+
+
+<!-- 답변 내용 모달 -->
+<div class="modal-overlay"
+     id="qnaAnswerModal">
+
+    <div class="modal-box">
+
+        <div class="modal-header modal-header-blue">
+
+            <span class="modal-title">
+                답변내용
+            </span>
+
+            <button type="button"
+                    class="modal-close"
+                    data-close="qnaAnswerModal"
+                    aria-label="답변 내용 닫기">
+                &times;
+            </button>
+
+        </div>
+
+
+        <div class="modal-body">
+
+            <div class="modal-section-title">
+                문의내용
             </div>
+
+
+            <table class="modal-delivery-table">
+                <tbody>
+
+                <tr>
+                    <th>
+                        문의채널
+                    </th>
+
+                    <td id="answerChannel">
+                        고객센터
+                    </td>
+                </tr>
+
+
+                <tr>
+                    <th>
+                        문의유형
+                    </th>
+
+                    <td id="answerType">
+                        -
+                    </td>
+                </tr>
+
+
+                <tr>
+                    <th>
+                        작성일
+                    </th>
+
+                    <td id="answerDate">
+                        -
+                    </td>
+                </tr>
+
+
+                <tr>
+                    <th>
+                        제목
+                    </th>
+
+                    <td id="answerTitle">
+                        -
+                    </td>
+                </tr>
+
+
+                <tr>
+                    <th>
+                        내용
+                    </th>
+
+                    <td id="answerQuestion"
+                        class="modal-pre-wrap">
+                        -
+                    </td>
+                </tr>
+
+                </tbody>
+            </table>
+
+
+            <div class="modal-section-title modal-answer-title">
+                답변내용
+            </div>
+
+
+            <table class="modal-delivery-table">
+                <tbody>
+
+                <tr>
+                    <th>
+                        답변일
+                    </th>
+
+                    <td id="answerAnswerDate">
+                        -
+                    </td>
+                </tr>
+
+
+                <tr>
+                    <th>
+                        답변
+                    </th>
+
+                    <td id="answerContent"
+                        class="modal-pre-wrap">
+                        -
+                    </td>
+                </tr>
+
+                </tbody>
+            </table>
+
         </div>
     </div>
 </div>
 
 
-
-
-<!-- 문의상세 모달 -->
-<div class="modal-overlay" id="qnaDetailModal">
-    <div class="modal-box">
-        <div class="modal-header modal-header-blue">
-            <span class="modal-title">문의상세</span>
-            <button type="button" class="modal-close" data-close="qnaDetailModal">&times;</button>
-        </div>
-        <div class="modal-body">
-            <table class="modal-delivery-table">
-                <tbody>
-                <tr>
-                    <th style="width:100px;">문의채널</th>
-                    <td id="qnaDetailChannel">고객센터</td>
-                </tr>
-                <tr>
-                    <th>문의유형</th>
-                    <td id="qnaDetailType">주문 / 결제</td>
-                </tr>
-                <tr>
-                    <th>작성일</th>
-                    <td id="qnaDetailDate">2022-12-12</td>
-                </tr>
-                <tr>
-                    <th>제목</th>
-                    <td id="qnaDetailTitle">문의 제목</td>
-                </tr>
-                <tr>
-                    <th>내용</th>
-                    <td id="qnaDetailContent" style="white-space:pre-wrap; line-height:1.6;">문의 내용이 여기에 표시됩니다.</td>
-                </tr>
-                <tr>
-                    <th>상태</th>
-                    <td id="qnaDetailStatus">검토 중</td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
-</div>
-
-<!-- 답변내용 모달 -->
-<div class="modal-overlay" id="qnaAnswerModal">
-    <div class="modal-box">
-        <div class="modal-header modal-header-blue">
-            <span class="modal-title">답변내용</span>
-            <button type="button" class="modal-close" data-close="qnaAnswerModal">&times;</button>
-        </div>
-        <div class="modal-body">
-            <div class="modal-section-title">문의내용</div>
-            <table class="modal-delivery-table">
-                <tbody>
-                <tr>
-                    <th style="width:100px;">문의채널</th>
-                    <td id="answerChannel">고객센터</td>
-                </tr>
-                <tr>
-                    <th>문의유형</th>
-                    <td id="answerType">주문 / 결제</td>
-                </tr>
-                <tr>
-                    <th>작성일</th>
-                    <td id="answerDate">2022-12-12</td>
-                </tr>
-                <tr>
-                    <th>제목</th>
-                    <td id="answerTitle">문의 제목</td>
-                </tr>
-                <tr>
-                    <th>내용</th>
-                    <td id="answerQuestion" style="white-space:pre-wrap; line-height:1.6;">문의 내용</td>
-                </tr>
-                </tbody>
-            </table>
-
-            <div class="modal-section-title" style="margin-top:16px;">답변내용</div>
-            <table class="modal-delivery-table">
-                <tbody>
-                <tr>
-                    <th style="width:100px;">답변일</th>
-                    <td id="answerAnswerDate">2022-12-13</td>
-                </tr>
-                <tr>
-                    <th>답변</th>
-                    <td id="answerContent" style="white-space:pre-wrap; line-height:1.6;">답변 내용이 여기에 표시됩니다.</td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
-</div>
-
-<script th:src="@{/js/my/qna.js}"> </script>
+<!-- SCRIPT -->
+<script th:src="@{/js/my/qna.js}"></script>
 
 </body>
 </html>
