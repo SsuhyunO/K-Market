@@ -10,6 +10,7 @@ import lombok.*;
 @Builder
 public class ReviewDTO {
     private int reviewNo;
+    private int orderItemNo;
     private String memberUid;
     private int prodNo;
     private int rating;

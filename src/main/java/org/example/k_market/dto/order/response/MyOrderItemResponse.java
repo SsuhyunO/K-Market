@@ -26,4 +26,5 @@ public class MyOrderItemResponse {
     private String courierName;
     private String trackingNo;
     private String shipmentStatus;
+    private boolean reviewed;
 }
