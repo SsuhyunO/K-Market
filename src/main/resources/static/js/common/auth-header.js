@@ -44,7 +44,7 @@ document.addEventListener('DOMContentLoaded', async function () {
                     } else if (isSeller) {
                         // 판매자: "판매자 | 로그아웃"만 표시
                         welcomeHtml =
-                            '<a href="/K_Market/admin/product/list" id="sellerAdminLink" ' +
+                            '<a href="/K_Market/admin/main" id="sellerAdminLink" ' +
                             'style="font-size:13px; color:#1a6fd3; font-weight:700;">판매자</a>' +
                             '<span style="color:var(--color-gray-200);">|</span>' +
                             '<a href="#" id="navLogoutLink" style="font-size:13px; color:var(--color-gray-600);">로그아웃</a>';

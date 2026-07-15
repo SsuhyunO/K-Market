@@ -3,6 +3,8 @@
    공통 스타일 (header, footer, aside, base)
    ============================================= */
 
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;600;700;800&display=swap');
+
 /* ── Reset & Base ── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 

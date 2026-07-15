@@ -1,140 +1,3 @@
-/* ===== 공통 CSS 변수 (header.html에서 사용) ===== */
-:root {
-    --color-gray-600: #555555;
-    --color-gray-200: #dddddd;
-}
-
-/* ===== 공통 초기화 ===== */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-body {
-    font-family: 'Malgun Gothic', '맑은 고딕', sans-serif;
-    font-size: 14px;
-    color: #333;
-    background-color: #fff;
-}
-
-a {
-    text-decoration: none;
-    color: inherit;
-    cursor: pointer;
-}
-
-ul {
-    list-style: none;
-}
-
-/* ===== HEADER (공통 header.html 프래그먼트용) ===== */
-.header-banner {
-    background: #fdece3;
-    text-align: center;
-    padding: 8px 0;
-    font-size: 13px;
-}
-
-.banner-placeholder {
-    color: #999;
-}
-
-.header-main {
-    padding: 16px 0;
-    border-bottom: 1px solid var(--color-gray-200);
-}
-
-#header .container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 20px;
-}
-
-#header .logo-text {
-    font-size: 24px;
-    font-weight: 700;
-    color: #ff5a1f;
-    line-height: 1;
-}
-
-#header .logo-sub {
-    font-size: 11px;
-    color: #999;
-    margin-top: 2px;
-}
-
-.search-box {
-    flex: 1;
-    max-width: 480px;
-    display: flex;
-    align-items: center;
-    border: 1px solid var(--color-gray-200);
-    border-radius: 24px;
-    padding: 4px 4px 4px 16px;
-}
-
-.search-box input {
-    flex: 1;
-    border: none;
-    outline: none;
-    font-size: 13px;
-}
-
-.search-box button {
-    background: #ff5a1f;
-    border: none;
-    color: #fff;
-    cursor: pointer;
-    width: 34px;
-    height: 34px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-}
-
-.util-nav a {
-    color: var(--color-gray-600);
-}
-.util-nav a:hover {
-    color: #ff5a1f;
-}
-
-.header-nav {
-    border-top: 1px solid var(--color-gray-200);
-    border-bottom: 3px solid #ff5a1f;
-}
-
-.header-nav .container {
-    display: flex;
-    gap: 4px;
-    font-size: 14px;
-    font-weight: 600;
-}
-
-.header-nav a {
-    display: inline-block;
-    padding: 12px 20px;
-    color: #333;
-    border-bottom: 3px solid transparent;
-    margin-bottom: -3px;
-}
-
-.header-nav a:hover,
-.header-nav a[data-section].active {
-    color: #ff5a1f;
-    border-bottom-color: #ff5a1f;
-}
-
-/* ===== MAIN ===== */
-main {
-    max-width: 1200px;
-    margin: 40px auto;
-    padding: 0 40px;
-}
-
 /* 사이드바 + 콘텐츠 영역을 나란히 배치 */
 .my-wrapper {
     display: flex;
@@ -602,91 +465,6 @@ main {
     color: #999;
 }
 
-/* ===== FOOTER ===== */
-footer {
-    border-top: 1px solid #ddd;
-    margin-top: 60px;
-}
-
-.footer-info {
-    background-color: #f7f7f7;
-    padding: 24px 40px;
-}
-
-.footer-nav {
-    max-width: 1200px;
-    margin: 0 auto 20px auto;
-    display: flex;
-    gap: 24px;
-    justify-content: center;
-    font-size: 13px;
-    color: #555;
-}
-
-.footer-nav a {
-    color: #555;
-}
-
-.footer-nav a:hover {
-    text-decoration: underline;
-}
-
-.footer-info-inner {
-    max-width: 1200px;
-    margin: 0 auto;
-    display: flex;
-    gap: 60px;
-    align-items: center;
-    justify-content: center;
-}
-
-.footer-logo-box {
-    width: 100px;
-    height: 70px;
-    border: 1px solid #ddd;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #aaa;
-    font-size: 12px;
-    flex-shrink: 0;
-    background-color: #fff;
-}
-
-.footer-company {
-    font-size: 13px;
-    line-height: 2;
-    color: #555;
-}
-
-.footer-company strong {
-    font-size: 15px;
-    color: #333;
-    display: block;
-    margin-bottom: 4px;
-}
-
-.footer-cs {
-    font-size: 13px;
-    line-height: 2;
-    color: #555;
-}
-
-.footer-cs strong {
-    font-size: 15px;
-    color: #333;
-    display: block;
-    margin-bottom: 4px;
-}
-
-.footer-copyright {
-    text-align: center;
-    padding: 16px;
-    font-size: 12px;
-    color: #aaa;
-    border-top: 1px solid #eee;
-}
-
 
 /* =========================================================
    모달 공통 베이스
@@ -1112,4 +890,83 @@ footer {
 .review-file-name {
     font-size: 12px;
     color: #888;
+}
+
+/* =========================================================
+   마이페이지 홈 최근 문의내역
+   ========================================================= */
+
+.inquiry-list-table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+}
+
+.inquiry-list-table th {
+    padding: 10px 8px;
+    border-bottom: 1px solid #ddd;
+    background-color: #f7f7f7;
+    color: #555;
+    font-size: 13px;
+    font-weight: 700;
+    text-align: center;
+}
+
+.inquiry-list-table td {
+    height: 42px;
+    padding: 10px 8px;
+    overflow: hidden;
+    border-bottom: 1px solid #f0f0f0;
+    color: #555;
+    font-size: 13px;
+    text-align: center;
+    text-overflow: ellipsis;
+    vertical-align: middle;
+    white-space: nowrap;
+}
+
+.inquiry-list-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.inquiry-list-table tbody tr:hover td {
+    background-color: #fafafa;
+}
+
+.inquiry-list-table .inquiry-empty {
+    height: auto;
+    padding: 18px 0;
+    color: #777;
+    text-align: center;
+}
+
+.inquiry-title {
+    text-align: center;
+}
+
+.inquiry-title a {
+    display: inline-block;
+    max-width: 100%;
+    overflow: hidden;
+    color: #333;
+    text-decoration: none;
+    text-overflow: ellipsis;
+    vertical-align: middle;
+    white-space: nowrap;
+}
+
+.inquiry-title a:hover {
+    color: #4a90d9;
+    text-decoration: underline;
+}
+
+.inquiry-status-checking {
+    color: #aaa;
+    font-size: 12px;
+}
+
+.inquiry-status-done {
+    color: #4caf50;
+    font-size: 12px;
+    font-weight: 700;
 }
