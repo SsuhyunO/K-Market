@@ -2,6 +2,9 @@ package org.example.k_market.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+
+import java.time.LocalDateTime;
 
 @Getter
 @ToString
@@ -15,6 +18,7 @@ public class Claim {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int claimNo;
 
+    private int orderNo;
     private int orderItemNo;
     @Column(length = 30)
     private String claimType;
@@ -23,4 +27,7 @@ public class Claim {
     private int quantity;
     @Column(length = 30, nullable = false)
     private String claimStatus;
+    @CreationTimestamp
+    private LocalDateTime requestedAt;
+    private LocalDateTime processedAt;
 }

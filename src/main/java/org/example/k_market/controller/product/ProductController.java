@@ -10,6 +10,7 @@ import org.example.k_market.dto.product.response.ProductViewPageResponse;
 import org.example.k_market.entity.Member;
 import org.example.k_market.service.CategoryService;
 import org.example.k_market.service.MemberService;
+import org.example.k_market.service.PointService;
 import org.example.k_market.service.admin.CouponIssueService;
 import org.example.k_market.service.order.OrderService;
 import org.example.k_market.service.product.ProductViewPageReader;
@@ -29,6 +30,7 @@ import java.util.Map;
 public class ProductController {
 
     private final MemberService memberService;
+    private final PointService pointService;
     private final OrderService orderService;
     private final CouponIssueService couponIssueService;
     private final CategoryService categoryService;
@@ -93,7 +95,7 @@ public class ProductController {
         model.addAttribute("recvZip", member.getZipCode());
         model.addAttribute("recvAddr1", member.getAddr1());
         model.addAttribute("recvAddr2", member.getAddr2());
-        model.addAttribute("availablePoint", member.getPointBalance());
+        model.addAttribute("availablePoint", pointService.getBalance(memberUid));
 
         // 3. 쿠폰
         model.addAttribute("availableCoupons", couponIssueService.getAvailableCoupons(member.getUid(), orderItems));

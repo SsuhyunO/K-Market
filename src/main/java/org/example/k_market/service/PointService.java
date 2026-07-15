@@ -51,6 +51,7 @@ public class PointService {
             .build();
 
         pointDAO.insertPoint(usage);
+        pointDAO.updateMemberPointBalance(memberUid);
     }
 
     @Transactional
@@ -67,6 +68,7 @@ public class PointService {
             .build();
 
         pointDAO.insertPoint(earn);
+        pointDAO.updateMemberPointBalance(memberUid);
     }
 
     public int getBalance(String memberUid) {

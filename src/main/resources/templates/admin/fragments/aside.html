@@ -78,7 +78,8 @@
         <details class="nav-item" data-menu="order"
                  th:if="${loginMemberType == 'ADMIN' or loginMemberType == 'SELLER'}"
                  th:attr="open=${category.name() == 'ORDER_STATUS'
-                    or category.name() == 'DELIVERY_STATUS'} ? 'open' : null">
+                    or category.name() == 'DELIVERY_STATUS'
+                    or category.name() == 'CLAIM_STATUS'} ? 'open' : null">
             <summary class="nav-link">
                 <span class="nav-icon">🛒</span>주문관리
                 <span class="nav-arrow">›</span>
@@ -86,6 +87,7 @@
             <ul class="sub-menu">
                 <li><a th:href="@{/admin/order/order-list}">주문현황</a></li>
                 <li><a th:href="@{/admin/order/delivery-list}">배송현황</a></li>
+                <li><a th:href="@{/admin/order/claim-list}">클레임관리</a></li>
             </ul>
         </details>
 

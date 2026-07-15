@@ -80,6 +80,9 @@ function initActions() {
     document.getElementById('exchangeSubmitBtn')?.addEventListener('click', () => {
         submitClaim('EXCHANGE', 'exchangeType', 'exchangeReason', 'exchangeRequestModal').catch(errorHandler);
     });
+    document.getElementById('orderCancelBtn')?.addEventListener('click', () => {
+        cancelOrder().catch(errorHandler);
+    });
 }
 
 async function loadOrders(page) {
@@ -149,13 +152,8 @@ function renderOrderRows(items) {
 
 function actionButtons(item) {
     const buttons = [];
-    if (['SHIPPING', 'DELIVERED'].includes(item.itemStatus)) {
+    if (item.itemStatus === 'DELIVERED') {
         buttons.push('<a href="#" class="btn-blue js-confirm-purchase">구매확정</a>');
-    }
-    if (item.itemStatus === 'DELIVERED' || item.itemStatus === 'CONFIRMED') {
-        buttons.push('<a href="#" class="btn-blue js-write-review">상품평쓰기</a>');
-    }
-    if (['SHIPPING', 'DELIVERED', 'CONFIRMED'].includes(item.itemStatus)) {
         buttons.push('<a href="#" class="btn-white js-return-request">반품요청</a>');
         buttons.push('<a href="#" class="btn-white js-exchange-request">교환요청</a>');
     }
@@ -198,6 +196,10 @@ function renderDetailModal(item) {
     setText('detailPayBase', `${formatNumber(item.price)}원`);
     setText('detailPayTotal', `${formatNumber(item.total)}원`);
     setText('detailStatus', renderStatus(item.itemStatus));
+    const cancelButton = document.getElementById('orderCancelBtn');
+    if (cancelButton) {
+        cancelButton.hidden = !['PAID', 'READY', 'SHIPPING'].includes(item.itemStatus);
+    }
 }
 
 function renderClaimModal(type, item) {
@@ -229,6 +231,16 @@ async function submitClaim(claimType, radioName, reasonId, modalId) {
     await loadOrders(currentPage);
 }
 
+async function cancelOrder() {
+    if (!activeItem) return;
+    if (!confirm('해당 주문을 취소하시겠습니까? 배송중인 배송건은 배송취소 상태로 변경됩니다.')) {
+        return;
+    }
+    await postJson(`${contextPath()}my/order/api/orders/${activeItem.orderNo}/cancel`, {});
+    closeModal('orderDetailModal');
+    await loadOrders(currentPage);
+}
+
 async function fetchJson(url) {
     const response = await fetch(url, { headers: { Accept: 'application/json' } });
     const json = await response.json().catch(() => ({}));
@@ -254,17 +266,20 @@ function renderThumb(fileId) {
 function renderStatus(status) {
     return {
         PAID: '결제완료',
-        READY: '상품준비중',
+        READY: '배송준비',
         SHIPPING: '배송중',
         PARTIAL_SHIPPING: '부분배송중',
         DELIVERED: '배송완료',
         CONFIRMED: '구매확정',
         RETURN_REQUESTED: '반품요청',
+        RETURN_SHIPPING: '반품 반송중',
         EXCHANGE_REQUESTED: '교환요청',
+        EXCHANGE_SHIPPING: '교환 반송중',
+        EXCHANGE_WAITING: '상품대기중',
         CANCEL_REQUESTED: '취소요청',
         RETURNED: '반품완료',
         EXCHANGED: '교환완료',
-        CANCELED: '취소완료'
+        CANCELED: '주문취소'
     }[status] || status || '-';
 }
 

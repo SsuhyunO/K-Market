@@ -16,4 +16,6 @@ public class ClaimDTO {
     private Integer fileId;
     private int quantity;
     private String claimStatus;
+    private String requestedAt;
+    private String processedAt;
 }

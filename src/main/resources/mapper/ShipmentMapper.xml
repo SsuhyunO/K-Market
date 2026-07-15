@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.example.k_market.dao.ShipmentDAO">
+
+    <update id="updateShipmentsStatusByOrderNo">
+        UPDATE shipment
+        SET status = #{status}
+        WHERE orderNo = #{orderNo}
+          AND status IN ('READY', 'SHIPPING')
+    </update>
+
+    <insert id="insertShipment" parameterType="org.example.k_market.dto.order.ShipmentDTO"
+            useGeneratedKeys="true" keyProperty="shipmentNo">
+        INSERT INTO shipment (
+            orderNo, sellerUid, courierName, trackingNo, status, shippedAt, createdAt
+        ) VALUES (
+            #{orderNo},
+            #{sellerUid},
+            #{courierName},
+            #{trackingNo},
+            #{status},
+            CASE WHEN #{status} = 'SHIPPING' THEN NOW() ELSE NULL END,
+            NOW()
+        )
+    </insert>
+
+    <insert id="insertShipmentItems">
+        INSERT INTO shipment_item (shipmentNo, orderItemNo, quantity)
+        VALUES
+        <foreach collection="items" item="item" separator=",">
+            (#{item.shipmentNo}, #{item.orderItemNo}, #{item.quantity})
+        </foreach>
+    </insert>
+
+    <update id="updateReadyShipmentsToShipping">
+        UPDATE shipment
+        SET status = 'SHIPPING',
+            shippedAt = COALESCE(shippedAt, NOW())
+        WHERE status = 'READY'
+          AND createdAt &lt;= DATE_SUB(NOW(), INTERVAL 1 DAY)
+    </update>
+
+    <update id="updateShippingShipmentsToDelivered">
+        UPDATE shipment
+        SET status = 'DELIVERED',
+            deliveredAt = COALESCE(deliveredAt, NOW())
+        WHERE status = 'SHIPPING'
+          AND createdAt &lt;= DATE_SUB(NOW(), INTERVAL 3 DAY)
+    </update>
+
+    <update id="updateReturnShippingShipmentsToReturned">
+        UPDATE shipment
+        SET status = 'RETURNED',
+            deliveredAt = COALESCE(deliveredAt, NOW())
+        WHERE status = 'RETURN_SHIPPING'
+          AND createdAt &lt;= DATE_SUB(NOW(), INTERVAL 3 DAY)
+    </update>
+
+    <update id="updateExchangeShippingShipmentsToWaiting">
+        UPDATE shipment
+        SET status = 'EXCHANGE_WAITING',
+            deliveredAt = COALESCE(deliveredAt, NOW())
+        WHERE status = 'EXCHANGE_SHIPPING'
+          AND createdAt &lt;= DATE_SUB(NOW(), INTERVAL 3 DAY)
+    </update>
+
+    <update id="updateOrderItemsStatusByShipmentStatus">
+        UPDATE order_item oi
+        JOIN shipment_item si ON si.orderItemNo = oi.orderItemNo
+        JOIN shipment sh ON sh.shipmentNo = si.shipmentNo
+        SET oi.itemStatus = #{itemStatus}
+        WHERE sh.status = #{shipmentStatus}
+          AND (
+              (
+                  #{shipmentStatus} IN ('SHIPPING', 'DELIVERED')
+                  AND oi.itemStatus NOT IN (
+                      'CONFIRMED',
+                      'RETURN_REQUESTED',
+                      'EXCHANGE_REQUESTED',
+                      'CANCEL_REQUESTED',
+                      'RETURN_SHIPPING',
+                      'EXCHANGE_SHIPPING',
+                      'EXCHANGE_WAITING',
+                      'RETURNED',
+                      'EXCHANGED',
+                      'CANCELED'
+                  )
+              )
+              OR (#{shipmentStatus} = 'RETURNED' AND oi.itemStatus = 'RETURN_SHIPPING')
+              OR (#{shipmentStatus} = 'EXCHANGE_WAITING' AND oi.itemStatus = 'EXCHANGE_SHIPPING')
+          )
+    </update>
+
+    <update id="updateShipmentStatusByOrderItemNo">
+        UPDATE shipment sh
+        JOIN shipment_item si ON si.shipmentNo = sh.shipmentNo
+        SET sh.status = #{status},
+            sh.shippedAt = CASE
+                WHEN #{status} IN ('RETURN_SHIPPING', 'EXCHANGE_SHIPPING') THEN COALESCE(sh.shippedAt, NOW())
+                ELSE sh.shippedAt
+            END,
+            sh.deliveredAt = CASE
+                WHEN #{status} IN ('RETURNED', 'EXCHANGE_WAITING') THEN COALESCE(sh.deliveredAt, NOW())
+                ELSE sh.deliveredAt
+            END
+        WHERE si.orderItemNo = #{orderItemNo}
+          AND sh.shipmentNo = (
+              SELECT latest.shipmentNo
+              FROM (
+                  SELECT sh2.shipmentNo
+                  FROM shipment sh2
+                  JOIN shipment_item si2 ON si2.shipmentNo = sh2.shipmentNo
+                  WHERE si2.orderItemNo = #{orderItemNo}
+                  ORDER BY sh2.shipmentNo DESC
+                  LIMIT 1
+              ) latest
+          )
+    </update>
+
+    <select id="selectOrderNosByShipmentStatus" resultType="int">
+        SELECT DISTINCT orderNo
+        FROM shipment
+        WHERE status = #{shipmentStatus}
+    </select>
+
+    <sql id="shipmentSearchCondition">
+        <where>
+            <if test="searchType != null and keyword != null">
+                <if test="sellerUid != null and sellerUid != ''">
+                    sh.sellerUid = #{sellerUid}
+                    AND
+                </if>
+                <choose>
+                    <when test="searchType == 'trackingNo'">
+                        sh.trackingNo LIKE CONCAT('%', #{keyword}, '%')
+                    </when>
+                    <when test="searchType == 'orderNo'">
+                        sh.orderNo = #{keyword}
+                    </when>
+                    <when test="searchType == 'receiver'">
+                        o.receiver LIKE CONCAT('%', #{keyword}, '%')
+                    </when>
+                </choose>
+            </if>
+            <if test="(searchType == null or keyword == null) and sellerUid != null and sellerUid != ''">
+                sh.sellerUid = #{sellerUid}
+            </if>
+        </where>
+    </sql>
+
+    <select id="selectShipments" resultType="org.example.k_market.dto.order.response.ShipmentListResponse">
+        SELECT
+            sh.shipmentNo,
+            oi.orderItemNo,
+            sh.orderNo,
+            oi.sellerUid,
+            s.companyName AS sellerName,
+            oi.prodNo AS prodNo,
+            oi.productName AS prodName,
+            p.thumb1FileId,
+            si.quantity,
+            oi.total AS itemTotal,
+            oi.shippingFee,
+            oi.itemStatus,
+            o.receiver,
+            o.phone,
+            CONCAT('[', o.zipCode, '] ', o.addr1, ' ', COALESCE(o.addr2, '')) AS address,
+            sh.courierName,
+            sh.trackingNo,
+            sh.status,
+            sh.shippedAt,
+            sh.createdAt,
+            si.quantity AS itemCount
+        FROM shipment sh
+        JOIN `order` o ON o.orderNo = sh.orderNo
+        JOIN shipment_item si ON si.shipmentNo = sh.shipmentNo
+        JOIN order_item oi ON oi.orderItemNo = si.orderItemNo
+        LEFT JOIN product p ON p.prodNo = oi.prodNo
+        LEFT JOIN seller s ON s.uid = oi.sellerUid
+        <include refid="shipmentSearchCondition"/>
+        ORDER BY sh.shipmentNo DESC, oi.orderItemNo ASC
+        LIMIT #{limit} OFFSET #{offset}
+    </select>
+
+    <select id="selectShipmentCount" resultType="int">
+        SELECT COUNT(*)
+        FROM shipment sh
+        JOIN `order` o ON o.orderNo = sh.orderNo
+        JOIN shipment_item si ON si.shipmentNo = sh.shipmentNo
+        JOIN order_item oi ON oi.orderItemNo = si.orderItemNo
+        LEFT JOIN product p ON p.prodNo = oi.prodNo
+        LEFT JOIN seller s ON s.uid = oi.sellerUid
+        <include refid="shipmentSearchCondition"/>
+    </select>
+
+    <select id="selectShipmentByNo" resultType="org.example.k_market.dto.order.response.ShipmentListResponse">
+        SELECT
+            sh.shipmentNo,
+            sh.orderNo,
+            sh.sellerUid,
+            s.companyName AS sellerName,
+            o.receiver,
+            o.phone,
+            CONCAT('[', o.zipCode, '] ', o.addr1, ' ', COALESCE(o.addr2, '')) AS address,
+            sh.courierName,
+            sh.trackingNo,
+            sh.status,
+            sh.shippedAt,
+            sh.createdAt,
+            COALESCE(SUM(si.quantity), 0) AS itemCount
+        FROM shipment sh
+        JOIN `order` o ON o.orderNo = sh.orderNo
+        LEFT JOIN seller s ON s.uid = sh.sellerUid
+        LEFT JOIN shipment_item si ON si.shipmentNo = sh.shipmentNo
+        WHERE sh.shipmentNo = #{shipmentNo}
+        <if test="sellerUid != null and sellerUid != ''">
+            AND sh.sellerUid = #{sellerUid}
+        </if>
+        GROUP BY sh.shipmentNo, sh.orderNo, sh.sellerUid, s.companyName, o.receiver, o.phone,
+                 o.zipCode, o.addr1, o.addr2, sh.courierName, sh.trackingNo, sh.status, sh.shippedAt, sh.createdAt
+    </select>
+
+    <select id="selectShipmentLines" resultType="org.example.k_market.dto.order.response.OrderLineResponse">
+        SELECT
+            oi.orderItemNo,
+            oi.orderNo,
+            oi.prodVariantId,
+            oi.prodNo AS prodNo,
+            oi.productName AS prodName,
+            oi.optionText,
+            p.thumb1FileId,
+            oi.sellerUid,
+            s.companyName AS sellerName,
+            si.quantity AS count,
+            oi.originalPrice AS originalPrice,
+            oi.discountRate AS discountRate,
+            GREATEST((oi.originalPrice * si.quantity) - (oi.price * si.quantity), 0) AS discountAmount,
+            oi.price,
+            oi.total,
+            oi.shippingFee,
+            oi.itemStatus,
+            sh.shipmentNo,
+            sh.courierName,
+            sh.trackingNo,
+            sh.status AS shipmentStatus,
+            o.createdAt
+        FROM shipment_item si
+        JOIN shipment sh ON sh.shipmentNo = si.shipmentNo
+        JOIN order_item oi ON oi.orderItemNo = si.orderItemNo
+        JOIN `order` o ON o.orderNo = oi.orderNo
+        LEFT JOIN product p ON p.prodNo = oi.prodNo
+        LEFT JOIN seller s ON s.uid = oi.sellerUid
+        WHERE si.shipmentNo = #{shipmentNo}
+        <if test="sellerUid != null and sellerUid != ''">
+            AND oi.sellerUid = #{sellerUid}
+        </if>
+        ORDER BY oi.orderItemNo ASC
+    </select>
+
+</mapper>
