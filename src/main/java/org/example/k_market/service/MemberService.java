@@ -42,7 +42,7 @@ public class MemberService {
         String encodedPassword = passwordEncoder.encode(request.getPassword());
 
         // 3) 일반회원으로 가입 (판매자는 별도 절차로 나중에 처리)
-        Member member = request.toEntity(encodedPassword, "NORMAL", regIp);
+        Member member = request.toEntity(encodedPassword, "MEMBER", regIp);
 
         // 4) DB 저장
         memberRepository.save(member);

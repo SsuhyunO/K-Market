@@ -2,16 +2,14 @@ package org.example.k_market.controller.review;
 
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import org.example.k_market.dto.ReviewDTO;
 import org.example.k_market.dto.pagination.response.PageResponse;
 import org.example.k_market.dto.review.response.ReviewListResponse;
 import org.example.k_market.service.review.ReviewService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
 @RestController
@@ -44,5 +42,19 @@ public class ReviewApiController {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "로그인이 필요합니다.");
         }
         return memberUid;
+    }
+
+    @PostMapping("/write")
+    public ResponseEntity<Void> writeReview(
+            @ModelAttribute ReviewDTO reviewDTO,
+            @RequestParam(required = false) MultipartFile photo,
+            HttpSession session
+    ) {
+        String memberUid = getLoginMemberUid(session);
+        reviewDTO.setMemberUid(memberUid);
+
+        reviewService.writeReview(reviewDTO, photo);
+
+        return ResponseEntity.ok().build();
     }
 }

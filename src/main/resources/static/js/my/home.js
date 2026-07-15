@@ -17,6 +17,18 @@ function initModals() {
             if (event.target === overlay) closeModal(overlay.id);
         });
     });
+
+    document.querySelectorAll('#reviewStarRating .star').forEach(star => {
+        star.addEventListener('click', () => {
+            const value = Number(star.dataset.value);
+            document.querySelectorAll('#reviewStarRating .star').forEach(s => {
+                s.classList.toggle('star-filled', Number(s.dataset.value) <= value);
+            });
+        });
+    });
+    document.querySelector('#reviewWriteModal .review-file-input')?.addEventListener('change', function () {
+        document.getElementById('reviewFileName1').textContent = this.files.length > 0 ? this.files[0].name : '선택된파일없음';
+    });
 }
 
 function initRecentOrderActions() {
@@ -42,6 +54,10 @@ function initRecentOrderActions() {
             event.preventDefault();
             fillClaimModal('exchange', activeItem);
             openModal('exchangeRequestModal');
+        } else if (event.target.closest('.js-write-review')) {
+            event.preventDefault();
+            fillReviewModal(activeItem);
+            openModal('reviewWriteModal');
         }
     });
 
@@ -57,6 +73,9 @@ function initRecentOrderActions() {
     });
     document.getElementById('exchangeSubmitBtn')?.addEventListener('click', () => {
         submitClaim('EXCHANGE', 'exchangeType', 'exchangeReason', 'exchangeRequestModal').catch(errorHandler);
+    });
+    document.getElementById('reviewSubmitBtn')?.addEventListener('click', () => {
+        submitReview().catch(errorHandler);
     });
 }
 
@@ -139,6 +158,17 @@ function fillClaimModal(type, item) {
     setText(`${prefix}Price`, `${formatNumber(item.total)}원`);
 }
 
+function fillReviewModal(item) {
+    const nameEl = document.getElementById('reviewProductName');
+    nameEl.textContent = item.productName || '-';
+    nameEl.dataset.prodNo = item.prodNo;
+
+    document.querySelectorAll('#reviewStarRating .star').forEach(s => s.classList.remove('star-filled'));
+    document.getElementById('reviewContent').value = '';
+    document.getElementById('reviewFileName1').textContent = '선택된파일없음';
+    document.querySelector('#reviewWriteModal .review-file-input').value = '';
+}
+
 async function submitClaim(claimType, radioName, reasonId, modalId) {
     if (!activeItem) return;
     const reasonType = document.querySelector(`input[name="${radioName}"]:checked`)?.value;
@@ -156,6 +186,48 @@ async function submitClaim(claimType, radioName, reasonId, modalId) {
     closeModal(modalId);
     document.getElementById(reasonId).value = '';
     await loadRecentOrders();
+}
+
+async function submitReview() {
+    if (!activeItem) return;
+
+    const content = document.getElementById('reviewContent').value.trim();
+    const rating = document.querySelectorAll('#reviewStarRating .star.star-filled').length;
+    const prodNo = document.getElementById('reviewProductName').dataset.prodNo;
+
+    if (content.length < 10) {
+        alert('최소 10자 이상 작성해주세요.');
+        return;
+    }
+    if (rating === 0) {
+        alert('별점을 선택해주세요.');
+        return;
+    }
+
+    const formData = new FormData();
+    formData.append('prodNo', prodNo);
+    formData.append('rating', rating);
+    formData.append('content', content);
+
+    const fileInput = document.querySelector('#reviewWriteModal .review-file-input');
+    if (fileInput.files.length > 0) {
+        formData.append('photo', fileInput.files[0]);
+    }
+
+    await postForm(`${contextPath()}review/api/write`, formData);
+    closeModal('reviewWriteModal');
+    await loadRecentOrders();
+}
+
+async function postForm(url, formData) {
+    const response = await fetch(url, {
+        method: 'POST',
+        headers: { Accept: 'application/json' },
+        body: formData
+    });
+    const json = await response.json().catch(() => ({}));
+    if (!response.ok) throw new Error(json.message || `Request failed: ${response.status}`);
+    return json;
 }
 
 async function fetchJson(url) {

@@ -1,16 +1,21 @@
 package org.example.k_market.service.review;
 
 import lombok.RequiredArgsConstructor;
+import org.example.k_market.dao.ReviewDAO;
+import org.example.k_market.dto.ReviewDTO;
+import org.example.k_market.dto.admin.FileDTO;
 import org.example.k_market.dto.pagination.response.PageResponse;
 import org.example.k_market.dto.review.response.ReviewListResponse;
 import org.example.k_market.entity.Review;
 import org.example.k_market.repository.ReviewRepository;
+import org.example.k_market.service.admin.FileService;
 import org.example.k_market.service.pagination.PageQuery;
 import org.example.k_market.service.pagination.PaginationService;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -24,6 +29,8 @@ public class ReviewService {
 
     private final ReviewRepository reviewRepository;
     private final PaginationService paginationService;
+    private final ReviewDAO reviewDAO;
+    private final FileService fileService;
 
     public List<ReviewListResponse> getRecentReviewsByMemberId(String memberUid) {
         Pageable pageable = PageRequest.of(0, MY_PAGE_REVIEW_SIZE, Sort.by("createdAt").descending());
@@ -113,5 +120,16 @@ public class ReviewService {
             return memberUid.charAt(0) + "*";
         }
         return memberUid.substring(0, 2) + "*".repeat(memberUid.length() - 2);
+    }
+
+    public void writeReview(ReviewDTO reviewDTO, MultipartFile photo) {
+
+        FileDTO fileDTO = fileService.uploadFile(photo); // 사진 없으면 null 반환
+
+        if (fileDTO != null) {
+            reviewDTO.setFileId(fileDTO.getId());
+        }
+
+        reviewDAO.insertReview(reviewDTO);
     }
 }

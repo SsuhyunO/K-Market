@@ -395,6 +395,7 @@
             o.createdAt,
             oi.sellerUid,
             s.companyName AS sellerName,
+            p.prodNo,
             p.prodName AS productName,
             p.thumb1FileId,
             oi.count AS quantity,
