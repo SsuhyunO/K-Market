@@ -1,15 +1,160 @@
-.write-form{border-top:2px solid #333;border-bottom:1px solid #ddd}
-.form-row{padding:20px 18px;border-bottom:1px solid #e8e8e8}
-.form-row>label{display:block;margin-bottom:10px;font-weight:700}
-.required{color:var(--km-red)}
-.select-group{display:flex;gap:10px}
-.select-group select,.form-row input,.form-row textarea{width:100%;border:1px solid #ccc;border-radius:4px;outline:none}
-.select-group select,.form-row input{height:42px;padding:0 12px}
-.form-row textarea{min-height:260px;padding:14px;line-height:22px;resize:vertical}
-.select-group select:focus,.form-row input:focus,.form-row textarea:focus{border-color:var(--km-red)}
-.field-help{margin-top:8px;font-size:11px;color:#999}
-.field-error{min-height:16px;margin-top:6px;font-size:11px;color:#d93025}
-.textarea-info{display:flex;justify-content:space-between}
-.qna-notice{margin:20px 18px;padding:16px 18px;border:1px solid #eee0d9;border-radius:5px;background:#fff8f5}
-.qna-notice strong{display:block;margin-bottom:8px;color:#d73b0c}
-.qna-notice li{margin-top:6px;font-size:11px;color:#777}
+/* 문의 작성 폼 */
+.write-form {
+    width: 100%;
+    border-top: 2px solid #333;
+    border-bottom: 1px solid var(--km-line);
+    background: var(--km-white);
+}
+
+/* 입력 행 */
+.form-row {
+    padding: 20px 18px;
+    border-bottom: 1px solid #e8e8e8;
+}
+
+.form-row:last-child {
+    border-bottom: 0;
+}
+
+/* 입력 항목 제목 */
+.form-row > label {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: 700;
+    line-height: 20px;
+    color: var(--km-text);
+}
+
+/* 필수 입력 표시 */
+.required {
+    margin-left: 2px;
+    color: var(--km-red);
+}
+
+/* 문의 유형 선택 영역 */
+.select-group {
+    display: flex;
+    gap: 10px;
+    width: 100%;
+}
+
+.select-group select {
+    flex: 1;
+    min-width: 0;
+}
+
+/* 입력 요소 공통 */
+.select-group select,
+.form-row input,
+.form-row textarea {
+    width: 100%;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    color: var(--km-text);
+    background: var(--km-white);
+    outline: none;
+    transition:
+            border-color 0.15s ease,
+            box-shadow 0.15s ease,
+            background-color 0.15s ease;
+}
+
+/* 셀렉트 및 입력창 */
+.select-group select,
+.form-row input {
+    height: 42px;
+    padding: 0 12px;
+}
+
+/* 문의 내용 입력창 */
+.form-row textarea {
+    min-height: 260px;
+    padding: 14px;
+    line-height: 22px;
+    resize: vertical;
+}
+
+/* 입력 요소 포커스 */
+.select-group select:focus,
+.form-row input:focus,
+.form-row textarea:focus {
+    border-color: var(--km-red);
+    box-shadow: 0 0 0 2px rgba(232, 56, 13, 0.1);
+}
+
+/* 입력 요소 오류 상태 */
+.select-group select.is-error,
+.form-row input.is-error,
+.form-row textarea.is-error {
+    border-color: #d93025;
+    background: #fffafa;
+}
+
+/* 입력 도움말 */
+.field-help {
+    margin-top: 8px;
+    font-size: 11px;
+    line-height: 16px;
+    color: #999;
+}
+
+/* 입력 오류 메시지 */
+.field-error {
+    min-height: 16px;
+    margin-top: 6px;
+    font-size: 11px;
+    line-height: 16px;
+    color: #d93025;
+}
+
+/* 문의 내용 안내 정보 */
+.textarea-info {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+/* 문의 작성 안내 박스 */
+.qna-notice {
+    margin: 20px 18px;
+    padding: 16px 18px;
+    border: 1px solid #eee0d9;
+    border-radius: 5px;
+    background: #fff8f5;
+}
+
+/* 문의 작성 안내 제목 */
+.qna-notice strong {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 13px;
+    line-height: 20px;
+    color: #d73b0c;
+}
+
+/* 문의 작성 안내 목록 */
+.qna-notice li {
+    position: relative;
+    margin-top: 6px;
+    padding-left: 10px;
+    font-size: 11px;
+    line-height: 18px;
+    color: #777;
+}
+
+.qna-notice li::before {
+    position: absolute;
+    top: 8px;
+    left: 0;
+    width: 3px;
+    height: 3px;
+    border-radius: 50%;
+    background: #999;
+    content: "";
+}
+
+/* 문의 작성 버튼 영역 */
+.qna-write-btn-area {
+    padding: 0 18px 22px;
+}

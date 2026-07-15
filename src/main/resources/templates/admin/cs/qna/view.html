@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <title>KMarket 문의하기 보기</title>
 
@@ -39,32 +41,60 @@
 
             <th:block th:fragment="content">
 
+                <!-- 처리 완료 메시지 -->
                 <script th:if="${message}"
                         th:inline="javascript">
                     alert([[${message}]]);
                 </script>
 
+                <!-- 문의글 상세 정보 -->
                 <table class="section-table cs-view-table">
 
                     <tbody>
 
                     <tr>
                         <th>번호</th>
-                        <td th:text="${qna.boardNo}"></td>
+                        <td th:text="${qna.boardNo}">
+                            0
+                        </td>
                     </tr>
 
                     <tr>
                         <th>유형</th>
                         <td>
-                            <span th:text="${qna.category1}"></span>
-                            <span> - </span>
-                            <span th:text="${qna.category2}"></span>
+                            <span th:text="${qna.category1}">
+                                1차 유형
+                            </span>
+
+                            <span th:if="${!#strings.isEmpty(qna.category2)}">
+                                -
+                            </span>
+
+                            <span th:if="${!#strings.isEmpty(qna.category2)}"
+                                  th:text="${qna.category2}">
+                                2차 유형
+                            </span>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <th>상태</th>
+                        <td>
+                            <span class="cs-qna-status"
+                                  th:classappend="${qna.answered}
+                                      ? ' answered'
+                                      : ' waiting'"
+                                  th:text="${qna.status}">
+                                검토중
+                            </span>
                         </td>
                     </tr>
 
                     <tr>
                         <th>작성자</th>
-                        <td th:text="${qna.maskedMemberUid}"></td>
+                        <td th:text="${qna.maskedMemberUid}">
+                            -
+                        </td>
                     </tr>
 
                     <tr>
@@ -75,36 +105,46 @@
                                 'yyyy.MM.dd HH:mm'
                             )
                             : '-'}">
+                            -
                         </td>
                     </tr>
 
                     <tr>
                         <th>제목</th>
-                        <td th:text="${qna.title}"></td>
+                        <td th:text="${qna.title}">
+                            문의 제목
+                        </td>
                     </tr>
 
                     <tr>
                         <th>내용</th>
                         <td class="cs-view-content"
                             th:text="${qna.content}">
+                            문의 내용
                         </td>
                     </tr>
 
                     <tr>
                         <th>답변</th>
+
                         <td class="cs-view-content"
-                            th:text="${qna.answer}">
+                            th:text="${qna.answered
+                                ? qna.answer
+                                : '아직 등록된 답변이 없습니다.'}">
+                            아직 등록된 답변이 없습니다.
                         </td>
                     </tr>
 
                     <tr>
                         <th>답변일</th>
+
                         <td th:text="${qna.answeredAt != null
                             ? #temporals.format(
                                 qna.answeredAt,
                                 'yyyy.MM.dd HH:mm'
                             )
                             : '-'}">
+                            -
                         </td>
                     </tr>
 
@@ -112,10 +152,11 @@
 
                 </table>
 
+                <!-- 문의글 삭제 폼 -->
                 <form id="qna-delete-form"
                       th:action="@{/admin/cs/qna/delete}"
                       method="post"
-                      style="display:none;">
+                      hidden>
 
                     <input type="hidden"
                            name="boardNo"
@@ -123,6 +164,7 @@
 
                 </form>
 
+                <!-- 하단 버튼 -->
                 <div th:replace="~{admin/fragments/action-bar::action-bar(
                             ~{::actions}
                         )}">
@@ -139,8 +181,11 @@
                                 type="button"
                                 th:data-cs-link="@{/admin/cs/qna/reply(
                                     boardNo=${qna.boardNo}
-                                )}">
-                            답변수정
+                                )}"
+                                th:text="${qna.answered
+                                    ? '답변수정'
+                                    : '답변등록'}">
+                            답변등록
                         </button>
 
                         <button class="cs-board-button primary"
@@ -154,18 +199,16 @@
                 </div>
 
                 <script>
-                    document.addEventListener('DOMContentLoaded', () => {
-
+                    document.addEventListener("DOMContentLoaded", () => {
                         const deleteButton =
-                            document.getElementById('qna-delete-button');
+                            document.getElementById("qna-delete-button");
 
                         const deleteForm =
-                            document.getElementById('qna-delete-form');
+                            document.getElementById("qna-delete-form");
 
-                        deleteButton?.addEventListener('click', () => {
-
+                        deleteButton?.addEventListener("click", () => {
                             const confirmed = confirm(
-                                '문의글을 삭제하시겠습니까?'
+                                "문의글을 삭제하시겠습니까?"
                             );
 
                             if (confirmed) {

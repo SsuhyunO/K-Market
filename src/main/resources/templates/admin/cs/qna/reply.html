@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <title>KMarket 문의하기 답변</title>
 
@@ -39,9 +41,10 @@
 
             <th:block th:fragment="content">
 
-                <!-- 답변 등록 폼 -->
+                <!-- 관리자 답변 등록 및 수정 폼 -->
                 <form th:action="@{/admin/cs/qna/reply}"
-                      method="post">
+                      method="post"
+                      id="qna-reply-form">
 
                     <input type="hidden"
                            name="boardNo"
@@ -53,32 +56,73 @@
 
                         <tr>
                             <th>번호</th>
-                            <td th:text="${qna.boardNo}"></td>
+                            <td th:text="${qna.boardNo}">
+                                0
+                            </td>
                         </tr>
 
                         <tr>
                             <th>유형</th>
                             <td>
-                                <span th:text="${qna.category1}"></span>
-                                <span> - </span>
-                                <span th:text="${qna.category2}"></span>
+                                <span th:text="${qna.category1}">
+                                    1차 유형
+                                </span>
+
+                                <span th:if="${!#strings.isEmpty(qna.category2)}">
+                                    -
+                                </span>
+
+                                <span th:if="${!#strings.isEmpty(qna.category2)}"
+                                      th:text="${qna.category2}">
+                                    2차 유형
+                                </span>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <th>상태</th>
+                            <td>
+                                <span class="cs-qna-status"
+                                      th:classappend="${qna.answered
+                                          ? ' answered'
+                                          : ' waiting'}"
+                                      th:text="${qna.status}">
+                                    검토중
+                                </span>
                             </td>
                         </tr>
 
                         <tr>
                             <th>작성자</th>
-                            <td th:text="${qna.maskedMemberUid}"></td>
+                            <td th:text="${qna.maskedMemberUid}">
+                                -
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <th>작성일</th>
+                            <td th:text="${qna.createdAt != null
+                                ? #temporals.format(
+                                    qna.createdAt,
+                                    'yyyy.MM.dd HH:mm'
+                                )
+                                : '-'}">
+                                -
+                            </td>
                         </tr>
 
                         <tr>
                             <th>제목</th>
-                            <td th:text="${qna.title}"></td>
+                            <td th:text="${qna.title}">
+                                문의 제목
+                            </td>
                         </tr>
 
                         <tr>
                             <th>내용</th>
                             <td class="cs-view-content"
                                 th:text="${qna.content}">
+                                문의 내용
                             </td>
                         </tr>
 
@@ -93,9 +137,20 @@
                                 <textarea id="qna-answer"
                                           name="answer"
                                           class="cs-answer-input"
-                                          placeholder="답변을 입력하세요."
+                                          maxlength="3000"
                                           required
-                                          th:text="${qna.answer}"></textarea>
+                                          th:text="${qna.answer}"
+                                          placeholder="사용자 문의에 대한 답변을 입력하세요."></textarea>
+
+                                <div class="cs-answer-info">
+                                    <span>
+                                        문의 내용에 맞는 답변을 정확하게 입력해주세요.
+                                    </span>
+
+                                    <span id="qna-answer-count">
+                                        0 / 3000
+                                    </span>
+                                </div>
                             </td>
                         </tr>
 
@@ -103,6 +158,7 @@
 
                     </table>
 
+                    <!-- 하단 버튼 -->
                     <div th:replace="~{admin/fragments/action-bar::action-bar(
                                 ~{::actions}
                             )}">
@@ -115,15 +171,20 @@
                                 삭제
                             </button>
 
-                            <button class="cs-board-button primary"
-                                    type="submit">
-                                답변등록
-                            </button>
-
                             <button class="cs-board-button secondary"
                                     type="button"
-                                    th:data-cs-link="@{/admin/cs/qna/list}">
-                                목록
+                                    th:data-cs-link="@{/admin/cs/qna/view(
+                                        boardNo=${qna.boardNo}
+                                    )}">
+                                취소
+                            </button>
+
+                            <button class="cs-board-button primary"
+                                    type="submit"
+                                    th:text="${qna.answered
+                                        ? '답변수정'
+                                        : '답변등록'}">
+                                답변등록
                             </button>
 
                         </th:block>
@@ -132,11 +193,11 @@
 
                 </form>
 
-                <!-- 삭제 폼 -->
+                <!-- 문의글 삭제 폼 -->
                 <form id="qna-delete-form"
                       th:action="@{/admin/cs/qna/delete}"
                       method="post"
-                      style="display:none;">
+                      hidden>
 
                     <input type="hidden"
                            name="boardNo"
@@ -145,24 +206,42 @@
                 </form>
 
                 <script>
-                    document.addEventListener('DOMContentLoaded', () => {
-
+                    document.addEventListener("DOMContentLoaded", () => {
                         const deleteButton =
-                            document.getElementById('qna-delete-button');
+                            document.getElementById("qna-delete-button");
 
                         const deleteForm =
-                            document.getElementById('qna-delete-form');
+                            document.getElementById("qna-delete-form");
 
-                        deleteButton?.addEventListener('click', () => {
+                        const answerInput =
+                            document.getElementById("qna-answer");
 
+                        const answerCount =
+                            document.getElementById("qna-answer-count");
+
+                        /* 문의글 삭제 */
+                        deleteButton?.addEventListener("click", () => {
                             const confirmed = confirm(
-                                '문의글을 삭제하시겠습니까?'
+                                "문의글을 삭제하시겠습니까?"
                             );
 
                             if (confirmed) {
                                 deleteForm.submit();
                             }
                         });
+
+                        /* 답변 글자 수 표시 */
+                        const updateAnswerCount = () => {
+                            answerCount.textContent =
+                                `${answerInput.value.length} / 3000`;
+                        };
+
+                        updateAnswerCount();
+
+                        answerInput.addEventListener(
+                            "input",
+                            updateAnswerCount
+                        );
                     });
                 </script>
 

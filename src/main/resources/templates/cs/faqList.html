@@ -5,30 +5,24 @@
 <head>
   <meta charset="UTF-8">
 
-  <title th:text="${selectedCategory2 != null
-            and !selectedCategory2.isBlank()
+  <title th:text="${!#strings.isEmpty(selectedCategory2)
             ? selectedCategory1 + ' - ' + selectedCategory2
                 + ' FAQ - 케이마켓 고객센터'
-            : selectedCategory1 != null
-              and !selectedCategory1.isBlank()
-                ? selectedCategory1
-                    + ' FAQ - 케이마켓 고객센터'
+            : !#strings.isEmpty(selectedCategory1)
+                ? selectedCategory1 + ' FAQ - 케이마켓 고객센터'
                 : '자주하는 질문 - 케이마켓 고객센터'}">
     자주하는 질문 - 케이마켓 고객센터
   </title>
 
-  <!-- 고객센터 공통 CSS -->
   <link rel="stylesheet"
         th:href="@{/css/cs/cs-common.css}">
 
-  <!-- FAQ 목록 전용 CSS -->
   <link rel="stylesheet"
         th:href="@{/css/cs/faqList.css}">
 </head>
 
 <body>
 
-<!-- 등록·수정 완료 메시지 -->
 <script th:if="${message}"
         th:inline="javascript">
   alert([[${message}]]);
@@ -36,27 +30,13 @@
 
 <div id="wrapper">
 
-  <!-- ========================================
-       헤더
-  ========================================= -->
+  <!-- 헤더 -->
   <header>
-
     <div class="header-top">
-      <a th:href="@{/member/login}">
-        로그인
-      </a>
-
-      <a th:href="@{/member/register}">
-        회원가입
-      </a>
-
-      <a th:href="@{/my/home}">
-        마이페이지
-      </a>
-
-      <a th:href="@{/cart}">
-        장바구니
-      </a>
+      <a th:href="@{/member/login}">로그인</a>
+      <a th:href="@{/member/register}">회원가입</a>
+      <a th:href="@{/my/home}">마이페이지</a>
+      <a th:href="@{/cart}">장바구니</a>
     </div>
 
     <div class="logo-area">
@@ -65,18 +45,11 @@
         CI ( 로고 )
       </a>
     </div>
-
   </header>
 
-
-  <!-- ========================================
-       현재 위치
-  ========================================= -->
+  <!-- 현재 위치 -->
   <div class="breadcrumb">
-
-    <a th:href="@{/}">
-      홈
-    </a>
+    <a th:href="@{/}">홈</a>
 
     <span>&gt;</span>
 
@@ -87,547 +60,464 @@
     <span>&gt;</span>
 
     <span>자주하는 질문</span>
-
   </div>
 
-
-  <!-- ========================================
-       메인
-  ========================================= -->
+  <!-- 메인 영역 -->
   <main>
-
     <div class="cs-flex">
 
-      <!-- ========================================
-           좌측 1차 유형 메뉴
-      ========================================= -->
+      <!-- FAQ 1차 유형 메뉴 -->
       <aside class="cs-aside">
-
         <h2>자주하는 질문</h2>
 
         <ul>
-
-          <!-- 전체 -->
           <li>
             <a th:href="@{/cs/faqList}"
-               th:classappend="${selectedCategory1 == null
-                                          or selectedCategory1.isBlank()}
-                                          ? ' active'
-                                          : ''">
+               th:classappend="${#strings.isEmpty(selectedCategory1)}
+                                ? ' active'
+                                : ''">
               전체
             </a>
           </li>
 
-          <!-- 회원 -->
           <li>
-            <a th:href="@{/cs/faqList(
-                                category1='회원'
-                           )}"
+            <a th:href="@{/cs/faqList(category1='회원')}"
                th:classappend="${selectedCategory1 == '회원'}
-                                          ? ' active'
-                                          : ''">
+                                ? ' active'
+                                : ''">
               회원
             </a>
           </li>
 
-          <!-- 상품 -->
           <li>
-            <a th:href="@{/cs/faqList(
-                                category1='상품'
-                           )}"
+            <a th:href="@{/cs/faqList(category1='상품')}"
                th:classappend="${selectedCategory1 == '상품'}
-                                          ? ' active'
-                                          : ''">
+                                ? ' active'
+                                : ''">
               상품
             </a>
           </li>
 
-          <!-- 주문 -->
           <li>
-            <a th:href="@{/cs/faqList(
-                                category1='주문'
-                           )}"
+            <a th:href="@{/cs/faqList(category1='주문')}"
                th:classappend="${selectedCategory1 == '주문'}
-                                          ? ' active'
-                                          : ''">
+                                ? ' active'
+                                : ''">
               주문
             </a>
           </li>
 
-          <!-- 결제 -->
           <li>
-            <a th:href="@{/cs/faqList(
-                                category1='결제'
-                           )}"
+            <a th:href="@{/cs/faqList(category1='결제')}"
                th:classappend="${selectedCategory1 == '결제'}
-                                          ? ' active'
-                                          : ''">
+                                ? ' active'
+                                : ''">
               결제
             </a>
           </li>
 
-          <!-- 배송 -->
           <li>
-            <a th:href="@{/cs/faqList(
-                                category1='배송'
-                           )}"
+            <a th:href="@{/cs/faqList(category1='배송')}"
                th:classappend="${selectedCategory1 == '배송'}
-                                          ? ' active'
-                                          : ''">
+                                ? ' active'
+                                : ''">
               배송
             </a>
           </li>
 
-          <!-- 취소·반품·교환 -->
           <li>
-            <a th:href="@{/cs/faqList(
-                                category1='취소·반품·교환'
-                           )}"
-               th:classappend="${selectedCategory1
-                                           == '취소·반품·교환'}
-                                          ? ' active'
-                                          : ''">
+            <a th:href="@{/cs/faqList(category1='취소·반품·교환')}"
+               th:classappend="${selectedCategory1 == '취소·반품·교환'}
+                                ? ' active'
+                                : ''">
               취소·반품·교환
             </a>
           </li>
 
-          <!-- 쿠폰·혜택 -->
           <li>
-            <a th:href="@{/cs/faqList(
-                                category1='쿠폰·혜택'
-                           )}"
-               th:classappend="${selectedCategory1
-                                           == '쿠폰·혜택'}
-                                          ? ' active'
-                                          : ''">
+            <a th:href="@{/cs/faqList(category1='쿠폰·혜택')}"
+               th:classappend="${selectedCategory1 == '쿠폰·혜택'}
+                                ? ' active'
+                                : ''">
               쿠폰·혜택
             </a>
           </li>
-
         </ul>
-
       </aside>
 
-
-      <!-- ========================================
-           FAQ 콘텐츠
-      ========================================= -->
+      <!-- FAQ 콘텐츠 -->
       <section class="cs-content">
 
         <!-- 제목 영역 -->
         <div class="content-heading">
-
           <div>
-
-            <h2 th:text="${selectedCategory2 != null
-                                     and !selectedCategory2.isBlank()
-                                     ? selectedCategory1
-                                       + ' > '
-                                       + selectedCategory2
-                                     : selectedCategory1 != null
-                                       and !selectedCategory1.isBlank()
-                                       ? selectedCategory1
-                                       : '전체'}">
+            <h2 th:text="${!#strings.isEmpty(selectedCategory2)
+                                ? selectedCategory1 + ' > ' + selectedCategory2
+                                : !#strings.isEmpty(selectedCategory1)
+                                    ? selectedCategory1
+                                    : '전체'}">
               전체
             </h2>
 
             <p class="desc"
-               th:text="${selectedCategory2 != null
-                                    and !selectedCategory2.isBlank()
-                                    ? selectedCategory2
-                                      + ' 관련 자주하는 질문입니다.'
-                                    : selectedCategory1 != null
-                                      and !selectedCategory1.isBlank()
-                                      ? selectedCategory1
+               th:text="${!#strings.isEmpty(selectedCategory2)
+                                ? selectedCategory2
+                                    + ' 관련 자주하는 질문입니다.'
+                                : !#strings.isEmpty(selectedCategory1)
+                                    ? selectedCategory1
                                         + ' 관련 자주하는 질문입니다.'
-                                      : '케이마켓에서 자주 문의하는 질문을 확인할 수 있습니다.'}">
+                                    : '케이마켓에서 자주 문의하는 질문을 확인할 수 있습니다.'}">
               케이마켓에서 자주 문의하는 질문을 확인할 수 있습니다.
             </p>
-
           </div>
 
           <a th:href="@{/cs/index}"
              class="cs-home-link">
             고객센터 홈
           </a>
-
         </div>
 
-
-        <!-- ========================================
-             2차 유형 필터
-        ========================================= -->
+        <!-- FAQ 2차 유형 필터 -->
         <div class="faq-subcategory-filter"
-             th:if="${selectedCategory1 != null
-                             and !selectedCategory1.isBlank()}">
+             th:if="${!#strings.isEmpty(selectedCategory1)}">
 
-          <!-- 선택한 1차 유형의 전체 글 -->
           <a th:href="@{/cs/faqList(
-                            category1=${selectedCategory1}
-                       )}"
-             th:classappend="${selectedCategory2 == null
-                                        or selectedCategory2.isBlank()}
-                                        ? ' active'
-                                        : ''">
+                                        category1=${selectedCategory1}
+                                   )}"
+             th:classappend="${#strings.isEmpty(selectedCategory2)}
+                            ? ' active'
+                            : ''">
             전체
           </a>
 
-
           <!-- 회원 2차 유형 -->
           <th:block th:if="${selectedCategory1 == '회원'}">
-
             <a th:href="@{/cs/faqList(
-                                category1='회원',
-                                category2='회원가입'
-                           )}"
+                                            category1='회원',
+                                            category2='회원가입'
+                                       )}"
                th:classappend="${selectedCategory2 == '회원가입'}
-                                          ? ' active'
-                                          : ''">
+                                ? ' active'
+                                : ''">
               회원가입
             </a>
 
             <a th:href="@{/cs/faqList(
-                                category1='회원',
-                                category2='로그인'
-                           )}"
+                                            category1='회원',
+                                            category2='로그인'
+                                       )}"
                th:classappend="${selectedCategory2 == '로그인'}
-                                          ? ' active'
-                                          : ''">
+                                ? ' active'
+                                : ''">
               로그인
             </a>
 
             <a th:href="@{/cs/faqList(
-                                category1='회원',
-                                category2='비밀번호'
-                           )}"
+                                            category1='회원',
+                                            category2='비밀번호'
+                                       )}"
                th:classappend="${selectedCategory2 == '비밀번호'}
-                                          ? ' active'
-                                          : ''">
+                                ? ' active'
+                                : ''">
               비밀번호
             </a>
 
             <a th:href="@{/cs/faqList(
-                                category1='회원',
-                                category2='회원정보'
-                           )}"
+                                            category1='회원',
+                                            category2='회원정보'
+                                       )}"
                th:classappend="${selectedCategory2 == '회원정보'}
-                                          ? ' active'
-                                          : ''">
+                                ? ' active'
+                                : ''">
               회원정보
             </a>
 
             <a th:href="@{/cs/faqList(
-                                category1='회원',
-                                category2='회원탈퇴'
-                           )}"
+                                            category1='회원',
+                                            category2='회원탈퇴'
+                                       )}"
                th:classappend="${selectedCategory2 == '회원탈퇴'}
-                                          ? ' active'
-                                          : ''">
+                                ? ' active'
+                                : ''">
               회원탈퇴
             </a>
-
           </th:block>
-
 
           <!-- 상품 2차 유형 -->
           <th:block th:if="${selectedCategory1 == '상품'}">
-
             <a th:href="@{/cs/faqList(
-                                category1='상품',
-                                category2='상품정보'
-                           )}"
+                                            category1='상품',
+                                            category2='상품정보'
+                                       )}"
                th:classappend="${selectedCategory2 == '상품정보'}
-                                          ? ' active'
-                                          : ''">
+                                ? ' active'
+                                : ''">
               상품정보
             </a>
 
             <a th:href="@{/cs/faqList(
-                                category1='상품',
-                                category2='상품옵션'
-                           )}"
+                                            category1='상품',
+                                            category2='상품옵션'
+                                       )}"
                th:classappend="${selectedCategory2 == '상품옵션'}
-                                          ? ' active'
-                                          : ''">
+                                ? ' active'
+                                : ''">
               상품옵션
             </a>
 
             <a th:href="@{/cs/faqList(
-                                category1='상품',
-                                category2='재입고'
-                           )}"
+                                            category1='상품',
+                                            category2='재입고'
+                                       )}"
                th:classappend="${selectedCategory2 == '재입고'}
-                                          ? ' active'
-                                          : ''">
+                                ? ' active'
+                                : ''">
               재입고
             </a>
 
             <a th:href="@{/cs/faqList(
-                                category1='상품',
-                                category2='품절'
-                           )}"
+                                            category1='상품',
+                                            category2='품절'
+                                       )}"
                th:classappend="${selectedCategory2 == '품절'}
-                                          ? ' active'
-                                          : ''">
+                                ? ' active'
+                                : ''">
               품절
             </a>
-
           </th:block>
-
 
           <!-- 주문 2차 유형 -->
           <th:block th:if="${selectedCategory1 == '주문'}">
-
             <a th:href="@{/cs/faqList(
-                                category1='주문',
-                                category2='주문조회'
-                           )}"
+                                            category1='주문',
+                                            category2='주문조회'
+                                       )}"
                th:classappend="${selectedCategory2 == '주문조회'}
-                                          ? ' active'
-                                          : ''">
+                                ? ' active'
+                                : ''">
               주문조회
             </a>
 
             <a th:href="@{/cs/faqList(
-                                category1='주문',
-                                category2='주문변경'
-                           )}"
+                                            category1='주문',
+                                            category2='주문변경'
+                                       )}"
                th:classappend="${selectedCategory2 == '주문변경'}
-                                          ? ' active'
-                                          : ''">
+                                ? ' active'
+                                : ''">
               주문변경
             </a>
 
             <a th:href="@{/cs/faqList(
-                                category1='주문',
-                                category2='주문취소'
-                           )}"
+                                            category1='주문',
+                                            category2='주문취소'
+                                       )}"
                th:classappend="${selectedCategory2 == '주문취소'}
-                                          ? ' active'
-                                          : ''">
+                                ? ' active'
+                                : ''">
               주문취소
             </a>
 
             <a th:href="@{/cs/faqList(
-                                category1='주문',
-                                category2='주문오류'
-                           )}"
+                                            category1='주문',
+                                            category2='주문오류'
+                                       )}"
                th:classappend="${selectedCategory2 == '주문오류'}
-                                          ? ' active'
-                                          : ''">
+                                ? ' active'
+                                : ''">
               주문오류
             </a>
-
           </th:block>
-
 
           <!-- 결제 2차 유형 -->
           <th:block th:if="${selectedCategory1 == '결제'}">
-
             <a th:href="@{/cs/faqList(
-                                category1='결제',
-                                category2='결제방법'
-                           )}"
+                                            category1='결제',
+                                            category2='결제방법'
+                                       )}"
                th:classappend="${selectedCategory2 == '결제방법'}
-                                          ? ' active'
-                                          : ''">
+                                ? ' active'
+                                : ''">
               결제방법
             </a>
 
             <a th:href="@{/cs/faqList(
-                                category1='결제',
-                                category2='무통장입금'
-                           )}"
+                                            category1='결제',
+                                            category2='무통장입금'
+                                       )}"
                th:classappend="${selectedCategory2 == '무통장입금'}
-                                          ? ' active'
-                                          : ''">
+                                ? ' active'
+                                : ''">
               무통장입금
             </a>
 
             <a th:href="@{/cs/faqList(
-                                category1='결제',
-                                category2='결제오류'
-                           )}"
+                                            category1='결제',
+                                            category2='결제오류'
+                                       )}"
                th:classappend="${selectedCategory2 == '결제오류'}
-                                          ? ' active'
-                                          : ''">
+                                ? ' active'
+                                : ''">
               결제오류
             </a>
 
             <a th:href="@{/cs/faqList(
-                                category1='결제',
-                                category2='현금영수증'
-                           )}"
+                                            category1='결제',
+                                            category2='현금영수증'
+                                       )}"
                th:classappend="${selectedCategory2 == '현금영수증'}
-                                          ? ' active'
-                                          : ''">
+                                ? ' active'
+                                : ''">
               현금영수증
             </a>
-
           </th:block>
-
 
           <!-- 배송 2차 유형 -->
           <th:block th:if="${selectedCategory1 == '배송'}">
-
             <a th:href="@{/cs/faqList(
-                                category1='배송',
-                                category2='배송조회'
-                           )}"
+                                            category1='배송',
+                                            category2='배송조회'
+                                       )}"
                th:classappend="${selectedCategory2 == '배송조회'}
-                                          ? ' active'
-                                          : ''">
+                                ? ' active'
+                                : ''">
               배송조회
             </a>
 
             <a th:href="@{/cs/faqList(
-                                category1='배송',
-                                category2='배송지변경'
-                           )}"
+                                            category1='배송',
+                                            category2='배송지변경'
+                                       )}"
                th:classappend="${selectedCategory2 == '배송지변경'}
-                                          ? ' active'
-                                          : ''">
+                                ? ' active'
+                                : ''">
               배송지변경
             </a>
 
             <a th:href="@{/cs/faqList(
-                                category1='배송',
-                                category2='배송지연'
-                           )}"
+                                            category1='배송',
+                                            category2='배송지연'
+                                       )}"
                th:classappend="${selectedCategory2 == '배송지연'}
-                                          ? ' active'
-                                          : ''">
+                                ? ' active'
+                                : ''">
               배송지연
             </a>
 
             <a th:href="@{/cs/faqList(
-                                category1='배송',
-                                category2='배송완료'
-                           )}"
+                                            category1='배송',
+                                            category2='배송완료'
+                                       )}"
                th:classappend="${selectedCategory2 == '배송완료'}
-                                          ? ' active'
-                                          : ''">
+                                ? ' active'
+                                : ''">
               배송완료
             </a>
-
           </th:block>
 
-
           <!-- 취소·반품·교환 2차 유형 -->
-          <th:block th:if="${selectedCategory1
-                                     == '취소·반품·교환'}">
-
+          <th:block th:if="${selectedCategory1 == '취소·반품·교환'}">
             <a th:href="@{/cs/faqList(
-                                category1='취소·반품·교환',
-                                category2='주문취소'
-                           )}"
+                                            category1='취소·반품·교환',
+                                            category2='주문취소'
+                                       )}"
                th:classappend="${selectedCategory2 == '주문취소'}
-                                          ? ' active'
-                                          : ''">
+                                ? ' active'
+                                : ''">
               주문취소
             </a>
 
             <a th:href="@{/cs/faqList(
-                                category1='취소·반품·교환',
-                                category2='반품신청'
-                           )}"
+                                            category1='취소·반품·교환',
+                                            category2='반품신청'
+                                       )}"
                th:classappend="${selectedCategory2 == '반품신청'}
-                                          ? ' active'
-                                          : ''">
+                                ? ' active'
+                                : ''">
               반품신청
             </a>
 
             <a th:href="@{/cs/faqList(
-                                category1='취소·반품·교환',
-                                category2='교환신청'
-                           )}"
+                                            category1='취소·반품·교환',
+                                            category2='교환신청'
+                                       )}"
                th:classappend="${selectedCategory2 == '교환신청'}
-                                          ? ' active'
-                                          : ''">
+                                ? ' active'
+                                : ''">
               교환신청
             </a>
 
             <a th:href="@{/cs/faqList(
-                                category1='취소·반품·교환',
-                                category2='환불'
-                           )}"
+                                            category1='취소·반품·교환',
+                                            category2='환불'
+                                       )}"
                th:classappend="${selectedCategory2 == '환불'}
-                                          ? ' active'
-                                          : ''">
+                                ? ' active'
+                                : ''">
               환불
             </a>
-
           </th:block>
-
 
           <!-- 쿠폰·혜택 2차 유형 -->
           <th:block th:if="${selectedCategory1 == '쿠폰·혜택'}">
-
             <a th:href="@{/cs/faqList(
-                                category1='쿠폰·혜택',
-                                category2='쿠폰사용'
-                           )}"
+                                            category1='쿠폰·혜택',
+                                            category2='쿠폰사용'
+                                       )}"
                th:classappend="${selectedCategory2 == '쿠폰사용'}
-                                          ? ' active'
-                                          : ''">
+                                ? ' active'
+                                : ''">
               쿠폰사용
             </a>
 
             <a th:href="@{/cs/faqList(
-                                category1='쿠폰·혜택',
-                                category2='포인트'
-                           )}"
+                                            category1='쿠폰·혜택',
+                                            category2='포인트'
+                                       )}"
                th:classappend="${selectedCategory2 == '포인트'}
-                                          ? ' active'
-                                          : ''">
+                                ? ' active'
+                                : ''">
               포인트
             </a>
 
             <a th:href="@{/cs/faqList(
-                                category1='쿠폰·혜택',
-                                category2='이벤트'
-                           )}"
+                                            category1='쿠폰·혜택',
+                                            category2='이벤트'
+                                       )}"
                th:classappend="${selectedCategory2 == '이벤트'}
-                                          ? ' active'
-                                          : ''">
+                                ? ' active'
+                                : ''">
               이벤트
             </a>
 
             <a th:href="@{/cs/faqList(
-                                category1='쿠폰·혜택',
-                                category2='할인혜택'
-                           )}"
+                                            category1='쿠폰·혜택',
+                                            category2='할인혜택'
+                                       )}"
                th:classappend="${selectedCategory2 == '할인혜택'}
-                                          ? ' active'
-                                          : ''">
+                                ? ' active'
+                                : ''">
               할인혜택
             </a>
-
           </th:block>
-
         </div>
 
-
-        <!-- ========================================
-             FAQ 목록
-        ========================================= -->
+        <!-- FAQ 목록 -->
         <ul class="faq-list-box"
             th:if="${faqList != null
-                            and !#lists.isEmpty(faqList)}">
+                        and !#lists.isEmpty(faqList)}">
 
           <li th:each="faq : ${faqList}">
-
             <a th:href="@{/cs/faqView(
-                                boardNo=${faq.boardNo}
-                           )}">
+                                            boardNo=${faq.boardNo}
+                                       )}">
 
                             <span class="q-mark">
                                 Q.
                             </span>
 
               <span class="faq-category"
-                    th:if="${faq.category2 != null
-                                          and !faq.category2.isBlank()}"
+                    th:if="${!#strings.isEmpty(faq.category2)}"
                     th:text="|[${faq.category2}]|">
                                 [2차 유형]
                             </span>
@@ -637,55 +527,43 @@
                                 FAQ 질문 제목
                             </span>
 
-              <span class="faq-arrow">
+              <span class="faq-arrow"
+                    aria-hidden="true">
                                 &gt;
                             </span>
-
             </a>
-
           </li>
-
         </ul>
 
-
-        <!-- FAQ 없음 -->
-        <div class="empty-box"
+        <!-- FAQ 목록 없음 -->
+        <div class="empty-box faq-empty-box"
              th:if="${faqList == null
-                             or #lists.isEmpty(faqList)}">
+                        or #lists.isEmpty(faqList)}">
 
-          <strong>
-            등록된 FAQ가 없습니다.
-          </strong>
+          <strong>등록된 FAQ가 없습니다.</strong>
 
-          <p th:text="${selectedCategory2 != null
-                                and !selectedCategory2.isBlank()
-                                ? selectedCategory2
-                                  + ' 유형에 등록된 FAQ가 없습니다.'
-                                : selectedCategory1 != null
-                                  and !selectedCategory1.isBlank()
-                                  ? selectedCategory1
+          <p th:text="${!#strings.isEmpty(selectedCategory2)
+                            ? selectedCategory2
+                                + ' 유형에 등록된 FAQ가 없습니다.'
+                            : !#strings.isEmpty(selectedCategory1)
+                                ? selectedCategory1
                                     + ' 유형에 등록된 FAQ가 없습니다.'
-                                  : '현재 등록된 FAQ가 없습니다.'}">
+                                : '현재 등록된 FAQ가 없습니다.'}">
             현재 등록된 FAQ가 없습니다.
           </p>
-
         </div>
 
-
-        <!-- ========================================
-             페이지네이션
-        ========================================= -->
+        <!-- 페이지네이션 -->
         <div class="pagination"
              th:if="${pageInfo != null
-                             and pageInfo.totalPages > 0}">
+                        and pageInfo.totalPages > 0}">
 
-          <!-- 이전 -->
           <a th:if="${pageInfo.currentPage > 1}"
              th:href="@{/cs/faqList(
-                            page=${pageInfo.currentPage - 1},
-                            category1=${selectedCategory1},
-                            category2=${selectedCategory2}
-                       )}"
+                                            page=${pageInfo.currentPage - 1},
+                                            category1=${selectedCategory1},
+                                            category2=${selectedCategory2}
+                                       )}"
              class="page-direction">
             이전
           </a>
@@ -695,8 +573,6 @@
                         이전
                     </span>
 
-
-          <!-- 페이지 번호 -->
           <th:block th:each="pageNumber :
                         ${#numbers.sequence(
                             pageInfo.startPage,
@@ -704,55 +580,44 @@
                         )}">
 
             <a th:href="@{/cs/faqList(
-                                page=${pageNumber},
-                                category1=${selectedCategory1},
-                                category2=${selectedCategory2}
-                           )}"
+                                                page=${pageNumber},
+                                                category1=${selectedCategory1},
+                                                category2=${selectedCategory2}
+                                           )}"
                th:text="${pageNumber}"
                th:classappend="${pageNumber
-                                           == pageInfo.currentPage}
-                                          ? ' active'
-                                          : ''">
+                                == pageInfo.currentPage}
+                                ? ' active'
+                                : ''">
               1
             </a>
-
           </th:block>
 
-
-          <!-- 다음 -->
           <a th:if="${pageInfo.currentPage
-                              < pageInfo.totalPages}"
+                        < pageInfo.totalPages}"
              th:href="@{/cs/faqList(
-                            page=${pageInfo.currentPage + 1},
-                            category1=${selectedCategory1},
-                            category2=${selectedCategory2}
-                       )}"
+                                            page=${pageInfo.currentPage + 1},
+                                            category1=${selectedCategory1},
+                                            category2=${selectedCategory2}
+                                       )}"
              class="page-direction">
             다음
           </a>
 
           <span th:unless="${pageInfo.currentPage
-                                    < pageInfo.totalPages}"
+                        < pageInfo.totalPages}"
                 class="page-direction disabled">
                         다음
                     </span>
-
         </div>
 
       </section>
-
     </div>
-
   </main>
 
-
-  <!-- ========================================
-       푸터
-  ========================================= -->
+  <!-- 푸터 -->
   <footer>
-
     <div class="footer-menu">
-
       <a th:href="@{/company/index}">
         회사소개
       </a>
@@ -768,11 +633,9 @@
       <a th:href="@{/policy/finance}">
         전자금융거래약관
       </a>
-
     </div>
 
     <div class="footer-info">
-
       <div class="footer-logo">
         이미지
       </div>
@@ -789,11 +652,10 @@
         Tel : 1234-5678<br>
         평일 09:00 ~ 18:00
       </div>
-
     </div>
-
   </footer>
 
 </div>
+
 </body>
 </html>
