@@ -11,6 +11,9 @@
     공지사항 - 케이마켓 고객센터
   </title>
 
+  <link rel="stylesheet" th:href="@{/css/common.css}">
+  <link rel="stylesheet" th:href="@{/css/index.css}">
+
   <link rel="stylesheet"
         th:href="@{/css/cs/cs-common.css}">
 
@@ -20,35 +23,12 @@
 
 <body>
 
-<div id="wrapper">
+<div th:replace="~{fragments/header :: header}"></div>
 
-  <!-- 헤더 -->
-  <header>
-    <div class="header-top">
-      <a th:href="@{/member/login}">
-        로그인
-      </a>
-
-      <a th:href="@{/member/register}">
-        회원가입
-      </a>
-
-      <a th:href="@{/my/home}">
-        마이페이지
-      </a>
-
-      <a th:href="@{/cart}">
-        장바구니
-      </a>
-    </div>
-
-    <div class="logo-area">
-      <a th:href="@{/}"
-         class="logo-box">
-        CI ( 로고 )
-      </a>
-    </div>
-  </header>
+<div class="page-wrapper">
+  <aside th:replace="~{fragments/aside :: aside}"></aside>
+  <div class="main-content">
+    <div id="wrapper">
 
   <!-- 현재 위치 -->
   <div class="breadcrumb">
@@ -278,48 +258,10 @@
       </section>
     </div>
   </main>
-
-  <!-- 푸터 -->
-  <footer>
-    <div class="footer-menu">
-      <a th:href="@{/company/index}">
-        회사소개
-      </a>
-
-      <a th:href="@{/policy/terms}">
-        서비스이용약관
-      </a>
-
-      <a th:href="@{/policy/privacy}">
-        개인정보처리방침
-      </a>
-
-      <a th:href="@{/policy/finance}">
-        전자금융거래약관
-      </a>
     </div>
 
-    <div class="footer-info">
-      <div class="footer-logo">
-        이미지
-      </div>
-
-      <div class="company-info">
-        <strong>(주)케이마켓</strong><br>
-        부산광역시 부산진구 중앙대로 300<br>
-        대표이사 : 홍길동<br>
-        사업자등록번호 : 123-45-12345
-      </div>
-
-      <div class="customer-info">
-        <h3>고객센터</h3>
-
-        Tel : 1234-5678<br>
-        평일 09:00 ~ 18:00
-      </div>
-    </div>
-  </footer>
-
+    <footer th:replace="~{fragments/footer :: footer}"></footer>
+  </div>
 </div>
 
 </body>
