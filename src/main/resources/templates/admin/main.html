@@ -111,7 +111,7 @@
                 </div>
             </th:block>
         </section>
-        
+
         <!-- ③ 공지사항 + 고객문의 -->
         <th:block th:if="${loginMemberType == 'ADMIN'}">
             <section th:replace="~{admin/fragments/dash-section::dash-section(|section-board|, null, null, ~{::main-section-content-3})}">
