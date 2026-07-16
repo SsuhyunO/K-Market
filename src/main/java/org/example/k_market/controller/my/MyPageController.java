@@ -8,8 +8,8 @@ import org.example.k_market.dto.admin.QnaDTO;
 import org.example.k_market.service.PointService;
 import org.example.k_market.service.admin.BannerService;
 import org.example.k_market.service.admin.CouponIssueService;
-import org.example.k_market.service.order.OrderService;
 import org.example.k_market.service.admin.QnaService;
+import org.example.k_market.service.order.OrderService;
 import org.example.k_market.service.review.ReviewService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -40,9 +40,14 @@ public class MyPageController {
         model.addAttribute("myPageBanner", myPageBanner);
     }
 
+    /* 마이페이지 공통 요약 정보 */
     @ModelAttribute
-    public void addMyPageSummary(HttpSession session, Model model) {
-        String memberUid = (String) session.getAttribute("loginMember");
+    public void addMyPageSummary(
+            HttpSession session,
+            Model model
+    ) {
+        String memberUid =
+                (String) session.getAttribute("loginMember");
 
         int totalOrderCount = 0;
         int myCouponCount = 0;
@@ -69,11 +74,14 @@ public class MyPageController {
     public String home(HttpSession session, Model model) {
         String memberUid = (String) session.getAttribute("loginMember");
 
-        if (memberUid == null || memberUid.isBlank()) {
+        if (memberUid == null ||
+                memberUid.isBlank()) {
+
             return "redirect:/member/login";
         }
 
-        String safeMemberUid = memberUid.trim();
+        String safeMemberUid =
+                memberUid.trim();
 
         model.addAttribute("recentPoints", pointService.getRecentPointsByMemberUid(safeMemberUid));
         model.addAttribute("recentReviews", reviewService.getRecentReviewsByMemberId(safeMemberUid));
@@ -93,7 +101,13 @@ public class MyPageController {
      * 전체 주문내역
      */
     @GetMapping("/my/order")
-    public String order() {
+    public String order(
+            HttpSession session
+    ) {
+        if (!isLoggedIn(session)) {
+            return "redirect:/member/login";
+        }
+
         return "my/order";
     }
 
@@ -101,7 +115,13 @@ public class MyPageController {
      * 쿠폰
      */
     @GetMapping("/my/coupon")
-    public String coupon() {
+    public String coupon(
+            HttpSession session
+    ) {
+        if (!isLoggedIn(session)) {
+            return "redirect:/member/login";
+        }
+
         return "my/coupon";
     }
 
@@ -112,7 +132,9 @@ public class MyPageController {
     public String qna(HttpSession session, Model model) {
         String memberUid = (String) session.getAttribute("loginMember");
 
-        if (memberUid == null || memberUid.isBlank()) {
+        if (memberUid == null ||
+                memberUid.isBlank()) {
+
             return "redirect:/member/login";
         }
 
@@ -126,15 +148,39 @@ public class MyPageController {
      * 나의 설정
      */
     @GetMapping("/my/info")
-    public String info() {
+    public String info(
+            HttpSession session
+    ) {
+        if (!isLoggedIn(session)) {
+            return "redirect:/member/login";
+        }
+
         return "my/info";
     }
 
+    /* 리뷰 목록 */
     @GetMapping("/review/list")
-    public String list() {
+    public String reviewList(
+            HttpSession session
+    ) {
+        if (!isLoggedIn(session)) {
+            return "redirect:/member/login";
+        }
+
         return "my/review";
     }
 
+    /* 로그인 여부 확인 */
+    private boolean isLoggedIn(
+            HttpSession session
+    ) {
+        String memberUid =
+                (String) session.getAttribute("loginMember");
+
+        return memberUid != null &&
+                !memberUid.isBlank();
+    }
+    
     @GetMapping("/point/list")
     public String point() {
         return "my/point";
