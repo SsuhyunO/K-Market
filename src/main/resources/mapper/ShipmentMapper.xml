@@ -37,7 +37,7 @@
         SET status = 'SHIPPING',
             shippedAt = COALESCE(shippedAt, NOW())
         WHERE status = 'READY'
-          AND createdAt &lt;= DATE_SUB(NOW(), INTERVAL 1 DAY)
+          AND createdAt &lt;= NOW()
     </update>
 
     <update id="updateShippingShipmentsToDelivered">
@@ -45,7 +45,7 @@
         SET status = 'DELIVERED',
             deliveredAt = COALESCE(deliveredAt, NOW())
         WHERE status = 'SHIPPING'
-          AND createdAt &lt;= DATE_SUB(NOW(), INTERVAL 3 DAY)
+          AND shippedAt &lt;= DATE_SUB(NOW(), INTERVAL 3 MINUTE)
     </update>
 
     <update id="updateReturnShippingShipmentsToReturned">
@@ -53,7 +53,7 @@
         SET status = 'RETURNED',
             deliveredAt = COALESCE(deliveredAt, NOW())
         WHERE status = 'RETURN_SHIPPING'
-          AND createdAt &lt;= DATE_SUB(NOW(), INTERVAL 3 DAY)
+          AND shippedAt &lt;= DATE_SUB(NOW(), INTERVAL 3 MINUTE)
     </update>
 
     <update id="updateExchangeShippingShipmentsToWaiting">

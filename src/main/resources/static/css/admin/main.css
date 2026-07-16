@@ -24,9 +24,10 @@
     font-size: 12px;
 }
 .leg { display: flex; align-items: center; gap: 4px; }
-.leg-order { color: #2563eb; }
-.leg-pay   { color: #16a34a; }
-.leg-cancel{ color: #f97316; }
+.leg-electronics { color: #2563eb; }
+.leg-food        { color: #16a34a; }
+.leg-clothes     { color: #e8380d; }
+.leg-etc         { color: #f97316; }
 
 .chart-bar {
     display: flex;
@@ -46,7 +47,7 @@
 }
 .bar-group {
     display: flex;
-    gap: 3px;
+    gap: 2px;
     align-items: flex-end;
     flex: 1;
 }
@@ -54,12 +55,13 @@
     flex: 1;
     border-radius: 3px 3px 0 0;
     transition: opacity .2s;
-    min-width: 10px;
+    min-width: 6px;
 }
 .bar:hover { opacity: .75; }
-.bar.order  { background: #2563eb; }
-.bar.pay    { background: #16a34a; }
-.bar.cancel { background: #f97316; }
+.bar.electronics { background: #2563eb; }
+.bar.food        { background: #16a34a; }
+.bar.clothes     { background: #e8380d; }
+.bar.etc         { background: #f97316; }
 
 .chart-bar-labels {
     display: flex;
@@ -142,7 +144,6 @@
 /* 통계 테이블 */
 .op-stats {
     display: flex;
-    flex-wrap: wrap;
     gap: 1px;
     border: 1px solid var(--adm-gray-300);
     border-radius: var(--radius);
@@ -150,7 +151,8 @@
     background: var(--adm-gray-300);
 }
 .stat-item {
-    flex: 1 1 150px;
+    flex: 1;
+    min-width: 0;
     padding: 12px 10px;
     text-align: center;
     background: #fafafa;

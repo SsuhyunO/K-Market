@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.example.k_market.dao.AdminMainDAO">
+
+    <select id="selectOperationCard" resultType="org.example.k_market.dto.admin.OperationCardDTO">
+        SELECT
+        COUNT(DISTINCT CASE WHEN o.status = 'PAID' THEN o.orderNo END) AS paid,
+        COUNT(DISTINCT CASE WHEN o.status = 'READY' THEN o.orderNo END) AS ready,
+        COUNT(DISTINCT CASE WHEN o.status = 'CANCEL_REQUESTED' THEN o.orderNo END) AS cancelRequested,
+        COUNT(DISTINCT CASE WHEN o.status = 'EXCHANGE_REQUESTED' THEN o.orderNo END) AS exchangeRequested,
+        COUNT(DISTINCT CASE WHEN o.status = 'RETURN_REQUESTED' THEN o.orderNo END) AS returnRequested
+        FROM `order` o
+        <where>
+            <if test="sellerUid != null">
+                EXISTS (
+                SELECT 1 FROM order_item oi
+                WHERE oi.orderNo = o.orderNo
+                AND oi.sellerUid = #{sellerUid}
+                )
+            </if>
+        </where>
+    </select>
+
+    <select id="selectOrderStat" resultType="org.example.k_market.dto.admin.OrderStatDTO">
+        SELECT
+        COUNT(*) AS totalOrderCount,
+        SUM(CASE WHEN DATE_FORMAT(o.createdAt, '%Y-%m-%d') = DATE_FORMAT(CURDATE(), '%Y-%m-%d') THEN 1 ELSE 0 END) AS todayOrderCount,
+        SUM(CASE WHEN DATE_FORMAT(o.createdAt, '%Y-%m-%d') = DATE_FORMAT(CURDATE() - INTERVAL 1 DAY, '%Y-%m-%d') THEN 1 ELSE 0 END) AS yesterdayOrderCount,
+        SUM(o.orderTotal) AS totalOrderAmount,
+        SUM(CASE WHEN DATE_FORMAT(o.createdAt, '%Y-%m-%d') = DATE_FORMAT(CURDATE(), '%Y-%m-%d') THEN o.orderTotal ELSE 0 END) AS todayOrderAmount,
+        SUM(CASE WHEN DATE_FORMAT(o.createdAt, '%Y-%m-%d') = DATE_FORMAT(CURDATE() - INTERVAL 1 DAY, '%Y-%m-%d') THEN o.orderTotal ELSE 0 END) AS yesterdayOrderAmount
+        FROM `order` o
+        <where>
+            <if test="sellerUid != null">
+                EXISTS (
+                SELECT 1 FROM order_item oi
+                WHERE oi.orderNo = o.orderNo
+                AND oi.sellerUid = #{sellerUid}
+                )
+            </if>
+        </where>
+    </select>
+
+    <select id="selectMemberStat" resultType="org.example.k_market.dto.admin.MemberStatDTO">
+        SELECT
+            COUNT(*) AS totalJoinCount,
+            SUM(CASE WHEN DATE_FORMAT(m.createdAt, '%Y-%m-%d') = DATE_FORMAT(CURDATE(), '%Y-%m-%d') THEN 1 ELSE 0 END) AS todayJoinCount,
+            SUM(CASE WHEN DATE_FORMAT(m.createdAt, '%Y-%m-%d') = DATE_FORMAT(CURDATE() - INTERVAL 1 DAY, '%Y-%m-%d') THEN 1 ELSE 0 END) AS yesterdayJoinCount
+        FROM member m
+    </select>
+
+    <select id="selectVisitStat" resultType="Long">
+        SELECT
+        SUM(p.hit) AS totalHit
+        FROM product p
+        <where>
+            <if test="sellerUid != null">
+                p.sellerUid = #{sellerUid}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectInquiryStat" resultType="org.example.k_market.dto.admin.InquiryStatDTO">
+        SELECT
+            COUNT(*) AS totalInquiryCount,
+            SUM(CASE WHEN DATE_FORMAT(b.createdAt, '%Y-%m-%d') = DATE_FORMAT(CURDATE(), '%Y-%m-%d') THEN 1 ELSE 0 END) AS todayInquiryCount,
+            SUM(CASE WHEN DATE_FORMAT(b.createdAt, '%Y-%m-%d') = DATE_FORMAT(CURDATE() - INTERVAL 1 DAY, '%Y-%m-%d') THEN 1 ELSE 0 END) AS yesterdayInquiryCount
+        FROM board b
+        WHERE b.boardType LIKE 'qna%'
+    </select>
+
+    <select id="selectRecentNotices" resultType="org.example.k_market.dto.admin.BoardListItemDTO">
+        SELECT
+            boardNo,
+            SUBSTRING_INDEX(SUBSTRING_INDEX(boardType, '/', 2), '/', -1) AS category,
+            title,
+            memberUid,
+            createdAt
+        FROM board
+        WHERE boardType LIKE 'notice/%'
+        ORDER BY createdAt DESC
+        LIMIT 5
+    </select>
+
+    <select id="selectRecentInquiries" resultType="org.example.k_market.dto.admin.BoardListItemDTO">
+        SELECT
+            boardNo,
+            SUBSTRING_INDEX(SUBSTRING_INDEX(boardType, '/', 2), '/', -1) AS category,
+            title,
+            memberUid,
+            createdAt
+        FROM board
+        WHERE boardType LIKE 'qna/%'
+        ORDER BY createdAt DESC
+        LIMIT 5
+    </select>
+
+    <!-- 최근 5일 x 1차 카테고리별 매출 (막대그래프) -->
+    <select id="selectCategorySalesDaily" resultType="org.example.k_market.dto.admin.CategorySalesDTO">
+        SELECT
+        DATE_FORMAT(o.createdAt, '%Y-%m-%d') AS saleDate,
+        top.cateId AS cateId,
+        top.name AS cateName,
+        SUM(oi.total) AS amount
+        FROM order_item oi
+        JOIN `order` o ON oi.orderNo = o.orderNo
+        JOIN product_variant pv ON oi.prodVariantId = pv.id
+        JOIN product p ON pv.prodNo = p.prodNo
+        JOIN category c ON p.cateId = c.cateId
+        JOIN category top ON top.cateId = COALESCE(c.parentId, c.cateId)
+        <where>
+            o.createdAt >= CURDATE() - INTERVAL 4 DAY
+            AND o.createdAt &lt; CURDATE() + INTERVAL 1 DAY
+            <if test="sellerUid != null">
+                AND oi.sellerUid = #{sellerUid}
+            </if>
+        </where>
+        GROUP BY saleDate, top.cateId, top.name
+        ORDER BY saleDate ASC
+    </select>
+
+    <!-- 1차 카테고리별 전체 매출 합계 (파이차트) -->
+    <select id="selectCategorySalesTotal" resultType="org.example.k_market.dto.admin.CategorySalesTotalDTO">
+        SELECT
+        top.cateId AS cateId,
+        top.name AS cateName,
+        SUM(oi.total) AS totalAmount
+        FROM order_item oi
+        JOIN product_variant pv ON oi.prodVariantId = pv.id
+        JOIN product p ON pv.prodNo = p.prodNo
+        JOIN category c ON p.cateId = c.cateId
+        JOIN category top ON top.cateId = COALESCE(c.parentId, c.cateId)
+        <where>
+            <if test="sellerUid != null">
+                oi.sellerUid = #{sellerUid}
+            </if>
+        </where>
+        GROUP BY top.cateId, top.name
+        ORDER BY top.cateId ASC
+    </select>
+
+</mapper>

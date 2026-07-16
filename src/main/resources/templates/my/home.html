@@ -13,7 +13,6 @@
 <div th:replace="~{fragments/header :: header}"></div>
 
 <div class="page-wrapper">
-    <aside th:replace="~{fragments/aside :: aside}"></aside>
     <div class="main-content">
         <main>
     <section class="my-summary">
@@ -34,7 +33,18 @@
                 <span class="summary-num" th:text="${myPointBalance}">0</span>
             </div>
             <div class="summary-divider"></div>
-            <div class="summary-item"><span class="summary-label">문의</span><span class="summary-num">0</span></div>
+            <div class="summary-item">
+                <span class="summary-label">
+                    문의
+                </span>
+
+                <span class="summary-num"
+                      th:text="${qnaList != null
+                                ? #lists.size(qnaList)
+                                : 0}">
+                    0
+                </span>
+            </div>
         </div>
     </section>
 
@@ -313,27 +323,8 @@
                     <th style="width:80px;">상태</th>
                 </tr>
                 </thead>
-                <tbody>
-                <tr>
-                    <td class="modal-order-date" id="detailDate2">-</td>
-                    <td class="modal-order-product">
-                        <div class="product-inner">
-                            <div class="product-img">상품이미지</div>
-                            <div class="product-info">
-                                <p class="order-no" id="detailOrderNo">주문번호 : -</p>
-                                <p class="company-name" id="detailCompany">-</p>
-                                <p class="product-name" id="detailProduct">-</p>
-                                <p class="product-qty" id="detailQty">수량 : -</p>
-                                <p class="product-price" id="detailPrice">0원</p>
-                            </div>
-                        </div>
-                    </td>
-                    <td class="modal-pay-info">
-                        <p>판매가 <span id="detailPayBase">0원</span></p>
-                        <p class="modal-pay-total">결제금액 <span id="detailPayTotal">0원</span></p>
-                    </td>
-                    <td class="modal-order-status" id="detailStatus">-</td>
-                </tr>
+                <tbody id="orderDetailItemsBody">
+                <tr><td colspan="4">주문정보를 불러오는 중입니다.</td></tr>
                 </tbody>
             </table>
             <div class="modal-confirm-btn-group">

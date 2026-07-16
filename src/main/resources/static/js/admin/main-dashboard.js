@@ -2,37 +2,71 @@
    KMarket Admin - main-dashboard.js
    ============================================= */
 
-document.addEventListener('DOMContentLoaded', function(e) {
+// 카테고리 색상 팔레트 (5개 기준: 1차 카테고리 4개 + 미분류)
+const CATEGORY_COLORS = ['#2563eb', '#16a34a', '#e8380d', '#f97316', '#9333ea'];
+
+document.addEventListener('DOMContentLoaded', function () {
     renderBarChart();
     renderPieChart();
 });
 
-/* ── 막대 차트 ── */
+/* ── 막대 차트 (최근 5일 x 1차 카테고리별 매출) ── */
 function renderBarChart() {
-    const data = [
-        { label: '10-10', order: 120, pay: 90,  cancel: 20 },
-        { label: '10-11', order: 200, pay: 160, cancel: 35 },
-        { label: '10-12', order: 170, pay: 130, cancel: 28 },
-        { label: '10-13', order: 145, pay: 110, cancel: 15 },
-        { label: '10-14', order: 180, pay: 140, cancel: 30 },
-    ];
+    const rawData = window.categorySalesDaily || [];
+    // rawData: [{ saleDate: '2026-07-15', cateId: 1, cateName: '미분류', amount: 1000 }, ...]
 
-    const maxVal = Math.max(...data.flatMap(d => [d.order, d.pay, d.cancel]));
-    const chartH  = 148; // px (내부 높이)
+    if (rawData.length === 0) return;
 
-    const barChart   = document.getElementById('barChart');
-    const barLabels  = document.getElementById('barLabels');
+    // 1) 등장하는 카테고리 목록 추출 (cateId 기준 정렬, 색상 매핑용)
+    const categoryMap = new Map(); // cateId -> cateName
+    rawData.forEach(row => {
+        if (!categoryMap.has(row.cateId)) {
+            categoryMap.set(row.cateId, row.cateName);
+        }
+    });
+    const categories = [...categoryMap.entries()]
+        .sort((a, b) => a[0] - b[0])
+        .map(([cateId, cateName]) => ({ cateId, cateName }));
+
+    // 2) 날짜별로 그룹핑: { '07-15': { '가전': 1000, '식품': 500, ... }, ... }
+    const dateGroups = {};
+    rawData.forEach(row => {
+        const label = row.saleDate.slice(5); // '2026-07-15' -> '07-15'
+        if (!dateGroups[label]) dateGroups[label] = {};
+        dateGroups[label][row.cateName] = row.amount;
+    });
+    const dateLabels = Object.keys(dateGroups).sort();
+
+    // 3) 최대값 계산 (막대 높이 비율용)
+    let maxVal = 0;
+    dateLabels.forEach(label => {
+        categories.forEach(({ cateName }) => {
+            const val = dateGroups[label][cateName] || 0;
+            if (val > maxVal) maxVal = val;
+        });
+    });
+    if (maxVal === 0) maxVal = 1; // 0으로 나누기 방지
+
+    const chartH = 148; // px (내부 높이)
+
+    const barChart = document.getElementById('barChart');
+    const barLabels = document.getElementById('barLabels');
     if (!barChart) return;
 
-    data.forEach(d => {
+    barChart.innerHTML = '';
+    barLabels.innerHTML = '';
+
+    dateLabels.forEach(label => {
         const g = document.createElement('div');
         g.className = 'bar-group';
 
-        ['order', 'pay', 'cancel'].forEach(key => {
+        categories.forEach(({ cateName }, idx) => {
+            const val = dateGroups[label][cateName] || 0;
             const bar = document.createElement('div');
-            bar.className = `bar ${key}`;
-            bar.style.height = Math.round((d[key] / maxVal) * chartH) + 'px';
-            bar.title = `${key}: ${d[key]}`;
+            bar.className = 'bar';
+            bar.style.background = CATEGORY_COLORS[idx % CATEGORY_COLORS.length];
+            bar.style.height = Math.round((val / maxVal) * chartH) + 'px';
+            bar.title = `${cateName}: ${val.toLocaleString()}`;
             g.appendChild(bar);
         });
 
@@ -40,36 +74,60 @@ function renderBarChart() {
 
         const lbl = document.createElement('div');
         lbl.className = 'bar-label';
-        lbl.textContent = d.label;
+        lbl.textContent = label;
         barLabels.appendChild(lbl);
     });
-};
 
+    renderBarLegend(categories);
+}
 
-/* ── 파이 차트 (Canvas) — 부모 너비에 맞게 반응형 ── */
+/* ── 막대 차트 범례 (카테고리 동적 렌더링) ── */
+function renderBarLegend(categories) {
+    const legend = document.querySelector('.chart-legend');
+    if (!legend) return;
+
+    legend.innerHTML = '';
+    categories.forEach(({ cateName }, idx) => {
+        const span = document.createElement('span');
+        span.className = 'leg';
+        span.style.color = CATEGORY_COLORS[idx % CATEGORY_COLORS.length];
+        span.textContent = `■ ${cateName}`;
+        legend.appendChild(span);
+    });
+}
+
+/* ── 파이 차트 (Canvas) — 1차 카테고리별 전체 매출 합계 ── */
 function renderPieChart() {
     const canvas = document.getElementById('pieChart');
     if (!canvas) return;
 
-    const data = [
-        { label: '가전', value: 35, color: '#2563eb' },
-        { label: '식품', value: 25, color: '#16a34a' },
-        { label: '의류', value: 22, color: '#e8380d' },
-        { label: '기타', value: 18, color: '#f97316' },
-    ];
+    const rawTotal = window.categorySalesTotal || [];
+    // rawTotal: [{ cateId: 1, cateName: '미분류', totalAmount: 5000 }, ...]
+
+    const data = rawTotal
+        .slice()
+        .sort((a, b) => a.cateId - b.cateId)
+        .map((row, idx) => ({
+            label: row.cateName,
+            value: row.totalAmount,
+            color: CATEGORY_COLORS[idx % CATEGORY_COLORS.length]
+        }));
+
+    if (data.length === 0) return;
 
     function draw() {
-        // 부모 너비에서 캔버스 크기 결정 (정사각형)
         const wrap = canvas.parentElement;
-        const size = Math.min(wrap.clientWidth, 200); // 최대 200px
-        canvas.width  = size;
+        const size = Math.min(wrap.clientWidth, 200);
+        canvas.width = size;
         canvas.height = size;
 
         const ctx = canvas.getContext('2d');
         const total = data.reduce((s, d) => s + d.value, 0);
         const cx = size / 2;
         const cy = size / 2;
-        const r  = Math.min(cx, cy) - 4;
+        const r = Math.min(cx, cy) - 4;
+
+        if (total === 0) return;
 
         let startAngle = -Math.PI / 2;
         data.forEach(d => {
@@ -90,9 +148,9 @@ function renderPieChart() {
     draw();
     window.addEventListener('resize', draw);
 
-    // 범례
     const legend = document.getElementById('pieLegend');
     if (legend) {
+        legend.innerHTML = '';
         data.forEach(d => {
             const item = document.createElement('div');
             item.className = 'pie-leg';
@@ -103,6 +161,4 @@ function renderPieChart() {
             legend.appendChild(item);
         });
     }
-};
-
-
+}

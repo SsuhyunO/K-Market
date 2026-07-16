@@ -29,20 +29,15 @@ public class MyPageController {
     private final CouponIssueService couponIssueService;
     private final QnaService qnaService;
 
-    /* 마이페이지 공통 배너 */
+    /**
+     * 마이페이지 공통 배너
+     */
     @ModelAttribute
-    public void addMyPageBanner(
-            Model model
-    ) {
+    public void addMyPageBanner(Model model) {
         BannerDTO myPageBanner =
-                bannerService.findFirstEnabledBannerByType(
-                        "myPage"
-                );
+                bannerService.findFirstEnabledBannerByType("myPage");
 
-        model.addAttribute(
-                "myPageBanner",
-                myPageBanner
-        );
+        model.addAttribute("myPageBanner", myPageBanner);
     }
 
     /* 마이페이지 공통 요약 정보 */
@@ -57,55 +52,27 @@ public class MyPageController {
         int totalOrderCount = 0;
         int myCouponCount = 0;
         int myPointBalance = 0;
+        List<QnaDTO> qnaList = null;
 
-        if (memberUid != null &&
-                !memberUid.isBlank()) {
-
-            String safeMemberUid =
-                    memberUid.trim();
-
-            totalOrderCount =
-                    orderService.getTotalCount(
-                            "memberUid",
-                            safeMemberUid
-                    );
-
-            myCouponCount =
-                    couponIssueService
-                            .getMyAvailableCouponCount(
-                                    safeMemberUid
-                            );
-
-            myPointBalance =
-                    pointService.getBalance(
-                            safeMemberUid
-                    );
+        if (memberUid != null && !memberUid.isBlank()) {
+            totalOrderCount = orderService.getTotalCount("memberUid", memberUid);
+            myCouponCount = couponIssueService.getMyAvailableCouponCount(memberUid);
+            myPointBalance = pointService.getBalance(memberUid);
+            qnaList = qnaService.getQnaListByMemberUid(memberUid.trim());
         }
 
-        model.addAttribute(
-                "totalOrderCount",
-                totalOrderCount
-        );
-
-        model.addAttribute(
-                "myCouponCount",
-                myCouponCount
-        );
-
-        model.addAttribute(
-                "myPointBalance",
-                myPointBalance
-        );
+        model.addAttribute("qnaList", qnaList);
+        model.addAttribute("totalOrderCount", totalOrderCount);
+        model.addAttribute("myCouponCount", myCouponCount);
+        model.addAttribute("myPointBalance", myPointBalance);
     }
 
-    /* 마이페이지 홈 */
+    /**
+     * 마이페이지 홈
+     */
     @GetMapping("/my/home")
-    public String home(
-            HttpSession session,
-            Model model
-    ) {
-        String memberUid =
-                (String) session.getAttribute("loginMember");
+    public String home(HttpSession session, Model model) {
+        String memberUid = (String) session.getAttribute("loginMember");
 
         if (memberUid == null ||
                 memberUid.isBlank()) {
@@ -116,42 +83,23 @@ public class MyPageController {
         String safeMemberUid =
                 memberUid.trim();
 
-        model.addAttribute(
-                "recentPoints",
-                pointService.getRecentPointsByMemberUid(
-                        safeMemberUid
-                )
-        );
+        model.addAttribute("recentPoints", pointService.getRecentPointsByMemberUid(safeMemberUid));
+        model.addAttribute("recentReviews", reviewService.getRecentReviewsByMemberId(safeMemberUid));
 
-        model.addAttribute(
-                "recentReviews",
-                reviewService.getRecentReviewsByMemberId(
-                        safeMemberUid
-                )
-        );
+        List<PointDTO> pointList = pointService.getRecentEarnedPoints(safeMemberUid, 5);
+        model.addAttribute("pointList", pointList);
 
-        List<PointDTO> pointList =
-                pointService.getRecentEarnedPoints(
-                        safeMemberUid,
-                        5
-                );
-
-        model.addAttribute(
-                "pointList",
-                pointList
-        );
-
-        model.addAttribute(
-                "recentQnaList",
-                qnaService.getRecentQnaListByMemberUid(
-                        safeMemberUid
-                )
-        );
+        /*
+         * 마이페이지 홈 하단 최근 문의 5개
+         */
+        model.addAttribute("recentQnaList", qnaService.getRecentQnaListByMemberUid(safeMemberUid));
 
         return "my/home";
     }
 
-    /* 전체 주문내역 */
+    /**
+     * 전체 주문내역
+     */
     @GetMapping("/my/order")
     public String order(
             HttpSession session
@@ -163,7 +111,9 @@ public class MyPageController {
         return "my/order";
     }
 
-    /* 쿠폰 */
+    /**
+     * 쿠폰
+     */
     @GetMapping("/my/coupon")
     public String coupon(
             HttpSession session
@@ -175,14 +125,12 @@ public class MyPageController {
         return "my/coupon";
     }
 
-    /* 로그인 회원 전체 문의내역 */
+    /**
+     * 로그인 회원의 전체 문의내역
+     */
     @GetMapping("/my/qna")
-    public String qna(
-            HttpSession session,
-            Model model
-    ) {
-        String memberUid =
-                (String) session.getAttribute("loginMember");
+    public String qna(HttpSession session, Model model) {
+        String memberUid = (String) session.getAttribute("loginMember");
 
         if (memberUid == null ||
                 memberUid.isBlank()) {
@@ -190,23 +138,15 @@ public class MyPageController {
             return "redirect:/member/login";
         }
 
-        String safeMemberUid =
-                memberUid.trim();
-
-        List<QnaDTO> qnaList =
-                qnaService.getQnaListByMemberUid(
-                        safeMemberUid
-                );
-
-        model.addAttribute(
-                "qnaList",
-                qnaList
-        );
+        List<QnaDTO> qnaList = qnaService.getQnaListByMemberUid(memberUid.trim());
+        model.addAttribute("qnaList", qnaList);
 
         return "my/qna";
     }
 
-    /* 나의 설정 */
+    /**
+     * 나의 설정
+     */
     @GetMapping("/my/info")
     public String info(
             HttpSession session
@@ -239,5 +179,10 @@ public class MyPageController {
 
         return memberUid != null &&
                 !memberUid.isBlank();
+    }
+    
+    @GetMapping("/point/list")
+    public String point() {
+        return "my/point";
     }
 }
