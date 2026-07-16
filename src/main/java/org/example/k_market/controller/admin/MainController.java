@@ -34,6 +34,6 @@ public class MainController {
         model.addAttribute("loginMemberType", loginMemberType); // 화면에서 메뉴 노출 여부 등에 필요하면 같이 전달
 
 
-        return "/admin/main";
+        return "admin/main";
     }
 }
