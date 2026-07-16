@@ -13,6 +13,9 @@ public interface OrderDAO {
 
     OrderDTO selectOrderByNo(int orderNo);
 
+    OrderDTO selectOrderByNoForManagement(@Param("orderNo") int orderNo,
+                                          @Param("sellerUid") String sellerUid);
+
     int selectOrderCount(@Param("searchType") String searchType,
                          @Param("keyword") String keyword,
                          @Param("sellerUid") String sellerUid);
