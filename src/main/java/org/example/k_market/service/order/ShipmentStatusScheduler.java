@@ -10,7 +10,7 @@ public class ShipmentStatusScheduler {
 
     private final OrderService orderService;
 
-    @Scheduled(cron = "0 0 * * * *")
+    @Scheduled(fixedDelay = 10_000)
     public void advanceShipmentStatuses() {
         orderService.advanceShipmentStatuses();
     }

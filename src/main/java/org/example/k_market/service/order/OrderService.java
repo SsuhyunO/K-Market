@@ -770,7 +770,7 @@ public class OrderService {
 
         String startDate = normalizeBlank(request.getStartDate());
         String endDate = normalizeBlank(request.getEndDate());
-        int pageSize = Math.min(Math.max(request.getSize(), 1), 50);
+        int pageSize = Math.clamp(request.getSize(), 1, 50);
 
         return paginationService.getPageInfo(
             request.getPage(),
@@ -1025,7 +1025,7 @@ public class OrderService {
         String status;
         if (hasClaimInProgress) {
             status = "CLAIM_PARTIAL";
-        } else if (statuses.stream().allMatch(s -> List.of("DELIVERED", "CONFIRMED").contains(s))) {
+        } else if (List.of("DELIVERED", "CONFIRMED").containsAll(statuses)) {
             status = statuses.contains("DELIVERED") ? "DELIVERED" : "CONFIRMED";
         } else if (statuses.size() == 1) {
             status = switch (statuses.iterator().next()) {
