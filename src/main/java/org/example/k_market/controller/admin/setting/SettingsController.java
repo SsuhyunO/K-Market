@@ -8,9 +8,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @RequiredArgsConstructor
 @Controller
@@ -19,7 +19,9 @@ public class SettingsController {
 
     private final AdminConfigService adminConfigService;
 
-    // 기본설정 화면 조회
+    /**
+     * 기본 설정 화면
+     */
     @GetMapping
     public String siteSettings(Model model) {
 
@@ -30,60 +32,113 @@ public class SettingsController {
         return "admin/setting/settings";
     }
 
-    // 사이트 정보 수정
+    /**
+     * 사이트 정보 수정
+     */
     @PostMapping("/modify-site-settings")
-    public String modifySiteSettings(AdminConfigDTO dto, RedirectAttributes redirectAttributes) {
-
+    public String modifySiteSettings(
+            AdminConfigDTO dto,
+            RedirectAttributes redirectAttributes
+    ) {
         adminConfigService.modifySiteSettings(dto);
 
-        redirectAttributes.addFlashAttribute("message", "사이트 정보가 수정되었습니다.");
+        redirectAttributes.addFlashAttribute(
+                "message",
+                "사이트 정보가 수정되었습니다."
+        );
 
         return "redirect:/admin/site-settings";
     }
 
-    // 로고 정보 수정
+    /**
+     * 로고 및 파비콘 수정
+     */
     @PostMapping("/modify-site-logo")
-    public String modifySiteLogo(@RequestParam("headerLogo") MultipartFile headerLogo,
-                                 @RequestParam("footerLogo") MultipartFile footerLogo,
-                                 @RequestParam("favicon") MultipartFile favicon,
-                                 RedirectAttributes redirectAttributes) {
+    public String modifySiteLogo(
+            @RequestParam(
+                    name = "headerLogo",
+                    required = false
+            )
+            MultipartFile headerLogo,
 
-        adminConfigService.modifySiteLogo(headerLogo, footerLogo, favicon);
+            @RequestParam(
+                    name = "footerLogo",
+                    required = false
+            )
+            MultipartFile footerLogo,
 
-        redirectAttributes.addFlashAttribute("message", "로고 정보가 수정되었습니다.");
+            @RequestParam(
+                    name = "favicon",
+                    required = false
+            )
+            MultipartFile favicon,
+
+            RedirectAttributes redirectAttributes
+    ) {
+        adminConfigService.modifySiteLogo(
+                headerLogo,
+                footerLogo,
+                favicon
+        );
+
+        redirectAttributes.addFlashAttribute(
+                "message",
+                "로고 정보가 수정되었습니다."
+        );
 
         return "redirect:/admin/site-settings";
     }
 
-    // 기업 정보 수정
+    /**
+     * 기업 정보 수정
+     */
     @PostMapping("/modify-corporate-info")
-    public String modifyCorporateInfo(AdminConfigDTO dto, RedirectAttributes redirectAttributes) {
-
+    public String modifyCorporateInfo(
+            AdminConfigDTO dto,
+            RedirectAttributes redirectAttributes
+    ) {
         adminConfigService.modifyCorporateInfo(dto);
 
-        redirectAttributes.addFlashAttribute("message", "기업 정보가 수정되었습니다.");
+        redirectAttributes.addFlashAttribute(
+                "message",
+                "기업 정보가 수정되었습니다."
+        );
 
         return "redirect:/admin/site-settings";
     }
 
-    // 고객센터 정보 수정
+    /**
+     * 고객센터 정보 수정
+     */
     @PostMapping("/modify-customer-support-info")
-    public String modifyCustomerSupportInfo(AdminConfigDTO dto, RedirectAttributes redirectAttributes) {
-
+    public String modifyCustomerSupportInfo(
+            AdminConfigDTO dto,
+            RedirectAttributes redirectAttributes
+    ) {
         adminConfigService.modifyCustomerSupportInfo(dto);
 
-        redirectAttributes.addFlashAttribute("message", "고객센터 정보가 수정되었습니다.");
+        redirectAttributes.addFlashAttribute(
+                "message",
+                "고객센터 정보가 수정되었습니다."
+        );
 
         return "redirect:/admin/site-settings";
     }
 
-    // 카피라이트 수정
+    /**
+     * 카피라이트 수정
+     */
     @PostMapping("/modify-copyright")
-    public String modifyCopyright(AdminConfigDTO dto, RedirectAttributes redirectAttributes) {
-
+    public String modifyCopyright(
+            AdminConfigDTO dto,
+            RedirectAttributes redirectAttributes
+    ) {
         adminConfigService.modifyCopyright(dto);
 
-        redirectAttributes.addFlashAttribute("message", "카피라이트 정보가 수정되었습니다.");
+        redirectAttributes.addFlashAttribute(
+                "message",
+                "카피라이트 정보가 수정되었습니다."
+        );
 
         return "redirect:/admin/site-settings";
     }

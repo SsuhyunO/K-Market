@@ -7,10 +7,9 @@ import org.example.k_market.dto.admin.BannerDTO;
 import org.example.k_market.dto.admin.QnaDTO;
 import org.example.k_market.service.PointService;
 import org.example.k_market.service.admin.BannerService;
-import jakarta.servlet.http.HttpSession;
 import org.example.k_market.service.admin.CouponIssueService;
-import org.example.k_market.service.order.OrderService;
 import org.example.k_market.service.admin.QnaService;
+import org.example.k_market.service.order.OrderService;
 import org.example.k_market.service.review.ReviewService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -30,13 +29,11 @@ public class MyPageController {
     private final CouponIssueService couponIssueService;
     private final QnaService qnaService;
 
-
-    /**
-     * 마이페이지 공통 배너
-     */
+    /* 마이페이지 공통 배너 */
     @ModelAttribute
-    public void addMyPageBanner(Model model) {
-
+    public void addMyPageBanner(
+            Model model
+    ) {
         BannerDTO myPageBanner =
                 bannerService.findFirstEnabledBannerByType(
                         "myPage"
@@ -48,43 +45,60 @@ public class MyPageController {
         );
     }
 
+    /* 마이페이지 공통 요약 정보 */
     @ModelAttribute
-    public void addMyPageSummary(HttpSession session, Model model) {
-        String memberUid = (String) session.getAttribute("loginMember");
+    public void addMyPageSummary(
+            HttpSession session,
+            Model model
+    ) {
+        String memberUid =
+                (String) session.getAttribute("loginMember");
 
         int totalOrderCount = 0;
-        if (memberUid != null && !memberUid.isBlank()) {
-            totalOrderCount = orderService.getTotalCount("memberUid", memberUid);
-        }
-
         int myCouponCount = 0;
-        if (memberUid != null && !memberUid.isBlank()) {
-            myCouponCount = couponIssueService.getMyAvailableCouponCount(memberUid);
-        }
-
         int myPointBalance = 0;
-        if (memberUid != null && !memberUid.isBlank()) {
-            myPointBalance = pointService.getBalance(memberUid);
+
+        if (memberUid != null &&
+                !memberUid.isBlank()) {
+
+            String safeMemberUid =
+                    memberUid.trim();
+
+            totalOrderCount =
+                    orderService.getTotalCount(
+                            "memberUid",
+                            safeMemberUid
+                    );
+
+            myCouponCount =
+                    couponIssueService
+                            .getMyAvailableCouponCount(
+                                    safeMemberUid
+                            );
+
+            myPointBalance =
+                    pointService.getBalance(
+                            safeMemberUid
+                    );
         }
 
-        model.addAttribute("totalOrderCount", totalOrderCount);
-        model.addAttribute("myCouponCount", myCouponCount);
-        model.addAttribute("myPointBalance", myPointBalance);
+        model.addAttribute(
+                "totalOrderCount",
+                totalOrderCount
+        );
+
+        model.addAttribute(
+                "myCouponCount",
+                myCouponCount
+        );
+
+        model.addAttribute(
+                "myPointBalance",
+                myPointBalance
+        );
     }
 
-    @GetMapping("/my/home")
-    public String home(HttpSession session, Model model) {
-        String memberUid = (String) session.getAttribute("loginMember");
-        if (memberUid != null && !memberUid.isBlank()) {
-            model.addAttribute("recentPoints", pointService.getRecentPointsByMemberUid(memberUid));
-            model.addAttribute("recentReviews", reviewService.getRecentReviewsByMemberId(memberUid));
-
-            // 최근 포인트 적립 내역 5건 조회
-            List<PointDTO> pointList = pointService.getRecentEarnedPoints(memberUid, 5);
-
-    /**
-     * 마이페이지 홈
-     */
+    /* 마이페이지 홈 */
     @GetMapping("/my/home")
     public String home(
             HttpSession session,
@@ -93,11 +107,14 @@ public class MyPageController {
         String memberUid =
                 (String) session.getAttribute("loginMember");
 
-        if (memberUid == null || memberUid.isBlank()) {
+        if (memberUid == null ||
+                memberUid.isBlank()) {
+
             return "redirect:/member/login";
         }
 
-        String safeMemberUid = memberUid.trim();
+        String safeMemberUid =
+                memberUid.trim();
 
         model.addAttribute(
                 "recentPoints",
@@ -124,9 +141,6 @@ public class MyPageController {
                 pointList
         );
 
-        /*
-         * 마이페이지 홈 하단 최근 문의 5개
-         */
         model.addAttribute(
                 "recentQnaList",
                 qnaService.getRecentQnaListByMemberUid(
@@ -137,28 +151,31 @@ public class MyPageController {
         return "my/home";
     }
 
-
-    /**
-     * 전체 주문내역
-     */
+    /* 전체 주문내역 */
     @GetMapping("/my/order")
-    public String order() {
+    public String order(
+            HttpSession session
+    ) {
+        if (!isLoggedIn(session)) {
+            return "redirect:/member/login";
+        }
+
         return "my/order";
     }
 
-
-    /**
-     * 쿠폰
-     */
+    /* 쿠폰 */
     @GetMapping("/my/coupon")
-    public String coupon() {
+    public String coupon(
+            HttpSession session
+    ) {
+        if (!isLoggedIn(session)) {
+            return "redirect:/member/login";
+        }
+
         return "my/coupon";
     }
 
-
-    /**
-     * 로그인 회원의 전체 문의내역
-     */
+    /* 로그인 회원 전체 문의내역 */
     @GetMapping("/my/qna")
     public String qna(
             HttpSession session,
@@ -167,13 +184,18 @@ public class MyPageController {
         String memberUid =
                 (String) session.getAttribute("loginMember");
 
-        if (memberUid == null || memberUid.isBlank()) {
+        if (memberUid == null ||
+                memberUid.isBlank()) {
+
             return "redirect:/member/login";
         }
 
+        String safeMemberUid =
+                memberUid.trim();
+
         List<QnaDTO> qnaList =
                 qnaService.getQnaListByMemberUid(
-                        memberUid.trim()
+                        safeMemberUid
                 );
 
         model.addAttribute(
@@ -184,18 +206,38 @@ public class MyPageController {
         return "my/qna";
     }
 
-
-    /**
-     * 나의 설정
-     */
+    /* 나의 설정 */
     @GetMapping("/my/info")
-    public String info() {
+    public String info(
+            HttpSession session
+    ) {
+        if (!isLoggedIn(session)) {
+            return "redirect:/member/login";
+        }
+
         return "my/info";
     }
 
+    /* 리뷰 목록 */
     @GetMapping("/review/list")
-    public String list() {
+    public String reviewList(
+            HttpSession session
+    ) {
+        if (!isLoggedIn(session)) {
+            return "redirect:/member/login";
+        }
+
         return "my/review";
     }
 
+    /* 로그인 여부 확인 */
+    private boolean isLoggedIn(
+            HttpSession session
+    ) {
+        String memberUid =
+                (String) session.getAttribute("loginMember");
+
+        return memberUid != null &&
+                !memberUid.isBlank();
+    }
 }
