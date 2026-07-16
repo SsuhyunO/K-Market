@@ -1,5 +1,6 @@
 package org.example.k_market.controller.admin.cs;
 
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.example.k_market.dto.admin.FaqDTO;
 import org.example.k_market.dto.admin.NoticeDTO;
@@ -27,7 +28,14 @@ public class AdminCsController {
     private final FaqService faqService;
     private final QnaService qnaService;
 
-    /* 공지사항 목록 조회 */
+
+    /* =========================================================
+       공지사항
+       ========================================================= */
+
+    /**
+     * 공지사항 목록 조회
+     */
     @GetMapping({"", "/", "/notice", "/notice/list"})
     public String noticeList(
             @RequestParam(
@@ -51,7 +59,10 @@ public class AdminCsController {
         return "admin/cs/notice/list";
     }
 
-    /* 공지사항 상세 조회 */
+
+    /**
+     * 공지사항 상세 조회
+     */
     @GetMapping("/notice/view")
     public String noticeView(
             @RequestParam("boardNo") int boardNo,
@@ -68,18 +79,39 @@ public class AdminCsController {
         return "admin/cs/notice/view";
     }
 
-    /* 공지사항 작성 화면 */
+
+    /**
+     * 공지사항 작성 화면
+     */
     @GetMapping("/notice/write")
     public String noticeWrite() {
         return "admin/cs/notice/write";
     }
 
-    /* 공지사항 등록 */
+
+    /**
+     * 공지사항 등록
+     */
     @PostMapping("/notice/write")
     public String noticeWrite(
             NoticeDTO dto,
+            HttpSession session,
             RedirectAttributes redirectAttributes
     ) {
+        String memberUid =
+                getLoginMemberUid(session);
+
+        if (memberUid == null || memberUid.isBlank()) {
+            redirectAttributes.addFlashAttribute(
+                    "message",
+                    "로그인 정보가 없습니다. 다시 로그인해주세요."
+            );
+
+            return "redirect:/member/login";
+        }
+
+        dto.setMemberUid(memberUid);
+
         noticeService.insertNotice(dto);
 
         redirectAttributes.addFlashAttribute(
@@ -90,7 +122,10 @@ public class AdminCsController {
         return "redirect:/admin/cs/notice/list";
     }
 
-    /* 공지사항 수정 화면 */
+
+    /**
+     * 공지사항 수정 화면
+     */
     @GetMapping("/notice/modify")
     public String noticeModify(
             @RequestParam("boardNo") int boardNo,
@@ -107,7 +142,10 @@ public class AdminCsController {
         return "admin/cs/notice/modify";
     }
 
-    /* 공지사항 수정 */
+
+    /**
+     * 공지사항 수정
+     */
     @PostMapping("/notice/modify")
     public String noticeModify(
             NoticeDTO dto,
@@ -124,7 +162,10 @@ public class AdminCsController {
                 + dto.getBoardNo();
     }
 
-    /* 공지사항 단일 및 선택 삭제 */
+
+    /**
+     * 공지사항 단일 및 선택 삭제
+     */
     @PostMapping("/notice/delete")
     public String noticeDelete(
             @RequestParam(
@@ -154,7 +195,14 @@ public class AdminCsController {
         return "redirect:/admin/cs/notice/list";
     }
 
-    /* FAQ 목록 및 유형별 조회 */
+
+    /* =========================================================
+       FAQ
+       ========================================================= */
+
+    /**
+     * FAQ 목록 및 유형별 조회
+     */
     @GetMapping({"/faq", "/faq/list"})
     public String faqList(
             @RequestParam(
@@ -204,7 +252,10 @@ public class AdminCsController {
         return "admin/cs/faq/list";
     }
 
-    /* FAQ 상세 조회 */
+
+    /**
+     * FAQ 상세 조회
+     */
     @GetMapping("/faq/view")
     public String faqView(
             @RequestParam("boardNo") int boardNo,
@@ -221,18 +272,39 @@ public class AdminCsController {
         return "admin/cs/faq/view";
     }
 
-    /* FAQ 작성 화면 */
+
+    /**
+     * FAQ 작성 화면
+     */
     @GetMapping("/faq/write")
     public String faqWrite() {
         return "admin/cs/faq/write";
     }
 
-    /* FAQ 등록 */
+
+    /**
+     * FAQ 등록
+     */
     @PostMapping("/faq/write")
     public String faqWrite(
             FaqDTO dto,
+            HttpSession session,
             RedirectAttributes redirectAttributes
     ) {
+        String memberUid =
+                getLoginMemberUid(session);
+
+        if (memberUid == null || memberUid.isBlank()) {
+            redirectAttributes.addFlashAttribute(
+                    "message",
+                    "로그인 정보가 없습니다. 다시 로그인해주세요."
+            );
+
+            return "redirect:/member/login";
+        }
+
+        dto.setMemberUid(memberUid);
+
         faqService.insertFaq(dto);
 
         redirectAttributes.addFlashAttribute(
@@ -243,7 +315,10 @@ public class AdminCsController {
         return "redirect:/admin/cs/faq/list";
     }
 
-    /* FAQ 수정 화면 */
+
+    /**
+     * FAQ 수정 화면
+     */
     @GetMapping("/faq/modify")
     public String faqModify(
             @RequestParam("boardNo") int boardNo,
@@ -260,7 +335,10 @@ public class AdminCsController {
         return "admin/cs/faq/modify";
     }
 
-    /* FAQ 수정 */
+
+    /**
+     * FAQ 수정
+     */
     @PostMapping("/faq/modify")
     public String faqModify(
             FaqDTO dto,
@@ -277,7 +355,10 @@ public class AdminCsController {
                 + dto.getBoardNo();
     }
 
-    /* FAQ 단일 및 선택 삭제 */
+
+    /**
+     * FAQ 단일 및 선택 삭제
+     */
     @PostMapping("/faq/delete")
     public String faqDelete(
             @RequestParam(
@@ -307,7 +388,14 @@ public class AdminCsController {
         return "redirect:/admin/cs/faq/list";
     }
 
-    /* 문의글 목록 및 유형별 조회 */
+
+    /* =========================================================
+       문의글
+       ========================================================= */
+
+    /**
+     * 문의글 목록 및 유형별 조회
+     */
     @GetMapping({"/qna", "/qna/list"})
     public String qnaList(
             @RequestParam(
@@ -378,7 +466,10 @@ public class AdminCsController {
         return "admin/cs/qna/list";
     }
 
-    /* 문의글 상세 조회 */
+
+    /**
+     * 문의글 상세 조회
+     */
     @GetMapping("/qna/view")
     public String qnaView(
             @RequestParam("boardNo") int boardNo,
@@ -395,7 +486,10 @@ public class AdminCsController {
         return "admin/cs/qna/view";
     }
 
-    /* 문의 답변 작성 화면 */
+
+    /**
+     * 문의 답변 작성 화면
+     */
     @GetMapping("/qna/reply")
     public String qnaReply(
             @RequestParam("boardNo") int boardNo,
@@ -412,7 +506,10 @@ public class AdminCsController {
         return "admin/cs/qna/reply";
     }
 
-    /* 문의 답변 등록 및 수정 */
+
+    /**
+     * 문의 답변 등록 및 수정
+     */
     @PostMapping("/qna/reply")
     public String qnaReply(
             @RequestParam("boardNo") int boardNo,
@@ -441,7 +538,10 @@ public class AdminCsController {
                 + boardNo;
     }
 
-    /* 문의 답변 삭제 */
+
+    /**
+     * 문의 답변 삭제
+     */
     @PostMapping("/qna/reply/delete")
     public String qnaReplyDelete(
             @RequestParam("boardNo") int boardNo,
@@ -458,7 +558,10 @@ public class AdminCsController {
                 + boardNo;
     }
 
-    /* 문의글 단일 및 선택 삭제 */
+
+    /**
+     * 문의글 단일 및 선택 삭제
+     */
     @PostMapping("/qna/delete")
     public String qnaDelete(
             @RequestParam(
@@ -488,14 +591,47 @@ public class AdminCsController {
         return "redirect:/admin/cs/qna/list";
     }
 
-    /* 문자열 공백 제거 */
-    private String normalize(String value) {
+
+    /* =========================================================
+       공통 메서드
+       ========================================================= */
+
+    /**
+     * 세션에 저장된 로그인 회원 UID 조회
+     */
+    private String getLoginMemberUid(
+            HttpSession session
+    ) {
+        Object loginMember =
+                session.getAttribute("loginMember");
+
+        if (loginMember == null) {
+            return null;
+        }
+
+        if (loginMember instanceof String memberUid) {
+            return memberUid.trim();
+        }
+
+        return loginMember.toString().trim();
+    }
+
+
+    /**
+     * 문자열 공백 제거
+     */
+    private String normalize(
+            String value
+    ) {
         return value == null
                 ? ""
                 : value.trim();
     }
 
-    /* FAQ 페이지 주소 생성 */
+
+    /**
+     * FAQ 페이지 주소 생성
+     */
     private String createFaqPageUrl(
             String category1
     ) {
@@ -517,7 +653,10 @@ public class AdminCsController {
                 .toUriString();
     }
 
-    /* 문의글 페이지 주소 생성 */
+
+    /**
+     * 문의글 페이지 주소 생성
+     */
     private String createQnaPageUrl(
             String category1,
             String category2
