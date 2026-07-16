@@ -263,6 +263,7 @@ function isOrderCancelable(items) {
 
 function renderClaimModal(type, item) {
     const prefix = type === 'return' ? 'return' : 'exchange';
+    setHtml(`${prefix}Thumb`, renderThumb(item.thumb1FileId));
     setText(`${prefix}Date`, formatDateText(item.createdAt));
     setText(`${prefix}OrderNo`, `주문번호 : ${item.orderNo}`);
     setText(`${prefix}Company`, item.sellerName || item.sellerUid || '-');
@@ -413,6 +414,11 @@ function closeModal(modalId) {
 function setText(id, value) {
     const target = document.getElementById(id);
     if (target) target.textContent = value;
+}
+
+function setHtml(id, value) {
+    const target = document.getElementById(id);
+    if (target) target.innerHTML = value;
 }
 
 function findCurrentItem(orderItemNo) {
