@@ -31,6 +31,7 @@ public class AdminRoleInterceptor implements HandlerInterceptor {
     // 판매자(SELLER)에게 허용되는 admin 경로 prefix
     // aside.html 의 "상점관리 / 상품관리 / 주문관리 / 쿠폰관리" 메뉴와 동일하게 맞춤
     private static final Set<String> SELLER_ALLOWED_PREFIXES = Set.of(
+            "/admin/main",
             "/admin/product",
             "/admin/order",
             "/admin/coupon"
