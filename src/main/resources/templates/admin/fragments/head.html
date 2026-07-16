@@ -1,21 +1,34 @@
 <th:block th:fragment="head">
     <meta charset="UTF-8">
-	<meta name="context-path" th:content="@{/}">
-	<meta name="login-member-type" th:content="${loginMemberType}">
+    <meta name="context-path" th:content="@{/}">
+    <meta name="login-member-type" th:content="${loginMemberType}">
 
     <!-- 파비콘 -->
-    <link th:if="${siteConfig != null and siteConfig.faviconFiled != 0}"
+    <link th:if="${config != null and config.faviconFiled != 0}"
           rel="icon"
-          type="image/png"
-          th:href="@{/files/{id}(id=${siteConfig.faviconFiled})}">
+          th:href="@{/files/{id}(id=${config.faviconFiled}, v=${config.faviconFiled})}">
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="preconnect"
+          href="https://fonts.googleapis.com">
 
-    <link rel="stylesheet" th:href="@{/css/admin/global/reset.css}">
-    <link rel="stylesheet" th:href="@{/css/admin/global/header.css}">
-    <link rel="stylesheet" th:href="@{/css/admin/global/main-style.css}">
-    <link rel="stylesheet" th:href="@{/css/admin/global/aside.css}">
-    <link rel="stylesheet" th:href="@{/css/admin/global/footer.css}">
-    <link rel="stylesheet" th:href="@{/css/admin/global/section-style.css}">
-</th:block>s
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700;800&display=swap"
+          rel="stylesheet">
+
+    <link rel="stylesheet"
+          th:href="@{/css/admin/global/reset.css}">
+
+    <link rel="stylesheet"
+          th:href="@{/css/admin/global/header.css}">
+
+    <link rel="stylesheet"
+          th:href="@{/css/admin/global/main-style.css}">
+
+    <link rel="stylesheet"
+          th:href="@{/css/admin/global/aside.css}">
+
+    <link rel="stylesheet"
+          th:href="@{/css/admin/global/footer.css}">
+
+    <link rel="stylesheet"
+          th:href="@{/css/admin/global/section-style.css}">
+</th:block>
