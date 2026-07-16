@@ -19,6 +19,7 @@ public class OrderDTO {
     private int orderPrice;
     private int orderDiscount;
     private Long couponIssueId;
+    private int shippingFee;
     private int orderTotal;
     private int usedPoints;
     private String receiver;

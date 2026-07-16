@@ -622,7 +622,7 @@ public class OrderService {
     }
 
     public OrderDetailResponse getOrderDetailForManagement(int orderNo, String sellerUid) {
-        OrderDTO order = orderDAO.selectOrderByNo(orderNo);
+        OrderDTO order = orderDAO.selectOrderByNoForManagement(orderNo, sellerUid);
         if (order == null) {
             throw new NoSuchElementException("주문을 찾을 수 없습니다. orderNo=" + orderNo);
         }
