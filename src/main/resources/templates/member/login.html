@@ -23,6 +23,7 @@
                 <h2>로그인</h2>
 
                 <form th:action="@{/member/login}" method="post">
+                    <p class="login-error" th:if="${loginError}" th:text="${loginError}"></p>
                     <div class="login-form-row">
                         <div class="input-area">
                             <div class="input-row">

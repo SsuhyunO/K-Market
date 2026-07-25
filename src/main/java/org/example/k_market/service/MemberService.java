@@ -79,6 +79,21 @@ public class MemberService {
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다."));
     }
 
+    // 일반 로그인 인증을 한 곳에서 처리해 HTML 폼과 API의 검증 차이를 방지한다.
+    public Member authenticate(String uid, String rawPassword) {
+        Member member = memberRepository.findById(uid)
+                .orElseThrow(() -> new IllegalArgumentException("아이디 또는 비밀번호가 일치하지 않습니다."));
+
+        if (!passwordEncoder.matches(rawPassword, member.getPassword())) {
+            throw new IllegalArgumentException("아이디 또는 비밀번호가 일치하지 않습니다.");
+        }
+        if (member.isWithdrawn()) {
+            throw new IllegalStateException("탈퇴한 계정입니다. 재로그인이 불가능합니다.");
+        }
+
+        return member;
+    }
+
     // ===== 추가된 부분: 현재 비밀번호 확인 (마이페이지 비밀번호 확인 팝업용) =====
     public boolean verifyCurrentPassword(String uid, String rawPassword) {
         Member member = findByUid(uid);
