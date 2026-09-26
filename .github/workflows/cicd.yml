@@ -47,7 +47,7 @@ jobs:
 
       - name: Setup SSH Key
         run: |
-          printf '%s\n' "${{ secrets.AWS_EC2_KEY }}" | tr -d '\r' > private_key.pem
+          printf '%s' "${{ secrets.AWS_EC2_KEY }}" | base64 --decode > private_key.pem
           chmod 600 private_key.pem
           ssh-keygen -y -f private_key.pem > /dev/null
 
