@@ -18,6 +18,7 @@ public class Point {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int pointNo;
 
+    @Column(length = 20, nullable = false)
     private String memberUid;
     private int orderNo;
     private int point;

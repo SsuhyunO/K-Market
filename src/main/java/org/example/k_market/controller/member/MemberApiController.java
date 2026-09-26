@@ -10,7 +10,6 @@ import org.example.k_market.dto.member.MemberDto;
 import org.example.k_market.entity.Member;
 import org.example.k_market.service.MemberService;
 import org.example.k_market.service.EmailAuthService;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
@@ -21,7 +20,6 @@ import java.util.Map;
 public class MemberApiController {
 
     private final MemberService memberService;
-    private final PasswordEncoder passwordEncoder;
     private final EmailAuthService emailAuthService;
 
     private static final String AUTO_LOGIN_COOKIE = "autoLoginToken";
@@ -63,16 +61,7 @@ public class MemberApiController {
     @PostMapping("/login")
     public MemberDto.Response login(@RequestBody MemberDto.LoginRequest request, HttpSession session,
                                     HttpServletResponse response) {
-        Member member = memberService.findByUid(request.getUid());
-
-        if (!passwordEncoder.matches(request.getPassword(), member.getPassword())) {
-            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
-        }
-
-        // 탈퇴한 계정은 로그인 자체를 차단
-        if (member.isWithdrawn()) {
-            throw new IllegalStateException("탈퇴한 계정입니다. 재로그인이 불가능합니다.");
-        }
+        Member member = memberService.authenticate(request.getUid(), request.getPassword());
 
         session.setAttribute("loginMember", member.getUid());
         // ===== 추가된 부분: 역할(권한) 기반 화면/접근 제어를 위해 memberType도 세션에 저장 =====

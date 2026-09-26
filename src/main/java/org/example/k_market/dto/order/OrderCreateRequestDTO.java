@@ -15,7 +15,7 @@ public class OrderCreateRequestDTO {
     private String addr2;
     private String orderNote;
     private String payMethod;
-    private Long couponIssueId;
+    private Integer couponIssueId;
     private Integer targetVariantId; // PRODUCT 타입 쿠폰일 때 적용 대상 상품 (nullable)
     private Integer usedPoints;
     private List<OrderItemRequestDTO> items;

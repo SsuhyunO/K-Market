@@ -19,6 +19,7 @@ public class Coupon {
     private int couponNo;
 
     private String couponType;
+    @Column(length = 20)
     private String sellerUid;
     private String benefit;
     private int issuedCnt;

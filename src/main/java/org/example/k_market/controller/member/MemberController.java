@@ -2,6 +2,8 @@ package org.example.k_market.controller.member;
 
 import lombok.RequiredArgsConstructor;
 import org.example.k_market.dto.admin.BannerDTO;
+import org.example.k_market.entity.Member;
+import org.example.k_market.service.MemberService;
 import org.example.k_market.service.PolicyService;
 import org.example.k_market.service.admin.BannerService;
 import org.springframework.stereotype.Controller;
@@ -17,6 +19,7 @@ public class MemberController {
 
     private final PolicyService policyService;
     private final BannerService bannerService;
+    private final MemberService memberService;
     // TODO: 실제 로그인 검증용 서비스로 교체하세요 (예: private final MemberService memberService;)
 
     @GetMapping("/member/login")
@@ -42,7 +45,22 @@ public class MemberController {
         // return "member/login";
 
         // 검증 성공 시 (uid는 실제 조회한 회원 uid로 교체):
-        session.setAttribute("loginMember", userId);
+        final Member member;
+        try {
+            member = memberService.authenticate(userId, userPw);
+        } catch (IllegalArgumentException | IllegalStateException exception) {
+            model.addAttribute("loginError", exception.getMessage());
+            model.addAttribute(
+                    "loginBanner",
+                    bannerService.findFirstEnabledBannerByType("userLogin")
+            );
+            return "member/login";
+        }
+
+        session.setAttribute("loginMember", member.getUid());
+        session.setAttribute("loginMemberType", member.getMemberType());
+        session.setAttribute("loginMemberLevel", member.getMemberLevel());
+        memberService.updateLastLoginAt(member.getUid());
 
         return "redirect:/";
     }

@@ -77,14 +77,11 @@
 
             <!-- 3번 영역: 배너 광고 -->
             <!-- 3번 영역: 배너 광고 -->
-            <div class="my-banner">
-                <a th:if="${myPageBanner != null}"
+            <div class="my-banner" th:if="${myPageBanner != null}">
+                <a
                    th:href="${myPageBanner.link != null and !#strings.isEmpty(myPageBanner.link) ? myPageBanner.link : '#'}"
-                   target="_blank">
+                   target="_blank" rel="noopener noreferrer">
                     <img th:src="@{|/files/${myPageBanner.fileId}|}" th:alt="${myPageBanner.name}">
-                </a>
-                <a th:unless="${myPageBanner != null}" th:href="@{/event/summer-sale}" target="_blank">
-                    <img th:src="@{/images/banner/banner_810x86.png}" alt="K-Market 이벤트 배너">
                 </a>
             </div>
 

@@ -39,3 +39,32 @@ out/
 ### Logs ###
 logs/
 *.log
+*.pid
+
+### Local environment variables / secrets ###
+.env
+.env.*
+!.env.example
+kmarket.env
+
+### Runtime uploads / local demo assets ###
+/upload/
+/demo-assets/
+
+### Private keys and certificates ###
+*.pem
+*.key
+*.p12
+*.pfx
+*.jks
+
+### Local database backups / credential-bearing seed data ###
+/dumps/
+*.dump
+*.sql.gz
+/database/seed-admin.sql
+
+### Local transfer archives ###
+*.zip
+*.tar
+*.tar.gz

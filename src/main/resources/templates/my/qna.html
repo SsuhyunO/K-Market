@@ -124,15 +124,14 @@
         <div class="my-content">
 
             <!-- 마이페이지 배너 -->
-            <div class="my-banner">
-
-                <!-- 관리자 등록 배너가 있는 경우 -->
-                <a th:if="${myPageBanner != null}"
+            <div class="my-banner" th:if="${myPageBanner != null}">
+                <a
                    th:href="${myPageBanner.link != null
                              and !#strings.isEmpty(myPageBanner.link)
                              ? myPageBanner.link
                              : '#'}"
                    target="_blank"
+                   rel="noopener noreferrer"
                    class="my-banner-link">
 
                     <img th:src="@{/files/{id}(id=${myPageBanner.fileId})}"
@@ -141,18 +140,6 @@
                                   : '마이페이지 배너'}"
                          class="my-banner-image">
                 </a>
-
-                <!-- 관리자 등록 배너가 없는 경우 -->
-                <a th:unless="${myPageBanner != null}"
-                   th:href="@{/event/summer-sale}"
-                   target="_blank"
-                   class="my-banner-link">
-
-                    <img th:src="@{/images/banner/banner_810x86.svg}"
-                         alt="K마켓 이벤트 배너"
-                         class="my-banner-image">
-                </a>
-
             </div>
 
 

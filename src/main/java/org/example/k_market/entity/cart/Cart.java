@@ -20,6 +20,7 @@ public class Cart {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int cartNo;
+    @Column(length = 20, nullable = false)
     private String memberUid;
     private int prodVariantId;
     private int count;
