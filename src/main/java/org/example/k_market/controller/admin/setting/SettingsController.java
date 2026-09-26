@@ -3,6 +3,7 @@ package org.example.k_market.controller.admin.setting;
 import lombok.RequiredArgsConstructor;
 import org.example.k_market.dto.admin.AdminConfigDTO;
 import org.example.k_market.service.admin.AdminConfigService;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,6 +20,9 @@ public class SettingsController {
 
     private final AdminConfigService adminConfigService;
 
+    @Value("${spring.application.version}")
+    private String currentBuildVersion;
+
     /**
      * 기본 설정 화면
      */
@@ -28,6 +32,7 @@ public class SettingsController {
         AdminConfigDTO config = adminConfigService.findById(1);
 
         model.addAttribute("config", config);
+        model.addAttribute("currentBuildVersion", currentBuildVersion);
 
         return "admin/setting/settings";
     }
