@@ -218,6 +218,7 @@ CREATE TABLE IF NOT EXISTS `coupon_issue` (
   `createdAt` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updatedAt` datetime DEFAULT NULL,
   PRIMARY KEY (`issueNo`),
+  UNIQUE KEY `uk_coupon_issue_coupon_member` (`couponNo`,`memberUid`),
   KEY `FK_coupon_TO_coupon_issue` (`couponNo`),
   KEY `FK_member_TO_coupon_issue` (`memberUid`),
   CONSTRAINT `FK_coupon_TO_coupon_issue` FOREIGN KEY (`couponNo`) REFERENCES `coupon` (`couponNo`),
@@ -457,4 +458,3 @@ CREATE TABLE IF NOT EXISTS `claim` (
   CONSTRAINT `FK_file_TO_claim` FOREIGN KEY (`fileId`) REFERENCES `file` (`id`),
   CONSTRAINT `FK_orderItem_TO_claim` FOREIGN KEY (`orderItemNo`) REFERENCES `order_item` (`orderItemNo`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-

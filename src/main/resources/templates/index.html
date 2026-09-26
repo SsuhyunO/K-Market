@@ -74,14 +74,34 @@
 
 <script>
     $(document).ready(function () {
-        $('.bxslider').bxSlider({
-            auto: true,
-            pause: 5000,
+        const $slider = $('.bxslider');
+        const slideCount = $slider.children('li').length;
+        const slider = $slider.bxSlider({
+            auto: false,
             speed: 350,
             controls: true,
-            pager: true,
-            stopAutoOnClick: false
+            pager: true
         });
+
+        if (slideCount <= 1) return;
+
+        let autoTimer;
+
+        function restartAutoSlide() {
+            window.clearInterval(autoTimer);
+            autoTimer = window.setInterval(function () {
+                if (!document.hidden) slider.goToNextSlide();
+            }, 5000);
+        }
+
+        $('.slider-section').on(
+            'click',
+            '.bx-prev, .bx-next, .bx-pager-link',
+            restartAutoSlide
+        );
+
+        document.addEventListener('visibilitychange', restartAutoSlide);
+        restartAutoSlide();
     });
 </script>
 
