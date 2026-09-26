@@ -41,17 +41,6 @@ public class AdminConfig {
     private int myPageBannerId;
     private String copyright;
 
-    // Legacy columns that still exist as NOT NULL columns in the production schema.
-    // They must be mapped so that the first AdminConfig row can be created by JPA.
-    @Column(name = "faviconImageId")
-    private int faviconImageId;
-
-    @Column(name = "footerLogoImageId")
-    private int footerLogoImageId;
-
-    @Column(name = "headerLogoImageId")
-    private int headerLogoImageId;
-
     public void updateSiteSettings(String siteName, String siteSubName) {
         this.siteName = siteName;
         this.siteSubName = siteSubName;

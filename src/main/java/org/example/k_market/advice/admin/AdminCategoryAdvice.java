@@ -16,7 +16,10 @@ public class AdminCategoryAdvice {
     private final AdminConfigService adminConfigService;
 
     @ModelAttribute("config")
-    public AdminConfigDTO config() {
+    public AdminConfigDTO config(HttpServletRequest request) {
+        if (isFileRequest(request)) {
+            return null;
+        }
         return adminConfigService.findById(1);
     }
 
@@ -31,5 +34,14 @@ public class AdminCategoryAdvice {
     public String loginMemberType(HttpServletRequest request) {
         HttpSession session = request.getSession(false);
         return (session != null) ? (String) session.getAttribute("loginMemberType") : null;
+    }
+
+    private boolean isFileRequest(HttpServletRequest request) {
+        String requestUri = request.getRequestURI();
+        String contextPath = request.getContextPath();
+        if (!contextPath.isBlank() && requestUri.startsWith(contextPath)) {
+            requestUri = requestUri.substring(contextPath.length());
+        }
+        return requestUri.startsWith("/files/") || requestUri.equals("/favicon.ico");
     }
 }
