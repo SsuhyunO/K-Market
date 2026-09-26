@@ -4,9 +4,18 @@
      active 값: home | culture | news | career | media
      ============================================= -->
 <header th:fragment="header(active)" class="company-header">
-  <link th:if="${siteConfig != null and siteConfig.faviconFiled != 0}"
-        rel="icon"
-        th:href="@{/files/{id}(id=${siteConfig.faviconFiled}, v=${siteConfig.faviconFiled})}">
+  <script th:if="${siteConfig != null and siteConfig.faviconFiled != 0}" th:inline="javascript">
+    (() => {
+      const faviconUrl = [[@{/files/{id}(id=${siteConfig.faviconFiled}, v=${siteConfig.faviconFiled})}]];
+      let favicon = document.head.querySelector('link[rel~="icon"]');
+      if (!favicon) {
+        favicon = document.createElement('link');
+        favicon.rel = 'icon';
+        document.head.appendChild(favicon);
+      }
+      favicon.href = faviconUrl;
+    })();
+  </script>
   <script th:if="${siteConfig != null and !#strings.isEmpty(siteConfig.siteName)}" th:inline="javascript">
     document.title = document.title.replace(/K-?Market|케이마켓/gi, /*[[${siteConfig.siteName}]]*/ 'K-Market');
   </script>

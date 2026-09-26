@@ -26,7 +26,7 @@
                     <th:block th:fragment="version_info_rows">
                         <tr>
                             <th>사이트 버전</th>
-                            <td>1.0.1-RELEASE</td>
+                            <td th:text="${currentBuildVersion}">1.0.0-RELEASE</td>
                         </tr>
                     </th:block>
                 </th:block>
