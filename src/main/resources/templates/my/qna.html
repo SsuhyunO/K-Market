@@ -4,17 +4,22 @@
 
 <head>
     <meta charset="UTF-8">
+    <meta name="context-path" th:content="@{/}">
     <title>문의하기 | K-Market</title>
 
+    <link rel="stylesheet" th:href="@{/css/common.css}">
+    <link rel="stylesheet" th:href="@{/css/index.css}">
     <link rel="stylesheet"
           th:href="@{/css/my/qna.css}">
 </head>
 
-<body>
+<body class="my-page">
 
 <!-- HEADER -->
 <div th:replace="~{fragments/header :: header}"></div>
 
+<div class="page-wrapper">
+    <div class="main-content">
 
 <!-- MAIN -->
 <main>
@@ -354,12 +359,10 @@
 </main>
 
 
-<!-- ===== FOOTER (축약형) ===== -->
-<footer class="footer-simple">
-    <div class="footer-copyright">
-        Copyright &copy; 김철학(개발에반하다.) All rights reserved.
+<footer th:replace="~{fragments/footer :: footer}"></footer>
+
     </div>
-</footer>
+</div>
 
 
 <!-- 문의 상세 모달 -->

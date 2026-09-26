@@ -91,8 +91,9 @@ function initActions() {
 
     document.querySelector('.js-confirm-ok')?.addEventListener('click', async () => {
         if (!activeItem) return;
-        await postJson(`${contextPath()}my/order/api/${activeItem.orderItemNo}/confirm`, {});
+        const result = await postJson(`${contextPath()}my/order/api/${activeItem.orderItemNo}/confirm`, {});
         closeModal('confirmPurchaseModal');
+        alert(result.message || '구매확정이 완료되었습니다.');
         await loadOrders(currentPage);
     });
 

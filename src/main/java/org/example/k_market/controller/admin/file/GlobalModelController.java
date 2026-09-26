@@ -23,7 +23,7 @@ public class GlobalModelController {
         if (request.getDispatcherType() == DispatcherType.ERROR) return;
 
         String path = getRequestPath(request);
-        if (path.startsWith("/api/") || path.startsWith("/files/")) {
+        if (path.startsWith("/api/") || path.startsWith("/files/") || path.equals("/favicon.ico")) {
             return;
         }
 
@@ -60,12 +60,11 @@ public class GlobalModelController {
             }
         }
 
-        if ("/my".equals(path)) {
-            model.addAttribute("myPage", bannerService.findEnabledBannersByType("myPage"));
-        } else if ("/member/login".equals(path)) {
-            model.addAttribute("userLogin", bannerService.findEnabledBannersByType("userLogin"));
-        } else if ("/product/view".equals(path)) {
-            model.addAttribute("productDetailView", bannerService.findEnabledBannersByType("productDetailView"));
+        if ("/product/view".equals(path)) {
+            model.addAttribute(
+                    "productDetailViewBanner",
+                    bannerService.findFirstEnabledBannerByType("productDetailView")
+            );
         }
     }
 

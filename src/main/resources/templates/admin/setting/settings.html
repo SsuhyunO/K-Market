@@ -77,7 +77,12 @@
                                 <input class="modify-file-input"
                                        id="modify-header-logo"
                                        name="headerLogo"
-                                       type="file">
+                                       type="file"
+                                       accept="image/*">
+                                <img th:if="${config.headerLogoFiled != 0}"
+                                     th:src="@{/files/{id}(id=${config.headerLogoFiled})}"
+                                     alt="현재 헤더 로고"
+                                     style="display:block; max-width:185px; max-height:60px; margin-top:10px; object-fit:contain;">
                             </td>
                         </tr>
                         <tr>
@@ -89,7 +94,12 @@
                                 <input class="modify-file-input"
                                        id="modify-footer-logo"
                                        name="footerLogo"
-                                       type="file">
+                                       type="file"
+                                       accept="image/*">
+                                <img th:if="${config.footerLogoFiled != 0}"
+                                     th:src="@{/files/{id}(id=${config.footerLogoFiled})}"
+                                     alt="현재 푸터 로고"
+                                     style="display:block; max-width:155px; max-height:36px; margin-top:10px; object-fit:contain;">
                             </td>
                         </tr>
                         <tr>
@@ -101,7 +111,12 @@
                                 <input class="modify-file-input"
                                        id="modify-favicon"
                                        name="favicon"
-                                       type="file">
+                                       type="file"
+                                       accept="image/*,.ico">
+                                <img th:if="${config.faviconFiled != 0}"
+                                     th:src="@{/files/{id}(id=${config.faviconFiled})}"
+                                     alt="현재 파비콘"
+                                     style="display:block; width:32px; height:32px; margin-top:10px; object-fit:contain;">
                             </td>
                         </tr>
                     </th:block>

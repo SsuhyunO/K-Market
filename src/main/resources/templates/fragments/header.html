@@ -1,6 +1,14 @@
 
 <header th:fragment="header" id="header">
 
+    <link th:if="${siteConfig != null and siteConfig.faviconFiled != 0}"
+          rel="icon"
+          th:href="@{/files/{id}(id=${siteConfig.faviconFiled}, v=${siteConfig.faviconFiled})}">
+
+    <script th:if="${siteConfig != null and !#strings.isEmpty(siteConfig.siteName)}" th:inline="javascript">
+        document.title = document.title.replace(/K-?Market|케이마켓/gi, /*[[${siteConfig.siteName}]]*/ 'K-Market');
+    </script>
+
     <div class="header-banner">
 
         <!-- DB에 등록된 메인상단 배너가 있으면 출력 -->
@@ -35,10 +43,14 @@
 
                     <!-- DB에 로고가 없으면 기존 텍스트 로고 출력 -->
                     <div th:if="${siteConfig == null or siteConfig.headerLogoFiled == 0}">
-                        <div class="logo-text">
-                            K<span style="color:#222;font-weight:400;">market</span>
+                        <div class="logo-text"
+                             th:text="${siteConfig != null and !#strings.isEmpty(siteConfig.siteName) ? siteConfig.siteName : 'Kmarket'}">
+                            Kmarket
                         </div>
-                        <div class="logo-sub">㈜케이마켓</div>
+                        <div class="logo-sub"
+                             th:text="${siteConfig != null and !#strings.isEmpty(siteConfig.siteSubName) ? siteConfig.siteSubName : '㈜케이마켓'}">
+                            ㈜케이마켓
+                        </div>
                     </div>
 
                 </a>

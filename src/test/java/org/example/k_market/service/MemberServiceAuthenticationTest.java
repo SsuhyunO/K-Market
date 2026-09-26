@@ -2,6 +2,7 @@ package org.example.k_market.service;
 
 import org.example.k_market.entity.Member;
 import org.example.k_market.repository.MemberRepository;
+import org.example.k_market.service.admin.CouponIssueService;
 import org.junit.jupiter.api.Test;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -17,7 +18,12 @@ class MemberServiceAuthenticationTest {
 
     private final MemberRepository memberRepository = mock(MemberRepository.class);
     private final PasswordEncoder passwordEncoder = mock(PasswordEncoder.class);
-    private final MemberService memberService = new MemberService(memberRepository, passwordEncoder);
+    private final CouponIssueService couponIssueService = mock(CouponIssueService.class);
+    private final MemberService memberService = new MemberService(
+            memberRepository,
+            passwordEncoder,
+            couponIssueService
+    );
 
     @Test
     void rejectsIncorrectPassword() {

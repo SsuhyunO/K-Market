@@ -219,6 +219,12 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
     margin-top: 40px;
 }
 
+/* 마이페이지는 목록이 짧아도 본문과 푸터가 붙거나 겹치지 않게 간격을 통일한다. */
+body.my-page .main-content > #footer {
+    clear: both;
+    margin-top: 72px;
+}
+
 .footer-links {
     background: var(--color-gray-100); /* 상단 링크영역 배경색 구분 */
     padding: 12px 0;

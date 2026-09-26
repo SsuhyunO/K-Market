@@ -3,6 +3,7 @@ package org.example.k_market.controller.admin.file;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.k_market.dto.admin.FileDTO;
+import org.example.k_market.service.admin.AdminConfigService;
 import org.example.k_market.service.admin.FileService;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -27,6 +29,19 @@ import java.util.concurrent.TimeUnit;
 public class FileViewController {
 
     private final FileService fileService;
+    private final AdminConfigService adminConfigService;
+
+    @GetMapping("/favicon.ico")
+    public ResponseEntity<Void> favicon() {
+        int faviconFileId = adminConfigService.findById(1).getFaviconFiled();
+        if (faviconFileId == 0) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.status(302)
+                .location(URI.create("files/" + faviconFileId))
+                .build();
+    }
 
     /**
      * 업로드 파일 출력

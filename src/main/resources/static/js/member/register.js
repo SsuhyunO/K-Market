@@ -355,7 +355,8 @@ async function submitJoin() {
             return;
         }
 
-        alert('회원가입 완료!');
+        const successMessage = await signupRes.text();
+        alert(successMessage || '회원가입이 완료되었습니다.');
         window.location.href = '/K_Market/';
     } catch (err) {
         console.error(err);

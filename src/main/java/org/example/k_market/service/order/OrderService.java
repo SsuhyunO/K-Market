@@ -192,6 +192,13 @@ public class OrderService {
 
     @Transactional
     public int createOrder(String memberUid, OrderCreateRequestDTO req) {
+        if (memberUid == null || memberUid.isBlank()) {
+            throw new IllegalStateException("로그인이 필요합니다.");
+        }
+        if (req == null || req.getItems() == null || req.getItems().isEmpty()) {
+            throw new IllegalArgumentException("주문할 상품이 없습니다.");
+        }
+
         int memberLevel = Optional.ofNullable(memberService.findByUid(memberUid).getMemberLevel())
             .orElse(1);
 
@@ -207,6 +214,13 @@ public class OrderService {
         Set<Integer> chargedShippingProdNos = new HashSet<>();
 
         for (OrderItemRequestDTO itemReq : req.getItems()) {
+            if (itemReq == null || itemReq.getProdVariantId() == null || itemReq.getProdVariantId() < 1) {
+                throw new IllegalArgumentException("상품 옵션 정보가 올바르지 않습니다.");
+            }
+            if (itemReq.getCount() == null || itemReq.getCount() < 1) {
+                throw new IllegalArgumentException("상품 수량은 1개 이상이어야 합니다.");
+            }
+
             ProductVariant variant = variantRepository.findById(itemReq.getProdVariantId())
                     .orElseThrow(() -> new NoSuchElementException(
                             "존재하지 않는 옵션입니다. prodVariantId=" + itemReq.getProdVariantId()));
@@ -286,6 +300,10 @@ public class OrderService {
 
             String couponType = couponIssue.getCouponType(); // "PRODUCT", "ORDER", "DELIVERY"
             String benefit = couponIssue.getBenefit();       // "1000", "10" (DELIVERY는 무시됨)
+            if (!"DELIVERY".equals(couponType)
+                    && (benefit == null || !benefit.matches("\\d+"))) {
+                throw new IllegalArgumentException("쿠폰 혜택 정보가 올바르지 않습니다.");
+            }
 
             if ("PRODUCT".equals(couponType)) {
                 Integer targetVariantId = req.getTargetVariantId();
@@ -310,9 +328,12 @@ public class OrderService {
 
                 if (benefit.length() <= 2) {
                     int rate = Integer.parseInt(benefit);
+                    if (rate < 1 || rate > 100) {
+                        throw new IllegalArgumentException("쿠폰 할인율이 올바르지 않습니다.");
+                    }
                     couponDiscount = baseAmount * rate / 100;
                 } else {
-                    couponDiscount = Integer.parseInt(benefit);
+                    couponDiscount = Math.min(parsePositiveCouponBenefit(benefit), baseAmount);
                 }
 
                 if (couponDiscount > 0) {
@@ -324,9 +345,12 @@ public class OrderService {
 
                 if (benefit.length() <= 2) {
                     int rate = Integer.parseInt(benefit);
+                    if (rate < 1 || rate > 100) {
+                        throw new IllegalArgumentException("쿠폰 할인율이 올바르지 않습니다.");
+                    }
                     couponDiscount = priceAfterProductDiscount * rate / 100;
                 } else {
-                    couponDiscount = Integer.parseInt(benefit);
+                    couponDiscount = Math.min(parsePositiveCouponBenefit(benefit), priceAfterProductDiscount);
                 }
 
                 if (couponDiscount > 0) {
@@ -351,6 +375,9 @@ public class OrderService {
 
         // ===== 3. 포인트 검증 =====
         int usedPoints = req.getUsedPoints() != null ? req.getUsedPoints() : 0;
+        if (usedPoints < 0) {
+            throw new IllegalArgumentException("사용 포인트는 0 이상이어야 합니다.");
+        }
         int orderTotalBeforePoint = orderPrice - productDiscount - couponDiscount;
 
         if (usedPoints > 0) {
@@ -802,13 +829,41 @@ public class OrderService {
     }
 
     @Transactional
-    public void confirmPurchase(String memberUid, int orderItemNo) {
+    public List<String> confirmPurchase(String memberUid, int orderItemNo) {
         MyOrderItemResponse item = getOwnedOrderItem(memberUid, orderItemNo);
         if (!"DELIVERED".equals(item.getItemStatus())) {
             throw new IllegalStateException("구매확정할 수 없는 상태입니다.");
         }
+
+        boolean firstPurchaseFromSeller = item.getSellerUid() != null
+                && !item.getSellerUid().isBlank()
+                && orderItemDAO.countConfirmedItemsByMemberAndSeller(
+                        memberUid,
+                        item.getSellerUid()
+                ) == 0;
+
         orderItemDAO.updateOrderItemStatus(orderItemNo, "CONFIRMED");
         refreshOrderStatus(item.getOrderNo());
+
+        if (firstPurchaseFromSeller) {
+            return couponIssueService.issueFirstPurchaseCoupons(
+                    item.getSellerUid(),
+                    memberUid
+            );
+        }
+        return List.of();
+    }
+
+    private int parsePositiveCouponBenefit(String benefit) {
+        try {
+            int amount = Integer.parseInt(benefit);
+            if (amount <= 0) {
+                throw new IllegalArgumentException("쿠폰 할인금액은 0원보다 커야 합니다.");
+            }
+            return amount;
+        } catch (NumberFormatException exception) {
+            throw new IllegalArgumentException("쿠폰 할인금액이 올바르지 않습니다.");
+        }
     }
 
     @Transactional

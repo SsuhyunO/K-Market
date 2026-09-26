@@ -665,3 +665,16 @@
     line-height: 1.6;
     word-break: break-word;
 }
+
+.product-detail-banner {
+    margin: 24px 0;
+    overflow: hidden;
+    border-radius: var(--radius-sm);
+}
+
+.product-detail-banner img {
+    display: block;
+    width: 100%;
+    max-height: 180px;
+    object-fit: cover;
+}

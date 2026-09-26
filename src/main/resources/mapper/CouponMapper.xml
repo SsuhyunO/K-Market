@@ -32,6 +32,9 @@
 
     <sql id="couponSearchWhere">
         <where>
+            <if test="sellerUidScope != null and sellerUidScope != ''">
+                c.sellerUid = #{sellerUidScope}
+            </if>
             <if test="keyword != null and keyword != ''">
                 <choose>
                     <when test="searchType == '쿠폰번호'">
@@ -98,4 +101,32 @@
                  LEFT JOIN seller s ON c.sellerUid = s.uid
         WHERE c.couponNo = #{couponNo}
     </select>
+
+    <select id="getActiveAdminCoupons" resultType="org.example.k_market.dto.coupon.CouponDTO">
+        SELECT c.*
+        FROM coupon c
+        WHERE c.sellerUid IS NULL
+          AND c.status = 'ACTIVE'
+          AND (c.startDate IS NULL OR c.startDate &lt;= CURDATE())
+          AND (c.expireDate IS NULL OR c.expireDate &gt;= CURDATE())
+        ORDER BY c.couponNo ASC
+    </select>
+
+    <select id="getActiveSellerCoupons" resultType="org.example.k_market.dto.coupon.CouponDTO">
+        SELECT c.*, s.companyName AS companyName
+        FROM coupon c
+        JOIN seller s ON s.uid = c.sellerUid
+        WHERE c.sellerUid = #{sellerUid}
+          AND c.status = 'ACTIVE'
+          AND s.status != 'SUSPENDED'
+          AND (c.startDate IS NULL OR c.startDate &lt;= CURDATE())
+          AND (c.expireDate IS NULL OR c.expireDate &gt;= CURDATE())
+        ORDER BY c.couponNo ASC
+    </select>
+
+    <update id="incrementUsedCount">
+        UPDATE coupon
+        SET usedCnt = usedCnt + 1
+        WHERE couponNo = #{couponNo}
+    </update>
 </mapper>

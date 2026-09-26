@@ -4,11 +4,13 @@ import lombok.RequiredArgsConstructor;
 import org.example.k_market.dto.member.MemberDto;
 import org.example.k_market.entity.Member;
 import org.example.k_market.repository.MemberRepository;
+import org.example.k_market.service.admin.CouponIssueService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -18,6 +20,7 @@ public class MemberService {
 
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
+    private final CouponIssueService couponIssueService;
 
     // 아이디 중복확인 (true = 이미 존재함 = 사용 불가)
     public boolean isUidDuplicate(String uid) {
@@ -31,7 +34,7 @@ public class MemberService {
 
     // 회원가입
     @Transactional
-    public void signUp(MemberDto.SignUpRequest request, String regIp) {
+    public List<String> signUp(MemberDto.SignUpRequest request, String regIp) {
 
         // 1) 아이디 중복 체크
         if (memberRepository.existsByUid(request.getUid())) {
@@ -45,7 +48,11 @@ public class MemberService {
         Member member = request.toEntity(encodedPassword, "MEMBER", regIp);
 
         // 4) DB 저장
-        memberRepository.save(member);
+        // 바로 이어지는 MyBatis 쿠폰 지급 쿼리에서 회원 FK를 찾을 수 있도록 즉시 반영한다.
+        memberRepository.saveAndFlush(member);
+
+        // 5) 현재 발급 중인 관리자 회원가입 쿠폰 지급
+        return couponIssueService.issueSignupCoupons(member.getUid());
     }
 
     // 아이디 찾기

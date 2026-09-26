@@ -29,7 +29,7 @@ public class CsController {
 
     /* 고객센터 메인 */
     @GetMapping({"", "/", "/index"})
-    public String index(Model model) {
+    public String index(Model model, HttpSession session) {
 
         List<NoticeDTO> noticeList =
                 noticeService.getNoticeList(
@@ -43,12 +43,10 @@ public class CsController {
                         null
                 );
 
-        List<QnaDTO> qnaList =
-                qnaService.getQnaList(
-                        1,
-                        null,
-                        null
-                );
+        String memberUid = (String) session.getAttribute("loginMember");
+        List<QnaDTO> qnaList = memberUid == null
+                ? List.of()
+                : qnaService.getRecentQnaListByMemberUid(memberUid);
 
         model.addAttribute(
                 "noticeList",
@@ -146,8 +144,19 @@ public class CsController {
                     name = "category2",
                     required = false
             ) String category2,
-            Model model
+            Model model,
+            HttpSession session,
+            RedirectAttributes redirectAttributes
     ) {
+        String memberUid = (String) session.getAttribute("loginMember");
+        if (memberUid == null || memberUid.isBlank()) {
+            redirectAttributes.addFlashAttribute(
+                    "message",
+                    "로그인 후 문의내역을 확인할 수 있습니다."
+            );
+            return "redirect:/member/login";
+        }
+
         int safePage =
                 Math.max(page, 1);
 
@@ -221,8 +230,19 @@ public class CsController {
                     name = "category2",
                     required = false
             ) String category2,
-            Model model
+            Model model,
+            HttpSession session,
+            RedirectAttributes redirectAttributes
     ) {
+        String memberUid = (String) session.getAttribute("loginMember");
+        if (memberUid == null || memberUid.isBlank()) {
+            redirectAttributes.addFlashAttribute(
+                    "message",
+                    "로그인 후 문의내역을 확인할 수 있습니다."
+            );
+            return "redirect:/member/login";
+        }
+
         int safePage =
                 Math.max(page, 1);
 
@@ -238,7 +258,8 @@ public class CsController {
 
         model.addAttribute(
                 "qnaList",
-                qnaService.getQnaList(
+                qnaService.getMemberQnaList(
+                        memberUid,
                         safePage,
                         selectedCategory1,
                         selectedCategory2
@@ -247,7 +268,8 @@ public class CsController {
 
         model.addAttribute(
                 "pageInfo",
-                qnaService.getPageInfo(
+                qnaService.getMemberPageInfo(
+                        memberUid,
                         safePage,
                         selectedCategory1,
                         selectedCategory2
@@ -271,12 +293,30 @@ public class CsController {
     @GetMapping("/qnaView")
     public String qnaView(
             @RequestParam("boardNo") int boardNo,
-            Model model
+            Model model,
+            HttpSession session,
+            RedirectAttributes redirectAttributes
     ) {
-        model.addAttribute(
-                "qna",
-                qnaService.getQna(boardNo)
-        );
+        String memberUid = (String) session.getAttribute("loginMember");
+        if (memberUid == null || memberUid.isBlank()) {
+            redirectAttributes.addFlashAttribute(
+                    "message",
+                    "로그인 후 문의글을 확인할 수 있습니다."
+            );
+            return "redirect:/member/login";
+        }
+
+        QnaDTO qna = qnaService.getQna(boardNo);
+        String memberType = (String) session.getAttribute("loginMemberType");
+        if (!memberUid.equals(qna.getMemberUid()) && !"ADMIN".equals(memberType)) {
+            redirectAttributes.addFlashAttribute(
+                    "message",
+                    "본인이 작성한 문의글만 확인할 수 있습니다."
+            );
+            return "redirect:/cs/qnaList";
+        }
+
+        model.addAttribute("qna", qna);
 
         return "cs/qnaView";
     }

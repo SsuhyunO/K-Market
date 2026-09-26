@@ -64,8 +64,8 @@ public class ProductFormValidator {
             throw new IllegalStateException("로그인이 필요합니다.");
         }
 
-        if (!sellerRepository.existsById(sellerUid)) {
-            throw new IllegalStateException("판매자만 상품을 등록할 수 있습니다.");
+        if (!sellerRepository.existsByUidAndStatus(sellerUid, "ACTIVE")) {
+            throw new IllegalStateException("승인된 판매자만 상품을 등록할 수 있습니다.");
         }
     }
 

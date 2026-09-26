@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.time.LocalDateTime;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -23,6 +24,11 @@ public class BannerService {
 
     // 배너 등록
     public void register(BannerDTO dto, MultipartFile bannerFile) {
+
+        validateExposurePeriod(dto);
+        if (bannerFile == null || bannerFile.isEmpty()) {
+            throw new IllegalArgumentException("배너 이미지를 선택해주세요.");
+        }
 
         int fileId = 0;
 
@@ -78,7 +84,7 @@ public class BannerService {
     @Transactional(readOnly = true)
     public List<BannerDTO> findEnabledBanners() {
 
-        return bannerRepository.findByEnabledTrueOrderByBannerIdDesc()
+        return bannerRepository.findActiveBanners(LocalDateTime.now())
                 .stream()
                 .map(this::toDTO)
                 .collect(Collectors.toList());
@@ -93,7 +99,7 @@ public class BannerService {
             bannerType = "mainTop";
         }
 
-        return bannerRepository.findByBannerTypeAndEnabledTrueOrderByBannerIdDesc(bannerType)
+        return bannerRepository.findActiveBannersByType(bannerType, LocalDateTime.now())
                 .stream()
                 .map(this::toDTO)
                 .collect(Collectors.toList());
@@ -109,7 +115,7 @@ public class BannerService {
         }
 
         return bannerRepository
-                .findByBannerTypeAndEnabledTrueOrderByBannerIdDesc(bannerType)
+                .findActiveBannersByType(bannerType, LocalDateTime.now())
                 .stream()
                 .findFirst()
                 .map(this::toDTO)
@@ -129,8 +135,13 @@ public class BannerService {
 
     // 배너 단건 삭제
     public void delete(Integer bannerId) {
+        Banner banner = bannerRepository.findById(bannerId)
+                .orElseThrow(() -> new IllegalArgumentException("삭제할 배너를 찾을 수 없습니다."));
 
-        bannerRepository.deleteById(bannerId);
+        int fileId = banner.getFileId();
+        bannerRepository.delete(banner);
+        bannerRepository.flush();
+        fileService.deleteIfExists(fileId);
     }
 
     // 배너 선택 삭제
@@ -140,7 +151,13 @@ public class BannerService {
             return;
         }
 
-        bannerRepository.deleteAllById(bannerIds);
+        List<Banner> banners = bannerRepository.findAllById(bannerIds);
+        bannerRepository.deleteAll(banners);
+        bannerRepository.flush();
+        banners.stream()
+                .map(Banner::getFileId)
+                .distinct()
+                .forEach(fileService::deleteIfExists);
     }
 
     // Entity → DTO 변환
@@ -164,11 +181,14 @@ public class BannerService {
 
     // 배너 선택 수정
     public void modify(BannerDTO dto, MultipartFile bannerFile) {
+        validateExposurePeriod(dto);
+
         // 1. 기존 배너 정보 조회
         Banner banner = bannerRepository.findById(dto.getBannerId())
                 .orElseThrow(() -> new IllegalArgumentException("수정할 배너를 찾을 수 없습니다."));
 
-        int fileId = banner.getFileId();
+        int previousFileId = banner.getFileId();
+        int fileId = previousFileId;
 
         // 2. 새로운 파일이 들어왔다면 기존 파일 처리 및 업로드
         if (bannerFile != null && !bannerFile.isEmpty()) {
@@ -188,6 +208,11 @@ public class BannerService {
                 dto.getEndAt()
         );
 
+        if (bannerFile != null && !bannerFile.isEmpty()) {
+            bannerRepository.flush();
+            fileService.deleteIfExists(previousFileId);
+        }
+
     }
 
     // 배너 단건 조회 (DTO 변환 포함)
@@ -196,6 +221,16 @@ public class BannerService {
         return bannerRepository.findById(bannerId)
                 .map(this::toDTO)
                 .orElseThrow(() -> new IllegalArgumentException("배너를 찾을 수 없습니다."));
+    }
+
+    private void validateExposurePeriod(BannerDTO dto) {
+        if (dto.getStartAt() == null || dto.getEndAt() == null) {
+            throw new IllegalArgumentException("배너 노출 시작일시와 종료일시를 입력해주세요.");
+        }
+
+        if (dto.getStartAt().isAfter(dto.getEndAt())) {
+            throw new IllegalArgumentException("배너 종료일시는 시작일시보다 빠를 수 없습니다.");
+        }
     }
 
 }

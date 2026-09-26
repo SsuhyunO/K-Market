@@ -1,8 +1,10 @@
 
 <aside id="admin-aside" th:fragment="aside">
     <div class="aside-logo">
-        <div class="logo-text">K<span>market</span></div>
-        <div class="logo-sub">㈜케이마켓</div>
+        <div class="logo-text"
+             th:text="${config != null and !#strings.isEmpty(config.siteName) ? config.siteName : 'Kmarket'}">Kmarket</div>
+        <div class="logo-sub"
+             th:text="${config != null and !#strings.isEmpty(config.siteSubName) ? config.siteSubName : '㈜케이마켓'}">㈜케이마켓</div>
     </div>
 
     <nav class="aside-nav">
