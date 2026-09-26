@@ -47,8 +47,9 @@ jobs:
 
       - name: Setup SSH Key
         run: |
-          echo "${{ secrets.AWS_EC2_KEY }}" > private_key.pem
+          printf '%s\n' "${{ secrets.AWS_EC2_KEY }}" | tr -d '\r' > private_key.pem
           chmod 600 private_key.pem
+          ssh-keygen -y -f private_key.pem > /dev/null
 
       - name: Create runtime environment file
         env:
