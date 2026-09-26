@@ -4,14 +4,26 @@
      active 값: home | culture | news | career | media
      ============================================= -->
 <header th:fragment="header(active)" class="company-header">
+  <link th:if="${siteConfig != null and siteConfig.faviconFiled != 0}"
+        rel="icon"
+        th:href="@{/files/{id}(id=${siteConfig.faviconFiled}, v=${siteConfig.faviconFiled})}">
+  <script th:if="${siteConfig != null and !#strings.isEmpty(siteConfig.siteName)}" th:inline="javascript">
+    document.title = document.title.replace(/K-?Market|케이마켓/gi, /*[[${siteConfig.siteName}]]*/ 'K-Market');
+  </script>
   <div class="container company-header-inner">
 
     <!-- ① CI 로고 -->
     <div class="logo">
       <a th:href="@{/}">
-        <div>
-          <div class="logo-text">K<span style="color:#222;font-weight:400;">market</span></div>
-          <div class="logo-sub">㈜케이마켓</div>
+        <img th:if="${siteConfig != null and siteConfig.headerLogoFiled != 0}"
+             th:src="@{/files/{id}(id=${siteConfig.headerLogoFiled})}"
+             th:alt="${siteConfig.siteName}"
+             style="width:185px; height:60px; object-fit:contain; display:block;">
+        <div th:if="${siteConfig == null or siteConfig.headerLogoFiled == 0}">
+          <div class="logo-text"
+               th:text="${siteConfig != null and !#strings.isEmpty(siteConfig.siteName) ? siteConfig.siteName : 'Kmarket'}">Kmarket</div>
+          <div class="logo-sub"
+               th:text="${siteConfig != null and !#strings.isEmpty(siteConfig.siteSubName) ? siteConfig.siteSubName : '㈜케이마켓'}">㈜케이마켓</div>
         </div>
       </a>
     </div>

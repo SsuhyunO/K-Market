@@ -116,11 +116,15 @@ public class MyPageController {
      */
     @GetMapping("/my/coupon")
     public String coupon(
-            HttpSession session
+            HttpSession session,
+            Model model
     ) {
         if (!isLoggedIn(session)) {
             return "redirect:/member/login";
         }
+
+        String memberUid = (String) session.getAttribute("loginMember");
+        model.addAttribute("coupons", couponIssueService.getMyCoupons(memberUid));
 
         return "my/coupon";
     }

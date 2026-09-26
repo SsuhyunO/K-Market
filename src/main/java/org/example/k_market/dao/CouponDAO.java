@@ -14,15 +14,23 @@ public interface CouponDAO {
 
     List<CouponDTO> getCouponList(@Param("searchType") String searchType,
                                   @Param("keyword") String keyword,
+                                  @Param("sellerUidScope") String sellerUidScope,
                                   @Param("offset") int offset,
                                   @Param("pageSize") int pageSize);
 
     int getTotalCount(@Param("searchType") String searchType,
-                      @Param("keyword") String keyword);
+                      @Param("keyword") String keyword,
+                      @Param("sellerUidScope") String sellerUidScope);
 
     void updateStatusToDisabled(@Param("couponNo") int couponNo);
 
     void disableExpiredCoupons();
 
     CouponDTO getCouponByNo(@Param("couponNo") int couponNo);
+
+    List<CouponDTO> getActiveAdminCoupons();
+
+    List<CouponDTO> getActiveSellerCoupons(@Param("sellerUid") String sellerUid);
+
+    int incrementUsedCount(@Param("couponNo") int couponNo);
 }

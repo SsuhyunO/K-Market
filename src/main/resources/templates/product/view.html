@@ -251,6 +251,17 @@
             <nav class="review-pagination" data-review-pagination></nav>
         </article>
 
+        <aside class="product-detail-banner" th:if="${productDetailViewBanner != null}">
+            <a th:if="${productDetailViewBanner.link != null and !#strings.isEmpty(productDetailViewBanner.link)}"
+               th:href="${productDetailViewBanner.link}">
+                <img th:src="@{/files/{id}(id=${productDetailViewBanner.fileId})}"
+                     th:alt="${productDetailViewBanner.name}">
+            </a>
+            <img th:unless="${productDetailViewBanner.link != null and !#strings.isEmpty(productDetailViewBanner.link)}"
+                 th:src="@{/files/{id}(id=${productDetailViewBanner.fileId})}"
+                 th:alt="${productDetailViewBanner.name}">
+        </aside>
+
         <footer th:replace="~{fragments/footer :: footer}"></footer>
     </main>
 </div>

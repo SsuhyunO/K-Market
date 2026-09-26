@@ -40,13 +40,14 @@ public class CouponService {
         couponDAO.insert(dto);
     }
 
-    public List<CouponDTO> getCouponList(String searchType, String keyword, int page, int pageSize) {
+    public List<CouponDTO> getCouponList(String searchType, String keyword, String sellerUidScope,
+                                         int page, int pageSize) {
         int offset = (page - 1) * pageSize;
-        return couponDAO.getCouponList(searchType, keyword, offset, pageSize);
+        return couponDAO.getCouponList(searchType, keyword, sellerUidScope, offset, pageSize);
     }
 
-    public int getTotalCount(String searchType, String keyword) {
-        return couponDAO.getTotalCount(searchType, keyword);
+    public int getTotalCount(String searchType, String keyword, String sellerUidScope) {
+        return couponDAO.getTotalCount(searchType, keyword, sellerUidScope);
     }
 
     @Transactional

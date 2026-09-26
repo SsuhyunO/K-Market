@@ -3,6 +3,9 @@ on:
   push:
     branches:
       - main
+  pull_request:
+    branches:
+      - main
 
 jobs:
   build:
@@ -21,7 +24,7 @@ jobs:
         run: chmod +x gradlew
 
       - name: Build with Gradle
-        run: ./gradlew clean bootJar
+        run: ./gradlew clean test bootJar
 
       - name: Get JAR_FILE
         id: jarfile
@@ -37,6 +40,7 @@ jobs:
 
   deploy:
     needs: build
+    if: github.event_name == 'push'
     runs-on: ubuntu-latest
     steps:
       - name: Download build artifact
@@ -70,6 +74,8 @@ jobs:
             printf 'MAIL_USERNAME=%q\n' "$MAIL_USERNAME"
             printf 'MAIL_PASSWORD=%q\n' "$MAIL_PASSWORD"
             printf 'FILE_UPLOAD_PATH=%q\n' '/opt/kmarket/uploads'
+            printf 'SPRING_PROFILES_ACTIVE=%q\n' 'prod'
+            printf 'TZ=%q\n' 'Asia/Seoul'
           } > kmarket.env
           chmod 600 kmarket.env
 
@@ -96,7 +102,7 @@ jobs:
             source /home/${{ secrets.AWS_EC2_USER }}/kmarket.env
             set +a
             mkdir -p /home/${{ secrets.AWS_EC2_USER }}/logs
-            nohup java -jar /home/${{ secrets.AWS_EC2_USER }}/kmarket.jar \
+            nohup java -Duser.timezone=Asia/Seoul -jar /home/${{ secrets.AWS_EC2_USER }}/kmarket.jar \
               > /home/${{ secrets.AWS_EC2_USER }}/logs/app.log 2>&1 &
             echo \$! > /home/${{ secrets.AWS_EC2_USER }}/kmarket.pid
           EOF

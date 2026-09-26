@@ -47,4 +47,7 @@ public interface OrderItemDAO {
     int selectMyOrderItemCount(@Param("memberUid") String memberUid,
                                @Param("startDate") String startDate,
                                @Param("endDate") String endDate);
+
+    int countConfirmedItemsByMemberAndSeller(@Param("memberUid") String memberUid,
+                                              @Param("sellerUid") String sellerUid);
 }

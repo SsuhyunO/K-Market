@@ -7,10 +7,13 @@
     <nav class="company-footer-nav">
       <a th:href="@{/company/index}">HOME</a>
       <a th:href="@{/company/culture}">기업문화</a>
-      <a th:href="@{/company/news}">소식과 이야기</a>
+      <a th:href="@{/company/story}">소식과 이야기</a>
       <a th:href="@{/company/recruit}">채용</a>
-      <a th:href="@{/company/story}">미디어</a>
+      <a th:href="@{/company/media}">미디어</a>
     </nav>
-    <p class="company-footer-copy">Copyright © Kmarket All rights Reserved</p>
+    <p class="company-footer-copy"
+       th:text="${siteConfig != null and !#strings.isEmpty(siteConfig.copyright) ? siteConfig.copyright : 'Copyright © Kmarket All rights Reserved'}">
+      Copyright © Kmarket All rights Reserved
+    </p>
   </div>
 </footer>

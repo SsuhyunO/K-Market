@@ -2,12 +2,23 @@ package org.example.k_market.advice.admin;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+import lombok.RequiredArgsConstructor;
 import org.example.k_market.common.admin.AdminCategory;
+import org.example.k_market.dto.admin.AdminConfigDTO;
+import org.example.k_market.service.admin.AdminConfigService;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
 @ControllerAdvice(basePackages = "org.example.k_market.controller.admin")
+@RequiredArgsConstructor
 public class AdminCategoryAdvice {
+
+    private final AdminConfigService adminConfigService;
+
+    @ModelAttribute("config")
+    public AdminConfigDTO config() {
+        return adminConfigService.findById(1);
+    }
 
     @ModelAttribute("category")
     public AdminCategory category(HttpServletRequest request) {

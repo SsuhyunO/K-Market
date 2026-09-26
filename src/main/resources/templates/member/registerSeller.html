@@ -127,12 +127,7 @@
     </div>
 </main>
 
-<!-- 푸터 -->
-<footer>
-    <div class="footer-copyright">
-        Copyright © 2025 김철학 All rights reserved.
-    </div>
-</footer>
+<footer th:replace="~{fragments/footer :: footer}"></footer>
 
 <script th:inline="javascript">
     const loginUrl = /*[[@{/member/login}]]*/ '/member/login';

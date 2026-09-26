@@ -16,12 +16,14 @@ public class AdminConfig {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+    // Legacy banner columns. Banner exposure is managed by Banner.bannerType.
     private int mainSliderBannerId;
     private String siteName;
     private String siteSubName;
     private int headerLogoFiled;
     private int footerLogoFiled;
     private int faviconFiled;
+    // Legacy column retained for compatibility with the existing production schema.
     private int logoFiled;
     private String bussName;
     private String ceo;
@@ -38,6 +40,17 @@ public class AdminConfig {
     private int userLoginBannerId;
     private int myPageBannerId;
     private String copyright;
+
+    // Legacy columns that still exist as NOT NULL columns in the production schema.
+    // They must be mapped so that the first AdminConfig row can be created by JPA.
+    @Column(name = "faviconImageId")
+    private int faviconImageId;
+
+    @Column(name = "footerLogoImageId")
+    private int footerLogoImageId;
+
+    @Column(name = "headerLogoImageId")
+    private int headerLogoImageId;
 
     public void updateSiteSettings(String siteName, String siteSubName) {
         this.siteName = siteName;

@@ -201,7 +201,7 @@
 
             <!-- 실제 데이터 -->
             <a th:each="news : ${newsList}"
-               th:href="@{/company/news/{id}(id=${news.id})}"
+               th:href="@{/company/story(newsId=${news.id})}"
                class="news-item">
                 <span class="news-date" th:text="${news.date}">2025.01</span>
                 <span class="news-title" th:utext="${news.title}">소식 제목</span>

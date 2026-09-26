@@ -308,4 +308,13 @@
         </if>
     </select>
 
+    <select id="countConfirmedItemsByMemberAndSeller" resultType="int">
+        SELECT COUNT(*)
+        FROM order_item oi
+        JOIN `order` o ON o.orderNo = oi.orderNo
+        WHERE o.memberUid = #{memberUid}
+          AND oi.sellerUid = #{sellerUid}
+          AND oi.itemStatus = 'CONFIRMED'
+    </select>
+
 </mapper>

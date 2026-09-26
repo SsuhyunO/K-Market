@@ -100,6 +100,26 @@ public class FileService {
         }
     }
 
+    public void deleteIfExists(Integer id) {
+        if (id == null || id <= 0) {
+            return;
+        }
+
+        File file = fileRepository.findById(id).orElse(null);
+        if (file == null) {
+            return;
+        }
+
+        Path managedUploadDir = Paths.get(uploadPath).toAbsolutePath().normalize();
+        Path storedPath = Paths.get(file.getPath()).toAbsolutePath().normalize();
+        if (!storedPath.startsWith(managedUploadDir)) {
+            log.warn("현재 업로드 경로 밖의 파일은 자동 삭제하지 않습니다: id={}, path={}", id, storedPath);
+            return;
+        }
+
+        delete(id);
+    }
+
     // Entity → DTO 변환 공통 메서드
     private FileDTO toDTO(File file) {
         return FileDTO.builder()

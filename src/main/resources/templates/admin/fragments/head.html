@@ -8,6 +8,10 @@
           rel="icon"
           th:href="@{/files/{id}(id=${config.faviconFiled}, v=${config.faviconFiled})}">
 
+    <script th:if="${config != null and !#strings.isEmpty(config.siteName)}" th:inline="javascript">
+        document.title = document.title.replace(/K-?Market|케이마켓/gi, /*[[${config.siteName}]]*/ 'K-Market');
+    </script>
+
     <link rel="preconnect"
           href="https://fonts.googleapis.com">
 

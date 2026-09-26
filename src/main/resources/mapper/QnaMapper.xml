@@ -40,6 +40,10 @@
     <sql id="qnaWhere">
         WHERE boardType LIKE 'qna/%'
 
+        <if test="memberUid != null and memberUid != ''">
+            AND memberUid = #{memberUid}
+        </if>
+
         <if test="category1 != null and category1 != ''">
             AND SUBSTRING_INDEX(
             SUBSTRING_INDEX(boardType, '/', 2),

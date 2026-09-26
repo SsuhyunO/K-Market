@@ -41,8 +41,11 @@ public class MyOrderApiController {
         @PathVariable int orderItemNo,
         HttpSession session
     ) {
-        orderService.confirmPurchase(getMemberUid(session), orderItemNo);
-        return ResponseEntity.ok(new SimpleMessageResponse("구매확정이 완료되었습니다."));
+        List<String> issuedCouponNames = orderService.confirmPurchase(getMemberUid(session), orderItemNo);
+        String message = !issuedCouponNames.isEmpty()
+                ? "구매확정이 완료되었습니다. " + formatCouponNames(issuedCouponNames) + "이 지급되었습니다."
+                : "구매확정이 완료되었습니다.";
+        return ResponseEntity.ok(new SimpleMessageResponse(message));
     }
 
     @PostMapping("/{orderItemNo}/claim")
@@ -80,5 +83,12 @@ public class MyOrderApiController {
             throw new IllegalStateException("로그인이 필요합니다.");
         }
         return memberUid;
+    }
+
+    private String formatCouponNames(List<String> couponNames) {
+        return couponNames.stream()
+                .map(name -> "‘" + name + "’")
+                .reduce((left, right) -> left + ", " + right)
+                .orElse("쿠폰");
     }
 }

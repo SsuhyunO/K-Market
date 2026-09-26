@@ -42,10 +42,13 @@ public class CouponController {
             model.addAttribute("companyName", "최고관리자");
         }
 
-        int totalCount = couponService.getTotalCount(searchType, keyword);
+        String sellerUidScope = "SELLER".equals(memberType) ? loginUid : null;
+        int totalCount = couponService.getTotalCount(searchType, keyword, sellerUidScope);
         PageInfo pageInfo = new PageInfo(page, totalCount); // 기존 방식대로 생성자에서 totalCount 넘김
 
-        List<CouponDTO> couponList = couponService.getCouponList(searchType, keyword, page, pageInfo.getPageSize());
+        List<CouponDTO> couponList = couponService.getCouponList(
+                searchType, keyword, sellerUidScope, page, pageInfo.getPageSize()
+        );
         model.addAttribute("couponList", couponList);
         model.addAttribute("pageInfo", pageInfo);
 
@@ -66,8 +69,21 @@ public class CouponController {
         if ("SELLER".equals(loginMemberType)) {
             String loginUid = (String) session.getAttribute("loginMember");
             dto.setSellerUid(loginUid);
+            if (!"PRODUCT".equals(dto.getCouponType())
+                    && !"DELIVERY".equals(dto.getCouponType())) {
+                throw new IllegalArgumentException("기업회원은 자사 상품 할인 또는 배송비 무료 쿠폰만 등록할 수 있습니다.");
+            }
+        } else if ("ADMIN".equals(loginMemberType)) {
+            dto.setSellerUid(null);
+            if (!"ORDER".equals(dto.getCouponType())
+                    && !"DELIVERY".equals(dto.getCouponType())) {
+                throw new IllegalArgumentException("관리자는 전체 주문 할인 또는 배송비 무료 쿠폰만 등록할 수 있습니다.");
+            }
         }
-        // ADMIN인 경우 sellerUid는 세팅하지 않음 (null 유지)
+
+        if ("DELIVERY".equals(dto.getCouponType())) {
+            dto.setBenefit("DELIVERY_FREE");
+        }
 
         couponService.register(dto);
 
@@ -102,11 +118,18 @@ public class CouponController {
     public String used(@RequestParam(defaultValue = "1") int page,
                        @RequestParam(required = false) String searchType,
                        @RequestParam(required = false) String keyword,
+                       HttpSession session,
                        Model model) {
-        int totalCount = couponIssueService.getTotalCount(searchType, keyword);
+        String loginUid = (String) session.getAttribute("loginMember");
+        String memberType = (String) session.getAttribute("loginMemberType");
+        String sellerUidScope = "SELLER".equals(memberType) ? loginUid : null;
+
+        int totalCount = couponIssueService.getTotalCount(searchType, keyword, sellerUidScope);
         PageInfo pageInfo = new PageInfo(page, totalCount);
 
-        List<CouponIssueDTO> issueList = couponIssueService.getCouponIssueList(searchType, keyword, page, pageInfo.getPageSize());
+        List<CouponIssueDTO> issueList = couponIssueService.getCouponIssueList(
+                searchType, keyword, sellerUidScope, page, pageInfo.getPageSize()
+        );
         model.addAttribute("issueList", issueList);
         model.addAttribute("pageInfo", pageInfo);
         model.addAttribute("searchType", searchType);
@@ -117,14 +140,19 @@ public class CouponController {
 
     @PatchMapping("/issue/{issueNo}/stop")
     @ResponseBody
-    public ResponseEntity<Void> stopIssue(@PathVariable int issueNo) {
+    public ResponseEntity<Void> stopIssue(@PathVariable int issueNo, HttpSession session) {
         try {
-            couponIssueService.stopCouponIssue(issueNo);
+            String loginUid = (String) session.getAttribute("loginMember");
+            String memberType = (String) session.getAttribute("loginMemberType");
+            String sellerUidScope = "SELLER".equals(memberType) ? loginUid : null;
+            couponIssueService.stopCouponIssue(issueNo, sellerUidScope);
             return ResponseEntity.ok().build();
         } catch (IllegalArgumentException e) {
             return ResponseEntity.notFound().build();
         } catch (IllegalStateException e) {
             return ResponseEntity.status(HttpStatus.CONFLICT).build(); // 409
+        } catch (SecurityException e) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
     }
 }

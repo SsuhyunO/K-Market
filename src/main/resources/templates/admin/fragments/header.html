@@ -2,7 +2,7 @@
 <header id="admin-header" th:fragment="header">
     <div class="header-logo">
         <a th:href="@{/admin/main}">
-            <span class="logo-k">K</span><span class="logo-market">market</span>
+            <span th:text="${config != null and !#strings.isEmpty(config.siteName) ? config.siteName : 'Kmarket'}">Kmarket</span>
             <span class="logo-badge">ADMIN</span>
         </a>
     </div>

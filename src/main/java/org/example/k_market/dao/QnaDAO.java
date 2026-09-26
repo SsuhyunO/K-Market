@@ -18,7 +18,8 @@ public interface QnaDAO {
      */
     int getTotalCount(
             @Param("category1") String category1,
-            @Param("category2") String category2
+            @Param("category2") String category2,
+            @Param("memberUid") String memberUid
     );
 
 
@@ -29,7 +30,8 @@ public interface QnaDAO {
             @Param("offset") int offset,
             @Param("pageSize") int pageSize,
             @Param("category1") String category1,
-            @Param("category2") String category2
+            @Param("category2") String category2,
+            @Param("memberUid") String memberUid
     );
 
 

@@ -40,7 +40,7 @@
                             <th>쿠폰명</th>
                             <th>혜택</th>
                             <th>사용기간</th>
-                            <th>발급수</th>
+                            <th>발급한도</th>
                             <th>사용수</th>
                             <th>상태</th>
                             <th>관리</th>
@@ -137,19 +137,19 @@
                                 <tr>
                                     <th><label for="coupon-register-type">쿠폰종류</label></th>
                                     <td>
-                                        <!-- ADMIN: 3개 다 선택 가능 -->
+                                        <!-- 관리자는 전체 주문 할인 또는 전체 배송비 쿠폰을 등록한다. -->
                                         <select id="coupon-register-type" name="couponType" th:if="${memberType == 'ADMIN'}">
                                             <option value="">종류선택</option>
-                                            <option value="PRODUCT">개별상품 할인</option>
-                                            <option value="ORDER">주문상품 할인</option>
+                                            <option value="ORDER">전체 주문 할인</option>
                                             <option value="DELIVERY">배송비 무료</option>
                                         </select>
 
-                                        <!-- SELLER: 개별상품 할인만 표시, 값은 고정으로 넘어감 -->
-                                        <div th:if="${memberType == 'SELLER'}">
-                                            <input type="text" value="개별상품 할인" readonly>
-                                            <input type="hidden" name="couponType" value="PRODUCT">
-                                        </div>
+                                        <!-- 기업회원 쿠폰은 해당 기업 상품에만 적용된다. -->
+                                        <select id="coupon-register-type" name="couponType" th:if="${memberType == 'SELLER'}">
+                                            <option value="">종류선택</option>
+                                            <option value="PRODUCT">자사 상품 할인</option>
+                                            <option value="DELIVERY">자사 상품 배송비 무료</option>
+                                        </select>
                                     </td>
                                 </tr>
                                 <tr>
@@ -244,7 +244,7 @@
                                     <td colspan="3" id="coupon-detail-period"></td>
                                 </tr>
                                 <tr>
-                                    <th>발급 / 사용</th>
+                                    <th>발급한도 / 사용</th>
                                     <td colspan="3"><span id="coupon-detail-issue-count"></span> / <span id="coupon-detail-used-count"></span></td>
                                 </tr>
                                 <tr>

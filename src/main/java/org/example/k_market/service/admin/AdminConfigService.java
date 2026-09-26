@@ -17,21 +17,17 @@ public class AdminConfigService {
     private final AdminConfigRepository adminConfigRepository;
     private final FileService fileService;
 
-    // 환경설정 단건 조회
+    // 환경설정 단건 조회. 최초 실행 시 기본 설정을 자동으로 생성한다.
+    @Transactional
     public AdminConfigDTO findById(Integer id) {
-
-        AdminConfig config = adminConfigRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("환경설정을 찾을 수 없습니다. id=" + id));
-
-        return toDTO(config);
+        return toDTO(getOrCreateConfig(id));
     }
 
     // 사이트 제목 / 부제 수정
     @Transactional
     public void modifySiteSettings(AdminConfigDTO dto) {
 
-        AdminConfig config = adminConfigRepository.findById(1)
-                .orElseThrow(() -> new IllegalArgumentException("환경설정을 찾을 수 없습니다."));
+        AdminConfig config = getOrCreateConfig(1);
 
         config.updateSiteSettings(
                 dto.getSiteName(),
@@ -45,12 +41,14 @@ public class AdminConfigService {
                                MultipartFile footerLogo,
                                MultipartFile favicon) {
 
-        AdminConfig config = adminConfigRepository.findById(1)
-                .orElseThrow(() -> new IllegalArgumentException("환경설정을 찾을 수 없습니다."));
+        AdminConfig config = getOrCreateConfig(1);
 
-        int headerLogoFiled = config.getHeaderLogoFiled();
-        int footerLogoFiled = config.getFooterLogoFiled();
-        int faviconFiled = config.getFaviconFiled();
+        int previousHeaderLogoFileId = config.getHeaderLogoFiled();
+        int previousFooterLogoFileId = config.getFooterLogoFiled();
+        int previousFaviconFileId = config.getFaviconFiled();
+        int headerLogoFiled = previousHeaderLogoFileId;
+        int footerLogoFiled = previousFooterLogoFileId;
+        int faviconFiled = previousFaviconFileId;
         int logoFiled = config.getLogoFiled();
 
         // 헤더 로고 업로드
@@ -77,14 +75,17 @@ public class AdminConfigService {
                 faviconFiled,
                 logoFiled
         );
+
+        deleteReplacedFile(previousHeaderLogoFileId, headerLogoFiled);
+        deleteReplacedFile(previousFooterLogoFileId, footerLogoFiled);
+        deleteReplacedFile(previousFaviconFileId, faviconFiled);
     }
 
     // 기업 정보 수정
     @Transactional
     public void modifyCorporateInfo(AdminConfigDTO dto) {
 
-        AdminConfig config = adminConfigRepository.findById(1)
-                .orElseThrow(() -> new IllegalArgumentException("환경설정을 찾을 수 없습니다."));
+        AdminConfig config = getOrCreateConfig(1);
 
         config.updateCorporateInfo(
                 dto.getBussName(),
@@ -100,8 +101,7 @@ public class AdminConfigService {
     @Transactional
     public void modifyCustomerSupportInfo(AdminConfigDTO dto) {
 
-        AdminConfig config = adminConfigRepository.findById(1)
-                .orElseThrow(() -> new IllegalArgumentException("환경설정을 찾을 수 없습니다."));
+        AdminConfig config = getOrCreateConfig(1);
 
         config.updateCustomerSupportInfo(
                 dto.getCsPhone(),
@@ -115,8 +115,7 @@ public class AdminConfigService {
     @Transactional
     public void modifyCopyright(AdminConfigDTO dto) {
 
-        AdminConfig config = adminConfigRepository.findById(1)
-                .orElseThrow(() -> new IllegalArgumentException("환경설정을 찾을 수 없습니다."));
+        AdminConfig config = getOrCreateConfig(1);
 
         config.updateCopyright(dto.getCopyright());
     }
@@ -149,5 +148,22 @@ public class AdminConfigService {
                 .myPageBannerId(config.getMyPageBannerId())
                 .copyright(config.getCopyright())
                 .build();
+    }
+
+    private AdminConfig getOrCreateConfig(Integer preferredId) {
+        return adminConfigRepository.findById(preferredId)
+                .or(() -> adminConfigRepository.findFirstByOrderByIdAsc())
+                .orElseGet(() -> adminConfigRepository.save(
+                        AdminConfig.builder()
+                                .siteName("K-Market")
+                                .siteSubName("다양한 상품을 한곳에서 만나보세요")
+                                .build()
+                ));
+    }
+
+    private void deleteReplacedFile(int previousFileId, int currentFileId) {
+        if (previousFileId != 0 && previousFileId != currentFileId) {
+            fileService.deleteIfExists(previousFileId);
+        }
     }
 }

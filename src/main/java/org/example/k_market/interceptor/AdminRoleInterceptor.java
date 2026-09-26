@@ -6,6 +6,7 @@ import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.example.k_market.entity.Member;
 import org.example.k_market.service.MemberService;
+import org.example.k_market.repository.SellerRepository;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
@@ -27,6 +28,7 @@ import java.util.Set;
 public class AdminRoleInterceptor implements HandlerInterceptor {
 
     private final MemberService memberService;
+    private final SellerRepository sellerRepository;
 
     // 판매자(SELLER)에게 허용되는 admin 경로 prefix
     // aside.html 의 "상점관리 / 상품관리 / 주문관리 / 쿠폰관리" 메뉴와 동일하게 맞춤
@@ -55,6 +57,12 @@ public class AdminRoleInterceptor implements HandlerInterceptor {
 
         // 판매자는 허용된 경로만 접근 가능
         if ("SELLER".equals(memberType)) {
+            String sellerUid = (String) session.getAttribute("loginMember");
+            if (sellerUid == null || !sellerRepository.existsByUidAndStatus(sellerUid, "ACTIVE")) {
+                response.sendRedirect(request.getContextPath() + "/?sellerApprovalRequired=true");
+                return false;
+            }
+
             String servletPath = request.getServletPath();
             boolean allowed = SELLER_ALLOWED_PREFIXES.stream().anyMatch(servletPath::startsWith);
             if (allowed) {

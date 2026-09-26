@@ -1,6 +1,7 @@
 package org.example.k_market.controller.product;
 
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.k_market.dto.order.OrderCreateRequestDTO;
@@ -36,7 +37,7 @@ public class ProductApiController {
 
     @PostMapping("/order")
     public ResponseEntity<?> createOrder(
-            @RequestBody OrderCreateRequestDTO req,
+            @Valid @RequestBody OrderCreateRequestDTO req,
             HttpSession session) {
         try {
             String memberUid = (String) session.getAttribute("loginMember");

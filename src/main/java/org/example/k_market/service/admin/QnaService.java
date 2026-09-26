@@ -48,7 +48,8 @@ public class QnaService {
                 offset,
                 PAGE_SIZE,
                 safeCategory1,
-                safeCategory2
+                safeCategory2,
+                null
         );
     }
 
@@ -72,7 +73,8 @@ public class QnaService {
 
         int totalCount = qnaDAO.getTotalCount(
                 safeCategory1,
-                safeCategory2
+                safeCategory2,
+                null
         );
 
         Page<QnaDTO> pageResult = new PageImpl<>(
@@ -84,6 +86,52 @@ public class QnaService {
                 totalCount
         );
 
+        return new PageInfo(pageResult);
+    }
+
+    public List<QnaDTO> getMemberQnaList(
+            String memberUid,
+            int page,
+            String category1,
+            String category2
+    ) {
+        if (memberUid == null || memberUid.isBlank()) {
+            return List.of();
+        }
+
+        int safePage = Math.max(page, 1);
+        String safeCategory1 = normalize(category1);
+        String safeCategory2 = safeCategory1 == null ? null : normalize(category2);
+
+        return qnaDAO.getQnaList(
+                (safePage - 1) * PAGE_SIZE,
+                PAGE_SIZE,
+                safeCategory1,
+                safeCategory2,
+                memberUid.trim()
+        );
+    }
+
+    public PageInfo getMemberPageInfo(
+            String memberUid,
+            int page,
+            String category1,
+            String category2
+    ) {
+        int safePage = Math.max(page, 1);
+        String safeCategory1 = normalize(category1);
+        String safeCategory2 = safeCategory1 == null ? null : normalize(category2);
+        int totalCount = qnaDAO.getTotalCount(
+                safeCategory1,
+                safeCategory2,
+                memberUid == null ? null : memberUid.trim()
+        );
+
+        Page<QnaDTO> pageResult = new PageImpl<>(
+                List.of(),
+                PageRequest.of(safePage - 1, PAGE_SIZE),
+                totalCount
+        );
         return new PageInfo(pageResult);
     }
 

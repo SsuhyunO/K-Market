@@ -71,27 +71,6 @@
     color: var(--color-gray-400);
 }
 
-/* 페이지네이션 */
-.recruit-pagination {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 14px;
-}
-.recruit-pagination a {
-    font-size: 14px;
-    color: var(--color-gray-600);
-    transition: color var(--transition);
-}
-.recruit-pagination .page-num.active {
-    color: var(--color-primary);
-    font-weight: 700;
-}
-.recruit-pagination a:hover { color: var(--color-primary); }
-.recruit-pagination .page-nav {
-    font-weight: 600;
-}
-
 /* =============================================
    반응형
    ============================================= */
