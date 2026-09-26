@@ -19,6 +19,7 @@ public class Board {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer boardNo;
+    @Column(length = 20, nullable = false)
     private String memberUid;
     private String boardType;
     private String title;

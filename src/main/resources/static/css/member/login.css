@@ -224,37 +224,59 @@ main {
 .social-btn.kakao { background-color: #FEE500; color: #191919; }
 .social-btn.google { background-color: #fff; border: 1px solid #e2e8f0; color: #4f5b66; }
 
-/* ===== 어워드 로고 및 기타 하단 공통 스타일 ===== */
-.award-logos {
-    display: flex;
-    gap: 6px;
-    flex-wrap: nowrap;
+/* ===== 로그인 하단 이용 안내 ===== */
+.login-benefits {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 12px;
     width: 900px;
 }
 
-.award-item {
-    flex: 1;
-    height: 64px;
+.login-benefit {
+    min-height: 82px;
+    padding: 16px 18px;
     border: 1px solid #e3eee5;
-    border-radius: 10px;
-    background-color: #fafdfb;
+    border-radius: 14px;
+    background: linear-gradient(135deg, #ffffff 0%, #f5fbf7 100%);
     display: flex;
     align-items: center;
+    gap: 13px;
+    box-shadow: 0 6px 18px rgba(15, 61, 36, 0.06);
+}
+
+.benefit-icon {
+    width: 42px;
+    height: 42px;
+    border-radius: 12px;
+    background-color: #e9f7ed;
+    color: #2f8f4e;
+    display: inline-flex;
+    align-items: center;
     justify-content: center;
-    padding: 8px 10px;
-    min-width: 0;
-    transition: box-shadow 0.2s, transform 0.2s;
+    flex-shrink: 0;
+    font-size: 18px;
 }
 
-.award-item:hover {
-    box-shadow: 0 6px 14px rgba(76, 175, 80, 0.12);
-    transform: translateY(-2px);
+.benefit-icon i {
+    display: inline-block;
+    transform: translate(10px, 10px);
 }
 
-.award-item img {
-    max-width: 100%;
-    max-height: 40px;
-    object-fit: contain;
+.login-benefit strong,
+.login-benefit span {
+    display: block;
+}
+
+.login-benefit strong {
+    margin-bottom: 5px;
+    color: #173f26;
+    font-size: 14px;
+}
+
+.login-benefit div > span {
+    color: #6b7b70;
+    font-size: 12px;
+    line-height: 1.45;
 }
 
 .banner-box {
@@ -286,5 +308,12 @@ main {
     justify-content: center;
     color: #999;
     font-size: 14px;
+}
+
+@media (max-width: 960px) {
+    .login-benefits {
+        width: 100%;
+        grid-template-columns: 1fr;
+    }
 }
 .input-box:focus-within i{color:#4CAF50;animation:shake .4s;}.input-box i.fa-circle-check,.input-box i.fa-lock-open{color:#2ecc71;animation:pop .25s;}@keyframes shake{0%{transform:translateY(-50%) rotate(0)}25%{transform:translateY(-50%) rotate(-12deg)}50%{transform:translateY(-50%) rotate(12deg)}75%{transform:translateY(-50%) rotate(-8deg)}100%{transform:translateY(-50%) rotate(0)}}@keyframes pop{0%{transform:translateY(-50%) scale(.7)}60%{transform:translateY(-50%) scale(1.25)}100%{transform:translateY(-50%) scale(1)}}

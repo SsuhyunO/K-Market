@@ -42,6 +42,7 @@ public class Product {
     private Integer thumb2FileId;
     private Integer thumb3FileId;
     private Integer detailInfoFileId;
+    @Column(length = 20, nullable = false)
     private String sellerUid;
     private String infoNoticeType;
     private String status;

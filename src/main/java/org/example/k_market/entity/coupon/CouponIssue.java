@@ -19,6 +19,7 @@ public class CouponIssue {
     private int issueNo;
 
     private int couponNo;
+    @Column(length = 20, nullable = false)
     private String memberUid;
     private int status;
 

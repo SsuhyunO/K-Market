@@ -22,6 +22,7 @@ public class Version {
     @Setter                      // 관리자가 버전명도 수정할 수 있도록 추가
     private String version;      // 예: 0.0.1-SNAPSHOT
 
+    @Column(length = 20, nullable = false)
     private String writerUid;
 
     @Column(columnDefinition = "TEXT")
